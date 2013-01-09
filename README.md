@@ -38,4 +38,7 @@ You should see something like this:
       . slavedriver.webfetch.plos_lookup
       (... etc)
 
+(NB Ctrl-C will shut the celery instance down.)
+
+You should be able to start up the web API at this point by running 'python app.py'
 
