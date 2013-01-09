@@ -22,7 +22,6 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 3
 
 @app.route('/')
-@app.route('/lookup/', methods=["GET"])
 @produces(HTML)
 def hello():
     return render_template('index.html')
@@ -60,7 +59,6 @@ def lookup():
 @consumes(JSON)
 @produces(JSON)
 def api_lookup():
-    
     #   if JSON:
     #     if ignore_unknown_ids in request is 'True'
     #       find and return cached/stored results for IDs that are known
@@ -69,7 +67,7 @@ def api_lookup():
     #       attempted?
     
     # Check content-length and reject if above an arbitrary value for RAM sanity
-    # accept up to 3MB of transmitted data - set on line 12 above.
+    # -> accept up to 3MB of transmitted data - set on line 22 above.
     try:
         passed_json = json.loads(request.data)
         return '{"response": "Got parsable JSON"}'
