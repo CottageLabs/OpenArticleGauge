@@ -4,5 +4,4 @@ from slavedriver.celery import celery
 
 @celery.task
 def plos_lookup(doi):
-    # do lookup
-    pass
+    return "%s - DOI?" % doi
