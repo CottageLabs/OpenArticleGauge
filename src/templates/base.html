@@ -2,8 +2,11 @@
 <html>
   <head>
     {% block head %}
+    <!-- Google Webfonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!-- Reset CSS to something sensible -->
     <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+    <!-- Then apply general styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{% block title %}{% endblock %} - IsItOpenAccess</title>
     {% endblock %}

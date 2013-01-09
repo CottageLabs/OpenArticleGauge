@@ -6,4 +6,10 @@
 {% block content %}
   <h1>IsItOpenAccess?</h1>
   <p> IsItOpenAccess is a service for determining the licence status of journal publicatios, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.</p>
+  <form action="/lookup/" method="POST">
+    <p>DOI(s) to look-up: 
+        <input name="query">
+    </p>
+    <input type="submit" value="IsItOpenAccess?" />
+  </form>
 {% endblock %}
