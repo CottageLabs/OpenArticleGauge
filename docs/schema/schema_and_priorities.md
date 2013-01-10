@@ -78,9 +78,45 @@ The license is found in the same div element as above:
 <div class="articleinfo">
 [...]
 <p><strong>Copyright:</strong>
- © 2003 Braendle et al. This is an open-access article distributed under the terms of the Public Library of Science Open-Access License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.</p><p><strong>Competing interests:</strong>  The authors have declared that no conflicts of interest exist.
+ © 2003 Braendle et al. This is an open-access article distributed under the terms of the Public Library of Science Open-Access License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+	</p>
+[...]
+</div>
+
+****A WHO licensed article****
+
+DOI: 10.1371/journal.pmed.1001062
+Dereferenced URL: http://www.plosmedicine.org/article/info%3Adoi%2F10.1371%2Fjournal.pmed.1001062
+
+Status: Accessible
+License: Not specified, no advertisement, non-commercial terms.
+
+The licensing terms are found in the same div element as above:
+
+<div class="articleinfo">
+[...]
+<p>
+<strong>Copyright:</strong> © 2011 World Health Organization; licensee Public Library of Science (PLoS). This is an Open Access article in the spirit of the Public Library of Science (PLoS) principles for Open Access http://www.plos.org/oa/, without any waiver of WHO's privileges and immunities under international law, convention, or agreement. This article should not be reproduced for use in association with the promotion of commercial products, services, or any legal entity. There should be no suggestion that WHO endorses any specific organization or products. The use of the WHO logo is not permitted. This notice should be preserved along with the article's original URL.
 </p>
 [...]
+</div>
+
+****Article under the UK OGL****
+
+DOI: 10.1371/journal.pone.0035089
+Dereferenced URL: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089
+
+Status: Open Access
+License: Open Government Licence (UK)
+
+The licensing terms are found in the same div element as above:
+
+<div class="articleinfo">
+[...]
+<p>
+<strong>Copyright:</strong> © 2012 Crown Copyright. This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.
+[...]
+</p>
 </div>
 
 
