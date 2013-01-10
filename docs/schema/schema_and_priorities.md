@@ -1,15 +1,12 @@
-Examples and location of licensing information for specific publishers
-======================================================================
+#Examples and location of licensing information for specific publishers
 
-Outline
--------
+##Outline
 
 The purpose of this document is to identify the source of licensing information in the html pages provided by different scholarly publishers and to provide a test set of documents associated with authoritative statements of the license status.
 
 The HTML documents are the result of dereferencing specified DOIs. They therefore vary as to whether they contain abstracts or full text papers. For each publisher there are multiple examples provided that have different license status.
 
-BioMedCentral
--------------
+##BioMedCentral
 
 The vast majority of papers published by BMC are made available under a CC BY license. There are some exceptions for commentaries and reviews that are available to subscribers and (need to check whether any complexities in BMC papers with OGL, PD, or WHO).
 
@@ -17,10 +14,13 @@ Journals that contain non-open access content can be found via the list of journ
 
 ###Examples
 ####An open access article
+
 DOI:10.1186/1471-2164-13-425
+
 Dereferenced URL: http://www.biomedcentral.com/1471-2164/13/425
 
 Status: Open Access
+
 License: CC BY v2.0
 
 The licensing information is contained in a number of places in the html document. The most reliable source is found as a meta tag:
@@ -38,14 +38,16 @@ The licensing information is contained in a number of places in the html documen
 ####A non-open access article
 
 DOI: 10.1186/bcr3351
+
 Dereferenced URL: http://breast-cancer-research.com/content/14/6/327
 
 Status: Not Accessible, Not Open Access, Accessible with subscription
+
 License: Not available
 The license information elements that are visible in the Open Access article are not present at the dereferenced URL for the non-open access article.
 
-PLOS
-____
+##PLOS
+
 
 The majority of PLOS articles are made available under a Creative Commons Attribution license with no version specified in the human readable text. Some articles, particularly older ones, have non-standard license text. There are also at least three variants licenses deployed, ccZero for work exclusive authored by US Government Employess, the UK Open Government License, and a generic WHO License which specifies non-commercial terms.
 
@@ -57,7 +59,8 @@ DOI: 10.1371/journal.pbio.1001461
 Dereferenced URL: http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461
 
 Status: Open Access
-License: CC BY
+
+License: CC BY, version not specified
 
 The license is found a <div class="articleinfo"> as a separate paragraph as follows:
 
@@ -75,6 +78,7 @@ DOI:10.1371/journal.pbio.0000021
 Dereferenced URL: http://www.plosbiology.org/article/info:doi/10.1371/journal.pbio.0000021
 
 Status: Open Access
+
 License: Not specified but rights consistent with CC BY
 
 The license is found in the same div element as above:
@@ -93,6 +97,7 @@ DOI: 10.1371/journal.pmed.1001062
 Dereferenced URL: http://www.plosmedicine.org/article/info%3Adoi%2F10.1371%2Fjournal.pmed.1001062
 
 Status: Accessible
+
 License: Not specified, no advertisement, non-commercial terms.
 
 The licensing terms are found in the same div element as above:
@@ -108,9 +113,11 @@ The licensing terms are found in the same div element as above:
 ####Article under the UK OGL
 
 DOI: 10.1371/journal.pone.0035089
+
 Dereferenced URL: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089
 
 Status: Open Access
+
 License: Open Government Licence (UK)
 
 The licensing terms are found in the same div element as above:
@@ -124,9 +131,7 @@ The licensing terms are found in the same div element as above:
 	</div>
 
 
-Below here still needs work!
-----------------------------
-
+##Below here still needs work!	
 
 OUP:
 HTML:
