@@ -1,0 +1,1003 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Extra-binomial variation approach for analysis of pooled DNA sequencing data </title>
+      <meta name="googlebot" content="NOODP" />
+      <meta name="HW.ad-path" content="/cgi/content/abstract/28/22/2898" />
+      <meta content="/bioinfo/28/22/2898.atom" name="HW.identifier" />
+      <meta name="DC.Format" content="text/html" />
+      <meta name="DC.Language" content="en" />
+      <meta content="Extra-binomial variation approach for analysis of pooled DNA sequencing data"
+            name="DC.Title" />
+      <meta content="10.1093/bioinformatics/bts553" name="DC.Identifier" />
+      <meta content="2012-11-15" name="DC.Date" />
+      <meta content="Oxford University Press" name="DC.Publisher" />
+      <meta content="Xin Yang" name="DC.Contributor" />
+      <meta content="John A. Todd" name="DC.Contributor" />
+      <meta content="David Clayton" name="DC.Contributor" />
+      <meta content="Chris Wallace" name="DC.Contributor" />
+      <meta content="Bioinformatics" name="citation_journal_title" />
+      <meta content="Bioinformatics" name="citation_journal_abbrev" />
+      <meta content="1367-4803" name="citation_issn" />
+      <meta content="1460-2059" name="citation_issn" />
+      <meta name="citation_author" content="Xin Yang" />
+      <meta name="citation_author_institution"
+            content="Juvenile Diabetes Research Foundation/Wellcome Trust Diabetes and Inflammation Laboratory, Department of Medical Genetics, Cambridge Institute for Medical Research, University of Cambridge, Wellcome Trust/MRC Building, Addenbrooke’s Hospital, Cambridge CB2 0XY, UK" />
+      <meta name="citation_author" content="John A. Todd" />
+      <meta name="citation_author_institution"
+            content="Juvenile Diabetes Research Foundation/Wellcome Trust Diabetes and Inflammation Laboratory, Department of Medical Genetics, Cambridge Institute for Medical Research, University of Cambridge, Wellcome Trust/MRC Building, Addenbrooke’s Hospital, Cambridge CB2 0XY, UK" />
+      <meta name="citation_author" content="David Clayton" />
+      <meta name="citation_author_institution"
+            content="Juvenile Diabetes Research Foundation/Wellcome Trust Diabetes and Inflammation Laboratory, Department of Medical Genetics, Cambridge Institute for Medical Research, University of Cambridge, Wellcome Trust/MRC Building, Addenbrooke’s Hospital, Cambridge CB2 0XY, UK" />
+      <meta name="citation_author" content="Chris Wallace" />
+      <meta name="citation_author_institution"
+            content="Juvenile Diabetes Research Foundation/Wellcome Trust Diabetes and Inflammation Laboratory, Department of Medical Genetics, Cambridge Institute for Medical Research, University of Cambridge, Wellcome Trust/MRC Building, Addenbrooke’s Hospital, Cambridge CB2 0XY, UK" />
+      <meta content="Extra-binomial variation approach for analysis of pooled DNA sequencing data"
+            name="citation_title" />
+      <meta content="11/15/2012" name="citation_date" />
+      <meta content="28" name="citation_volume" />
+      <meta content="22" name="citation_issue" />
+      <meta content="2898" name="citation_firstpage" />
+      <meta content="2904" name="citation_lastpage" />
+      <meta content="28/22/2898" name="citation_id" />
+      <meta content="bioinfo;28/22/2898" name="citation_mjid" />
+      <meta content="10.1093/bioinformatics/bts553" name="citation_doi" />
+      <meta content="http://bioinformatics.oxfordjournals.org/content/28/22/2898.abstract"
+            name="citation_abstract_html_url" />
+      <meta content="http://bioinformatics.oxfordjournals.org/content/28/22/2898.full"
+            name="citation_fulltext_html_url" />
+      <meta content="http://bioinformatics.oxfordjournals.org/content/28/22/2898.full.pdf"
+            name="citation_pdf_url" />
+      <meta content="http://bioinformatics.oxfordjournals.org/content/28/22/2898"
+            name="citation_public_url" />
+      <meta content="22976083" name="citation_pmid" />
+      <meta name="citation_section" content="Original Paper" />
+      <meta name="robots" content="noarchive" />
+      <link href="/content/28/22/2891.short" rel="prev" />
+      <link href="/content/28/22/2905.short" rel="next" />
+      <link rel="stylesheet" type="text/css" media="all" href="/shared/css/hw-global.css" />
+      <link rel="stylesheet" type="text/css" media="print" href="/shared/css/hw-print.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/local/css/hw-local-global.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/publisher/css/hw-publisher-global.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/publisher/css/hw-publisher-ac.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/shared/css/hw-page-content.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/shared/css/jquery.fancybox-1.3.4.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/shared/css/hw-global-colexpand.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/publisher/css/hw-publisher-page-content.css" /><script type="text/javascript" id="session-d136927298e1">var callbackToken='55924FC296A0297';</script><script type="text/javascript" src="/shared/js/jquery-min.js"></script><script type="text/javascript" src="/shared/js/hw-shared.js"></script><script type="text/javascript" src="/publisher/js/hw-publisher-site.js"></script><script type="text/javascript" src="/local/js/local-js-vars.js"></script><script type="text/javascript" src="/shared/js/pages/hw-content.js"></script><script type="text/javascript" src="/shared/js/util/AccessCheckLib.js"></script><script type="text/javascript" src="/shared/js/util/executeAccessCheck.js"></script><script type="text/javascript" src="/shared/js/fancybox/jquery.fancybox-1.3.4.js"></script><script type="text/javascript" src="/shared/js/fancybox/jquery.easing-1.3.pack.js"></script><script type="text/javascript"
+              src="/shared/js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script><script type="text/javascript" src="/shared/js/util/content.jquery.addVariantLink.js"></script><script type="text/javascript" src="/shared/js/util/hw-col-expand.js"></script><script type="text/javascript"
+              src="/publisher/js/hw-publisher-article-dynamic-elements.js"></script><script type="text/javascript" src="/shared/js/util/hw-mathjax.js"></script><script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                  inlineMath: [["$","$"],["\\(","\\)"]],
+                  skipTags: ["body"],
+                  processClass: "mml-math"
+                }
+            });
+        </script><script type="text/javascript"
+              src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><link rel="stylesheet" type="text/css" media="all" href="/resource/css/hw20.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/resource/css/h20-oup-header.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/resource/css/h20-oup-footer.css" />
+      <link rel="stylesheet" type="text/css" media="all"
+            href="/resource/css/h20-oup-sidebars.css" />
+      <link type="text/css" media="all" rel="stylesheet"
+            href="/site/resource/bioinformatics_h20.css" />
+      <link rel="stylesheet" type="text/css" href="/resource/css/print.css" media="print" /><script type="text/javascript" src="/resource/js/main.js"></script><link rel="stylesheet" type="text/css" media="all"
+            href="http://oi-underbar.ifactory.com/underbar/css/pf_oiunderbar.css" /><script type="text/javascript" src="/resource/js/oup_ad_size.js"></script></head>
+   <body class="general_page journal bioinformatics">
+      <div class="hw-gen-page pagetype-content hw-pub-id-article" id="pageid-content"
+           itemscope="itemscope"
+           itemtype="http://schema.org/ScholarlyArticle">
+         
+         <p class="hide">
+            <a href="#content">Skip Navigation</a>
+            
+         </p>
+         
+         
+         <div id="secondary_nav">
+            <strong id="page_logo" title="Oxford Journals"><a href="http://www.oxfordjournals.org/"><span>Oxford Journals</span></a></strong>
+            
+            <ul>
+               <li id="nav_contact_us" title="Contact Us"><a href="http://www.oxfordjournals.org/contact_us.html"><span>Contact Us</span></a></li>
+               <li id="nav_my_basket" title="My Basket"><a href="https://secure.oxfordjournals.org/basket.html"><span>My Basket</span></a></li>
+               <li id="nav_my_account" title="My Account"><a href="http://services.oxfordjournals.org/cgi/tslogin?url=http://www.oxfordjournals.org/service/Register"><span>My 
+                        
+                        Account</span></a></li>
+            </ul>
+            
+         </div>
+         
+         
+         <div id="header">
+            
+            <h1 id="page_title" title="Bioinformatics"><a href="/"><span>
+                     Bioinformatics
+                     </span></a></h1>
+            
+         </div>
+         
+         
+         <div id="primary_nav">
+            
+            <ul>
+               <li id="nav_about_this_journal" title="About This Journal">
+                  <a href="http://www.oxfordjournals.org/bioinformatics/about.html">
+                     
+                     <span>About This Journal</span>
+                     </a>
+                  
+               </li>
+               <li id="nav_contact_this_journal" title="Contact This Journal"><a href="/cgi/feedback/"><span>Contact This Journal</span></a></li>
+               <li id="nav_subscriptions" title="Subscriptions">
+                  <a href="http://www.oxfordjournals.org/bioinformatics/access_purchase/buy_online.html">
+                     
+                     <span>Subscriptions</span>
+                     </a>
+                  
+               </li>
+               <li id="nav_current_issue" title="Current"><a href="/content/current"><span>View Current Issue (Volume 29 Issue 1 January 2013)</span></a></li>
+               <li id="nav_archive" title="Archive"><a href="/content/by/year"><span>Archive</span></a></li>
+               <li id="nav_search" title="Search"><a href="/search"><span>Search</span></a></li>
+            </ul>
+            
+         </div>
+         
+         
+         <div id="user_nav">
+            
+            <div class="header-ac-elements">
+               
+               <div id="authstring">
+                  
+                  
+               </div>   
+               
+            </div>
+            
+         </div>
+         
+         
+         <ul id="site-breadcrumbs">
+            <li class="first"><a href="http://services.oxfordjournals.org/cgi/tslogin?url=http%3A%2F%2Fwww.oxfordjournals.org">Oxford Journals</a></li>
+            <li><span class="breadcrumb_subjects"><a href="http://www.oxfordjournals.org/subject/life_sciences/"
+                     class="breadcrumb_subject">Life Sciences</a></span><span class="breadcrumb_subjects"><a href="http://www.oxfordjournals.org/subject/mathematics/"
+                     class="breadcrumb_subject">Mathematics &amp; Physical Sciences</a></span></li>
+            <li><a href="/">Bioinformatics</a></li>
+            <li><a href="/content/28/22.toc">
+                  <span xmlns="" class="volume-value">Volume 28</span>
+                  <span xmlns="" class="issue-value"> Issue 22</span></a></li>
+            <li>Pp. <span class="slug-pages">
+                  2898-2904.
+                  </span></li>
+         </ul>
+         
+         
+         
+         
+         <div id="oas_top" class="ad_hidden">
+            <iframe id="id_advertframe_top"
+                    src="/resource/htmlfiles/advert.html?p=Top&amp;u=bioinformatics.oxfordjournals.org/content/28/22/2898"
+                    width="0"
+                    height="0"
+                    frameborder="0"
+                    scrolling="no"
+                    class="resize_ad"></iframe>
+            
+         </div>
+         
+         
+         <a name="content"></a>
+         
+         
+         <div id="h20_page"></div>
+         
+         <div id="content-block">
+            <div class="article abstract-view" itemprop="articleBody"><span class="highwire-journal-article-marker-start"></span><h1 id="article-title-1" itemprop="headline">Extra-binomial variation approach for analysis of pooled DNA sequencing data</h1>
+               <div class="contributors">
+                  <ol class="contributor-list" id="contrib-group-1">
+                     <li class="contributor" id="contrib-1" itemprop="author" itemscope="itemscope"
+                         itemtype="http://schema.org/Person"><span class="name" itemprop="name"><a class="name-search" href="/search?author1=Xin+Yang&amp;sortspec=date&amp;submit=Submit">Xin Yang</a></span>, 
+                     </li>
+                     <li class="contributor" id="contrib-2" itemprop="author" itemscope="itemscope"
+                         itemtype="http://schema.org/Person"><span class="name" itemprop="name"><a class="name-search"
+                              href="/search?author1=John+A.+Todd&amp;sortspec=date&amp;submit=Submit">John A. Todd</a></span>, 
+                     </li>
+                     <li class="contributor" id="contrib-3" itemprop="author" itemscope="itemscope"
+                         itemtype="http://schema.org/Person"><span class="name" itemprop="name"><a class="name-search"
+                              href="/search?author1=David+Clayton&amp;sortspec=date&amp;submit=Submit">David Clayton</a></span> and 
+                     </li>
+                     <li class="last" id="contrib-4"><span class="name"><a class="name-search"
+                              href="/search?author1=Chris+Wallace&amp;sortspec=date&amp;submit=Submit">Chris Wallace</a></span><a id="xref-corresp-1-1" class="xref-corresp" href="#corresp-1">*</a></li>
+                  </ol>
+                  <ol class="affiliation-list">
+                     <li class="aff"><a id="aff-1" name="aff-1"></a><address>Juvenile Diabetes Research Foundation/Wellcome Trust Diabetes and Inflammation Laboratory, Department of Medical Genetics,
+                           Cambridge Institute for Medical Research, University of Cambridge, Wellcome Trust/MRC Building, Addenbrooke’s Hospital, Cambridge
+                           CB2 0XY, UK
+                        </address>
+                     </li>
+                  </ol>
+                  <ol class="corresp-list">
+                     <li class="corresp" id="corresp-1"><a class="rev-xref" href="#xref-corresp-1-1">↵</a>*To whom correspondence should be addressed.
+                     </li>
+                  </ol>
+                  <ul class="history-list">
+                     <li xmlns:hwp="http://schema.highwire.org/Journal" class="received"
+                         hwp:start="2011-11-16"><span class="received-label">Received </span>November 16, 2011.
+                     </li>
+                     <li xmlns:hwp="http://schema.highwire.org/Journal" class="rev-recd"
+                         hwp:start="2012-08-03"><span class="rev-recd-label">Revision received </span>August 3, 2012.
+                     </li>
+                     <li xmlns:hwp="http://schema.highwire.org/Journal" class="accepted"
+                         hwp:start="2012-09-05"><span class="accepted-label">Accepted </span>September 5, 2012.
+                     </li>
+                  </ul>
+               </div>
+               <div class="section abstract" id="abstract-1" itemprop="description">
+                  <h2>Abstract</h2>
+                  
+                  <p id="p-3"><strong>Motivation</strong>: The invention of next-generation sequencing technology has made it possible to study the rare variants that are more likely
+                     to pinpoint causal disease genes. To make such experiments financially viable, DNA samples from several subjects are often
+                     pooled before sequencing. This induces large between-pool variation which, together with other sources of experimental error,
+                     creates over-dispersed data. Statistical analysis of pooled sequencing data needs to appropriately model this additional variance
+                     to avoid inflating the false-positive rate.
+                  </p>
+                  
+                  <p id="p-4"><strong>Results</strong>: We propose a new statistical method based on an extra-binomial model to address the over-dispersion and apply it to pooled
+                     case-control data. We demonstrate that our model provides a better fit to the data than either a standard binomial model or
+                     a traditional extra-binomial model proposed by Williams and can analyse both rare and common variants with lower or more variable
+                     pool depths compared to the other methods.
+                  </p>
+                  
+                  <p id="p-5"><strong>Availability</strong>: Package ‘extraBinomial’ is on <a href="http://cran.r-project.org/">http://cran.r-project.org/</a></p>
+                  
+                  <p id="p-6"><strong>Contact</strong>: <span class="em-link"><span class="em-addr">chris.wallace{at}cimr.cam.ac.uk</span></span></p>
+                  
+                  <p id="p-7"><strong>Supplementary information:</strong> <a href="http://bioinformatics.oxfordjournals.org/cgi/content/full/bts553/DC1">Supplementary data</a> are available at <em>Bioinformatics</em> Online.
+                  </p>
+                  
+               </div>
+               <ul class="copyright-statement">
+                  <li class="fn" id="copyright-statement-1">© The Author 2012. Published by Oxford University Press.</li>
+               </ul>
+               <div class="license" id="license-1">
+                  <p id="p-2">This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
+                     which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.
+                  </p>
+               </div><span class="highwire-journal-article-marker-end"></span></div><span id="related-urls"></span></div>
+         <div id="col-2">
+            
+            <div class="article-nav sidebar-nav">
+               <a href="/content/28/22/2891.short" title="Previous article" class="previous">« Previous</a><span class="article-nav-sep"> | </span><a href="/content/28/22/2905.short" title="Next article" class="next">Next Article »</a>
+               
+               <span class="toc-link">
+                  				<a href="/content/28/22.toc" title="Table of Contents">Table of Contents</a>
+                  			</span>
+               
+               
+            </div>
+            <div class="content-box" id="article-cb-main">
+               <div class="cb-contents">
+                  <h3 class="cb-contents-header"><span>This Article</span></h3>
+                  <div class="cb-section cb-slug">
+                     <ol>
+                        <li>
+                           <div id="slugline">
+                              
+                              <cite>
+                                 <abbr title="Bioinformatics" class="slug-jnl-abbrev">
+                                    <nlm:abbrev-journal-title xmlns:nlm="http://schema.highwire.org/NLM/Journal" abbrev-type="publisher">Bioinformatics</nlm:abbrev-journal-title></abbr><span class="slug-pub-date" itemprop="datePublished">
+                                    (2012) 
+                                    </span>
+                                 
+                                 <span class="slug-vol">
+                                    28
+                                    </span><span class="slug-issue">
+                                    (22):
+                                    </span><span class="slug-pages">
+                                    2898-2904.
+                                    </span>
+                                 <span class="slug-doi-wrapper">
+                                    
+                                    doi:
+                                    
+                                    <span title="10.1093/bioinformatics/bts553" class="slug-doi">10.1093/bioinformatics/bts553</span>
+                                    </span>
+                                 </cite>
+                              
+                              
+                              <span class="slug-metadata-note ahead-of-print">
+                                 
+                                 First published online:
+                                 
+                                 <span class="slug-ahead-of-print-date">September 12, 2012</span>
+                                 </span>
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section cb-views">
+                     <ol>
+                        <li><span class="creative-commons-article">This article is Open Access<span>OA</span></span></li>
+                        <li class="abstract-view-link primary"><span class="variant-indicator">» <span>Abstract</span></span><span class="viewspecificaccesscheck bioinfo;28/22/2898 abstract"></span></li>
+                        <li class="notice full-text-view-link"><a href="/content/28/22/2898.full" rel="view-full-text">Full Text (HTML)</a><span class="viewspecificaccesscheck bioinfo;28/22/2898 full"></span></li>
+                        <li class="notice full-text-pdf-view-link"><a href="/content/28/22/2898.full.pdf+html" rel="view-full-text.pdf">Full Text (PDF)</a><span class="viewspecificaccesscheck bioinfo;28/22/2898 reprint"></span></li>
+                        <li><a href="/content/28/22/2898/suppl/DC1" rel="supplemental-data"
+                              class="dslink-supplementary-data">Supplementary Data</a></li>
+                        <li class="cb-versions">
+                           <div><span id="pap-all-versions-label">All Versions of this Article:</span><ol class="version-list">
+                                 <li><a href="/content/early/2012/09/11/bioinformatics.bts553">bts553v1</a></li>
+                                 <li class="current-li"><span>28/22/2898</span> <span class="current-version">most recent</span></li>
+                              </ol>
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-cat">
+                     <h4 class="cb-section-header"><span>Classifications</span></h4>
+                     <ol>
+                        <li>
+                           <ul class="subject-headings">
+                              <li>Original Paper
+                                 <ul class="subject-sub-headings last-child">
+                                    <li><a class="tocsection-search"
+                                          href="/search?tocsectionid=SEQUENCE+ANALYSIS&amp;sortspec=date&amp;submit=Submit">SEQUENCE ANALYSIS</a></li>
+                                 </ul>
+                              </li>
+                           </ul>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-svcs">
+                     <h4 class="cb-section-header"><span>Services</span></h4>
+                     <ol>
+                        <li class="alert-link icon-link"><a href="/cgi/alerts/ctalert?alertType=citedby&amp;addAlert=cited_by&amp;cited_by_criteria_resid=bioinfo;28/22/2898&amp;saveAlert=no&amp;return-type=article&amp;return_url=http://bioinformatics.oxfordjournals.org/content/28/22/2898">Alert me when cited</a></li>
+                        <li class="alert-link icon-link"><a href="/cgi/alerts/ctalert?alertType=correction&amp;addAlert=correction&amp;correction_criteria_value=28/22/2898&amp;saveAlert=no&amp;return-type=article&amp;return_url=http://bioinformatics.oxfordjournals.org/content/28/22/2898">Alert me if corrected</a></li>
+                        <li><a href="/cgi/alerts/ctalert?alertType=eletter&amp;addAlert=eletter&amp;eletter_criteria_value=28/22/2898&amp;saveAlert=no&amp;return-type=article&amp;return_url=http://bioinformatics.oxfordjournals.org/content/28/22/2898">Alert me if commented</a></li>
+                        <li class="similar-link"><a href="/search?qbe=bioinfo;bts553&amp;citation=Yang%20et%20al.%2028%20%2822%29:%202898&amp;submit=yes">Find similar articles</a></li>
+                        <li class="similar-link"><a href="/external-ref?access_num=bioinfo%3B28%2F22%2F2898&amp;link_type=ISI_RELATEDRECORDS"
+                              id="cb-isi-similar-articles"
+                              class="similar-link">Similar articles in Web of Science</a></li>
+                        <li class="similar-link"><a href="/external-ref?access_num=22976083&amp;link_type=MED_NBRS"
+                              class="similar-link">Similar articles in PubMed</a></li>
+                        <li class="folder-link icon-link"><a href="/cgi/folders?action=addtofolder&amp;wherefrom=JOURNALS&amp;wrapped_id=bioinfo;28/22/2898">Add to my archive</a></li>
+                        <li class="cit-man-link icon-link cite-link"><a href="/citmgr?gca=bioinfo;28/22/2898">Download citation</a></li>
+                        <li><a class="request-permissions"
+                              href="https://s100.copyright.com/AppDispatchServlet?publisherName=oup&amp;publication=bioinformatics&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data%3A%20&amp;publicationDate=11%2F15%2F2012&amp;author=Xin%20Yang%2C%20John%20A.%20Todd%2C%20David%20Clayton%2C%20Chris%20Wallace&amp;copyright=Oxford%20University%20Press&amp;contentID=10.1093%2Fbioinformatics%2Fbts553&amp;volumeNum=28&amp;issueNum=22&amp;startPage=2898&amp;endPage=2904&amp;orderBeanReset=true"
+                              target="_blank">Request Permissions</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible default-closed" id="cb-letter-cit">
+                     <h4 class="cb-section-header"><span>Responses</span></h4>
+                     <ol>
+                        <li><a href="/letters/submit/bioinfo;28/22/2898">Submit a response</a></li>
+                        <li><span class="eletters-no-responses-published">No responses published</span></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible default-closed" id="cb-art-cit">
+                     <h4 class="cb-section-header"><span>Citing Articles</span></h4>
+                     <ol>
+                        <li class="hw-citing-link"><a href="/content/28/22/2898?cited-by=yes&amp;legid=bioinfo;28/22/2898#cited-by"
+                              id="cb-hw-citing-articles">Load citing article information</a></li>
+                        <li><a href="/cgi/crossref-forward-links/28/22/2898" rel="external-nw"
+                              id="cb-crossref-citing-articles">Citing articles via CrossRef</a></li>
+                        <li><a href="/scopus-links/bioinfo/28/22/2898?access_num=/bioinfo/28/22/2898"
+                              rel="external-nw"
+                              id="cb-scopus-citing-articles">Citing articles via Scopus</a></li>
+                        <li><a href="/external-ref?access_num=%2Fbioinfo%2F28%2F22%2F2898&amp;link_type=ISI_CITING&amp;accnum_type=native"
+                              rel="external-nw"
+                              id="cb-isi-citing-articles">Citing articles via Web of Science</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible default-closed" id="cb-art-gs">
+                     <h4 class="cb-section-header"><span>Google Scholar</span></h4>
+                     <ol>
+                        <li class="cb-art-gs-auth author-link"><a href="http://scholar.google.com/scholar?q=%22author%3AYang%20author%3AX.%22"
+                              class="cb-art-gs-auth author-link">Articles by  Yang, X.</a></li>
+                        <li class="cb-art-gs-auth author-link"><a href="http://scholar.google.com/scholar?q=%22author%3AWallace%20author%3AC.%22"
+                              class="cb-art-gs-auth author-link">Articles by  Wallace, C.</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible default-closed" id="cb-art-pm">
+                     <h4 class="cb-section-header"><span>PubMed</span></h4>
+                     <ol>
+                        <li class="cb-art-pm-cite cite-link icon-link"><a href="/external-ref?access_num=22976083&amp;link_type=PUBMED"
+                              class="cb-art-pm-cite cite-link icon-link">PubMed citation</a></li>
+                        <li class="cb-art-pm-auth author-link"><a href="/external-ref?access_num=Yang%20X&amp;link_type=AUTHORSEARCH"
+                              class="cb-art-pm-auth author-link">Articles by  Yang, X.</a></li>
+                        <li class="cb-art-pm-auth author-link"><a href="/external-ref?access_num=Todd%20JA&amp;link_type=AUTHORSEARCH"
+                              class="cb-art-pm-auth author-link">Articles by  Todd, J. A.</a></li>
+                        <li class="cb-art-pm-auth author-link"><a href="/external-ref?access_num=Clayton%20D&amp;link_type=AUTHORSEARCH"
+                              class="cb-art-pm-auth author-link">Articles by  Clayton, D.</a></li>
+                        <li class="cb-art-pm-auth author-link"><a href="/external-ref?access_num=Wallace%20C&amp;link_type=AUTHORSEARCH"
+                              class="cb-art-pm-auth author-link">Articles by  Wallace, C.</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible default-closed" id="cb-art-rel">
+                     <h4 class="cb-section-header"><span>Related Content</span></h4>
+                     <ol>
+                        <li><a href="/content/28/22/2898?related-urls=yes&amp;legid=bioinfo;28/22/2898#related-urls"
+                              id="cb-related-urls">Load related web page information</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-soc">
+                     <h4 class="cb-section-header"><span>Share</span></h4>
+                     <ol>
+                        <li><a href="/email?gca=bioinfo;28/22/2898&amp;current-view-path=/content/28/22/2898">
+                              Email this article</a></li>
+                        <li>
+                           <div class="social-bookmarking">
+                              
+                              <ul class="social-bookmark-links">
+                                 <li class="social-bookmarking-item social-bookmarking-item-citeulike"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=CITEULIKE"><img src="/shared/img/common/social-bookmarking/citeulike.gif"
+                                            alt="Add to CiteULike"
+                                            title="CiteULike" /></a><span class="soc-bm-link-text">CiteULike</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-connotea"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=CONNOTEA"><img src="/shared/img/common/social-bookmarking/connotea.gif" alt="Add to Connotea"
+                                            title="Connotea" /></a><span class="soc-bm-link-text">Connotea</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-delicious"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=DEL_ICIO_US"><img src="/shared/img/common/social-bookmarking/delicious.gif"
+                                            alt="Add to Delicious"
+                                            title="Delicious" /></a><span class="soc-bm-link-text">Delicious</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-facebook"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/short/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=FACEBOOK"
+                                       class="sb-facebook"
+                                       rel="external-nw"><img src="/shared/img/common/social-bookmarking/facebook.gif" alt="Add to Facebook"
+                                            title="Facebook" /></a><span class="soc-bm-link-text">Facebook</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-googleplus"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=GOOGLEPLUS&amp;log_only=yes"><img src="/shared/img/common/social-bookmarking/googleplus.jpg" alt="Add to Google+"
+                                            title="Google+" /></a><span class="soc-bm-link-text">Google+</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-mendeley"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=MENDELEY"><img src="/shared/img/common/social-bookmarking/mendeley.gif" alt="Add to Mendeley"
+                                            title="Mendeley" /></a><span class="soc-bm-link-text">Mendeley</span></li>
+                                 <li class="social-bookmarking-item social-bookmarking-item-twitter"><a href="/external-ref?tag_url=http://bioinformatics.oxfordjournals.org/cgi/content/long/28/22/2898&amp;title=Extra-binomial%20variation%20approach%20for%20analysis%20of%20pooled%20DNA%20sequencing%20data+--+Yang%20et%20al.%2028%20%2822%29%3A%202898+--+bioinformatics&amp;doi=10.1093/bioinformatics/bts553&amp;link_type=TWITTER"><img src="/shared/img/common/social-bookmarking/twitter.gif" alt="Add to Twitter"
+                                            title="Twitter" /></a><span class="soc-bm-link-text">Twitter</span></li>
+                              </ul>
+                              
+                              <p class="social-bookmarking-help"><a href="/help/social_bookmarks.dtl">What's this?</a></p>
+                              
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+               </div>
+            </div>
+            
+            
+            
+            <div class="content-box" id="article-cb-main">
+               
+               <div class="cb-contents">
+                  
+                  <div class="cb-section collapsible default-open" id="cb-art-bn">
+                     
+                     <h4 class="cb-section-header"><span>People also read [Beta]</span></h4>
+                     
+                     <ul>
+                        <li>
+                           
+                           <div id="bnArticleRecs"></div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p id="bnHelp">
+                              <a href="http://www.oxfordjournals.org/our_journals/help.html">What's this?</a>
+                              
+                           </p>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+               </div>
+               
+            </div>
+            
+            
+         </div>
+         <div id="col-3">
+            
+            <div id="col-3-qs" class="sidebar-qs">
+               
+               
+               <form class="searchbox" action="/search" method="get">
+                  <p>Search this journal:</p>
+                  <div>
+                     	
+                     	
+                     	<input value="" type="text" name="fulltext" id="header-qs-input" />
+                     <input type="hidden" name="submit" value="yes" />
+                     <input class="inline_button" type="image" alt="Go" src="/publisher/img/buttons/go.gif" />
+                     
+                     <div class="adv-search-link"><a href="/search">Advanced »</a></div>
+                     
+                     
+                  </div>
+               </form>
+               
+            </div>
+            <div class="cb-contents">
+               
+               <div id="sidebar-current-issue" class="content-box">
+                  	
+                  <h3 class="cb-contents-header">Current Issue</h3>
+                  	
+                  <div class="cb-section">
+                     	  
+                     <ol>
+                        <li>
+                           	      <a href="/content/current"><span>
+                                 		  <span class="current-issue-date">
+                                    January 2013
+                                    </span><span class="toc-citation-volume">
+                                    
+                                    29
+                                    </span><span class="toc-citation-issue">(1)</span>
+                                 		  
+                                 		</span></a>
+                           	    
+                        </li>
+                     </ol>
+                     	
+                  </div>
+                  	
+                  <div class="cb-section">
+                     	  
+                     <ol>
+                        <li>
+                           <a href="/content/current"><img src="/content/29/1.cover.gif" alt="Bioinformatics" id="cover" /></a>
+                           
+                        </li>
+                     </ol>
+                     	
+                  </div>
+                  	
+                  <div class="cb-section sidebar-etoc-link">
+                     	  
+                     <ol>
+                        <li><a href="/cgi/alerts/etoc">Alert me to new issues</a></li>
+                     </ol>
+                     	
+                  </div>
+                  
+               </div>
+               
+            </div>
+            
+            <div id="second">
+               
+               <div class="features">
+                  
+                  <div class="feature separator_after first">
+                     
+                     <h2 id="the_journal" title="The Journal"><span>The Journal</span></h2>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.oxfordjournals.org/bioinformatics/about.html"
+                              title="About this journal">About this journal</a>
+                           
+                        </li>
+                        <li>
+                           <a href="/cgi/calendarcontent/index.html?target=hw.dtl" title="Calendar of events">Calendar of events</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/access_purchase/rights_permissions.html"
+                              title="Rights &amp; Permissions">Rights &amp; Permissions</a>
+                           
+                        </li>
+                        <li>
+                           <a href="HTTP://www.oxfordjournals.org/access_purchase/dispatch_dates.html#CABIOSP"
+                              title="Dispatch date of the next issue">Dispatch date of the next issue</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://publicationethics.org/about"
+                              title="This journal is a member of the Committee on Publication Ethics (COPE)">This journal is a member of the Committee on Publication Ethics (COPE)</a>
+                           
+                        </li>
+                        <li>
+                           <a href="/cgi/eletters?lookup=by_date&amp;days=84&amp;target=hw.dtl"
+                              title="Recent Comments">Recent Comments</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/mobile_faqs.html"
+                              title="We are mobile – find out more">We are mobile – find out more</a>
+                           
+                        </li>
+                     </ul>
+                     <a href="http://www.oxfordjournals.org/page/4638/1">
+                        <img alt="Next Generation Sequencing "
+                             src="http://www.oxfordjournals.org/our_journals/bioinformatics/nextgensuq_sidebar_2012.jpg" />
+                        </a>
+                     
+                  </div>
+                  
+                  <div class="feature separator_after">
+                     
+                     <h3>An official journal of</h3>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.iscb.org/"
+                              title="The International Society for Computational Biology">The International Society for Computational Biology</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+                  <div class="feature separator_after">
+                     
+                     <h3>Impact factor:  5.468</h3>
+                     
+                  </div>
+                  
+                  <div class="feature">
+                     
+                     <h3>Editors-in-Chief</h3>
+                     
+                     <div class="contact">
+                        
+                        <h4>A Bateman</h4>
+                        
+                     </div>
+                     
+                     <div class="contact">
+                        
+                        <h4>A Valencia</h4>
+                        
+                     </div>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.oxfordjournals.org/bioinformatics/editorial_board.html"
+                              title="View full editorial board">View full editorial board</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+                  <div class="feature">
+                     
+                     <h2 id="for_authors" title="For Authors"><span>For Authors</span></h2>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.oxfordjournals.org/bioinformatics/for_authors/index.html"
+                              title="Instructions to authors">Instructions to authors</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/our_journals/bioinformatics/for_authors/submission_online.html"
+                              title="Online submission">Online submission</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://mc.manuscriptcentral.com/bioinformatics" title="Submit Now!">Submit Now!</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/access_purchase/self-archiving_policyb.html"
+                              title="Self-archiving policy">Self-archiving policy</a>
+                           
+                        </li>
+                     </ul>
+                     <a href="http://www.oxfordjournals.org/oxfordopen/ ">
+                        <img alt="Open access options for authors - visit Oxford Open"
+                             src="http://www.oxfordjournals.org/resource/image/promos/oxford_open_small.gif" />
+                        </a>
+                     
+                     <p>Open access options for authors - visit <a href="http://www.oxfordjournals.org/oxfordopen/">Oxford Open</a>
+                        
+                     </p>
+                     <a href="http://publicaccess.nih.gov/submit_process_journals.htm">
+                        <img alt="PMC Logo" src="http://www.oxfordjournals.org/resource/image/pmc-logo.gif" />
+                        </a>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://publicaccess.nih.gov/submit_process_journals.htm"
+                              title="This journal enables compliance with the NIH Public Access Policy">This journal enables compliance with the NIH Public Access Policy</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+                  <div class="feature">
+                     
+                     <h2 id="alerting_services" title="Alerting Services"><span>Alerting Services</span></h2>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="/cgi/alerts/etoc" title="Email table of contents">Email table of contents</a>
+                           
+                        </li>
+                        <li>
+                           <a href="/cgi/alerts/etoc" title="Email Advance Access">Email Advance Access</a>
+                           
+                        </li>
+                        <li>
+                           <a href="/help/citetrack" title="CiteTrack">CiteTrack</a>
+                           
+                        </li>
+                        <li>
+                           <a href="/rss" title="XML RSS feed">XML RSS feed</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+                  <div class="feature">
+                     
+                     <h2 id="corporate_services" title="Corporate Services"><span>Corporate Services</span></h2>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.oxfordjournals.org/corporate_services/advertising.html"
+                              title="Advertising sales">Advertising sales</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/corporate_services/reprints.html"
+                              title="Reprints">Reprints</a>
+                           
+                        </li>
+                        <li>
+                           <a href="http://www.oxfordjournals.org/corporate_services/supplements.html"
+                              title="Supplements">Supplements</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+                  <div class="feature">
+                     
+                     <h2>Widget</h2>
+                     
+                     <ul class="emphasised">
+                        <li>
+                           <a href="http://www.oxfordjournals.org/our_journals/bioinformatics/widget.html"
+                              title="Get a widget">Get a widget</a>
+                           
+                        </li>
+                     </ul>
+                     
+                  </div>
+                  
+               </div>
+               
+               <div class="ad_hidden" id="oas_right1">
+                  <iframe id="id_advertframe_right1"
+                          src="/resource/htmlfiles/advert.html?p=Right1&amp;u=bioinformatics.oxfordjournals.org/content/28/22/2898"
+                          width="0"
+                          height="0"
+                          frameborder="0"
+                          scrolling="no"
+                          class="resize_ad"></iframe>
+                  
+               </div>
+               
+            </div>
+            
+            <div class="most-links-box js-marker">
+               
+               <div class="most-header">
+                  
+                  <h3>Most</h3>
+                  
+               </div>
+               
+               <ul>
+                  <li class="most-cur-sel">
+                     <h4>Most Read</h4>
+                     	  
+                     <div class="most-list">
+                        	    
+                        <ol>
+                           <li class="first-item"><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/28/24/3169?rss=1&amp;amp;ssource=mfr">Tools for mapping high-throughput sequencing data</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/11/1571?rss=1&amp;amp;ssource=mfr">Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/28/23/3163?rss=1&amp;amp;ssource=mfr">InterMine: a flexible data warehouse system for the integration and analysis of heterogeneous biological data</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/28/19/2537?rss=1&amp;amp;ssource=mfr">GenAlEx 6.5: genetic analysis in Excel. Population genetic software for teaching and research--an update</a></li>
+                           <li class="last-item"><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/29/1/15?rss=1&amp;amp;ssource=mfr">STAR: ultrafast universal RNA-seq aligner</a></li>
+                        </ol>
+                        	    <a href="http://bioinformatics.oxfordjournals.org/reports/mfr1.dtl"
+                           class="view-all">» View all Most Read articles</a>
+                        	  
+                     </div>
+                     	
+                  </li>
+                  <li>
+                     <h4>Most Cited</h4>
+                     	
+                     <div class="most-list">
+                        	  
+                        <ol>
+                           <li class="first-item"><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/3/431?rss=1&amp;amp;ssource=mfc">Cytoscape 2.8: new features for data integration and network visualization</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/15/2156?rss=1&amp;amp;ssource=mfc">The variant call format and VCFtools</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/4/578?rss=1&amp;amp;ssource=mfc">Scaffolding pre-assembled contigs using SSPACE</a></li>
+                           <li><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/12/1696?rss=1&amp;amp;ssource=mfc">MEME-ChIP: motif analysis of large DNA datasets</a></li>
+                           <li class="last-item"><a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/27/16/2194?rss=1&amp;amp;ssource=mfc">UCHIME improves sensitivity and speed of chimera detection</a></li>
+                        </ol>
+                        	  <a href="http://bioinformatics.oxfordjournals.org/reports/mfc1.dtl"
+                           class="view-all">» View all Most Cited articles</a>
+                        	
+                     </div>
+                     
+                  </li>
+               </ul>
+               
+            </div>
+            
+            
+            
+         </div>
+         
+         
+         
+         <div id="oas_bottom" class="ad_hidden">
+            <iframe id="id_advertframe_bottom"
+                    src="/resource/htmlfiles/advert.html?p=Bottom&amp;u=bioinformatics.oxfordjournals.org/content/28/22/2898"
+                    width="0"
+                    height="0"
+                    frameborder="0"
+                    scrolling="no"
+                    class="resize_ad"></iframe>
+            
+         </div>
+         
+         
+         
+         
+         <widget-container>
+            <div id="disclaimer">
+               
+               <p>Disclaimer: Please note that abstracts for content published before 1996 were 
+                  created through digital scanning and may therefore not exactly 
+                  replicate the text of the original print issues. All efforts have 
+                  been made to ensure accuracy, but the Publisher will not be held 
+                  responsible for any remaining inaccuracies. If you require any 
+                  further clarification, please contact our
+                  <a href="http://www.oxfordjournals.org/contact_us.html#custserv">Customer Services Department.</a>
+                  
+               </p>
+               
+            </div>
+         </widget-container>
+         
+         
+         <div id="secondary_footer">
+            
+            <div id="issn">Online ISSN 1460-2059 - Print ISSN 1367-4803</div>
+            
+            
+            <div id="copyright"><a href="http://www.oxfordjournals.org/our_journals/terms.html">Copyright ©</a> 
+               <span>2013</span> Oxford University Press
+               
+            </div>
+            
+         </div>
+         
+         <div id="primary_footer">
+            
+            <div id="site_logo">
+               <strong><span>Oxford Journals</span></strong>
+               <em><span>Oxford University Press</span></em>
+               
+            </div>
+            
+            
+            <div id="third_nav">
+               
+               <ul>
+                  <li><a href="http://www.oxfordjournals.org/site_map.html">Site Map</a></li>
+                  <li><a href="http://www.oup.co.uk/privacy/">Privacy Policy</a></li>
+                  <li><a href="http://www.oxfordjournals.org/faq/">Frequently Asked Questions</a></li>
+               </ul>
+               
+            </div>
+            
+            
+            <div id="other_oup_sites">
+               
+               <form action="http://www.oxfordjournals.org/service/redirect">
+                  <div>
+                     <label for="site_list">Other Oxford University Press sites:</label>
+                     <select name="url" id="site_list">
+                        <option value="http://www.oup.com">Oxford University Press</option>
+                        <option value="http://www.oxfordjournals.org/china/">Oxford Journals China</option>
+                        <option value="http://www.oxfordjournals.org/japan/">Oxford Journals Japan</option>
+                        <option value="http://www.oup.com/uk/academic">Academic &amp; Professional books</option>
+                        <option value="http://www.oup.com/oxed">Children's &amp; Schools Books</option>
+                        <option value="http://www.oup.com/uk/dictionaries">Dictionaries &amp; Reference</option>
+                        <option value="http://www.oup.co.uk/newdnb/">Dictionary of National Biography</option>
+                        <option value="http://www.oup.com/uk/digital_reference">Digital Reference</option>
+                        <option value="http://www.oup.com/elt/">English Language Teaching</option>
+                        <option value="http://www.oup.com/uk/textbooks">Higher Education Textbooks</option>
+                        <option value="http://www.oup.co.uk/ieu/">International Education Unit</option>
+                        <option value="http://www.oup.com/uk/law">Law</option>
+                        <option value="http://www.oup.com/uk/medicine">Medicine</option>
+                        <option value="http://www.oup.com/uk/music">Music</option>
+                        <option value="http://www.oup.com/online">Online Products &amp; Publishing</option>
+                        <option value="http://oxfordbibliographiesonline.com">Oxford Bibliographies Online</option>
+                        <option value="http://oxforddictionaries.com">Oxford Dictionaries Online</option>
+                        <option value="http://www.oed.com">Oxford English Dictionary</option>
+                        <option value="http://www.oxfordlanguagedictionaries.com">Oxford Language Dictionaries Online</option>
+                        <option value="http://www.oxfordscholarship.com">Oxford Scholarship Online</option>
+                        <option value="http://www.oup.com/uk/reference">Reference</option>
+                        <option value="http://www.oup.com/uk/rights">Rights and Permissions</option>
+                        <option value="http://www.oup.com/uk/booksellers">Resources for Retailers &amp; Wholesalers</option>
+                        <option value="http://www.oup.com/uk/corporate">Resources for the Healthcare Industry</option>
+                        <option value="http://www.oup.com/vsi">Very Short Introductions</option>
+                        <option value="http://www.oup.com/worldsclassics">World's Classics</option></select>
+                     
+                     <input type="image" src="/resource/image/buttons/go.gif" alt="Go"
+                            class="inline_button" />
+                     
+                  </div>
+               </form>
+               
+            </div>
+            
+         </div>
+         <script type="text/javascript" src="/publisher/js/hw-publisher-baynote.js"
+                 defer="defer"></script>
+         <script defer="defer"
+                 src="http://oi-underbar.ifactory.com/underbar/js/jquery-ui.min.js"
+                 type="text/javascript"></script>
+         <script defer="defer"
+                 src="http://oi-underbar.ifactory.com/underbar/js/jcarousellite.js"
+                 type="text/javascript"></script>
+         <script defer="defer"
+                 src="http://oi-underbar.ifactory.com/underbar/js/pf_oiunderbarinit.js"
+                 type="text/javascript"></script>
+         <script defer="defer" src="/resource/js/underbar_local.js" type="text/javascript"></script>
+         <script defer="defer" type="text/javascript">
+    function fnc_onDomLoaded() {
+        var query_context = getQueryContext();
+        PF_initOIUnderbar(query_context,":QS:default","","JRN"); 
+        PF_insertOIUnderbar(0);
+    };
+    if (window.addEventListener) { 
+        window.addEventListener('load', fnc_onDomLoaded, false); 
+    } else if (window.attachEvent) { 
+        window.attachEvent('onload', fnc_onDomLoaded); 
+    } 
+</script>
+         <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script><script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-189672-16");
+        pageTracker._setDomainName(".oxfordjournals.org");
+        pageTracker._trackPageview();
+        } catch(err) {}
+        </script></div>
+   </body>
+</html>

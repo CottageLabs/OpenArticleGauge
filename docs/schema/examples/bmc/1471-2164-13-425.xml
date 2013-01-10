@@ -1,0 +1,2310 @@
+<?xml version='1.0'?>
+<!DOCTYPE art SYSTEM 'http://www.biomedcentral.com/xml/article.dtd'>
+<art>
+   <ui>1471-2164-13-425</ui>
+   <ji>1471-2164</ji>
+   <fm>
+      <dochead>Research article</dochead>
+      <bibl>
+         <title>
+            <p>Yellow lupin (<it>Lupinus luteus</it> L.) transcriptome sequencing: molecular marker development and comparative studies</p>
+         </title>
+         <aug>
+            <au id="A1"><snm>Parra-Gonz&#225;lez</snm><mi>B</mi><fnm>Lorena</fnm><insr iid="I1"/><email>lorena.parra@cgna.cl</email></au>
+            <au id="A2"><snm>Aravena-Abarz&#250;a</snm><mi>A</mi><fnm>Gabriela</fnm><insr iid="I1"/><email>gabriela.aravena@cgna.cl</email></au>
+            <au id="A3"><snm>Navarro-Navarro</snm><mi>S</mi><fnm>Cristell</fnm><insr iid="I1"/><email>cristell.navarro@cgna.cl</email></au>
+            <au id="A4"><snm>Udall</snm><fnm>Joshua</fnm><insr iid="I2"/><email>jaudall@gmail.com</email></au>
+            <au id="A5"><snm>Maughan</snm><fnm>Jeff</fnm><insr iid="I2"/><email>jeff_maughan@byu.edu</email></au>
+            <au id="A6"><snm>Peterson</snm><mi>M</mi><fnm>Louis</fnm><insr iid="I2"/><email>louis98405@gmail.com</email></au>
+            <au id="A7"><snm>Salvo-Garrido</snm><mi>E</mi><fnm>Haroldo</fnm><insr iid="I1"/><insr iid="I3"/><email>haroldo.salvo@cgna.cl</email></au>
+            <au id="A8" ca="yes"><snm>Maureira-Butler</snm><mi>J</mi><fnm>Iv&#225;n</fnm><insr iid="I1"/><email>ivan.maureira@cgna.cl</email></au>
+         </aug>
+         <insg>
+            <ins id="I1"><p>Agriaquaculture Nutritional Genomic Center, CGNA, Genomics and Bioinformatics Unit, Km 10 Camino Caj&#243;n-Vilc&#250;n, INIA, Temuco, Chile</p></ins>
+            <ins id="I2"><p>Plant and Wildlife Science Department, Brigham Young University, 150 E 1230 North, Provo, UT, 84602, USA</p></ins>
+            <ins id="I3"><p>Institute of Agricultural Research (INIA), P.O. Box 58-D, Temuco, Chile</p></ins>
+         </insg>
+         <source>BMC Genomics</source>
+         <section><title><p>Plant genomics</p></title></section>
+         <issn>1471-2164</issn>
+         <pubdate>2012</pubdate>
+         <volume>13</volume>
+         <issue>1</issue>
+         <fpage>425</fpage>
+         <url>http://www.biomedcentral.com/1471-2164/13/425</url>
+         <xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-13-425</pubid><pubid idtype="pmpid">22920992</pubid></pubidlist></xrefbib>
+      </bibl>
+      <history><rec><date><day>9</day><month>5</month><year>2012</year></date></rec><acc><date><day>13</day><month>8</month><year>2012</year></date></acc><pub><date><day>24</day><month>8</month><year>2012</year></date></pub></history>
+      <cpyrt><year>2012</year><collab>Parra-Gonz&#225;lez et al.; licensee BioMed Central Ltd.</collab><note>This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<url>http://creativecommons.org/licenses/by/2.0</url>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.</note></cpyrt>
+      <kwdg>
+         <kwd>
+            <it>Lupinus luteus</it>
+         </kwd>
+         <kwd>EST-SSR</kwd>
+         <kwd>Orphan crop</kwd>
+         <kwd>Microsynteny</kwd>
+      </kwdg>
+      <abs>
+         <sec>
+            <st>
+               <p>Abstract</p>
+            </st>
+            <sec>
+               <st>
+                  <p>Background</p>
+               </st>
+               <p>Yellow lupin (<it>Lupinus luteus</it> L.) is a minor legume crop characterized by its high seed protein content. Although grown in several temperate countries, its orphan condition has limited the generation of genomic tools to aid breeding efforts to improve yield and nutritional quality. In this study, we report the construction of 454-expresed sequence tag (EST) libraries, carried out comparative studies between <it>L. luteus</it> and model legume species, developed a comprehensive set of EST-simple sequence repeat (SSR) markers, and validated their utility on diversity studies and transferability to related species.</p>
+            </sec>
+            <sec>
+               <st>
+                  <p>Results</p>
+               </st>
+               <p>Two runs of 454 pyrosequencing yielded 205&#8201;Mb and 530&#8201;Mb of sequence data for L1 (young leaves, buds and flowers) and L2 (immature seeds) EST- libraries. A combined assembly (L1L2) yielded 71,655 contigs with an average contig length of 632 nucleotides. L1L2 contigs were clustered into 55,309 isotigs. 38,200 isotigs translated into proteins and 8,741 of them were full length. Around 57% of <it>L. luteus</it> sequences had significant similarity with at least one sequence of <it>Medicago</it>, <it>Lotus</it>, <it>Arabidopsis</it>, or <it>Glycine</it>, and 40.17% showed positive matches with all of these species. <it>L. luteus</it> isotigs were also screened for the presence of SSR sequences. A total of 2,572 isotigs contained at least one EST-SSR, with a frequency of one SSR per 17.75 kbp. Empirical evaluation of the EST-SSR candidate markers resulted in 222 polymorphic EST-SSRs. Two hundred and fifty four (65.7%) and 113 (30%) SSR primer pairs were able to amplify fragments from <it>L. hispanicus</it> and <it>L. mutabilis</it> DNA, respectively. Fifty polymorphic EST-SSRs were used to genotype a sample of 64&#8201;<it>L. luteus</it> accessions. Neighbor-joining distance analysis detected the existence of several clusters among <it>L. luteus</it> accessions, strongly suggesting the existence of population subdivisions. However, no clear clustering patterns followed the accession&#8217;s origin.</p>
+            </sec>
+            <sec>
+               <st>
+                  <p>Conclusion</p>
+               </st>
+               <p><it>L. luteus</it> deep transcriptome sequencing will facilitate the further development of genomic tools and lupin germplasm. Massive sequencing of cDNA libraries will continue to produce raw materials for gene discovery, identification of polymorphisms (SNPs, EST-SSRs, INDELs, etc.) for marker development, anchoring sequences for genome comparisons and putative gene candidates for QTL detection.</p>
+            </sec>
+         </sec>
+      </abs>
+   </fm>
+   <bdy>
+      <sec>
+         <st>
+            <p>Background</p>
+         </st>
+         <p><it>L. luteus</it> is a member of the genistoid clade of the Fabaceae family (2n&#8201;=&#8201;52), which is the third largest flowering plant family with over 700 genera and 20,000 species <abbrgrp><abbr bid="B1">1</abbr></abbrgrp>. The genus <it>Lupinus</it> comprises more than 200 annual and perennial herbaceous species of which several are cultivated and used as human food or animal feed <abbrgrp><abbr bid="B2">2</abbr></abbrgrp>. Some of them show high levels of tolerance to biotic and abiotic stresses. For instance, <it>L. hispanicus,</it> a wild relative of <it>L. luteus</it>, has high tolerance to diseases and good adaptation to poor soils, but high levels of bitter alkaloids and low agronomic yields <abbrgrp><abbr bid="B3">3</abbr></abbrgrp>. Lupins are considered to be of polyploid origin which probably played a crucial role in the evolution of their ancestral genomes <abbrgrp><abbr bid="B4">4</abbr><abbr bid="B5">5</abbr></abbrgrp>. The major cultivated species are the old world lupin <it>L. albus</it> (white lupin), <it>L. angustifolius</it> (narrow-leafed lupin), <it>L. luteus</it> (yellow lupin), and the new world species <it>L. mutabilis</it> (pearl lupin or tarwii) <abbrgrp><abbr bid="B6">6</abbr></abbrgrp>.</p>
+         <p><it>L. luteus</it> is widely distributed across the Mediterranean region, has shallow soil requirements, and cultivated accessions have variable seed yields in Mediterranean environments <abbrgrp><abbr bid="B7">7</abbr></abbrgrp>. In addition, yellow lupin seeds have the highest protein content and twice the cysteine and methionine content of most lupins <abbrgrp><abbr bid="B8">8</abbr><abbr bid="B9">9</abbr></abbrgrp>. However, despite its highly nutritional qualities, there is a lack of genetic and molecular tools to aid the genetic breeding of this species.</p>
+         <p>EST sequencing has accelerated gene discovery when genome sequences are not available, facilitating gene family identification and development of molecular markers. Next-generation sequencing has generated enormous amount of expressed sequence data for a wide number of plant species, specially minor or orphan crops <abbrgrp><abbr bid="B10">10</abbr></abbrgrp>. For example, EST and genome sequencing of lentil and chickpea would not have been feasible without next-generation sequencing <abbrgrp><abbr bid="B11">11</abbr><abbr bid="B12">12</abbr></abbrgrp>. The lower cost and greater sequence yield has allowed the identification of candidate genes, even when they are expressed at low levels <abbrgrp><abbr bid="B13">13</abbr><abbr bid="B14">14</abbr></abbrgrp>.</p>
+         <p>Research on plants, animals and fungi has shown that sequences of expressed genes are often widely transferable among species, and even genera, allowing wide genome comparative mapping studies <abbrgrp><abbr bid="B15">15</abbr><abbr bid="B16">16</abbr></abbrgrp>. For instance, the combination of orphan crop EST sequences with model plant genetic and genomic resources, such as <it>Lotus japonicus</it> (Japanese trefoil) and <it>Medicago truncatula</it> (barrel medic), has identified macro- and micro-scale synteny, discovered new genes and alleles, and provided insights into genome evolution and duplication <abbrgrp><abbr bid="B17">17</abbr><abbr bid="B18">18</abbr></abbrgrp>. Comparisons between ESTs and gene sequences among several legume species have allowed comparative genome studies between <it>L. albus</it> and <it>M. truncatula</it><abbrgrp><abbr bid="B19">19</abbr></abbrgrp>, and <it>L. angustifolius</it> and <it>Lotus japonicus</it><abbrgrp><abbr bid="B20">20</abbr></abbrgrp>.</p>
+         <p>Several molecular markers have been developed for <it>Lupinus</it> species, including RFLPs, ITAPs (Intron targeted amplified polymorphic sequences), and AFLPs, which have been used to build genetic linkage maps in <it>L. albus</it><abbrgrp><abbr bid="B19">19</abbr></abbrgrp> and <it>L. angustifolius</it><abbrgrp><abbr bid="B20">20</abbr><abbr bid="B21">21</abbr></abbrgrp>. So far, a limited number of SSRs have been developed for <it>Lupinus</it> species, and very few of these are EST-SSRs <it>i.e.</it> SSRs that are found in expressed sequences <abbrgrp><abbr bid="B21">21</abbr><abbr bid="B22">22</abbr><abbr bid="B23">23</abbr></abbrgrp>. Genomic and EST-SSRs have been widely used for the improvement of major crop plants, but their initial development with traditional methods requires significant research investment. Now, an almost unlimited number of genomic and EST-SSRs can be readily developed from next-generation sequencing approaches within most crop species, including orphan crops such as lupin <abbrgrp><abbr bid="B24">24</abbr><abbr bid="B25">25</abbr><abbr bid="B26">26</abbr><abbr bid="B27">27</abbr><abbr bid="B28">28</abbr></abbrgrp>. The expressed nature of EST-SSRs allows the annotation of these markers with putative functions by sequence homology and potentially reduces the genetic distance between marker and causal gene to 0 cM. <abbrgrp><abbr bid="B29">29</abbr><abbr bid="B30">30</abbr></abbrgrp>. For instance, the length of a dinucleotide SSR at the 5&#8217; UTR of a waxy gene has been associated with amylase content in rice <abbrgrp><abbr bid="B31">31</abbr><abbr bid="B32">32</abbr></abbrgrp>. EST-SSRs have also been associated with several disease resistant genes in wheat and rice <abbrgrp><abbr bid="B33">33</abbr><abbr bid="B34">34</abbr></abbrgrp> and a number of agronomically important traits in cotton, maize and narrow-leafed lupin <abbrgrp><abbr bid="B35">35</abbr><abbr bid="B36">36</abbr><abbr bid="B37">37</abbr></abbrgrp>.</p>
+         <p>In this study, we constructed 454-EST libraries, carried out comparative studies between <it>L. luteus</it> and model legume species, and mapped <it>L. luteus</it> expressed sequences on the <it>M. truncatula</it> chromosomes. Alignments between our putative <it>L. luteus</it> genes and their homologs in <it>M. truncatula</it>, coupled with amplifications of intergenic regions provided evidence of microscale synteny between both species. In addition, we developed EST-SSR markers and illustrated their utility within diverse accessions of yellow lupin. Finally, because these EST-SSR markers are gene-based, they are also likely conserved among different species of lupin. We evaluated EST-SSR utility in the other <it>Lupinus</it> species, <it>L. mutabilis</it> and <it>L. hispanicus.</it></p>
+      </sec>
+      <sec>
+         <st>
+            <p>Methods</p>
+         </st>
+         <sec>
+            <st>
+               <p>Library construction and 454 sequencing</p>
+            </st>
+            <p>cDNA libraries were constructed from mRNA isolated from two tissue pools. Pool 1 (L1) included young leaves, buds and flowers, and pool 2 (L2), seeds in different developmental stages. RNA from pool 1 and 2 was isolated separately according to the guanidine hydrochloride method <abbrgrp><abbr bid="B38">38</abbr></abbrgrp>. Both RNAs were assessed for quality by inspecting rRNA bands on an Agilent Bioanalyzer (Agilent Technologies, CA, USA).</p>
+            <p>cDNAs libraries were normalized and prepared using procedures for Roche 454 Titanium sequencing (Roche, Branford, CT, USA). cDNAs from L1 and L2 were synthesized using the stratagene AccuScript High Fidelity RT-PCR System (Agilent Technologies, CA, USA) and 5&#8217; specific adaptors from Clontech. A cDNA normalization was used to improve coding sequence coverage, avoid AT homopolymer artifacts, and reduce excessive 3&#8217; end transcript sequence <abbrgrp><abbr bid="B39">39</abbr></abbrgrp>. cDNAs from both libraries were amplified using the Clontech Advantage HF system (Clontech Laboratories, Inc) and normalized utilizing the Evrogen Trimmer cDNA Normalization kit (Axxora, LLC). These un-cloned, normalized cDNA libraries were prepared for pyrosequencing according to the manufacturers specifications. One 454 run of sequencing was performed for each EST library (454 Life Sciences, Roche).</p>
+            <p>Separate transcriptome assemblies of L1 and L2 libraries were created using Newbler (<it>de novo</it> sequence assembly software of Roche 454 Life Sciences) and the cDNA option. A third assembly (L1L2) was completed using the reads from both libraries to avoid sequence redundancy when developing SSR markers. Reads were initially assembled into contigs and contigs into isotigs, which are equivalent to splice transcriptional variants. Sequence read EST data for L1 and L2 are available through the Sequence Read Archive (SRA055806).</p>
+         </sec>
+         <sec>
+            <st>
+               <p>EST annotation, function and comparative genomics to other species</p>
+            </st>
+            <p>Comparing isotigs from the combined assembly (L1L2) to the curated non-redundant protein database (nr, <url>http://www.ncbi.nlm.nih.gov</url>; blastx, e value&#8201;&#8804;&#8201;1e<sup>-10</sup>) provided a functional annotation for each isotig. Alignments of translated-isotigs and proteins with an e-value&#8201;&#8804;&#8201;1e<sup>-40</sup> were considered to have significant homology. Annotations of the aligned proteins were extrapolated to annotate our putative isotig sequence using Blast2GO (<url>http://www.blast2go.org</url>). To directly compare the lupin isotigs to the genes of other crops, blast searches were also used to compare isotig translations to <it>Arabidopsis thaliana</it>, <it>Glycine max</it>, <it>Medicago truncatula</it> and <it>Lotus japonicus</it> Gene Indices (tblastx, e-value&#8201;&#8804;&#8201;1e<sup>-10</sup>). Isotigs were also annotated using Gene Ontology (GO) annotations from InterProScan (<url>http://www.ebi.ac.uk</url>).</p>
+         </sec>
+         <sec>
+            <st>
+               <p><it>In silico</it> lupin EST mapping and microsynteny</p>
+            </st>
+            <p>Blast was used to compare lupin EST isotigs to the Medicago genome 3.0 release (&#8804; 1e<sup>-20</sup>, HSP identity 60% and HSP length&#8201;&gt;&#8201;50&#8201;bp.) The Blast results were visualized using GBrowse where positive matches were displayed as featured tracks on GBrowse 2.13 <abbrgrp><abbr bid="B40">40</abbr></abbrgrp>. The presence of microsynteny was evaluated by PCR amplification of putatively conserved chromosome blocks between <it>L. luteus</it> and <it>M. truncatula</it>. Where alignments between yellow lupin and <it>M. truncatula</it> were identified, specific primer pairs were designed to amplify intergenic regions (Additional file <supplr sid="S1">1</supplr>). These targeted, intergenic regions were PCR amplified from two <it>L. luteus</it> and one <it>L. hispanicus</it> accessions using 100&#8201;ng of genomic DNA in 20 ul reactions containing 100&#8201;ng of genomic DNA, 0.2&#8201;mM dNTPs, 2&#8201;mM MgCl2, 1X PCR buffer, 2.5% DMSO, 1 U taq polymerase (Agilent Technologies, Santa Clara, CA) and 5 pmoles of each forward-reverse primer pair. PCR reactions were carried out following a touchdown protocol on a peltier thermalcycler (MJ Research, Inc.) 94&#176;C for 5&#8201;min; 5&#8201;cycles of 1&#8201;min at 94&#176;C, 1&#8201;min at 55-65&#176;C decreasing 1&#176;C per cycle, 2&#8201;min at 72&#176;C followed by 35&#8201;cycles of 1&#8201;min at 94&#176;C, 1&#8201;min at 50-60&#176;C and 2&#8201;min at 72&#176;C. Amplicons were purified from agarose gels and sequenced. These amplified, intergenic sequences were mapped onto the <it>M. truncatula</it> genome and visualized within a local implementation of GBrowse (Additional file <supplr sid="S1">1</supplr>). Positive PCR microsynteny set of primers were additionally tested against a screening panel consisting of six diverse accessions of <it>L. luteus</it> to search for polymorphisms among yellow lupin genotypes (Additional file <supplr sid="S2">2</supplr>).</p>
+            <suppl id="S1">
+               <title>
+                  <p>Additional file 1</p>
+               </title>
+               <text>
+                  <p><b> Table S1.</b> Characteristics of 33 Conserved Microsynteny (CMS) markers developed in <it>L. luteus.</it> Shown for each primer pair are the Medicago chromosome library specificity, l1l2 isotigs where CMS forward and reverse primers were anchored, forward and reverse sequence, expected Medicago amplicon size (bp), <it>L. luteus</it> CMS amplicon size (bp), amplification in other Lupin species (<it>L. hispanicus</it>), and the level of polymorphism on the <it>L. luteus</it> screening panel.</p>
+               </text>
+               <file name="1471-2164-13-425-S1.pdf">
+   <p>Click here for file</p>
+</file>
+            </suppl>
+            <suppl id="S2">
+               <title>
+                  <p>Additional file 2</p>
+               </title>
+               <text>
+                  <p><b> Table S2. </b><it>Lupinus luteus</it>, <it>L. hispanicus</it> and <it>L. mutabilis</it> accessions included in the study.</p>
+               </text>
+               <file name="1471-2164-13-425-S2.pdf">
+   <p>Click here for file</p>
+</file>
+            </suppl>
+         </sec>
+         <sec>
+            <st>
+               <p>Identification of EST-SSRs</p>
+            </st>
+            <p>SSR containing lupin isotigs were identified using the software MISA (MIcroSAtellite, <url>http://www.pgrc.ipk-gatersleben.de/misa</url>). SSR search criteria changed according to repeat types. Di-, and tri-repeats were selected with a minimum length of 12 and 15 nucleotides, respectively. For tetra-, penta- and hexa-repeats, the minimum length was 20 nucleotides. Mononucleotide repeats were not considered due to the possibility of 454 homopolymer sequencing errors associated with this technology. To estimate the amount of SSRs included in coding regions, L1L2 sequences were analyzed using ESTScan (<url>http://www.ch.embnet.org/software/ESTScan.html</url>). ORFs discovery was carried out using default parameters and putative cd sequences scanned for SSR motifs using MISA.</p>
+            <p>From all selected-SSR containing isotigs, only sequences with a motif of at least 7 repeat units were considered for primer design. Flanking primer pairs were designed using the Primer3 software available at NCBI v.3.12 with expected amplicon lengths between 150 - 500&#8201;bp. Oligonucleotides were synthesized by IDT (Integrated DNA Technologies, Inc.).</p>
+         </sec>
+         <sec>
+            <st>
+               <p>Evaluation and utility of EST-SSRs</p>
+            </st>
+            <p>EST-SSR polymorphisms and transferability were evaluated on the germplasm screening panel previously mentioned<it>,</it> and one accession each of <it>L. hispanicus</it> and <it>L. mutabilis</it>.</p>
+            <p>DNAs were extracted following standard procedures <abbrgrp><abbr bid="B41">41</abbr></abbrgrp>, quantified using a synergy HT Multimode Microplate Reader (Biotek Instruments, Winooski, VT), and diluted to 50&#8201;ng/ul in TE buffer (10&#8201;Mm TRIS, 1&#8201;mM EDTA pH 7.5). DNA amplification was carried out in 20ul PCR reactions as described above.</p>
+            <p>PCR products were separated on 6% denaturing polyacrylamide gels, run in TBE buffer at 60 watts for 3&#8211;4&#8201;hours and visualized using silver stain procedures. DNA amplicons of six EST-SSR primer-pairs used in the polymorphism screening were purified from agarose gels and sequenced in an Applied Biosystems 3730xl DNA Analyzer sequencer (Applied Biosystems, Carlsbad, CA). Amplicon sequences from each EST-SSR primer-pairs were aligned using Geneious version 5.5.3.0 (Biomatters Ltd., using default parameters).</p>
+         </sec>
+         <sec>
+            <st>
+               <p>Genetic diversity</p>
+            </st>
+            <p>The polymorphic EST-SSRs were evaluated in sixty-four <it>L. luteus</it> accessions from several origins (Poland, Ukraine, the former Soviet Union, Spain, Germany, Morocco, Belarus, Portugal, Netherlands, Israel, Hungary, and Chile; Additional file <supplr sid="S2">2</supplr>). Polish accessions were kindly provided by W.K. Swiecicki, Institute of Plant Genetics, Polish Academy of Sciences, Poznan. Our collection of Chilean accessions is composed of improved breeding lines that are adapted to the Chilean environment. This Chilean germplasm originated from breeding and selection of old European varieties for Southern Chilean environmental conditions. The rest were obtained from the western Regional PI Station, USDA, ARS, WRPIS, Washington State University, Regional Plant Introduction Station, Pullman, Washington, USA. A sample of 50 polymorphic EST-SSRs was used to genotype the sixty-four <it>L. luteus</it> accessions (Table <tblr tid="T1">1</tblr>). Eighteen EST-SSRs were identified from isotigs specific to L2, 25 isotigs specific to L1, and seven were common to both L1 and L2 libraries. EST-SSR fragments with different sizes were scored as different alleles and coded with alphabetical letters for each primer set. Genetic relationships among <it>L. luteus</it> accessions were evaluated using the neighbor-joining algorithm implemented in PAUP* (v4.01b10). A distance tree was built and branch support estimated by 10,000 bootstraps.</p>
+            <table id="T1">
+               <title>
+                  <p>Table 1</p>
+               </title>
+               <caption>
+                  <p>
+                     <b>Characteristics of 50 EST-SSR primers developed in</b>
+                     <b>
+                        <it> L. luteus.</it>
+                     </b>
+                     <b> Shown for each primer pair are the library specificity, repeat motif, forward and reverse sequence, allele range size (bp), number of alleles, amplification in other Lupin species, and annotation</b>
+                  </p>
+               </caption>
+               <tgroup align="left" cols="9">
+                  <colspec align="center" colname="c1" colnum="1" colwidth="1*"/>
+                  <colspec align="center" colname="c2" colnum="2" colwidth="1*"/>
+                  <colspec align="center" colname="c3" colnum="3" colwidth="1*"/>
+                  <colspec align="center" colname="c4" colnum="4" colwidth="1*"/>
+                  <colspec align="center" colname="c5" colnum="5" colwidth="1*"/>
+                  <colspec align="center" colname="c6" colnum="6" colwidth="1*"/>
+                  <colspec align="center" colname="c7" colnum="7" colwidth="1*"/>
+                  <colspec align="center" colname="c8" colnum="8" colwidth="1*"/>
+                  <colspec align="center" colname="c9" colnum="9" colwidth="1*"/>
+                  <thead valign="top">
+                     <row rowsep="1">
+                        <entry align="center" colname="c1">
+                           <p>
+                              <b>Marker name</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>
+                              <b>Library</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>
+                              <b>Repeat motif</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>
+                              <b>Forward primer (5</b>
+                              <sup>
+                                 <b>&#8242;</b>
+                              </sup>
+                              <b>-3</b>
+                              <sup>
+                                 <b>&#8242;</b>
+                              </sup>
+                              <b>)</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>
+                              <b>Reverse primer (5</b>
+                              <sup>
+                                 <b>&#8242;</b>
+                              </sup>
+                              <b>-3</b>
+                              <sup>
+                                 <b>&#8242;</b>
+                              </sup>
+                              <b>)</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>
+                              <b>Size (bp)</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>
+                              <b>No of alleles</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <b>Amplification</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>
+                              <b>Annotation</b>
+                           </p>
+                        </entry>
+                     </row>
+                  </thead>
+                  <tbody valign="top">
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg33000</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(ACA)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CACGTCAGTCCTTGCACCTA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GCACAGCAACAACAACACAA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>129-132</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg51784</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CATCCTTCAAAAACCATTTCAA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>AATGTTGATGAACGCGTGTG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>274-280</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg52347</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CTCATGTTTCTTGGGTGGAAA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CAATCATGTCTAAACCGGGAA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>209-215</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg50343</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ATATTAGCGGCCATGCTGTT</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TGTTCATGTTGGTTGCAAGA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>235-239</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg20858</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AAC)12</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ACCCCACTTCTCCCAACTCT</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCCATGAATGAAATGGGGTT</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>229-238</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Pollen-specific protein SF3</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg20038</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTCAGAAACAAAGGGGTTGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCCAGAAATTCTTCTACATCCCA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>179-183</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg52625</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TCA)12</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CTGGTCTTCTGTCGACTCCA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GACCAAGAAGTCAAGCTCGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>109-124</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg37631</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CT)12</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TAAAGTGCCACCAACAAGCA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TTGTGTTGGTTGTGTGTAGAGAGA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>133-155</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>6</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg27097</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AAT)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTCAACTACCGGTTGAACCAC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GCCCAGAATTAGGGTGCTTT</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>206-209</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg22424</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GAA)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AAACGACCAACCGCATAAAG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GATGCGTGAAACTGCAAAGA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>240-249</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>N-acetylglutamate synthase</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg29703</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GA)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ACCTTTGCGCCAAGATACAC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>ATTGTGACGGTTTCACTCCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>213-219</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg28437</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>GGGCACATTTGACTCTTTCG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCCGTGCAATGTCAATATCAA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>260-268</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg36804</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(ATA)12</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CACATGAGAAGCAGCAATGAA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>ATGCGGTGGAGTGGAAGTAA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>254-260</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg21177</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CAT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CCTTGAGGCCAATAAATGGA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TTAAGGAAGCTAGGGCCACA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>217-226</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Delta-8 sphingolipid desaturase</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg39645</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(ATT)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AATCATGGCCTTTTTGCTTG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CGTCTTGCTCTGGTTCTTCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>148-169</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>5</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg35309</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTCATGGCAAGAAAAACATCT</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>AATCATCCATGCCATTTAACA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>271-281</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg56943</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GA)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>GAGGCCCAAAAACAGAAACA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCATTTGCGTTCGGTTCTAT</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>270-272</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg31693</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TAT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AGGGGCAAAGCTCAAAGACT</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CATTCACATTTTATCCTCATTGACTC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>196-217</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg10347</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TGTGGTAAATGCAGGCTCAG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>ATGCAACGGGAACCATAGTC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>184-186</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg14618</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CAT)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTCCTCATCTCCCACACCTC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>AGCTTCTGCTTGTAATCGGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>237-252</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg20466</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>GTAATCATTCATGTATAATTGTAACACTC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CAATTCATTATCTGTATTATTACCCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>180-186</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9">
+                           <p>Cytochrome B561</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg53474</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GA)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CTGAAGTGAGGTTCGGGAAG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCAATCACACATGCTTGTTCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>230-234</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9">
+                           <p>Cullin-1</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg51894</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TGACTTTGATTGTTTAGCTTACAGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TGAATGTCAAATGCAATATTAAGGA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>247-263</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg24819</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CATTCATTCTCTAATCTTTTGTGTCA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TAAAGCTTGTCTCTTGCCCG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>219-244</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>5</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg55310</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ACCAAAAGGGTGGGTGAAAT</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCTAACATTTGAACATATTTAAAACAA</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>277-283</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg14694</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TA)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AAGTAGGAAGATCGAATATGAACG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GGGAAAATATCGAGGTTTTCATC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>268-278</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>RNA-binding protein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg35641</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AGTTGCAATTCAACAACGCA</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CATGCTCTATGGCAAGTGCT</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>247-251</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg38340</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TAT)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AGCTCCACTTTTAGAATTGCG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCTATTGTTACATGCACATTATCCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>164-173</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg26293</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TCCGAA)15</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CCTGCAGTGGTAGAACCTGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GAAGCAAGGTCCACAGAAGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>123-183</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>6</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9">
+                           <p>18S ribosomal RNA gene</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg42878</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CATTCC)11</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CAACTCTTGTTTGCAGACCG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GCTACCCTTTCGGGACTAGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>217-235</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg13749</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TTCCGC)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTTTTACTCGACTCGCTCCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCAGTCGATTTAGCAGTCGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>207-261</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>7</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg32760</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CGGAAT)14</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TCATAATGAATTAAATTAACCCCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCCCTGACTCTGTCTTTGGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>146-284</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>14</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg00675</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TCT)8(TCG)5</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AGAGAGATCCTCTTTGACGCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GTGGTTAGCGAGAACCATCG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>187-199</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>4</p>
+                        </entry>
+                        <entry align="center" colname="c8"/>
+                        <entry align="center" colname="c9">
+                           <p>BSD domain-containing protein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg45631</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(ATC)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AAACCGAATTGTGGATCAGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GGGGACTCTGGAAAATCAGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>146-155</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Alphavirus core protein family</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg20349</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AAC)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ACTAAGGGAAAGGGATTCGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCAGGCAAGAACAAAAGAGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>186-189</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>LPA2 (low psii accumulation2)</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg41827</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TTG)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTGAGTCATATCACCATAGCGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CAACCACAAATGGAAAACCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>242-245</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Lipase class 3 family protein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg47916</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TCT)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>GGTGGGTGAAAATGAAATGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TAACCAAAATGGTTCGTCGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>241-247</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg42002</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AAC)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CTTGCAGGGTCTTCTTACAGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GGGGTTGTTTTTGGTGTCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>243-246</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg54849</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(ACA)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TTCTCCAATGATGAAATGCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TTCACGGCTAAATACCAAGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>177-183</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Microtubule-associated protein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg13638</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TGT)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CCATGGTCATCATTAACCCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CGAGTCGAGTTCGTTTACCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>188-200</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>5</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>f-box family protein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg26640</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AG)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>GGTCTGTTGGAGAAGGCTACC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCACCAATGGGTAGACATACG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>203-209</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Small nuclear ribonucleoprotein</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg29887</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GCT)10</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CCCATCTGAAAGACTTACGGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCCCTTTTCATCCAGAGAGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>243-249</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Ser/thr-protein kinase AFC2</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg50945</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CCA)6(ACA)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CCAGAACAAGGAGAAGGTTCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TTCTTCTTCCTCGCAGGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>198-204</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Zinc finger, Transcription factor</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg44905</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CTT)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AAATCACAGAGCCAAGGAGG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>TCAGCTTATTTTGTTTCCAAGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>356-362</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>3</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Transcription factor</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg09113</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CATGACCCAATCTCAAACCC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GCATCTGGATCTGCTTAATTGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>341-343</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg03938</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(CCGATT)9</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CATGTGGGAAGACCAGAAGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>ACTACGCGCTGCTAATGTCC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>212-290</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>7</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Polygalacturonase</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg32421</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AATCGG)8</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>AGAGAAGTAGGCATGGTGGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>GATCGGCCTATTCACTCAGC</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>221-293</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>5</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg29217</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L1, L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(AT)7</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>ACACTCTCAAGGAAAAGGGC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>CCATTTAACCGATAATGCTTGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>340-344</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>Lactoylglutathione lyase</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg27515</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(TTC)17</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>CATGCGTCCAATCTATCACC</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>AGTGGGAAACAAGGAAGTGG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>182-221</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>8</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9">
+                           <p>PPR-containing protein</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry align="center" colname="c1">
+                           <p>l1l2itg41211</p>
+                        </entry>
+                        <entry align="center" colname="c2">
+                           <p>L2</p>
+                        </entry>
+                        <entry align="center" colname="c3">
+                           <p>(GAA)11</p>
+                        </entry>
+                        <entry align="center" colname="c4">
+                           <p>TCCTCCTGCTTCAGAACG</p>
+                        </entry>
+                        <entry align="center" colname="c5">
+                           <p>AAATCCACGTCATCAATCCG</p>
+                        </entry>
+                        <entry align="center" colname="c6">
+                           <p>209-230</p>
+                        </entry>
+                        <entry align="center" colname="c7">
+                           <p>6</p>
+                        </entry>
+                        <entry align="center" colname="c8">
+                           <p>
+                              <it>L.hispanicus, L.mutabilis</it>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c9"/>
+                     </row>
+                  </tbody>
+               </tgroup>
+            </table>
+         </sec>
+      </sec>
+      <sec>
+         <st>
+            <p>Results</p>
+         </st>
+         <sec>
+            <st>
+               <p>Seed and leaf-flower EST libraries</p>
+            </st>
+            <p>Two runs of 454 pyrosequencing yielded 205&#8201;Mb and 530&#8201;Mb of sequence data for L1 and L2 EST libraries, respectively (Table <tblr tid="T2">2</tblr>). L1 produced 604,869 usable reads that assembled into 26,975 contigs with an average length of 468 nucleotides. L2 generated 1,345,892 usable reads that assembled into 43,674 contigs with an average length of 800 nucleotides. Careful inspection of the L1 contigs found lower percentages of coding regions, higher A/T content, and 2x more A/T homopolymers than L2 contigs. A combined assembly (L1L2) was created to identify the genes that were common in both tissues. 1,964,517 reads were used in the L1L2 assembly and they formed 71,655 contigs with an average contig length of 632 nucleotides. To reduce sequence redundancy due to transcript and alternative splice variants, L1L2 contigs were clustered into 55,309 isotigs, of which 38,200 isotigs translated into proteins and 8,741 of them were full length.</p>
+            <table id="T2">
+               <title>
+                  <p>Table 2</p>
+               </title>
+               <caption>
+                  <p>
+                     <b>cDNA 454 assembly statistics of L1, L2 and L1L2</b>
+                     <b>
+                        <it> L. luteus</it>
+                     </b>
+                     <b> libraries</b>
+                  </p>
+               </caption>
+               <tgroup align="left" cols="4">
+                  <colspec align="left" colname="c1" colnum="1" colwidth="1*"/>
+                  <colspec align="center" colname="c2" colnum="2" colwidth="1*"/>
+                  <colspec align="right" colname="c3" colnum="3" colwidth="1*"/>
+                  <colspec align="right" colname="c4" colnum="4" colwidth="1*"/>
+                  <thead valign="top">
+                     <row rowsep="1">
+                        <entry colname="c1" morerows="1" valign="top">
+                           <p>
+                              <b>Library statistics</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c2" nameend="c4" namest="c2">
+                           <p>
+                              <b>
+                                 <it>L.luteus </it>
+                              </b>
+                              <b>EST-library</b>
+                           </p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry align="right" colname="c2">
+                           <p>
+                              <b>L1</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>
+                              <b>L2</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>
+                              <b>L1L2</b>
+                           </p>
+                        </entry>
+                     </row>
+                  </thead>
+                  <tbody valign="top">
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of sequenced bases</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>205,618,165</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>530,678,975</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>736,297,140</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of reads</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>755,206</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>1,468,202</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>2,213,408</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of reads assembled</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>604,869</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>1,345,892</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>1,964,517</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Read average length</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>276</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>361</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>332</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of contigs</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>26,975</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>43,674</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>71,655</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Contig average size</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>589</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>986</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>901</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of isotigs</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>21,235</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>35,191</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>55,309</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Isotig average size</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>589</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>986</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>901</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Number of isogroups</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>15,295</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>24,653</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>36,886</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Isogroup average size</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>589</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>989</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>905</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Average number of reads by contig</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>22.4</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>30.8</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>27.4</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>%GC</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>30.7</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>39.9</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>37.5</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Annotated sequences</p>
+                        </entry>
+                        <entry align="right" colname="c2"/>
+                        <entry align="right" colname="c3"/>
+                        <entry align="right" colname="c4">
+                           <p>32,862</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Gbrowse mapped sequences</p>
+                        </entry>
+                        <entry align="right" colname="c2"/>
+                        <entry align="right" colname="c3"/>
+                        <entry align="right" colname="c4">
+                           <p>25,400</p>
+                        </entry>
+                     </row>
+                  </tbody>
+               </tgroup>
+            </table>
+         </sec>
+         <sec>
+            <st>
+               <p>Functional classification and <it>in silico</it> comparative genomics</p>
+            </st>
+            <p>The assembled 454 isotigs represented putative transcriptional products <it>i.e.</it> functional genes. Blastx was used to annotate the L1L2 putative genes (<it>i.e.</it> isotigs). A total of 32,862 (59.5%) putative genes showed matches with other species (&#8804;1e<sup>-10</sup>). Of these sequences, 20,169 (36.5%) showed high similarity to other plant species genes (&#8804;1e<sup>-40</sup>). GO annotations were grouped under three categories: molecular function, biological processes, and cellular components (Figure <figr fid="F1">1</figr>). At least 31,142 isotigs were annotated with one molecular function, 11,894 with a cellular component and 22,842 with biological process.</p>
+            <fig id="F1"><title><p>Figure 1 </p></title><caption><p>GO term annotations for L1L2. Isotigs were grouped under three categories: (a) molecular function, (b) biological processes, and (c) cellular components</p></caption><text>
+   <p><b>GO term annotations for L1L2. Isotigs were grouped under three categories: (a) molecular function, (b) biological processes, and (c) cellular components.</b> Numbers between parentheses indicate the number of positive matches for each function.</p>
+</text><graphic file="1471-2164-13-425-1"/></fig>
+            <p>Blast was used to compare L1L2 to several model species (tblastx; &#8804; 1e<sup>-10</sup>; Figure <figr fid="F2">2</figr>). Around 57% (31,520) of <it>L. luteus</it> sequences had significant similarity with at least one sequence of <it>Medicago</it>, <it>Lotus</it>, <it>Arabidopsis</it>, or <it>Glycine</it>, and 40.17% showed positive matches with all of these species.</p>
+            <fig id="F2"><title><p>Figure 2 </p></title><caption><p>Venn diagram summarizing the distribution of tBlastX matches between <it>L. luteus</it> and four model species (<it>A. thaliana, M. truncatula, L. japonicus and G. max</it>)</p></caption><text>
+   <p><b>Venn diagram summarizing the distribution of tBlastX matches between </b><b><it>L. luteus </it></b><b>and four model species (</b><b><it>A. thaliana, M. truncatula, L. japonicus and G. max</it></b><b>).</b> Numbers following the model species correspond to the size of the respective data base. Numbers within the Venn diagram indicate the number of sequences sharing similarity using tBLASTx. Numbers within parenthesis indicate the percentage of matches in terms of the total number of <it>L. luteus</it> sequences.</p>
+</text><graphic file="1471-2164-13-425-2"/></fig>
+         </sec>
+         <sec>
+            <st>
+               <p><it>In silico</it> mapping of lupin ESTs on <it>M. Truncatula</it> chromosomes</p>
+            </st>
+            <p>Alignment of <it>L. luteus</it> isotig sequences to the <it>M. truncatula</it> genome (Blastn; &#8804;1e<sup>-20</sup>; MT3) was used to identify local genomic variability between our ESTs and a related, well-annotated reference genome sequence. The alignments were visualized using GBrowse (v. 2.13) with the Blast matches displayed as feature tracks. A total of 25,400 sequences (46%) from L1L2 had a positive match with MT3 and were distributed heterogeneously on the <it>M. truncatula</it> chromosomes. Chromosomes 3 and 1 had the highest (34,636) and lowest (16,055) number of matches, respectively. Each <it>L. luteus</it> sequence was mapped to an average of 3.7 positions on the <it>Medicago</it> genome.</p>
+            <p>Occasionally, independent alignments of lupin genes with the <it>M. truncatula</it> genome were found relatively close to each other that primers could be designed to hybridize conserved exons, allowing the amplification of intergenic sequences in between lupin and <it>M. truncatula</it> coding sequences (Figure <figr fid="F3">3</figr>). Positive PCR amplification of intergenic regions using <it>L. luteus</it> genomic DNA and primers anchored on conserved exonic regions of adjacent <it>M. truncatula</it> genes suggested the occurrence of microsynteny (<it>i.e.</it> conserved gene order) between yellow lupin and <it>Medicago.</it> Thirty-three out of 79 (42%) primer pairs amplified clear PCR products. 16 pairs showed expected sizes based on <it>Medicago</it> genomic regions. The remainder primer pairs amplified shorter or longer lupin fragments than the fragments amplified in <it>M. truncatula</it>. Amplicon sequence data for <it>L. luteus</it> containing intergenic DNA sequence were mapped onto the <it>Medicago</it> genome using blast (Figure <figr fid="F3">3</figr>). The alignments between <it>L. luteus</it> and <it>Medicago</it> showed high levels of conservation in the coding regions, but little sequence similarity in the intergenic regions. When <it>L. hispanicus</it> DNA was included as PCR template, only 23 primer pairs amplified. Variable amplification was likely due to localized sequence polymorphism within the primer binding site (<it>i.e.</it> small indels) and not the lack of microsynteny. This ratio (23/33) is similar to the number of EST-SSRs that were found to amplify fragments in both species. Alignments among <it>L. luteus</it> and <it>L. hispanicus</it> were possible at intergenic regions but sequences were clearly less similar than coding regions.</p>
+            <fig id="F3"><title><p>Figure 3 </p></title><caption><p>Microsyntenic <it>L. luteus</it> DNA fragments mapped on the Medicago genome using a GBrowse platform</p></caption><text>
+   <p><b>Microsyntenic </b><b><it>L. luteus </it></b><b>DNA fragments mapped on the Medicago genome using a GBrowse platform.</b> (<b>a</b>) <it>L. luteus</it> microsyntenic region 13 on <it>M. truncatula</it> chromosome 1; (<b>b</b>) <it>L. luteus</it> microsyntenic region 5 on <it>M. truncatula</it> chromosome 1; (<b>c</b>) <it>L. luteus</it> microsyntenic region 11 on <it>M. truncatula</it> chromosome 2.</p>
+</text><graphic file="1471-2164-13-425-3"/></fig>
+            <p>When these markers were evaluated on the screening panel of diverse germplasm accessions, 10 had length polymorphism for these intergenic regions (Additional file <supplr sid="S1">1</supplr>). In addition to EST-SSRs, this new Conserved Microsynteny (CMS) marker could be valuable resource for crop improvement with molecular markers.</p>
+         </sec>
+         <sec>
+            <st>
+               <p>Identification of EST-SSRs</p>
+            </st>
+            <p>A total of 2,572 isotig sequences contained at least one EST-SSR, with a frequency of one SSR per 17.75 kilobases (Table <tblr tid="T3">3</tblr>). The observed frequencies for di-, tri-, tetra-, penta-, and hexa-repeats were 30.4%, 52.7%, 2.4%, 7.5% and 6.2%, respectively (Table <tblr tid="T4">4</tblr>). Among the di-nucleotide repeats, the AT/TA motif was the most frequently observed (49%) followed by GA/CT (45%). The AC/GT motif was found in low frequency (6%) and there were no CG/GC motifs in the <it>Lupinus</it> sequences. Tri-nucleotide repeats, predominantly A/T-rich motifs (74.5%), were the most frequent tri-nucleotide repeat found in the <it>Lupinus</it> transcriptome. These tri-nucleotide repeats were often found within the coding sequence of putative genes (77.2%). GAA/CTT motif was the most frequent tri-nucleotide repeat (31%).</p>
+            <table id="T3">
+               <title>
+                  <p>Table 3</p>
+               </title>
+               <caption>
+                  <p>
+                     <b>Features of EST-SSRs identified in assembled L1L2</b>
+                     <b>
+                        <it> L. luteus</it>
+                     </b>
+                     <b> library</b>
+                  </p>
+               </caption>
+               <tgroup align="left" cols="2">
+                  <colspec align="left" colname="c1" colnum="1" colwidth="1*"/>
+                  <colspec align="right" colname="c2" colnum="2" colwidth="1*"/>
+                  <tbody valign="top">
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Total number of examined sequences</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>55,309</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Estimated transcriptome screened (kbp)</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>49,841</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Number of sequences containing SSRs</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>2,572</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Number of identified SSR</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>2,774</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Number of EST-SSRs in coding regions</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>1,435</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Number of sequences containing more than 1 SSRs</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>147</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Number of SSRs present in compound formation</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>195</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Frequency of SSR in transcriptome</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>1/18 Kbp</p>
+                        </entry>
+                     </row>
+                  </tbody>
+               </tgroup>
+            </table>
+            <table id="T4">
+               <title>
+                  <p>Table 4</p>
+               </title>
+               <caption>
+                  <p>
+                     <b>Distribution of repeat types and number of repeats within the L1L2</b>
+                     <b>
+                        <it> L. luteus</it>
+                     </b>
+                     <b> library</b>
+                  </p>
+               </caption>
+               <tgroup align="left" cols="9">
+                  <colspec align="left" colname="c1" colnum="1" colwidth="1*"/>
+                  <colspec align="center" colname="c2" colnum="2" colwidth="1*"/>
+                  <colspec align="right" colname="c3" colnum="3" colwidth="1*"/>
+                  <colspec align="right" colname="c4" colnum="4" colwidth="1*"/>
+                  <colspec align="right" colname="c5" colnum="5" colwidth="1*"/>
+                  <colspec align="right" colname="c6" colnum="6" colwidth="1*"/>
+                  <colspec align="right" colname="c7" colnum="7" colwidth="1*"/>
+                  <colspec align="right" colname="c8" colnum="8" colwidth="1*"/>
+                  <colspec align="right" colname="c9" colnum="9" colwidth="1*"/>
+                  <thead valign="top">
+                     <row rowsep="1">
+                        <entry colname="c1" morerows="1" valign="top">
+                           <p>
+                              <b>Repeat type</b>
+                           </p>
+                        </entry>
+                        <entry align="center" colname="c2" nameend="c8" namest="c2">
+                           <p>
+                              <b>Number of repeat units</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c9" morerows="1" valign="top">
+                           <p>
+                              <b>Total (%)</b>
+                           </p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry align="right" colname="c2">
+                           <p>
+                              <b>4</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>
+                              <b>5</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>
+                              <b>6</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>
+                              <b>7</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>
+                              <b>8</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>
+                              <b>9</b>
+                           </p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>
+                              <b>&gt; 10</b>
+                           </p>
+                        </entry>
+                     </row>
+                  </thead>
+                  <tbody valign="top">
+                     <row>
+                        <entry colname="c1">
+                           <p>Di-nucleotide</p>
+                        </entry>
+                        <entry align="right" colname="c2"/>
+                        <entry align="right" colname="c3"/>
+                        <entry align="right" colname="c4">
+                           <p>363</p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>204</p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>120</p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>72</p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>91</p>
+                        </entry>
+                        <entry align="right" colname="c9">
+                           <p>851 (30.7)</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Tri-nucleotide</p>
+                        </entry>
+                        <entry align="right" colname="c2"/>
+                        <entry align="right" colname="c3">
+                           <p>826</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>369</p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>131</p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>69</p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>25</p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>57</p>
+                        </entry>
+                        <entry align="right" colname="c9">
+                           <p>1477 (53.2)</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Tetra-nucleotide</p>
+                        </entry>
+                        <entry align="right" colname="c2"/>
+                        <entry align="right" colname="c3">
+                           <p>43</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>9</p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>3</p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>1</p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>2</p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>8</p>
+                        </entry>
+                        <entry align="right" colname="c9">
+                           <p>66 (2.4)</p>
+                        </entry>
+                     </row>
+                     <row>
+                        <entry colname="c1">
+                           <p>Penta-nucleotide</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>129</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>46</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>6</p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>3</p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>9</p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>6</p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>12</p>
+                        </entry>
+                        <entry align="right" colname="c9">
+                           <p>209 (7.5)</p>
+                        </entry>
+                     </row>
+                     <row rowsep="1">
+                        <entry colname="c1">
+                           <p>Hexa-nucleotide</p>
+                        </entry>
+                        <entry align="right" colname="c2">
+                           <p>105</p>
+                        </entry>
+                        <entry align="right" colname="c3">
+                           <p>26</p>
+                        </entry>
+                        <entry align="right" colname="c4">
+                           <p>11</p>
+                        </entry>
+                        <entry align="right" colname="c5">
+                           <p>3</p>
+                        </entry>
+                        <entry align="right" colname="c6">
+                           <p>9</p>
+                        </entry>
+                        <entry align="right" colname="c7">
+                           <p>5</p>
+                        </entry>
+                        <entry align="right" colname="c8">
+                           <p>13</p>
+                        </entry>
+                        <entry align="right" colname="c9">
+                           <p>171 (6.2)</p>
+                        </entry>
+                     </row>
+                  </tbody>
+               </tgroup>
+            </table>
+         </sec>
+         <sec>
+            <st>
+               <p>Evaluation of EST-SSRs within yellow lupin and other lupin species</p>
+            </st>
+            <p>Studies involving repeat sizes and level of polymorphism have suggested a positive correlation between repeat number and rates of polymorphisms, especially in dimeric microsatellites <abbrgrp><abbr bid="B28">28</abbr><abbr bid="B42">42</abbr></abbrgrp>. Thus, only EST-SSRs containing at least 7 repeat units were selected for validation to increase the likelihood of finding markers polymorphic between lupin accessions. A total of 783 EST-SSR candidate loci had sufficient repeat units, but only 375 had enough repeat flanking sequence to be suitable for primer design. PCR amplification of these markers resulted in 222 EST-SSRs (59%) that were polymorphic among the six diverse <it>L. luteus</it> included in screening panel. 130 EST-SSRs were monomorphic and 23 primer-pairs failed to amplify. A small number (6) of EST-SSRs were validated by Sanger sequencing. The amplicon sequences from four different <it>L. luteus</it> genotypes and from <it>L. hispanicus</it> and <it>L. mutabilis</it> confirmed the existence of SSR motifs and their length variability between lupin accessions (Figure <figr fid="F4">4</figr>). EST-SSR amplicons showed high conservation at the flanking SSR regions of both <it>Lupinus</it> species when compared with <it>L. luteus</it>. However, several indels were observed in adjacent regions and within the SSR motif, especially in <it>L. mutabilis</it>. </p>
+            <fig id="F4"><title><p>Figure 4 </p></title><caption><p>Alignment of <it>L. luteus</it>, <it>L. hispanicus</it> and <it>L. mutabilis</it> containing several repeat motifs</p></caption><text>
+   <p><b>Alignment of </b><b><it>L. luteus</it></b><b>, </b><b><it>L. hispanicus</it></b><b> and </b><b><it>L. mutabilis </it></b><b>containing several repeat motifs.</b> (<b>a</b>) isotig03739 with GA and AGA motifs; (<b>b</b>) isotig16318 with a TAA motif; and (<b>c</b>) isotig21236 with a GAA motif.</p>
+</text><graphic file="1471-2164-13-425-4"/></fig>
+            <p>Fifty polymorphic EST-SSRs were used to genotype a sample of 64&#8201;<it>L. luteus</it> accessions (Table <tblr tid="T1">1</tblr> and Additional file <supplr sid="S2">2</supplr>). Twenty-four of these selected markers were specific to L1 (leaf-flower EST library), 20 EST-SSRs were specific to L2 (seed EST library), and 6 were present in both libraries. Neighbor-joining distance analysis detected several clusters among <it>L. luteus</it> accessions, strongly suggesting the existence of population subdivisions (Figure <figr fid="F5">5</figr>). However, no clear geographical patterns (country of origin) were observed among lupin accessions. Interestingly, Chilean accessions were distributed in most clusters, probably reflecting the breeding history of these genotypes. Two hundred and fifty four (65.7%) and 113 (30%) SSR primer pairs were able to amplify fragments from <it>L. hispanicus</it> and <it>L. mutabilis</it> DNA, respectively.</p>
+            <fig id="F5"><title><p>Figure 5 </p></title><caption><p>Neighbour Joining tree relating the 64&#8201;<it>L. luteus</it> accessions included in the diversity study</p></caption><text>
+   <p><b>Neighbour Joining tree relating the 64</b>&#8201; <b><it>L. luteus </it></b><b>accessions included in the diversity study.</b> Numbers above branches correspond to bootstrap values. Accessions are identified by a letter L followed by numbers. Letters around accessions identify country of origin based on seed bank or breeding histories (RUS: Russia, ISRL: Israel, HUNG: Hungary, CHIL: Chile, GER: Germany, SPN: Spain, PORT: Portugal, MORO: Morocco, POL: Poland, BYS: Belarus, UKR: Ukraine). The scale is in distance units.</p>
+</text><graphic file="1471-2164-13-425-5"/></fig>
+         </sec>
+      </sec>
+      <sec>
+         <st>
+            <p>Discussion</p>
+         </st>
+         <p>Next-generation sequencing has reduced the existing gap between major crop genomic platforms and the limited resources that are currently available for orphan crops <abbrgrp><abbr bid="B10">10</abbr></abbrgrp>. Complete transcriptome sequencing has generated species specific molecular markers, <it>in silico</it> expression analyses, gene discovery, and phylogenetic relationships <abbrgrp><abbr bid="B43">43</abbr><abbr bid="B44">44</abbr></abbrgrp>.</p>
+         <p>In this research, we used 454 cDNA sequences to assemble transcriptomes of two tissues (L1 and L2) of yellow lupin. We recovered a large number of previously unknown and uncharacterized yellow lupin gene sequences (Table <tblr tid="T2">2</tblr>). The total number of sequences for the combined library was mostly additive from L1 and L2. The L1 library favored the inclusion of longer 3&#8217;UTR regions, and thus, reducing the amount of coding sequences needed to assemble longer combined contigs (L1L2). As a consequence, two or more sequences belonging to the same transcript may not be assembled together, causing an overestimation of expressed sequences. The larger amount of 3&#8217;UTR regions for L1 is also in agreement with the lower GC content, condition typically associated with untranslated regions <abbrgrp><abbr bid="B45">45</abbr><abbr bid="B46">46</abbr></abbrgrp>. Undoubtedly, a number of expressed sequences are tissue specific and will not assemble into combined contigs. For instance, several genes related to seed dormancy and germination are not expressed in vegetative and floral tissues <abbrgrp><abbr bid="B47">47</abbr><abbr bid="B48">48</abbr></abbrgrp>. The same specificity was observed in a number of tissues and plant species <abbrgrp><abbr bid="B49">49</abbr><abbr bid="B50">50</abbr><abbr bid="B51">51</abbr></abbrgrp>. The assembly of L1L2 generated 55,309 isotigs of which 30,811 had similarity to putative proteins found in other plant species. Comparative studies carried out against <it>L. japonicus, M. truncatula</it> and <it>G. max</it> showed a total of 31,520 lupin sequences similar to at least one of the model legume databases and 22,219 were similar to all of them. <it>Lotus</it> and <it>Medicago</it> belong to the Galegoid subclade, which includes mostly temperate legume species <abbrgrp><abbr bid="B52">52</abbr></abbrgrp>. <it>Glycine</it> is a member of the Phaseoloid subclade which comprises mostly tropical species <abbrgrp><abbr bid="B52">52</abbr></abbrgrp>. Lupins belong to the Genistoid subclade, which is sister (and distant) to most of the described Papilionoid subclades; especially those containing most domesticated species <abbrgrp><abbr bid="B53">53</abbr></abbrgrp>.</p>
+         <p>Although micro-repeat motifs are frequent in plant genomes and their respective transcriptomes, the frequency of SSR discovery depends on the search criteria <abbrgrp><abbr bid="B42">42</abbr><abbr bid="B54">54</abbr><abbr bid="B55">55</abbr><abbr bid="B56">56</abbr></abbrgrp>. We analyzed 55,309 lupin isotig sequences using MISA and identified 2,796 SSR motifs with an average frequency of one SSR per 17.75 kbp. Tri-nucleotide repeats were the motifs most frequently found in <it>L. luteus</it> expressed sequences. Similar results have been reported in numerous plant species <abbrgrp><abbr bid="B26">26</abbr><abbr bid="B28">28</abbr><abbr bid="B54">54</abbr><abbr bid="B55">55</abbr><abbr bid="B57">57</abbr></abbrgrp>. The abundance of trimeric EST-SSRs has been attributed to the absence of frameshift mutations when there is length variation in these SSRs <abbrgrp><abbr bid="B58">58</abbr></abbrgrp>. Indeed, 1,435 EST-SSRs were discovered within coding regions of the gene. Among tri-nucleotide repeats, AT-rich motifs were the most predominant ones (74.5%), which have also been observed in soybean, Citrus and Arabidopsis <abbrgrp><abbr bid="B54">54</abbr><abbr bid="B57">57</abbr></abbrgrp>. For di-nucleotide repeats, AT was the most frequently observed motif, contrasting with results from Arabidopsis, soybean, maize, rice, wheat and barley where AC/GT were the most frequent repeats <abbrgrp><abbr bid="B26">26</abbr><abbr bid="B28">28</abbr><abbr bid="B54">54</abbr><abbr bid="B55">55</abbr><abbr bid="B57">57</abbr></abbrgrp>. The high proportion of untranslated sequences (specifically 3&#8217;UTR), mainly contributed from the L1, could explain the bias toward A/T-rich repeat sequences observed in yellow lupin. There were no CG repeats in the lupin sequences, similar to results obtained in barrel medic <abbrgrp><abbr bid="B24">24</abbr></abbrgrp>, rice, corn, soybean <abbrgrp><abbr bid="B57">57</abbr></abbrgrp>, wheat <abbrgrp><abbr bid="B27">27</abbr></abbrgrp>, Sorghum <abbrgrp><abbr bid="B25">25</abbr></abbrgrp>, Arabidopsis, apricot and peach <abbrgrp><abbr bid="B59">59</abbr></abbrgrp>.</p>
+         <p>We used GBrowse to visualize lupin ESTs aligned to the <it>M. truncatula</it> chromosomes (Figure <figr fid="F3">3</figr>). This approach potentially identifies paralogs sequences and allows color-coded alignment by BLAST significance <abbrgrp><abbr bid="B60">60</abbr></abbrgrp>. A total of 25,400&#8201;<it>L. luteus</it> contigs were localized and found to be distributed across the entire Medicago genome with chromosomes Mt1 and Mt3 having the highest number of gene matches. Each yellow lupin sequence was mapped to an average of 3.7 locations, which may correspond in part to rounds of genome duplications previously described for the Medicago genome <abbrgrp><abbr bid="B61">61</abbr></abbrgrp>. Understanding syntenic relationships among species is essential to exploit the available tools developed for comparative genomic analysis. Using this approach, we created a new method of developing molecular markers, markers that are based on conserved microsynteny (CMS) between orphan and model species. Genome comparisons among <it>M. truncatula</it>, <it>G. max</it> and <it>L. japonicus</it> have shown that, in general, most genes in Papilionoid legume species are likely to be found within a relatively long syntenic region of any other Papilioniod species <abbrgrp><abbr bid="B62">62</abbr></abbrgrp>. Positive amplification and sequencing of <it>L. luteus</it> intergenic regions, based on PCR primers located on <it>M.</it> t<it>runcatula</it> adjacent genes, suggested the existence of microscale synteny between these legume species. Roughly 40% of the targeted intergenic <it>L. luteus</it> regions amplified, points out the usefulness of conserved legume chromosome blocks for genomic studies of orphan crops. Although some primer pairs failed to amplify, poor amplification could be a consequence of non-synteny, but also other technical limitations could also explain negative PCR results. For instance it is known that non-coding DNA regions are highly variable among species <abbrgrp><abbr bid="B63">63</abbr><abbr bid="B64">64</abbr></abbrgrp>, and negative PCR amplifications could easily due to excessively long <it>L. luteus</it> intergenic regions.</p>
+         <p>Few studies have reported the use of EST-SSRs in <it>Lupinus</it> species <abbrgrp><abbr bid="B19">19</abbr><abbr bid="B21">21</abbr><abbr bid="B22">22</abbr></abbrgrp>. Most efforts have focused on genetic linkage mapping and in diversity studies in <it>L. angustifolius</it><abbrgrp><abbr bid="B20">20</abbr></abbrgrp>, <it>L. albus</it><abbrgrp><abbr bid="B21">21</abbr></abbrgrp> and <it>L. luteus</it><abbrgrp><abbr bid="B22">22</abbr></abbrgrp><it>.</it> To validate our <it>L. luteus</it> polymorphic markers we tested 50 EST-SSRs on a population of 64 genotypes of <it>L. luteus</it>. An analysis of genotypic diversity illustrated the existence of several clusters within <it>L. luteus</it> germplasm. The lack of a clear pattern following the geographical accession origin (country) could be explained by three reasons. 1) The number of accessions may not have been large enough to allow a clear pattern to emerge. 2) <it>L. luteus</it> is widely distributed across the Mediterranean region, mainly due to human introductions <abbrgrp><abbr bid="B6">6</abbr></abbrgrp>. This situation could have homogenized natural genetic distinctiveness, leaving mostly population subdivisions based on breeding histories. 3) Finally, it is possible some accessions could have been misclassified; and thus, obscuring an existing geographical clustering pattern.</p>
+         <p>We observed that a number of high yellow lupin EST-SSR amplified fragments in two other lupin species, <it>L. hispanicus</it> and <it>L. mutabilis</it> (Table <tblr tid="T1">1</tblr>). The high number of transferable markers between <it>L. luteus</it> and <it>L. hispanicus</it> confirmed their closer genetic relationship <abbrgrp><abbr bid="B5">5</abbr><abbr bid="B65">65</abbr></abbrgrp> than <it>L. luteus and L. mutabilis</it>. The two closely related species have the same chromosome number (2n&#8201;=&#8201;52) and are still interfertile, generating a natural hybrid called <it>hispanicoluteus</it><abbrgrp><abbr bid="B66">66</abbr></abbrgrp>. Phylogenetic studies have placed new and old world lupins into two different clades <abbrgrp><abbr bid="B5">5</abbr><abbr bid="B65">65</abbr><abbr bid="B67">67</abbr></abbrgrp>. Thus, most EST-SSRs amplified in <it>L. mutabilis</it> (2n&#8201;=&#8201;48), the only cultivated new world lupin <abbrgrp><abbr bid="B65">65</abbr></abbrgrp>, should have high transferability rates to other lupin species, such as <it>L. albus</it> and <it>L. angustifolius.</it> The understanding of the genetic diversity among other close relative lupin species will facilitate the transfer of favorable variation into cultivated species. For instance, <it>L. hispanicus</it> has been suggested as a reservoir of favorable variation for a number of biotic and abiotic stresses currently affecting <it>L. luteus</it><abbrgrp><abbr bid="B68">68</abbr><abbr bid="B69">69</abbr></abbrgrp>.</p>
+      </sec>
+      <sec>
+         <st>
+            <p>Conclusion</p>
+         </st>
+         <p><it>L. luteus</it> deep transcriptome sequencing will facilitate the further development of genomic tools and lupin germplasm. Massive sequencing of cDNA libraries will continue to produce raw materials for gene discoveries, identification of polymorphisms (SNPs, EST-SSRs, INDELs, etc.) for marker development, anchoring sequences for genome comparison studies and putative gene candidates for QTL detection. We are also exploiting the microsyntenic regions observed among <it>L. luteus</it> and legume model species to saturate yellow lupin linkage maps by amplifying conserved regions across legume species. The utilization of these tools will allow transforming <it>L. luteus</it> into a valid temperate legume crop alternative.</p>
+      </sec>
+      <sec>
+         <st>
+            <p>Competing interests</p>
+         </st>
+         <p>The authors declare that they have no competing interests.</p>
+      </sec>
+      <sec>
+         <st>
+            <p>Authors&#8217; contributions</p>
+         </st>
+         <p>LBP collected the tissues and extracted the RNAs. JU, LBP and JM constructed the EST libraries. JU and JM supervised the 454 sequencing of the libraries. LBP and JU conducted the SSR search and primer design. LBP conducted the SSR polymorphism tests and transferability studies. LMP sequenced the amplicons of SSR and intergenic blocks. GAA grew the plants for the diversity study, extracted the DNAs, PCR amplified and conducted the genotyping of the population. IMB drafted the experimental design of all the studies carried out in this work and conducted the genetic analysis for the diversity study. CSN conducted annotations and <it>in silico</it> mapping of the sequences. LBP conducted the microscale synteny studies. HS and IMB conceived the study. LBP drafted the manuscript with the support of IMB. All the authors read and approved the final manuscript.</p>
+      </sec>
+   </bdy>
+   <bm>
+      <ack>
+         <sec>
+            <st>
+               <p>Acknowledgments</p>
+            </st>
+            <p>This research was funded by the National Commission for Scientific &amp; Technological Research (FONDECYT Project No.1090759) and CONICYT Regional/GORE Araucan&#237;a/CGNA/R10C1001, Chile. We thank H&#233;ctor Urbina for his assistance on <it>L. luteus</it> sequence assemblies.</p>
+         </sec>
+      </ack>
+      <refgrp><bibl id="B1"><title><p>In silico development of simple sequence repeat markers within the aeschynomenoid/dalbergoid and genistoid clades of the Leguminosae family and their transferability to Arachis hypogaea, groundnut</p></title><aug><au><snm>Mace</snm><fnm>ES</fnm></au><au><snm>Varshney</snm><fnm>RK</fnm></au><au><snm>Mahalakshmi</snm><fnm>V</fnm></au><au><snm>Seetha</snm><fnm>K</fnm></au><au><snm>Gafoor</snm><fnm>A</fnm></au><au><snm>Leeladevi</snm><fnm>Y</fnm></au><au><snm>Crouch</snm><fnm>JH</fnm></au></aug><source>Plant Sci</source><pubdate>2008</pubdate><volume>174</volume><fpage>51</fpage><lpage>60</lpage><xrefbib><pubid idtype="doi">10.1016/j.plantsci.2007.09.014</pubid></xrefbib></bibl><bibl id="B2"><title><p>Distribution, origin, taxonomy, history and importance</p></title><aug><au><snm>Gladstones</snm><fnm>JS</fnm></au></aug><source>Lupins as crop plants: biology, production and utilization</source><publisher>CAB International, Cambridge, United Kingdom</publisher><editor>Gladstones JS, Atkins CA, Hamblin J</editor><pubdate>1998</pubdate><fpage>1</fpage><lpage>37</lpage></bibl><bibl id="B3"><title><p>A chemical study of Lupinus hispanicus seed&#8212;toxic and antinutritional components</p></title><aug><au><snm>M&#250;zquiz</snm><fnm>M</fnm></au><au><snm>Burbano</snm><fnm>C</fnm></au><au><snm>Gorospe</snm><fnm>MJ</fnm></au><au><snm>R&#243;denas</snm><fnm>I</fnm></au></aug><source>J Scie Food Agr</source><pubdate>1989</pubdate><volume>47</volume><fpage>205</fpage><lpage>214</lpage><xrefbib><pubid idtype="doi">10.1002/jsfa.2740470208</pubid></xrefbib></bibl><bibl id="B4"><title><p>Estimation of Lupinus genome polyploidy on the basis of isozymic loci number</p></title><aug><au><snm>Wolko</snm><fnm>B</fnm></au><au><snm>Weeden</snm><fnm>NF</fnm></au></aug><source>Genet Pol</source><pubdate>1989</pubdate><volume>30</volume><fpage>165</fpage><lpage>170</lpage></bibl><bibl id="B5"><title><p>Nuclear DNA content variation and species relationships in the genus Lupinus (Fabaceae)</p></title><aug><au><snm>Naganowska</snm><fnm>B</fnm></au><au><snm>Wolko</snm><fnm>B</fnm></au><au><snm>Sliwinska</snm><fnm>E</fnm></au><au><snm>Kaczmarek</snm><fnm>Z</fnm></au></aug><source>Ann Bot</source><pubdate>2003</pubdate><volume>92</volume><fpage>349</fpage><lpage>355</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/aob/mcg145</pubid><pubid idtype="pmpid" link="fulltext">12853281</pubid></pubidlist></xrefbib></bibl><bibl id="B6"><title><p>Composition and food uses of lupin</p></title><aug><au><snm>Petterson</snm><fnm>DS</fnm></au></aug><source>Lupins as a crop plants: biology, production and utilization</source><publisher>CAB International, Wallingford, UK</publisher><editor>Gladstones JS, Atkins CA, Hamblin J</editor><pubdate>1998</pubdate><fpage>353</fpage><lpage>384</lpage></bibl><bibl id="B7"><aug><au><snm>Gladstones</snm><fnm>JS</fnm></au></aug><source>Lupins of the Mediterranean Region and Africa. Technical Bulletin No. 26</source><publisher>Western Australian Department of Agriculture, Western Australia</publisher><pubdate>1974</pubdate><fpage>43</fpage><lpage>48</lpage></bibl><bibl id="B8"><title><p>A comparison of the digestibility of a range of lupin and soybean protein products when fed to either Atlantic salmon (Salmo salar) or rainbow trout (Oncorhynchus mykiss)</p></title><aug><au><snm>Glencross</snm><fnm>BD</fnm></au><au><snm>Carter</snm><fnm>CG</fnm></au><au><snm>Duijster</snm><fnm>N</fnm></au><au><snm>Evans</snm><fnm>DR</fnm></au><au><snm>Dods</snm><fnm>K</fnm></au><au><snm>McCafferty</snm><fnm>P</fnm></au><au><snm>Hawkins</snm><fnm>WE</fnm></au><au><snm>Maas</snm><fnm>R</fnm></au><au><snm>Sipsas</snm><fnm>S</fnm></au></aug><source>Aquaculture</source><pubdate>2004</pubdate><volume>237</volume><fpage>333</fpage><lpage>346</lpage><xrefbib><pubid idtype="doi">10.1016/j.aquaculture.2004.03.023</pubid></xrefbib></bibl><bibl id="B9"><title><p>Diversity of lupin (Lupinus L.) based on biochemical composition</p></title><aug><au><snm>Berville</snm><fnm>ABS</fnm></au><au><snm>Heinanen</snm><fnm>J</fnm></au><au><snm>Kartuzova</snm><fnm>LT</fnm></au><au><snm>Bernatskaya</snm><fnm>ML</fnm></au><au><snm>Chmeleva</snm><fnm>ZV</fnm></au></aug><source>Plant Genet Res Newsletter</source><pubdate>2003</pubdate><volume>134</volume><fpage>42</fpage><lpage>57</lpage></bibl><bibl id="B10"><title><p>Orphan legume crops enter the genomics era!</p></title><aug><au><snm>Varshney</snm><fnm>RK</fnm></au><au><snm>Close</snm><fnm>TJ</fnm></au><au><snm>Singh</snm><fnm>NK</fnm></au><au><snm>Hoisington</snm><fnm>DA</fnm></au><au><snm>Cook</snm><fnm>DR</fnm></au></aug><source>Curr Opin Plant Biol</source><pubdate>2009</pubdate><volume>12</volume><fpage>202</fpage><lpage>210</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.pbi.2008.12.004</pubid><pubid idtype="pmpid" link="fulltext">19157958</pubid></pubidlist></xrefbib></bibl><bibl id="B11"><title><p>Transcriptome sequencing of lentil based on second-generation technology permits large-scale unigene assembly and SSR marker discovery</p></title><aug><au><snm>Kaur</snm><fnm>S</fnm></au><au><snm>Cogan</snm><fnm>N</fnm></au><au><snm>Pembleton</snm><fnm>LW</fnm></au><au><snm>Shinozuka</snm><fnm>M</fnm></au><au><snm>Savin</snm><fnm>KW</fnm></au><au><snm>Materne</snm><fnm>M</fnm></au><au><snm>Forster</snm><fnm>JW</fnm></au></aug><source>BMC Genomics</source><pubdate>2011</pubdate><volume>12</volume><fpage>265</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-12-265</pubid><pubid idtype="pmcid">3113791</pubid><pubid idtype="pmpid" link="fulltext">21609489</pubid></pubidlist></xrefbib></bibl><bibl id="B12"><title><p>Large-scale transcriptome analysis in chickpea (Cicer arietinum L.), an orphan legume crop of the semi-arid tropics of Asia and Africa</p></title><aug><au><snm>Hiremath</snm><fnm>PJ</fnm></au><au><snm>Farmer</snm><fnm>A</fnm></au><au><snm>Cannon</snm><fnm>SB</fnm></au><au><snm>Woodward</snm><fnm>J</fnm></au><au><snm>Kudapa</snm><fnm>H</fnm></au><au><snm>Tuteja</snm><fnm>R</fnm></au><au><snm>Kumar</snm><fnm>A</fnm></au><au><snm>Bhanuprakash</snm><fnm>A</fnm></au><au><snm>Mulaosmanovic</snm><fnm>B</fnm></au><au><snm>Gujaria</snm><fnm>N</fnm></au><au><snm>Krishnamurthy</snm><fnm>L</fnm></au><au><snm>Gaur</snm><fnm>PM</fnm></au><au><snm>Kavikishor</snm><fnm>PB</fnm></au><au><snm>Shah</snm><fnm>T</fnm></au><au><snm>Srinivasan</snm><fnm>R</fnm></au><au><snm>Lohse</snm><fnm>M</fnm></au><au><snm>Xiao</snm><fnm>Y</fnm></au><au><snm>Town</snm><fnm>CD</fnm></au><au><snm>Cook</snm><fnm>DR</fnm></au><au><snm>May</snm><fnm>GD</fnm></au><au><snm>Varshney</snm><fnm>RK</fnm></au></aug><source>Plant Biotechnol J</source><pubdate>2011</pubdate><volume>9</volume><fpage>922</fpage><lpage>931</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1111/j.1467-7652.2011.00625.x</pubid><pubid idtype="pmcid">3437486</pubid><pubid idtype="pmpid" link="fulltext">21615673</pubid></pubidlist></xrefbib></bibl><bibl id="B13"><title><p>Sequencing Medicago truncatula expressed tags using 454 Life Science technology</p></title><aug><au><snm>Cheung</snm><fnm>F</fnm></au><au><snm>Haas</snm><fnm>BJ</fnm></au><au><snm>Goldberg</snm><fnm>SMD</fnm></au><au><snm>May</snm><fnm>GD</fnm></au><au><snm>Xiao</snm><fnm>Y</fnm></au><au><snm>Town</snm><fnm>CD</fnm></au></aug><source>BMC Genomics</source><pubdate>2006</pubdate><volume>7</volume><fpage>272</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-7-272</pubid><pubid idtype="pmcid">1635983</pubid><pubid idtype="pmpid" link="fulltext">17062153</pubid></pubidlist></xrefbib></bibl><bibl id="B14"><title><p>Sampling the Arabidopsis transcriptome with massively parallel pyrosequencing</p></title><aug><au><snm>Weber</snm><fnm>APM</fnm></au><au><snm>Weber</snm><fnm>KL</fnm></au><au><snm>Carr</snm><fnm>K</fnm></au><au><snm>Wilkerson</snm><fnm>C</fnm></au><au><snm>Ohlrogge</snm><fnm>JB</fnm></au></aug><source>Plant Physiol</source><pubdate>2007</pubdate><volume>144</volume><fpage>32</fpage><lpage>42</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1104/pp.107.096677</pubid><pubid idtype="pmcid">1913805</pubid><pubid idtype="pmpid" link="fulltext">17351049</pubid></pubidlist></xrefbib></bibl><bibl id="B15"><title><p>EST derived SSR markers for comparative mapping in wheat and rice</p></title><aug><au><snm>Yu</snm><fnm>JK</fnm></au><au><snm>La Rota</snm><fnm>M</fnm></au><au><snm>Kantety</snm><fnm>RV</fnm></au><au><snm>Sorrells</snm><fnm>ME</fnm></au></aug><source>Mol Genet Genomics</source><pubdate>2004</pubdate><volume>271</volume><fpage>742</fpage><lpage>751</lpage><xrefbib><pubid idtype="pmpid" link="fulltext">15197579</pubid></xrefbib></bibl><bibl id="B16"><title><p>Comparative mapping of expressed sequence tags containing microsatellites in rainbow trout (Oncorhynchus mykiss)</p></title><aug><au><snm>Rexroad</snm><fnm>CE</fnm><suf>III</suf></au><au><snm>Rodriguez</snm><fnm>MF</fnm></au><au><snm>Coulibaly</snm><fnm>I</fnm></au><au><snm>Gharbi</snm><fnm>K</fnm></au><au><snm>Danzmann</snm><fnm>RG</fnm></au><au><snm>DeKoning</snm><fnm>J</fnm></au><au><snm>Phillips</snm><fnm>R</fnm></au><au><snm>Palti</snm><fnm>Y</fnm></au></aug><source>BMC Genomics</source><pubdate>2005</pubdate><volume>6</volume><fpage>54</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-6-54</pubid><pubid idtype="pmcid">1090573</pubid><pubid idtype="pmpid" link="fulltext">15836796</pubid></pubidlist></xrefbib></bibl><bibl id="B17"><title><p>Translating Medicago truncatula genomics to crop legumes</p></title><aug><au><snm>Young</snm><fnm>ND</fnm></au><au><snm>Udvardi</snm><fnm>M</fnm></au></aug><source>Curr Opin Plant Biol</source><pubdate>2009</pubdate><volume>12</volume><fpage>193</fpage><lpage>201</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.pbi.2008.11.005</pubid><pubid idtype="pmpid" link="fulltext">19162532</pubid></pubidlist></xrefbib></bibl><bibl id="B18"><title><p>Functional mapping in pea, as an aid to the candidate gene selection and for investigating synteny with the model legume Medicago truncatula</p></title><aug><au><snm>Aubert</snm><fnm>G</fnm></au><au><snm>Morin</snm><fnm>J</fnm></au><au><snm>Jacquin</snm><fnm>F</fnm></au><au><snm>Loridon</snm><fnm>K</fnm></au><au><snm>Quillet</snm><fnm>MC</fnm></au><au><snm>Petit</snm><fnm>A</fnm></au><au><snm>Rameau</snm><fnm>C</fnm></au><au><snm>Lejeune-Henaut</snm><fnm>I</fnm></au><au><snm>Huguet</snm><fnm>T</fnm></au><au><snm>Bursting</snm><fnm>J</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2006</pubdate><volume>112</volume><fpage>1024</fpage><lpage>1041</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s00122-005-0205-y</pubid><pubid idtype="pmpid" link="fulltext">16416153</pubid></pubidlist></xrefbib></bibl><bibl id="B19"><title><p>The first genetic and comparative map of white lupin (Lupinus albus L.): Identification of QTLs for anthracnose resistance and flowering time, and a locus for alkaloid content</p></title><aug><au><snm>Phan</snm><fnm>HT</fnm></au><au><snm>Ellwood</snm><fnm>SR</fnm></au><au><snm>Adhikari</snm><fnm>K</fnm></au><au><snm>Nelson</snm><fnm>MN</fnm></au><au><snm>Oliver</snm><fnm>RP</fnm></au><au><snm>Phan</snm><fnm>HT</fnm></au><au><snm>Ellwood</snm><fnm>SR</fnm></au><au><snm>Adhikari</snm><fnm>K</fnm></au><au><snm>Nelson</snm><fnm>MN</fnm></au><au><snm>Oliver</snm><fnm>RP</fnm></au></aug><source>DNA Res</source><pubdate>2007</pubdate><volume>14</volume><fpage>59</fpage><lpage>70</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/dnares/dsm009</pubid><pubid idtype="pmcid">2779896</pubid><pubid idtype="pmpid" link="fulltext">17526914</pubid></pubidlist></xrefbib></bibl><bibl id="B20"><title><p>Aligning a New Reference Genetic Map of Lupinus angustifolius with the Genome Sequence of the Model Legume, Lotus japonicus</p></title><aug><au><snm>Nelson</snm><fnm>MN</fnm></au><au><snm>Moolhuijzen</snm><fnm>PM</fnm></au><au><snm>Boersma</snm><fnm>JG</fnm></au><au><snm>Chudy</snm><fnm>M</fnm></au><au><snm>Lesniewska</snm><fnm>K</fnm></au><au><snm>Bellgard</snm><fnm>M</fnm></au><au><snm>Oliver</snm><fnm>RP</fnm></au><au><snm>Swiecicki</snm><fnm>W</fnm></au><au><snm>Wolko</snm><fnm>B</fnm></au><au><snm>Cowling</snm><fnm>WA</fnm></au><au><snm>Ellwood</snm><fnm>SR</fnm></au></aug><source>DNA Res</source><pubdate>2010</pubdate><volume>17</volume><fpage>73</fpage><lpage>83</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/dnares/dsq001</pubid><pubid idtype="pmcid">2853381</pubid><pubid idtype="pmpid" link="fulltext">20133394</pubid></pubidlist></xrefbib></bibl><bibl id="B21"><title><p>The first gene-based map of Lupinus angustifolius L.-location of domestication genes and conserved synteny with Medicago truncatula</p></title><aug><au><snm>Nelson</snm><fnm>M</fnm></au><au><snm>Huyen</snm><fnm>P</fnm></au><au><snm>Ellwood</snm><fnm>S</fnm></au><au><snm>Moolhuijzen</snm><fnm>P</fnm></au><au><snm>Hane</snm><fnm>J</fnm></au><au><snm>Williams</snm><fnm>A</fnm></au><au><snm>O&#8217;Lone</snm><fnm>C</fnm></au><au><snm>Fosu-Nyarko</snm><fnm>J</fnm></au><au><snm>Scobie</snm><fnm>M</fnm></au><au><snm>Cakir</snm><fnm>M</fnm></au><au><snm>Jones</snm><fnm>M</fnm></au><au><snm>Bellgard</snm><fnm>M</fnm></au><au><snm>Ksiazkiewicz</snm><fnm>M</fnm></au><au><snm>Wolko</snm><fnm>B</fnm></au><au><snm>Barker</snm><fnm>S</fnm></au><au><snm>Oliver</snm><fnm>R</fnm></au><au><snm>Cowling</snm><fnm>W</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2006</pubdate><volume>113</volume><fpage>225</fpage><lpage>238</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s00122-006-0288-0</pubid><pubid idtype="pmpid" link="fulltext">16791689</pubid></pubidlist></xrefbib></bibl><bibl id="B22"><title><p>Development of microsatellites inLupinus luteus(Fabaceae) and cross-species amplification in other lupine species</p></title><aug><au><snm>Parra Gonzalez</snm><fnm>L</fnm></au><au><snm>Straub</snm><fnm>S</fnm></au><au><snm>Doyle</snm><fnm>J</fnm></au><au><snm>Mora Ortega</snm><fnm>P</fnm></au><au><snm>Salvo Garrido</snm><fnm>H</fnm></au><au><snm>Maureira Butler</snm><fnm>I</fnm></au></aug><source>Am J Bot</source><pubdate>2010</pubdate><volume>97</volume><fpage>e72</fpage><lpage>e74</lpage><xrefbib><pubidlist><pubid idtype="doi">10.3732/ajb.1000170</pubid><pubid idtype="pmpid" link="fulltext">21616875</pubid></pubidlist></xrefbib></bibl><bibl id="B23"><title><p>Development of genomic resources for the narrow-leafed lupin (Lupinus angustifolius): construction of a bacterial artificial chromosome (BAC) library and BAC-end sequencing</p></title><aug><au><snm>Gao</snm><fnm>LL</fnm></au><au><snm>Hane</snm><fnm>JK</fnm></au><au><snm>Kamphuis</snm><fnm>LG</fnm></au><au><snm>Foley</snm><fnm>R</fnm></au><au><snm>Shi</snm><fnm>BJ</fnm></au><au><snm>Atkins</snm><fnm>CA</fnm></au><au><snm>Singh</snm><fnm>KB</fnm></au></aug><source>BMC Genomics</source><pubdate>2011</pubdate><volume>12</volume><fpage>521</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-12-521</pubid><pubid idtype="pmcid">3206524</pubid><pubid idtype="pmpid" link="fulltext">22014081</pubid></pubidlist></xrefbib></bibl><bibl id="B24"><title><p>Development and characterization of genic SSR markers in Medicago truncatula and their transferability in leguminous and non-leguminous species</p></title><aug><au><snm>Gupta</snm><fnm>S</fnm></au><au><snm>Prasad</snm><fnm>M</fnm></au></aug><source>Genome</source><pubdate>2009</pubdate><volume>52</volume><fpage>761</fpage><lpage>771</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1139/G09-051</pubid><pubid idtype="pmpid" link="fulltext">19935924</pubid></pubidlist></xrefbib></bibl><bibl id="B25"><title><p>Data mining for simple sequence repeats in expressed sequence tags from barley, maize, rice, sorghum and wheat</p></title><aug><au><snm>Kantety</snm><fnm>RM</fnm></au><au><snm>Mathews</snm><fnm>DE</fnm></au><au><snm>Sorrels</snm><fnm>ME</fnm></au></aug><source>Plant Mol Biol</source><pubdate>2002</pubdate><volume>148</volume><fpage>501</fpage><lpage>510</lpage></bibl><bibl id="B26"><title><p>Nonrandom distribution and frequencies of genomic and EST-derived microsatellite markers in rice, wheat, and barley</p></title><aug><au><snm>La Rota</snm><fnm>RM</fnm></au><au><snm>Kantety</snm><fnm>RV</fnm></au><au><snm>Yu</snm><fnm>JK</fnm></au><au><snm>Sorrells</snm><fnm>ME</fnm></au></aug><source>BMC Genomics</source><pubdate>2005</pubdate><volume>6</volume><fpage>23</fpage><lpage>35</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-6-23</pubid><pubid idtype="pmcid">550658</pubid><pubid idtype="pmpid" link="fulltext">15720707</pubid></pubidlist></xrefbib></bibl><bibl id="B27"><title><p>Study of simple sequence repeat (SSR) markers from wheat expressed sequence tags (ESTs)</p></title><aug><au><snm>Nicot</snm><fnm>N</fnm></au><au><snm>Chiquet</snm><fnm>VB</fnm></au><au><snm>Amilhat</snm><fnm>L</fnm></au><au><snm>Legeai</snm><fnm>F</fnm></au><au><snm>Leroy</snm><fnm>P</fnm></au><au><snm>Bernard</snm><fnm>M</fnm></au><au><snm>Sourdille</snm><fnm>P</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2004</pubdate><volume>109</volume><fpage>800</fpage><lpage>805</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s00122-004-1685-x</pubid><pubid idtype="pmpid" link="fulltext">15146317</pubid></pubidlist></xrefbib></bibl><bibl id="B28"><title><p>Exploiting EST databases for the development and characterization of gene-derived SSR-markers in barley (Hordeum vulgare L.)</p></title><aug><au><snm>Thiel</snm><fnm>T</fnm></au><au><snm>Michalek</snm><fnm>W</fnm></au><au><snm>Varshney</snm><fnm>RK</fnm></au><au><snm>Graner</snm><fnm>A</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2003</pubdate><volume>106</volume><fpage>411</fpage><lpage>422</lpage><xrefbib><pubid idtype="pmpid" link="fulltext">12589540</pubid></xrefbib></bibl><bibl id="B29"><title><p>The insertion/deletion polymorphisms in the waxy gene of barley genetic resources from East Asia</p></title><aug><au><snm>Domon</snm><fnm>E</fnm></au><au><snm>Fuijita</snm><fnm>M</fnm></au><au><snm>Ishikawa</snm><fnm>N</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2002</pubdate><volume>104</volume><fpage>132</fpage><lpage>138</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s001220200016</pubid><pubid idtype="pmpid" link="fulltext">12579438</pubid></pubidlist></xrefbib></bibl><bibl id="B30"><title><p>Microsatellite and sequence-tagged site markers diagnostic for the rice bacterial leaf blight resistance gene xa-5</p></title><aug><au><snm>Blair</snm><fnm>M</fnm></au><au><snm>McCouch</snm><fnm>SR</fnm></au></aug><source>Theor Appl Genet</source><pubdate>1997</pubdate><volume>95</volume><fpage>174</fpage><lpage>184</lpage><xrefbib><pubid idtype="doi">10.1007/s001220050545</pubid></xrefbib></bibl><bibl id="B31"><title><p>Microsatellites and a single nucleotide polymorphism differenciate apparent amylase classes in an extended pedigree of US rice germplasm</p></title><aug><au><snm>Ayres</snm><fnm>NM</fnm></au><au><snm>McClung</snm><fnm>AM</fnm></au><au><snm>Larkin</snm><fnm>PD</fnm></au><au><snm>Bligh</snm><fnm>HFJ</fnm></au><au><snm>Jones</snm><fnm>CA</fnm></au><au><snm>Park</snm><fnm>WD</fnm></au></aug><source>Theor Appl Genet</source><pubdate>1997</pubdate><volume>94</volume><fpage>773</fpage><lpage>781</lpage><xrefbib><pubid idtype="doi">10.1007/s001220050477</pubid></xrefbib></bibl><bibl id="B32"><title><p>Characterization of Waxy microsatellite classes that are closely linked to the rice Waxy gene and amylose content in Thai rice germplasm Songklanakarin</p></title><aug><au><snm>Prathepha</snm><fnm>P</fnm></au></aug><source>J Sci Technol</source><pubdate>2003</pubdate><volume>25</volume><fpage>1</fpage><lpage>8</lpage></bibl><bibl id="B33"><title><p>Identification of Microsatellite (SSR) and RAPD Markers Linked to Rice Blast Disease Resistance gene in Rice (Oryza sativa L.)</p></title><aug><au><snm>Selvaraj</snm><fnm>I</fnm></au><au><snm>Nagarajan</snm><fnm>P</fnm></au><au><snm>Thiyagarajan</snm><fnm>K</fnm></au><au><snm>Bharathi</snm><fnm>M</fnm></au><au><snm>Rabindran</snm><fnm>R</fnm></au></aug><source>African J Biotechnol</source><pubdate>2011</pubdate><volume>10</volume><fpage>3301</fpage><lpage>3321</lpage></bibl><bibl id="B34"><title><p>Validation of a major QTL for scab resistance with SSR markers and use of marker-assisted selection in wheat</p></title><aug><au><snm>Zhou</snm><fnm>WC</fnm></au><au><snm>Kolb</snm><fnm>FL</fnm></au><au><snm>Bai</snm><fnm>GH</fnm></au><au><snm>Domier</snm><fnm>LL</fnm></au><au><snm>Boze</snm><fnm>LK</fnm></au><au><snm>Smith</snm><fnm>NJ</fnm></au></aug><source>Plant Breeding</source><pubdate>2003</pubdate><volume>122</volume><fpage>40</fpage><lpage>46</lpage><xrefbib><pubid idtype="doi">10.1046/j.1439-0523.2003.00802.x</pubid></xrefbib></bibl><bibl id="B35"><title><p>Simple Sequence Repeat Marker Associated with a Natural Leaf Defoliation Trait in Tetraploid Cotton</p></title><aug><au><snm>Abdurakhmonov</snm><fnm>IY</fnm></au><au><snm>Abdullaev</snm><fnm>AA</fnm></au><au><snm>Saha</snm><fnm>S</fnm></au><au><snm>Buriev</snm><fnm>ZT</fnm></au><au><snm>Arslanov</snm><fnm>D</fnm></au><au><snm>Kuryazov</snm><fnm>Z</fnm></au><au><snm>Mavlonov</snm><fnm>GT</fnm></au><au><snm>Rizaeva</snm><fnm>SM</fnm></au><au><snm>Reddy</snm><fnm>UK</fnm></au><au><snm>Jenkins</snm><fnm>JN</fnm></au><au><snm>Abdullaev</snm><fnm>A</fnm></au><au><snm>Abdukarimov</snm><fnm>A</fnm></au></aug><source>J Hered</source><pubdate>2005</pubdate><volume>96</volume><fpage>644</fpage><lpage>653</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/jhered/esi097</pubid><pubid idtype="pmpid" link="fulltext">16159909</pubid></pubidlist></xrefbib></bibl><bibl id="B36"><title><p>Identification of associations between SSR markers and fiber traits in an exotic germplasm derived from multiple crosses among Gossypium tetraploid species</p></title><aug><au><snm>Zeng</snm><fnm>L</fnm></au><au><snm>Meredith</snm><fnm>WR</fnm><suf>Jr</suf></au><au><snm>Guti&#233;rrez</snm><fnm>OA</fnm></au><au><snm>Boykin</snm><fnm>DL</fnm></au></aug><source>Theor Appl Genet</source><pubdate>2009</pubdate><volume>119</volume><fpage>93</fpage><lpage>103</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s00122-009-1020-7</pubid><pubid idtype="pmpid" link="fulltext">19360391</pubid></pubidlist></xrefbib></bibl><bibl id="B37"><title><p>Development of a DNA marker tightly linked to low-alkaloid gene iucundus in narrow-leafed lupin (Lupinus angustifolius L.) for marker-assisted selection</p></title><aug><au><snm>Li</snm><fnm>X</fnm></au><au><snm>Yang</snm><fnm>H</fnm></au><au><snm>Buirchell</snm><fnm>B</fnm></au><au><snm>Yan</snm><fnm>G</fnm></au></aug><source>Crop and Pasture Sci</source><pubdate>2011</pubdate><volume>62</volume><fpage>218</fpage><lpage>224</lpage><xrefbib><pubid idtype="doi">10.1071/CP10352</pubid></xrefbib></bibl><bibl id="B38"><title><p>Improved method for the isolation of RNA from plant tissues</p></title><aug><au><snm>Logeman</snm><fnm>J</fnm></au><au><snm>Schell</snm><fnm>J</fnm></au><au><snm>Willmitzer</snm><fnm>L</fnm></au></aug><source>Anal Biochem</source><pubdate>1987</pubdate><volume>163</volume><fpage>16</fpage><lpage>20</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/0003-2697(87)90086-8</pubid><pubid idtype="pmpid" link="fulltext">2441623</pubid></pubidlist></xrefbib></bibl><bibl id="B39"><title><p>Sequencing and de novo analysis of a coral larval transcriptome using 454 GSFlx</p></title><aug><au><snm>Meyer</snm><fnm>E</fnm></au><au><snm>Aglyamova</snm><fnm>GV</fnm></au><au><snm>Wang</snm><fnm>S</fnm></au><au><snm>Buchanan-Carter</snm><fnm>J</fnm></au><au><snm>Abrego</snm><fnm>D</fnm></au><au><snm>Colbourne</snm><fnm>JK</fnm></au><au><snm>Willis</snm><fnm>BL</fnm></au><au><snm>Matz</snm><fnm>MV</fnm></au></aug><source>BMC Genomics</source><pubdate>2009</pubdate><volume>10</volume><fpage>219</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-10-219</pubid><pubid idtype="pmcid">2689275</pubid><pubid idtype="pmpid" link="fulltext">19435504</pubid></pubidlist></xrefbib></bibl><bibl id="B40"><title><p>WebGBrowse: a web server for GBrowse</p></title><aug><au><snm>Podicheti</snm><fnm>R</fnm></au><au><snm>Gollapudi</snm><fnm>R</fnm></au><au><snm>Dong</snm><fnm>Q</fnm></au></aug><source>Bioinformatics</source><pubdate>2009</pubdate><volume>25</volume><fpage>1550</fpage><lpage>1551</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/bioinformatics/btp239</pubid><pubid idtype="pmpid" link="fulltext">19357095</pubid></pubidlist></xrefbib></bibl><bibl id="B41"><title><p>A rapid DNA isolation procedure for small quantities of fresh leaf tissue</p></title><aug><au><snm>Doyle</snm><fnm>JJ</fnm></au><au><snm>Doyle</snm><fnm>JL</fnm></au></aug><source>Phytochem Bull</source><pubdate>1978</pubdate><volume>19</volume><fpage>11</fpage><lpage>15</lpage></bibl><bibl id="B42"><title><p>Computational and experimental analysis of microsatellites in rice (Oryza sativaL.): Frequency, length variation, transposon associations, and genetic marker potential</p></title><aug><au><snm>Temnykh</snm><fnm>S</fnm></au><au><snm>DeClerck</snm><fnm>G</fnm></au><au><snm>Lukashova</snm><fnm>A</fnm></au><au><snm>Lipovich</snm><fnm>L</fnm></au><au><snm>Cartinhour</snm><fnm>S</fnm></au><au><snm>McCouch</snm><fnm>S</fnm></au></aug><source>Genome Res</source><pubdate>2001</pubdate><volume>11</volume><fpage>1441</fpage><lpage>1452</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1101/gr.184001</pubid><pubid idtype="pmcid">311097</pubid><pubid idtype="pmpid" link="fulltext">11483586</pubid></pubidlist></xrefbib></bibl><bibl id="B43"><title><p>Plant genome sequencing: applications for crop improvement</p></title><aug><au><snm>Edwards</snm><fnm>D</fnm></au><au><snm>Batley</snm><fnm>J</fnm></au></aug><source>Plant Biotech J</source><pubdate>2010</pubdate><volume>8</volume><fpage>2</fpage><lpage>9</lpage><xrefbib><pubid idtype="doi">10.1111/j.1467-7652.2009.00459.x</pubid></xrefbib></bibl><bibl id="B44"><title><p>Next is now: new technologies for sequencing of genomes, transcriptomes, and beyond</p></title><aug><au><snm>Lister</snm><fnm>R</fnm></au><au><snm>Gregory</snm><fnm>BD</fnm></au><au><snm>Ecker</snm><fnm>JR</fnm></au></aug><source>Curr Opin Plant Biol</source><pubdate>2009</pubdate><volume>12</volume><fpage>107</fpage><lpage>118</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.pbi.2008.11.004</pubid><pubid idtype="pmcid">2723731</pubid><pubid idtype="pmpid" link="fulltext">19157957</pubid></pubidlist></xrefbib></bibl><bibl id="B45"><title><p>GC_AT-content spikes as genomic punctuation marks</p></title><aug><au><snm>Zhang</snm><fnm>L</fnm></au><au><snm>Kasif</snm><fnm>S</fnm></au><au><snm>Cantor</snm><fnm>CR</fnm></au><au><snm>Broude</snm><fnm>NE</fnm></au></aug><source>Proc Natl Acad Sci</source><pubdate>2004</pubdate><volume>101</volume><fpage>16855</fpage><lpage>16860</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1073/pnas.0407821101</pubid><pubid idtype="pmcid">534751</pubid><pubid idtype="pmpid" link="fulltext">15548610</pubid></pubidlist></xrefbib></bibl><bibl id="B46"><title><p>UTRdb and UTRsite: specialized database of sequences and functional elements of 5&#8217; and 3&#8217; unstranslated regions of eukaryotic mRNAs. Update 2002</p></title><aug><au><snm>Pesole</snm><fnm>G</fnm></au><au><snm>Liuni</snm><fnm>S</fnm></au><au><snm>Grillo</snm><fnm>G</fnm></au><au><snm>Licciulli</snm><fnm>F</fnm></au><au><snm>Mignone</snm><fnm>F</fnm></au><au><snm>Gissi</snm><fnm>C</fnm></au><au><snm>Saccone</snm><fnm>C</fnm></au></aug><source>Nucleic Acids Res</source><pubdate>2002</pubdate><volume>30</volume><fpage>335</fpage><lpage>340</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1093/nar/30.1.335</pubid><pubid idtype="pmcid">99102</pubid><pubid idtype="pmpid" link="fulltext">11752330</pubid></pubidlist></xrefbib></bibl><bibl id="B47"><title><p>The GAMYB protein from barley interacts with the DOF transcription factor BPBF and activates endosperm-specific genes during seed development</p></title><aug><au><snm>Diaz</snm><fnm>I</fnm></au><au><snm>Vicente-Carbajosa</snm><fnm>J</fnm></au><au><snm>Abraham</snm><fnm>Z</fnm></au><au><snm>Martinez</snm><fnm>M</fnm></au><au><snm>Isabel-La Moneda</snm><fnm>I</fnm></au><au><snm>Carbonero</snm><fnm>P</fnm></au></aug><source>Plant J</source><pubdate>2002</pubdate><volume>29</volume><fpage>453</fpage><lpage>464</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1046/j.0960-7412.2001.01230.x</pubid><pubid idtype="pmpid" link="fulltext">11846878</pubid></pubidlist></xrefbib></bibl><bibl id="B48"><title><p>Seed dormancy and germination</p></title><aug><au><snm>Koornneff</snm><fnm>M</fnm></au><au><snm>Bentsink</snm><fnm>L</fnm></au><au><snm>Hilhorst</snm><fnm>H</fnm></au></aug><source>Curr Opin Plant Biol</source><pubdate>2002</pubdate><volume>5</volume><fpage>33</fpage><lpage>36</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/S1369-5266(01)00219-9</pubid><pubid idtype="pmpid" link="fulltext">11788305</pubid></pubidlist></xrefbib></bibl><bibl id="B49"><title><p>Identification of tissue-specific, abiotic stress responsive gene expression patterns in wine grape (Vitis vinifera L.) based on curation and mining of large-scale EST data sets</p></title><aug><au><snm>Tillett</snm><fnm>RL</fnm></au><au><snm>Erg&#252;l</snm><fnm>A</fnm></au><au><snm>Albion</snm><fnm>RL</fnm></au><au><snm>Schlauch</snm><fnm>KA</fnm></au><au><snm>Cramer</snm><fnm>GR</fnm></au><au><snm>Cushman</snm><fnm>JC</fnm></au></aug><source>BMC Plant Biology</source><pubdate>2011</pubdate><volume>11</volume><fpage>86</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2229-11-86</pubid><pubid idtype="pmcid">3224124</pubid><pubid idtype="pmpid" link="fulltext">21592389</pubid></pubidlist></xrefbib></bibl><bibl id="B50"><title><p>Expressed Sequence Tags from a Root-Hair-Enriched Medicago truncatula cDNA Library</p></title><aug><au><snm>Covitz</snm><fnm>PA</fnm></au><au><snm>Smith</snm><fnm>LS</fnm></au><au><snm>Long</snm><fnm>SR</fnm></au></aug><source>Plant Physiol</source><pubdate>1998</pubdate><volume>117</volume><fpage>1325</fpage><lpage>1332</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1104/pp.117.4.1325</pubid><pubid idtype="pmcid">34896</pubid><pubid idtype="pmpid" link="fulltext">9701588</pubid></pubidlist></xrefbib></bibl><bibl id="B51"><title><p>A family of transcripts encoding water channel proteins: Tissue-specific expression in the common ice plant</p></title><aug><au><snm>Yamada</snm><fnm>S</fnm></au><au><snm>Katsuhara</snm><fnm>M</fnm></au><au><snm>Kelly</snm><fnm>WB</fnm></au><au><snm>Michalowski</snm><fnm>CB</fnm></au><au><snm>Bohnert</snm><fnm>HJ</fnm></au></aug><source>Plant Cell</source><pubdate>1995</pubdate><volume>7</volume><fpage>1129</fpage><lpage>1142</lpage><xrefbib><pubidlist><pubid idtype="pmcid">160939</pubid><pubid idtype="pmpid" link="fulltext">7549476</pubid></pubidlist></xrefbib></bibl><bibl id="B52"><title><p>An analysis of synteny of Arachis with Lotus and Medicago sheds new light on the structure, stability and evolution of legume genomes</p></title><aug><au><snm>Bertioli</snm><fnm>DJ</fnm></au><au><snm>Moretzsohn</snm><fnm>MC</fnm></au><au><snm>Madsen</snm><fnm>LH</fnm></au><au><snm>Sandal</snm><fnm>N</fnm></au><au><snm>Leal-Bertioli</snm><fnm>S</fnm></au><au><snm>Guimar&#227;es</snm><fnm>PM</fnm></au><au><snm>Hougaard</snm><fnm>BK</fnm></au><au><snm>Fredslund</snm><fnm>J</fnm></au><au><snm>Schauser</snm><fnm>L</fnm></au><au><snm>Nielsen</snm><fnm>AM</fnm></au><au><snm>Sato</snm><fnm>S</fnm></au><au><snm>Tabata</snm><fnm>S</fnm></au><au><snm>Cannon</snm><fnm>SB</fnm></au><au><snm>Stougaard</snm><fnm>J</fnm></au></aug><source>BMC Genomics</source><pubdate>2009</pubdate><volume>10</volume><fpage>45</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2164-10-45</pubid><pubid idtype="pmcid">2656529</pubid><pubid idtype="pmpid" link="fulltext">19166586</pubid></pubidlist></xrefbib></bibl><bibl id="B53"><title><p>A phylogeny of legumes (leguminosae) based on analysis of the plastid MATK gene resolves many well-supported subclades within the family</p></title><aug><au><snm>Wojciechowski</snm><fnm>MF</fnm></au><au><snm>Lavin</snm><fnm>M</fnm></au><au><snm>Sanderson</snm><fnm>MJ</fnm></au></aug><source>Am J Bot</source><pubdate>2004</pubdate><volume>91</volume><fpage>1846</fpage><lpage>1862</lpage><xrefbib><pubidlist><pubid idtype="doi">10.3732/ajb.91.11.1846</pubid><pubid idtype="pmpid" link="fulltext">21652332</pubid></pubidlist></xrefbib></bibl><bibl id="B54"><title><p>Computational and experimental characterization of physically clustered simple sequence repeats in plants</p></title><aug><au><snm>Cardle</snm><fnm>I</fnm></au><au><snm>Ramsay</snm><fnm>L</fnm></au><au><snm>Milbourne</snm><fnm>D</fnm></au><au><snm>Macaulay</snm><fnm>M</fnm></au><au><snm>Marshall</snm><fnm>D</fnm></au><au><snm>Waugh</snm><fnm>R</fnm></au></aug><source>Genetics</source><pubdate>2000</pubdate><volume>156</volume><fpage>847</fpage><lpage>854</lpage><xrefbib><pubidlist><pubid idtype="pmcid">1461288</pubid><pubid idtype="pmpid" link="fulltext">11014830</pubid></pubidlist></xrefbib></bibl><bibl id="B55"><title><p>In silico analysis on frequency and distribution of microsatellites in ESTs of some cereals species</p></title><aug><au><snm>Varshney</snm><fnm>RK</fnm></au><au><snm>Thiel</snm><fnm>T</fnm></au><au><snm>Stein</snm><fnm>N</fnm></au><au><snm>Langridge</snm><fnm>P</fnm></au><au><snm>Graner</snm><fnm>A</fnm></au></aug><source>Cell Mol Biol Lett</source><pubdate>2002</pubdate><volume>7</volume><fpage>537</fpage><lpage>546</lpage><xrefbib><pubid idtype="pmpid">12378259</pubid></xrefbib></bibl><bibl id="B56"><title><p>Genic microsatellite markers in plants: features an applications</p></title><aug><au><snm>Varshney</snm><fnm>RK</fnm></au><au><snm>Graner</snm><fnm>A</fnm></au><au><snm>Sorrels</snm><fnm>ME</fnm></au></aug><source>Trends Biotechnol</source><pubdate>2005</pubdate><volume>23</volume><fpage>48</fpage><lpage>55</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.tibtech.2004.11.005</pubid><pubid idtype="pmpid" link="fulltext">15629858</pubid></pubidlist></xrefbib></bibl><bibl id="B57"><title><p>Analysis of microsatellites in major crops assessed by computational and experimental approaches</p></title><aug><au><snm>Gao</snm><fnm>L</fnm></au><au><snm>Tang</snm><fnm>J</fnm></au><au><snm>Li</snm><fnm>H</fnm></au><au><snm>Jia</snm><fnm>J</fnm></au></aug><source>Mol Breeding</source><pubdate>2003</pubdate><volume>12</volume><fpage>245</fpage><lpage>261</lpage><xrefbib><pubid idtype="doi">10.1023/A:1026346121217</pubid></xrefbib></bibl><bibl id="B58"><title><p>Selection against frameshift mutations limits expansion in coding DNA</p></title><aug><au><snm>Metzgar</snm><fnm>D</fnm></au><au><snm>Bytof</snm><fnm>J</fnm></au><au><snm>Wills</snm><fnm>C</fnm></au></aug><source>Genome Res</source><pubdate>2000</pubdate><volume>10</volume><fpage>72</fpage><lpage>80</lpage><xrefbib><pubidlist><pubid idtype="pmcid">310501</pubid><pubid idtype="pmpid" link="fulltext">10645952</pubid></pubidlist></xrefbib></bibl><bibl id="B59"><title><p>Frequency, type, distribution and annotation of simple sequence repeats in Rosaceae ESTs</p></title><aug><au><snm>Jung</snm><fnm>S</fnm></au><au><snm>Abbott</snm><fnm>A</fnm></au><au><snm>Jesudurai</snm><fnm>C</fnm></au><au><snm>Tomkins</snm><fnm>J</fnm></au><au><snm>Main</snm><fnm>D</fnm></au></aug><source>Funct Integr Genomics</source><pubdate>2005</pubdate><volume>5</volume><fpage>136</fpage><lpage>143</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1007/s10142-005-0139-0</pubid><pubid idtype="pmpid" link="fulltext">15761705</pubid></pubidlist></xrefbib></bibl><bibl id="B60"><title><p>Computational tools for Brassica-Arabidopsis comparative genomics</p></title><aug><au><snm>Beckett</snm><fnm>P</fnm></au><au><snm>Bancroft</snm><fnm>I</fnm></au><au><snm>Trick</snm><fnm>M</fnm></au></aug><source>Comp Funct Genom</source><pubdate>2005</pubdate><volume>6</volume><fpage>147</fpage><lpage>152</lpage><xrefbib><pubid idtype="doi">10.1002/cfg.463</pubid></xrefbib></bibl><bibl id="B61"><title><p>Paleopolyploidy and gene duplication in soybean and other legumes</p></title><aug><au><snm>Shoemaker</snm><fnm>RC</fnm></au><au><snm>Schlueter</snm><fnm>J</fnm></au><au><snm>Doyle</snm><fnm>JJ</fnm></au></aug><source>Curr Opin Plant Biol</source><pubdate>2006</pubdate><volume>9</volume><fpage>104</fpage><lpage>109</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.pbi.2006.01.007</pubid><pubid idtype="pmpid" link="fulltext">16458041</pubid></pubidlist></xrefbib></bibl><bibl id="B62"><title><p>Highly syntenic regions in the genomes of soybean,Medicago truncatula, andArabidopsis thaliana</p></title><aug><au><snm>Mudge</snm><fnm>J</fnm></au><au><snm>Cannon</snm><fnm>SB</fnm></au><au><snm>Kalo</snm><fnm>P</fnm></au><au><snm>Oldroyd</snm><fnm>GED</fnm></au><au><snm>Roe</snm><fnm>BA</fnm></au><au><snm>Town</snm><fnm>CD</fnm></au><au><snm>Young</snm><fnm>ND</fnm></au></aug><source>BMC Plant Biology</source><pubdate>2005</pubdate><volume>5</volume><fpage>15</fpage><xrefbib><pubidlist><pubid idtype="doi">10.1186/1471-2229-5-15</pubid><pubid idtype="pmcid">1201151</pubid><pubid idtype="pmpid" link="fulltext">16102170</pubid></pubidlist></xrefbib></bibl><bibl id="B63"><title><p>Recent insights into mechanisms of genome size change in plants</p></title><aug><au><snm>Grover</snm><fnm>CE</fnm></au><au><snm>Wendel</snm><fnm>JF</fnm></au></aug><source>J Botany 2010</source><pubdate>2010</pubdate><volume>Article ID 382732</volume><fpage>1</fpage><lpage>8</lpage></bibl><bibl id="B64"><title><p>Uneven chromosome contraction and expansion in the maize genome</p></title><aug><au><snm>Bruggmann</snm><fnm>R</fnm></au><au><snm>Bharti</snm><fnm>AK</fnm></au><au><snm>Gundlach</snm><fnm>H</fnm></au><au><snm>Lai</snm><fnm>J</fnm></au><au><snm>Young</snm><fnm>S</fnm></au><au><snm>Pontaroli</snm><fnm>AC</fnm></au><au><snm>Wei</snm><fnm>F</fnm></au><au><snm>Haberer</snm><fnm>G</fnm></au><au><snm>Fuks</snm><fnm>G</fnm></au><au><snm>Du</snm><fnm>C</fnm></au><au><snm>Raymond</snm><fnm>C</fnm></au><au><snm>Estep</snm><fnm>MC</fnm></au><au><snm>Liu</snm><fnm>R</fnm></au><au><snm>Bennetzen</snm><fnm>JL</fnm></au><au><snm>Chan</snm><fnm>AP</fnm></au><au><snm>Rabinowicz</snm><fnm>PD</fnm></au><au><snm>Quackenbush</snm><fnm>J</fnm></au><au><snm>Barbazuk</snm><fnm>WB</fnm></au><au><snm>Wing</snm><fnm>RA</fnm></au><au><snm>Birren</snm><fnm>B</fnm></au><au><snm>Nusbaum</snm><fnm>C</fnm></au><au><snm>Rounsley</snm><fnm>S</fnm></au><au><snm>Mayer</snm><fnm>FX</fnm></au><au><snm>Messing</snm><fnm>J</fnm></au></aug><source>Genome Res</source><pubdate>2006</pubdate><volume>16</volume><fpage>1241</fpage><lpage>1251</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1101/gr.5338906</pubid><pubid idtype="pmcid">1581433</pubid><pubid idtype="pmpid" link="fulltext">16902087</pubid></pubidlist></xrefbib></bibl><bibl id="B65"><title><p>Phylogenetic relationships in Lupinus (Fabaceae: Papilionoideae) based on internal transcribed spacer sequences (ITS) of nuclear ribosomal DNA</p></title><aug><au><snm>Ainouche</snm><fnm>AK</fnm></au><au><snm>Bayer</snm><fnm>R</fnm></au></aug><source>Am J Bot</source><pubdate>1999</pubdate><volume>86</volume><fpage>590</fpage><lpage>607</lpage><xrefbib><pubidlist><pubid idtype="doi">10.2307/2656820</pubid><pubid idtype="pmpid" link="fulltext">10205079</pubid></pubidlist></xrefbib></bibl><bibl id="B66"><title><p>Lupinus x hispanicoluteus &#8211; An interspecific hybrid of Old world lupins</p></title><aug><au><snm>Swiecicki</snm><fnm>W</fnm></au><au><snm>Swiecicki</snm><fnm>WK</fnm></au><au><snm>Nijaki</snm><fnm>T</fnm></au></aug><source>Acta Soc Bot Pol</source><pubdate>1999</pubdate><volume>68</volume><fpage>217</fpage><lpage>220</lpage></bibl><bibl id="B67"><title><p>Diversification of Lupinus (Leguminosae) in the western New World: Derived evolution of perennial life history and colonization of montane habitats</p></title><aug><au><snm>Drummond</snm><fnm>CS</fnm></au></aug><source>Mol Phylogenet Evol</source><pubdate>2008</pubdate><volume>48</volume><fpage>408</fpage><lpage>421</lpage><xrefbib><pubidlist><pubid idtype="doi">10.1016/j.ympev.2008.03.009</pubid><pubid idtype="pmpid" link="fulltext">18534869</pubid></pubidlist></xrefbib></bibl><bibl id="B68"><aug><au><snm>Callow</snm><fnm>JA</fnm></au><au><snm>Ford-Lloyd</snm><fnm>BV</fnm></au><au><snm>Newbury</snm><fnm>HJ</fnm></au></aug><source>Biotechnology and plant genetic resources: conservation and use</source><publisher>CAB International, Wallingford, UK</publisher><pubdate>1997</pubdate><fpage>49</fpage><lpage>76</lpage></bibl><bibl id="B69"><title><p>Global values of Biological diversity: the public interest in the conservation of plant genetic resources for agriculture</p></title><aug><au><snm>Swanson</snm><fnm>T</fnm></au></aug><source>Plant Genet Res Newsletter</source><pubdate>1996</pubdate><volume>105</volume><fpage>1</fpage><lpage>3</lpage></bibl></refgrp>
+   </bm>
+</art>

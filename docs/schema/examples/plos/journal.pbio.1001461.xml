@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">plos</journal-id>
+      <journal-id journal-id-type="nlm-ta">PLoS Biol</journal-id>
+      <journal-id journal-id-type="pmc">plosbiol</journal-id>
+      <journal-title-group>
+        <journal-title>PLoS Biology</journal-title>
+      </journal-title-group>
+      <issn pub-type="ppub">1544-9173</issn>
+      <issn pub-type="epub">1545-7885</issn>
+      <publisher>
+        <publisher-name>Public Library of Science</publisher-name>
+        <publisher-loc>San Francisco, USA</publisher-loc>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">PBIOLOGY-D-12-01388</article-id>
+      <article-id pub-id-type="doi">10.1371/journal.pbio.1001461</article-id>
+      <article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Biology</subject>
+          <subj-group>
+            <subject>Developmental biology</subject>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline-v2">
+          <subject>Medicine</subject>
+          <subj-group>
+            <subject>Oncology</subject>
+            <subj-group>
+              <subject>Basic cancer research</subject>
+            </subj-group>
+          </subj-group>
+        </subj-group>
+        <subj-group subj-group-type="Discipline">
+          <subject>Oncology</subject>
+          <subject>Developmental Biology</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>ELF5 Suppresses Estrogen Sensitivity and Underpins the Acquisition of Antiestrogen Resistance in Luminal Breast Cancer</article-title>
+        <alt-title alt-title-type="running-head">Elf5 in Breast Cancer</alt-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Kalyuga</surname>
+            <given-names>Maria</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="fn" rid="fn2">
+            <sup>¶</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Gallego-Ortega</surname>
+            <given-names>David</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="fn" rid="fn2">
+            <sup>¶</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Lee</surname>
+            <given-names>Heather J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Roden</surname>
+            <given-names>Daniel L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Cowley</surname>
+            <given-names>Mark J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Caldon</surname>
+            <given-names>C. Elizabeth</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Stone</surname>
+            <given-names>Andrew</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Allerdice</surname>
+            <given-names>Stephanie L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Valdes-Mora</surname>
+            <given-names>Fatima</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Launchbury</surname>
+            <given-names>Rosalind</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff3">
+            <sup>3</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Statham</surname>
+            <given-names>Aaron L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Armstrong</surname>
+            <given-names>Nicola</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff4">
+            <sup>4</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Alles</surname>
+            <given-names>M. Chehani</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Young</surname>
+            <given-names>Adelaide</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff5">
+            <sup>5</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Egger</surname>
+            <given-names>Andrea</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Au</surname>
+            <given-names>Wendy</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Piggin</surname>
+            <given-names>Catherine L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Evans</surname>
+            <given-names>Cara J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Ledger</surname>
+            <given-names>Anita</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Brummer</surname>
+            <given-names>Tilman</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="fn" rid="fn1">
+            <sup>¤</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Oakes</surname>
+            <given-names>Samantha R.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Kaplan</surname>
+            <given-names>Warren</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff2">
+            <sup>2</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Gee</surname>
+            <given-names>Julia M. W.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff7">
+            <sup>7</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Nicholson</surname>
+            <given-names>Robert I.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff7">
+            <sup>7</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" deceased="yes" xlink:type="simple">
+          <name name-style="western">
+            <surname>Sutherland</surname>
+            <given-names>Robert L.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Swarbrick</surname>
+            <given-names>Alexander</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Naylor</surname>
+            <given-names>Matthew J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff8">
+            <sup>8</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Clark</surname>
+            <given-names>Susan J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Carroll</surname>
+            <given-names>Jason S.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff3">
+            <sup>3</sup>
+          </xref>
+        </contrib>
+        <contrib contrib-type="author" xlink:type="simple">
+          <name name-style="western">
+            <surname>Ormandy</surname>
+            <given-names>Christopher J.</given-names>
+          </name>
+          <xref ref-type="aff" rid="aff1">
+            <sup>1</sup>
+          </xref>
+          <xref ref-type="aff" rid="aff6">
+            <sup>6</sup>
+          </xref>
+          <xref ref-type="corresp" rid="cor1">
+            <sup>*</sup>
+          </xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff1">
+        <label>1</label>
+        <addr-line>Cancer Research Program and The Kinghorn Cancer Centre, Garvan Institute of Medical Research, Darlinghurst, NSW, Australia</addr-line>
+      </aff>
+      <aff id="aff2">
+        <label>2</label>
+        <addr-line>Peter Wills Bioinformatics Centre, Garvan Institute of Medical Research, Darlinghurst, NSW, Australia</addr-line>
+      </aff>
+      <aff id="aff3">
+        <label>3</label>
+        <addr-line>Cancer Research UK, Cambridge Research Institute, Cambridge, United Kingdom</addr-line>
+      </aff>
+      <aff id="aff4">
+        <label>4</label>
+        <addr-line>School of Mathematics and Statistics, and Prince of Wales Clinical School, University of New South Wales Kensington NSW, Australia</addr-line>
+      </aff>
+      <aff id="aff5">
+        <label>5</label>
+        <addr-line>University of Bath, Bath, United Kingdom</addr-line>
+      </aff>
+      <aff id="aff6">
+        <label>6</label>
+        <addr-line>St Vincent's Clinical School, St Vincent's Hospital and University of New South Wales, Darlinghurst NSW, Australia</addr-line>
+      </aff>
+      <aff id="aff7">
+        <label>7</label>
+        <addr-line>Breast Cancer (Molecular Pharmacology) Group, Cardiff School of Pharmacy and Pharmaceutical Science, Cardiff University, Cardiff, Wales, United Kingdom</addr-line>
+      </aff>
+      <aff id="aff8">
+        <label>8</label>
+        <addr-line>Discipline of Physiology &amp; Bosch Institute, School of Medical Sciences, University of Sydney, NSW, Australia</addr-line>
+      </aff>
+      <contrib-group>
+        <contrib contrib-type="editor" xlink:type="simple">
+          <name name-style="western">
+            <surname>Hynes</surname>
+            <given-names>Nancy</given-names>
+          </name>
+          <role>Academic Editor</role>
+          <xref ref-type="aff" rid="edit1"/>
+        </contrib>
+      </contrib-group>
+      <aff id="edit1">
+        <addr-line>Friedrich Miescher Institute, Switzerland</addr-line>
+      </aff>
+      <author-notes>
+        <corresp id="cor1">* E-mail: <email xlink:type="simple">c.ormandy@garvan.org.au</email></corresp>
+        <fn fn-type="conflict">
+          <p>The authors have declared that no competing interests exist.</p>
+        </fn>
+        <fn fn-type="con">
+          <p>The author(s) have made the following declarations about their contributions: Conceived and designed the experiments: MK DGO HJL SRO CEC CA TB ASw MJN, JSC CJO. Performed the experiments: MK DGO HL CEC SLA FVM RL ASto CA AY AE WA CP CE AL. Analyzed the data: MK DGO HL MC CEC ASto SLA FVM RL ASw NA CA DR AY AE WA CP CE AL WK JMWG ASta MJNSC JSC CJO. Contributed reagents/materials/analysis tools: RIN RLS. Wrote the paper: All authors.</p>
+        </fn>
+        <fn id="fn1" fn-type="current-aff">
+          <label>¤</label>
+          <p>Current address: Institute for Molecular Medicine and Cell Research, Freiburg, Germany</p>
+        </fn>
+        <fn id="fn2" fn-type="other">
+          <p>¶ DGO and MK contributed equally to this work and are joint first authors.</p>
+        </fn>
+      </author-notes>
+      <pub-date pub-type="collection">
+        <month>12</month>
+        <year>2012</year>
+      </pub-date>
+      <pub-date pub-type="epub">
+        <day>27</day>
+        <month>12</month>
+        <year>2012</year>
+      </pub-date>
+      <volume>10</volume>
+      <issue>12</issue>
+      <elocation-id>e1001461</elocation-id>
+      <history>
+        <date date-type="received">
+          <day>9</day>
+          <month>4</month>
+          <year>2012</year>
+        </date>
+        <date date-type="accepted">
+          <day>14</day>
+          <month>11</month>
+          <year>2012</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-year>2012</copyright-year>
+        <copyright-holder>Kalyuga et al</copyright-holder>
+        <license xlink:type="simple">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+        </license>
+      </permissions>
+      <abstract abstract-type="toc">
+        <p>The transcription factor ELF5 is responsible for gene expression patterning underlying molecular subtypes of breast cancer and may mediate acquired resistance to anti-estrogen therapy.</p>
+      </abstract>
+      <abstract>
+        <p>We have previously shown that during pregnancy the E-twenty-six (ETS) transcription factor ELF5 directs the differentiation of mammary progenitor cells toward the estrogen receptor (ER)-negative and milk producing cell lineage, raising the possibility that ELF5 may suppress the estrogen sensitivity of breast cancers. To test this we constructed inducible models of <italic>ELF5</italic> expression in ER positive luminal breast cancer cells and interrogated them using transcript profiling and chromatin immunoprecipitation of DNA followed by DNA sequencing (ChIP-Seq). ELF5 suppressed ER and FOXA1 expression and broadly suppressed ER-driven patterns of gene expression including sets of genes distinguishing the luminal molecular subtype. Direct transcriptional targets of ELF5, which included <italic>FOXA1</italic>, <italic>EGFR</italic>, and <italic>MYC</italic>, accurately classified a large cohort of breast cancers into their intrinsic molecular subtypes, predicted ER status with high precision, and defined groups with differential prognosis. Knockdown of ELF5 in basal breast cancer cell lines suppressed basal patterns of gene expression and produced a shift in molecular subtype toward the claudin-low and normal-like groups. Luminal breast cancer cells that acquired resistance to the antiestrogen Tamoxifen showed greatly elevated levels of ELF5 and its transcriptional signature, and became dependent on ELF5 for proliferation, compared to the parental cells. Thus ELF5 provides a key transcriptional determinant of breast cancer molecular subtype by suppression of estrogen sensitivity in luminal breast cancer cells and promotion of basal characteristics in basal breast cancer cells, an action that may be utilised to acquire antiestrogen resistance.</p>
+      </abstract>
+      <abstract abstract-type="summary">
+        <title>Author Summary</title>
+        <p>The molecular subtypes of breast cancer are distinguished by their intrinsic patterns of gene expression and can be used to group patients with different prognoses and treatment options. Although molecular subtyping tests are currently under evaluation, some of them are already in use to better tailor therapy for patients; however, the molecular events that are responsible for these different patterns of gene expression in breast cancer are largely undefined. The elucidation of their mechanistic basis would improve our understanding of the disease process and enhance the chances of developing better predictive and prognostic markers, new therapies, and interventions to overcome resistance to existing therapies. Here, we show that the transcription factor ELF5 is responsible for much of the patterning of gene expression that distinguishes the breast cancer subtypes. Additionally, our data suggest that ELF5 may also be involved in the development of resistance to therapies designed to stop estrogen stimulation of breast cancer. These effects of ELF5 appear to represent a partial carryover into breast cancer of its normal role in the mammary gland, where it is responsible for the development of milk-producing structures during pregnancy.</p>
+      </abstract>
+      <funding-group>
+        <funding-statement>This work was funded by The National Health and Medical Research Council of Australia, New South Wales Cancer Council, Cancer Institute New South Wales, Banque Nationale de Paris-Paribas Australia and New Zealand, RT Hall Trust, Australian Cancer Research Foundation, Prostate Cancer Foundation Australia, Cure Cancer Foundation Australia, Breast Cancer Campaign UK, and the National Breast Cancer Foundation. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+      </funding-group>
+      <counts>
+        <page-count count="17"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec id="s1">
+      <title>Introduction</title>
+      <p>The molecular subtypes of breast cancer are distinguished by their intrinsic patterns of gene expression <xref ref-type="bibr" rid="pbio.1001461-Perou1">[1]</xref> that have been refined to become prognostic tests under evaluation or in use <xref ref-type="bibr" rid="pbio.1001461-Andre1">[2]</xref>. Improving our understanding of the molecular events specifying these subtypes offers the hope of new predictive and prognostic markers, development of new therapies, and interventions to overcome resistance to existing therapies. The estrogen receptor (ER)positive luminal subtypes are characterized by patterns of gene expression driven by the combined direct and indirect transcriptional influences of ER and FOXA1 <xref ref-type="bibr" rid="pbio.1001461-Hurtado1">[3]</xref>.</p>
+      <p>ELF5, also known as ESE2 <xref ref-type="bibr" rid="pbio.1001461-Lee1">[4]</xref> is a member of the epithelium specific (ESE) subgroup of the large E-twenty-six (ETS) transcription factor family <xref ref-type="bibr" rid="pbio.1001461-GutierrezHartmann1">[5]</xref>, found in lung, placenta, kidney, and most prominently in the breast especially during pregnancy and lactation <xref ref-type="bibr" rid="pbio.1001461-Oettgen1">[6]</xref>–<xref ref-type="bibr" rid="pbio.1001461-Lapinskas1">[8]</xref>. Placentation fails in <italic>Elf5</italic> knockout mice <xref ref-type="bibr" rid="pbio.1001461-Donnison1">[9]</xref> because de novo production of ELF5 acts with CDX2 and EOMES to specify and maintain commitment to the trophoblast cell lineage <xref ref-type="bibr" rid="pbio.1001461-Hemberger1">[10]</xref>. The early embryo continues to repress <italic>Elf5</italic> expression in association with promoter methylation <xref ref-type="bibr" rid="pbio.1001461-Ng1">[11]</xref>. In the developing mammary epithelium <italic>Elf5</italic> is re-expressed in a mutually exclusive pattern with ER <xref ref-type="bibr" rid="pbio.1001461-Oakes1">[12]</xref>. <italic>Elf5</italic>−/− mice produced via tetraploid embryonic stem cell rescue <xref ref-type="bibr" rid="pbio.1001461-Oakes1">[12]</xref> or conditional knockout <xref ref-type="bibr" rid="pbio.1001461-Choi1">[13]</xref> showed complete failure of mammary alveolargenesis, a developmental stage driven by prolactin and progesterone. These hormones induce <italic>Elf5</italic> expression and re-expression of <italic>Elf5</italic> in prolactin receptor knockout mammary epithelium rescued alveolargenesis <xref ref-type="bibr" rid="pbio.1001461-Harris1">[14]</xref>. Forced <italic>ELF5</italic> expression in nulliparous mouse mammary gland produced precocious mammary epithelial cell differentiation and milk protein production. This was associated with erosion of the mammary CD61+ progenitor cell population, and conversely, <italic>Elf5</italic> knockout caused accumulation of this population, establishing ELF5 as a key regulator of cell fate decisions made by this progenitor cell population <xref ref-type="bibr" rid="pbio.1001461-Oakes1">[12]</xref> and explaining the developmental effects described above.</p>
+      <p>The CD61+ progenitor cell is the cell of origin for basal breast cancers <xref ref-type="bibr" rid="pbio.1001461-Lim1">[15]</xref>,<xref ref-type="bibr" rid="pbio.1001461-Molyneux1">[16]</xref> and <italic>Elf5</italic> is expressed predominantly by the ER− progenitor subset <xref ref-type="bibr" rid="pbio.1001461-Kendrick1">[17]</xref>, suggesting, together with the developmental effects of Elf5 outlined above, a role for ELF5 in determining aspects of molecular subtype of breast cancer. To examine this hypothesis we manipulated the expression of ELF5 in basal and luminal breast cancer cell lines and examined the phenotypic consequences.</p>
+    </sec>
+    <sec id="s2">
+      <title>Results</title>
+      <sec id="s2a">
+        <title><italic>ELF5</italic> Expression in Breast Cancer</title>
+        <p>In the UNC337 breast cancer series <xref ref-type="bibr" rid="pbio.1001461-Prat1">[18]</xref> <italic>ELF5</italic> was expressed predominantly by the basal subtype in addition to normal breast and normal-like subtype (<xref ref-type="fig" rid="pbio-1001461-g001">Figure 1</xref>), an observation confirmed in cohorts described by Pawitan <xref ref-type="bibr" rid="pbio.1001461-Pawitan1">[19]</xref> and Wang <xref ref-type="bibr" rid="pbio.1001461-Wang1">[20]</xref> (<xref ref-type="supplementary-material" rid="pbio.1001461.s001">Figure S1</xref>). Oncomine (<ext-link ext-link-type="uri" xlink:href="http://www.oncomine.org" xlink:type="simple">www.oncomine.org</ext-link>) revealed that <italic>ELF5</italic> expression was low in tumors expressing ER, progesterone receptor (PR), or ERBB2 and high in the “triple negative” subtype lacking these markers. <italic>ELF5</italic> expression was correlated with high grade, poor outcomes such as early recurrence, metastasis, and death, response to chemotherapy, and mutations in p53 or BrCa1, all characteristics of the basal subtypes (<xref ref-type="supplementary-material" rid="pbio.1001461.s002">Figure S2</xref>). <italic>ELF5</italic> expression was lower in cancer compared to patient-matched and micro-dissected normal mammary epithelium (<xref ref-type="supplementary-material" rid="pbio.1001461.s002">Figure S2</xref>), and a series from Sgroi and colleagues <xref ref-type="bibr" rid="pbio.1001461-Ma1">[21]</xref> found <italic>ELF5</italic> was one of the most consistently downregulated genes at all stages of breast carcinogenesis (<xref ref-type="supplementary-material" rid="pbio.1001461.s001">Figure S1</xref>).</p>
+        <fig id="pbio-1001461-g001" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g001</object-id>
+          <label>Figure 1</label>
+          <caption>
+            <title><italic>ELF5</italic> expression in normal breast and breast cancer.</title>
+            <p><italic>ELF5</italic> expression in the UNC337 breast cancer cohort according to subtype. Top panel shows combined results with statistical analysis (thick black line, median;, box, interquartile range 25%–75% of points; whiskers, 1.5× interquartile range; crosses, individual tumors). Bottom panel <italic>ELF5</italic> expression in all individual tumor and normal samples. Basal and normal had significantly higher expression of ELF5.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g001" position="float" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2b">
+        <title>An Inducible Model of <italic>ELF5</italic> Expression in Luminal Breast Cancer Cells</title>
+        <p>To test the ability of ELF5 to drive estrogen insensitivity we used ER+ luminal breast cell lines T47D and MCF7 to construct DOXycycline (DOX)-inducible expression models of ELF5 (<xref ref-type="supplementary-material" rid="pbio.1001461.s003">Figure S3A</xref>). In humans, ELF5 is also known as ESE2 and 2 isoforms exist. The <italic>ESE2B</italic> isoform was expressed at 1,774- and 1,217-fold excess over the <italic>ESE2A</italic> isoform in MCF7 and T47D, respectively (<xref ref-type="supplementary-material" rid="pbio.1001461.s003">Figure S3B</xref>). We tagged ESE2B at its C-terminus with V5 (referred to subsequently as ELF5-V5), and demonstrated that this did not alter its ability to induce the transcription of its best characterized direct transcriptional target, whey acidic protein (<italic>Wap</italic>) in HC11 cells (<xref ref-type="supplementary-material" rid="pbio.1001461.s003">Figure S3C</xref>).</p>
+      </sec>
+      <sec id="s2c">
+        <title>Investigation of the Transcriptional Response to ELF5-V5</title>
+        <p>We interrogated our inducible models using Affymetrix arrays. Functional signatures within these expression profiles were identified by gene set enrichment analysis (GSEA) <xref ref-type="bibr" rid="pbio.1001461-Mootha1">[22]</xref>,<xref ref-type="bibr" rid="pbio.1001461-Subramanian1">[23]</xref>, and were visualized using the Enrichment Map plug-in for Cytoscape <xref ref-type="bibr" rid="pbio.1001461-Merico1">[24]</xref>. The original data are available via GEO (GSE30407), and GSEA and Limma analysis from the corresponding author. <xref ref-type="fig" rid="pbio-1001461-g002">Figure 2</xref> displays the GSEA networks derived from the effects of forced <italic>ELF</italic>5 expression in T47D or MCF7 cells and provides a comprehensive view of the functional consequences of forced <italic>ELF5</italic> expression in the luminal subtype. <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref> provides the complete network as a fully scalable PDF allowing the identification of all nodes. Acute forced <italic>ELF5</italic> expression caused enhancement (positive enrichment-red nodes) of oxidative phosphorylation, translation, proteasome function, and mRNA processing. We observed suppression (negative enrichment-blue nodes) of the DNA synthetic and mitotic phases of the cell cycle, intracellular kinase signaling, cell attachment, the transmembrane transport of small molecules, transcription, and a large set of genes involved in aspects of cancer, stem cell biology, and especially the distinction of breast cancer subtypes and estrogen sensitivity. The cancer-proliferation and breast cancer subtype sub networks, the subjects of further investigation, are shown in <xref ref-type="supplementary-material" rid="pbio.1001461.s005">Figures S5</xref> and <xref ref-type="supplementary-material" rid="pbio.1001461.s006">S6</xref>, and the expression of the individual genes forming the leading edges of example sets from these clusters are shown as heat maps in <xref ref-type="supplementary-material" rid="pbio.1001461.s007">Figures S7</xref>, <xref ref-type="supplementary-material" rid="pbio.1001461.s008">S8</xref>, <xref ref-type="supplementary-material" rid="pbio.1001461.s009">S9</xref>, <xref ref-type="supplementary-material" rid="pbio.1001461.s010">S10</xref>. We validated these findings using human breast cancers. Using luminal A breast cancers from the UNC337 series we produced a ranked gene list by Pearson correlation with <italic>ELF5</italic> expression. This approach produced an enrichment map that was very similar to that produced above (<xref ref-type="fig" rid="pbio-1001461-g002">Figure 2</xref>) by forced <italic>ELF5</italic> expression, with cell cycle sets, cancer sets, and sets describing luminal characteristics and estrogen responsiveness prominent among the suppressed gene clusters (<xref ref-type="supplementary-material" rid="pbio.1001461.s011">Figure S11</xref>), demonstrating a very similar action of endogenous ELF5 in luminal A breast cancers compared to forced ectopic expression in luminal breast cancer cells.</p>
+        <fig id="pbio-1001461-g002" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g002</object-id>
+          <label>Figure 2</label>
+          <caption>
+            <title>Visualization of the transcriptional functions of ELF5 in breast cancer.</title>
+            <p>Affymetrix transcript profiling following induction of ELF5 in T47D and MCF7 luminal breast cancer cells, analysed by LIMMA and GSEA. <xref ref-type="sec" rid="s2">Results</xref> are visualized using the enrichment map plug-in for Cytoscape. Each circular node is a gene set with diameter proportional to the number of genes. The outer node color represents the magnitude and direction of enrichment (see scale) in T47D cells, inner node color enrichment in MCF7 cells. Thickness of the edges (green lines) is proportional to the similarity of gene sets between linked nodes. The most related clusters are placed nearest to each other. The functions of prominent clusters are shown. The network can be examined in detail using the scalable PDF in <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref>.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g002" position="float" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2d">
+        <title>Identification of ELF5 DNA Binding Sites by ChIP-Seq</title>
+        <p>We used a mixture of antibodies against V5 and ELF5 to immunoprecipitate DNA bound by ELF5-V5 in T47D cells, which we then sequenced, allowing us to map the ELF5-bound regions of the human genome and to identify the direct transcriptional targets of ELF5. Intersection of MACS and SWEMBL peak calls <xref ref-type="bibr" rid="pbio.1001461-Schmidt1">[25]</xref>,<xref ref-type="bibr" rid="pbio.1001461-Zhang1">[26]</xref> identified 1,763 common sites of ELF5 interaction in the genome at 48 h. Data are available in <xref ref-type="supplementary-material" rid="pbio.1001461.s018">Table S1</xref> or via GEO (GSE30407). DNA binding was much higher at 48 h than 24 h (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3A</xref>), consistent with the observed changes in gene expression by Affymetrix arrays. Combination of the Affymetrix expression and chromatin immunoprecipitation of DNA followed by DNA sequencing (ChIP-Seq) data showed that ELF5 binding within 10 kb of a transcription start site (TSS) changed the expression level of that gene to a much greater extent than expected by chance (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3B</xref>), demonstrating that ELF5 has consistent transcriptional activity via association with DNA within this range. ELF5 bound mostly to distal intragenic regions of the genome (50%) and to introns within genes (25%), but also at high frequency to promoter regions (20%) mostly within 1 kb of a TSS (18%). Downstream (Dstr) sites were seldom used. The 5′ UTR was also a frequent target of ELF5 but the 3′ UTR was infrequently targeted (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3C</xref>). Transcription factor motifs (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3D</xref>) contained within the DNA fragments precipitated by ELF5 were predominantly ELF5 and other ETS factor motifs; however, we also observed enrichment of sites for Stat1 and Stat3, which contain a TTCC core ets motif. We also observed very significant enrichment of sites for the <italic>FOXA1</italic> and <italic>NKX3-2</italic> transcription factors. The binding of ELF5 to the <italic>FOXA1</italic> promoter region is shown in <xref ref-type="fig" rid="pbio-1001461-g003">Figure 3E</xref>. We validated the indicated peak on the <italic>FOXA1</italic> promoter, and three other target transcription factors by ChIP-qPCR (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3F</xref>). <italic>FOXA1</italic>, <italic>RUNX1</italic>, <italic>GATA3</italic>, and <italic>MEIS2</italic> were validated as targets of ELF5 by comparison to input, indicating that ELF5 heads a transcriptional cascade. We searched for curated functional signatures among the ChIP targets using GSEA (<xref ref-type="fig" rid="pbio-1001461-g003">Figure 3G</xref>). Many of the functional signatures observed in the ChIP data were also present in the expression data, demonstrating a direct transcriptional action of ELF5 to exert these regulatory effects.</p>
+        <fig id="pbio-1001461-g003" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g003</object-id>
+          <label>Figure 3</label>
+          <caption>
+            <title>Chromatin immunoprecipitation and sequencing to identify genomic ELF5 binding sites.</title>
+            <p>(A) Conservative analysis of the ChIP-Seq identified 1,763 peaks of ELF5 interaction with the genome at 48 h of DOX treatment, with a smaller number seen at 24 h. Relationship between enrichment and distance from binding peak is shown. (B) relationship between change in gene expression with 48 h of DOX treatment and distance of a peak of ELF5 DNA binding from the TSS. Blue area defines the region of random chance computed by multiple random assignments of the ChIP data to gene expression. Red line shows the actual relationship between a peak's distance from the nearest gene's TSS and its change in expression in response to ELF5-V5 induction. (C) ELF5 binding within the indicated genomic regions. (D) The number of genomic transcription factor binding motifs (TRANSFAC) found in the ChIP fragments relative to their enrichment. (E) example of an enriched peak of ELF5-V5 binding to DNA (<italic>FOXA1</italic> gene). (F) ChIP-qPCR validation of ELF5 binding sites to transcription factor gene promoters. I, IgG control antibody IP, E, ELF5 antibody IP, for the indicated PCR targets at 24 and 48 h; * significant (<italic>p</italic>&lt;0.05) enrichment against input; # significant enrichment against RND3 control gene; Δ significant 24 h versus 48 h. (G) GSEA of curated functional sets among ELF5 ChIP targets.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g003" position="float" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2e">
+        <title>The Effect of ELF5 on Breast Cancer Cell Accumulation</title>
+        <p>We examined changes in phenotype observed in T47D-ELF5-V5 and MCF7-ELF5-V5 cells following DOX treatment. In control T47D and MCF7 cells carrying the puromycin-resistant, but otherwise empty expression vector, normal logarithmic accumulation of cells during culture continued with or without DOX (<xref ref-type="fig" rid="pbio-1001461-g004">Figure 4A</xref>). In contrast, when ELF5-V5 was induced (denoted as T47D-ELF5-V5 and MCF7-ELF5-V5), cells stopped accumulating between 24 and 48 h after DOX administration (<xref ref-type="fig" rid="pbio-1001461-g004">Figure 4B</xref>), regardless of the timing of induction (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12A</xref>). The 4-fold induction of ELF5-V5 expression by DOX in T47D cells was similar to that produced for endogenous ELF5 with R5020, a synthetic progestin (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12A</xref>, inset), demonstrating that this model produces physiological increases of ELF5 expression. The effect was also reversible (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12B</xref>). Investigation of anchorage-independent growth in soft agar showed that induction of ELF5-V5 produced fewer colonies (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12C</xref>). Xenografts of T47D-ELF5-V5 cells in nude mice grew at a slower rate when mice received DOX (<xref ref-type="fig" rid="pbio-1001461-g004">Figure 4C</xref>).</p>
+        <fig id="pbio-1001461-g004" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g004</object-id>
+          <label>Figure 4</label>
+          <caption>
+            <title>Elf5 modulates cell adhesion and proliferation of breast cancer cells.</title>
+            <p>T47D (circles) and MCF7 (squares) cells were permanently transduced with DOX-inducible <italic>ELF5-V5</italic> or empty retroviral vectors. Pooled cells were grown with puromycin. Representative experiments are shown. Bars, standard error of the mean (SEM). (A) Control cells transduced with empty vector grown in the absence of DOX (−D, open symbols) or presence of DOX from 0 h (+D0 h, closed symbols). (B) Cells transduced with the DOX-inducible <italic>ELF5-V5</italic> expression vector grown in the presence of DOX (+D0 h, closed symbols) or absence of DOX (−D, open symbols). Inset Western blot of ELF5-V5 induction. (C) T47D-ELF5-V5 cells were grown as xenografts in nude mice, with (+D) or without (−D) DOX supplementation of food. Inset shows induction of <italic>ELF5-V5</italic> expression. (D and E) Basal breast cancer cells HCC1937 (circles, dashed lines) or HCC1187 (squares, solid lines) were transfected with siRNA against <italic>ELF5</italic> mRNA (siELF5, solid symbols), or were mock transfected (open symbols) before quantification of cell number with time. Insets, The degree of <italic>ELF5</italic> mRNA knockdown was measured by qPCR at 72 h. (F) Cells were arrested at G1-S phase by treatment with hydroxyurea, then released. Histograms show the subsequent distribution of cells within the cell cycle phases by PI staining at the indicated times post release, green +DOX, red –DOX, and Western blots show the expression of key cell cycle regulatory proteins.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g004" position="float" xlink:type="simple"/>
+        </fig>
+        <p>Knockdown of ELF5 expression by more than 80% had a small effect on total cell accumulation in T47D or MCF7 cells (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12D</xref>). We knocked down ELF5 in two basal breast cancer cell lines and observed a significant and sustained reduction in cell accumulation rate (<xref ref-type="fig" rid="pbio-1001461-g004">Figure 4D and 4E</xref>), which was not seen in luminal cells (<xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12D</xref>). This observation clearly demonstrates a subtype-specific role of ELF5 in breast cancer cells.</p>
+        <p>Cells can fail to accumulate in culture via two main mechanisms, by reduced rates of cell division or by the loss of cells through detachment and apoptosis. We investigated these possibilities.</p>
+        <p>We examined cell proliferation. Labeling of cells with BrdU and propidium iodide showed that induction of ELF5-V5 caused repartitioning of cells from S-phase into gap 1 of the cell cycle (G1) (<xref ref-type="supplementary-material" rid="pbio.1001461.s013">Figure S13A</xref>). Western blotting showed a loss of phosphorylated forms of the pocket proteins, p130, p107, and Rb, accompanied by loss of cyclin proteins A2, B1, and D1, and accumulation of the inhibitor p21 (<xref ref-type="supplementary-material" rid="pbio.1001461.s013">Figure S13B</xref>). Many of these changes also occurred at the mRNA level (<xref ref-type="supplementary-material" rid="pbio.1001461.s013">Figure S13C</xref>), indicating a transcriptional basis to these changes that together suggest inhibition of proliferation by G1 arrest. To test this we arrested T47D-ELF5-V5 cells in the G1 phase of the cell cycle using hydroxyurea (HU) and then released them, by HU wash out, into cycle in the presence and absence of induction of ELF5-V5 expression (<xref ref-type="fig" rid="pbio-1001461-g004">Figure 4F</xref>, corresponding flow cytometric plots in <xref ref-type="supplementary-material" rid="pbio.1001461.s013">Figure S13D</xref>, and Western blot quantification in <xref ref-type="supplementary-material" rid="pbio.1001461.s013">Figure S13E</xref>). Induction of ELF5-V5 reduced the percentage of cells exiting G1 into S-phase and was associated with a reduced accumulation of cyclin D1 protein and reduction in the expression of cyclin B1, demonstrating that ELF5-V5 expressing cells failed to re-enter the cell cycle from G1.</p>
+        <p>We previously formed a set of 641 genes associated with cell cycle control by a combination of genes from cell cycle–related GO ontologies <xref ref-type="bibr" rid="pbio.1001461-Alles1">[27]</xref>. This set very significantly overlapped with 125 genes repressed, and 42 genes induced, by <italic>ELF5</italic> expression (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14A</xref>), and of these 55 were ELF5 ChIP targets (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14A</xref>, <xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14B</xref> heat maps) indicating a direct transcriptional influence of ELF5 on proliferation. Upregulated ELF5 ChIP targets were characterized by the presence of tumor suppressor genes while downregulated genes were enriched in genes controlling cell proliferation. Upregulated genes included RB1CC1 (promotes RB1 expression), TBRG1 (promotes G1 arrest via CDKN2A), IRF1 (initiates interferon response), COPS2 (p53 stabilizer), CHFR (prevents passage into mitosis), DAB2 (lost in ovarian cancer), and RAD50 (DNA damage checkpoint). Also in this group are DDIT3 (promotes apoptosis due to endoplasmic reticulum stress) and ERBB2IP (disrupts RAF/RAS signaling). ELF5 ChIP targets repressed by elevated ELF5 were characterized by genes required for mitosis, such as GTSE1 (microtubule rearrangement), KIF11 (spindle formation), FBXO3 (anaphase promoting complex), KNTC1 (mitotic check point), PPP1CC (PTW/PP1 complex member), and PMF1 (MIS12 complex chromosome alignment). Other proproliferative ELF5 ChIP targets that were downregulated include EGFR and IGF1R (potent mammary mitogen receptors), MAPK13 (downstream signaling molecule), c-MYC (key regulator of proliferation), KLF10 (transcriptional repressor of proliferation), and NME1 and SLC29A2 (required for nucleotide synthesis). This 55-gene signature is significantly enriched in many breast cancer series (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14C</xref>) and showed differential expression between ER+ and ER− cancers (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14B</xref>, right-hand heat map). Interestingly the mitogenic genes that are repressed by forced ELF5 expression in ER+ T47D cells are generally highly expressed in ER− cancers (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14B</xref>), showing again that ELF5 has a subtype-dependent role in cell proliferation and may contribute to the proliferative drive in ER− cancers.</p>
+        <p>A large number of detached and floating cells were observed in cultures after 48 h of DOX treatment and became most prominent by 72 h (<xref ref-type="fig" rid="pbio-1001461-g005">Figure 5A</xref>). Replating efficiency was greatly reduced, indicating that new adherence proteins could not be rapidly synthesized and deployed following their destruction with trypsin (<xref ref-type="fig" rid="pbio-1001461-g005">Figure 5B</xref>). Higher rates of apoptosis, measured using flow cytometry, were observed in T47D-ELF5-V5 and MCF7-ELF5-V5 cells (<xref ref-type="fig" rid="pbio-1001461-g005">Figure 5C</xref>). The levels of beta 1-integrin were much lower by 72 h (<xref ref-type="fig" rid="pbio-1001461-g005">Figure 5D</xref> quantitated in <xref ref-type="supplementary-material" rid="pbio.1001461.s012">Figure S12E and S12</xref>F). Its signaling partner integrin-linked kinase (ILK) also showed reduced expression. Focal adhesion kinase (FAK) levels also fell slightly but phosphorylation of FAK was much reduced from 5 d, as was SRC kinase expression and especially phosphorylation, indicating reduced signal transduction in response to the lower levels of beta1-integrin and detection of the extracellular matrix. Together these results implicate loss of extracellular integrins in the detachment of cells in response to forced ELF5 expression.</p>
+        <fig id="pbio-1001461-g005" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g005</object-id>
+          <label>Figure 5</label>
+          <caption>
+            <title>Elf5 modulates the adhesion of breast cancer cells.</title>
+            <p>(A) Quantification of detached cells in cultures treated with DOX (+D) compared to no induction (−D). (B) Ability of DOX-treated cells to replate 4 h after trypsin destruction of attachment proteins, compared to untreated cells. Data are expressed as a percentage of replated untreated cells. (C) Proportion of apoptotic cells in DOX treated (grey bars) compared to untreated (black bars) T47D-ELF5-V5 cells, measured by flow cytometry using the M30 antibody. (D) Expression and activation of key cell adhesion proteins following DOX induction of ELF5-V5 expression.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g005" position="float" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2f">
+        <title>ELF5 Modulates Estrogen Action</title>
+        <p>Among the direct transcriptional targets of ELF5 are a number with established roles in proliferation in response to estrogen, such as <italic>FOXA1</italic>, <italic>MYC</italic>, <italic>CDK6</italic>, <italic>FGFR1</italic>, and <italic>IGF1R</italic> (<xref ref-type="supplementary-material" rid="pbio.1001461.s018">Table S1</xref>). In addition, key genes associated with the estrogen-sensitive phenotype, such as <italic>ESR1</italic> and estrogen-response genes, such as <italic>GREB1</italic> and <italic>XBP1</italic>, are downregulated (<xref ref-type="supplementary-material" rid="pbio.1001461.s009">Figure S9</xref>). Western blotting showed that induction of ELF5-V5 expression caused falls in the levels of ER, the estrogen-induced gene progesterone receptor (PGR), pioneer factor FOXA1, and progenitor cell-regulator GATA3 (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6A</xref>). The activities of ER and FOXA1 transcriptional reporters (ERE and UGT2B17, respectively) also fell (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6B</xref>), demonstrating that forced ELF5 expression suppressed estrogen sensitivity. These cell lines are dependent on estrogen for proliferation, raising the possibility that forced ELF5 expression inhibited proliferation simply by reducing ER expression. We tested this possibility by forced re-expression of ER and treatment with estrogen (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6C</xref>), but we did not observe any relief of the inhibition of proliferation caused by forced ELF5 expression.</p>
+        <fig id="pbio-1001461-g006" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g006</object-id>
+          <label>Figure 6</label>
+          <caption>
+            <title>ELF5 suppresses the estrogen-sensitive phenotype.</title>
+            <p>(A) Western blot showing reduced expression of key genes involved in the response to estrogens following induction of ELF5 expression. (B) Reduced transcriptional activity of reporters of <italic>ER</italic> and <italic>FOXA1</italic> (<italic>UGT2B17</italic> promoter) transcriptional activity following induction of ELF5 in MCF7 cells. Black bars, -DOX, grey bars +DOX 72 h for <italic>ERE</italic> and 24 h and 48 h for <italic>FOXA1</italic>. (C) Cell accumulation in MCF7-V5 cell cultures with (+E) or without (−E) 10 nM estrogen treatment, or following expression of ER (+ER) and 10 nM E in the context of induced ELF5. Black bars, -DOX; grey bars +DOX, 72 h and 144 h, respectively. (D) interaction of ELF5-regulated gene sets with estrogen-regulated gene sets. <italic>p</italic>-Values and odds ratios derived from hypergeometric tests. Number of genes in brackets. (E) Enrichment of gene sets in ELF5 ChIP targets either down (Dn) or Up in response to forced ELF5-V5 expression in T47D cells with DOX. P-Values for hypergeometric tests from GSEA (upper case) or Oncomine (lower case).</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g006" position="float" xlink:type="simple"/>
+        </fig>
+        <p>We further examined the effects of induction of ELF5 on estrogen-driven gene expression by intersecting our ELF5-regulated genes with a previously defined set of estrogen-regulated genes in MCF7 cells <xref ref-type="bibr" rid="pbio.1001461-Alles1">[27]</xref>. Among a set of 477 genes showing estrogen-induced expression in MCF7 cells (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6D</xref>, “E2 induced”), 115 showed loss of expression in response to ELF5-V5, an overlap with a highly significant <italic>p</italic>-value (<italic>p</italic> = 5E−84) and odds ratio (OR = 16). These genes (heat map in <xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14D</xref>, “E2I”), contained signatures for cell cycle control and DNA replication gene sets. Furthermore when we focused on 71 estrogen-induced genes previously defined as involved in proliferation <xref ref-type="bibr" rid="pbio.1001461-Alles1">[27]</xref> (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6D</xref>, “E2 Prolif”), we observed the same very significant enrichment (<italic>p</italic> = 2E−32), confirming the action of ELF5 to repress the expression of estrogen-induced genes involved in proliferation. The effect of ELF5 expression on 289 estrogen-repressed genes (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6D</xref>, “E2 repressed” and heat map <xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14D</xref>, “E2R”) was much less pronounced. Thus the predominant effect of forced ELF5 expression was suppression of estrogen-induced gene expression. Just 29 genes were direct transcriptional targets of both ELF5 and ER, a small fraction of the total number of genes showing changed expression, indicating that the actions of ELF5 and ER are largely executed by intermediaries, rather than direct action of ELF5 and ER at the same genomic locus.</p>
+        <p>We used hypergeometric enrichment to discover previously defined experimental signatures among the direct transcriptional targets of ELF5. Signatures indicative of estrogen action were prominent among ELF5 ChIP targets downregulated (fold change [FC]&gt;1.5 and false discover rate [FDR]&gt;0.25) by <italic>ELF5</italic> expression, including sets of genes that were ESR1 targets, involved in endocrine resistance or which distinguished the luminal from basal subtypes (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6E</xref>). Among the cancer-focused sets provided by Oncomine (set names in lower case in <xref ref-type="fig" rid="pbio-1001461-g006">Figure 6E</xref>) were many associated with distinction of the triple negative and ER/PR/HER2-positive subtypes. Sets among the upregulated ChIP targets included metastasis, apoptosis, and high grade. Heat maps illustrating the changed expression of the individual ELF5 ChIP targets are shown using the top-hit breast cancer series (* marked sets in <xref ref-type="fig" rid="pbio-1001461-g006">Figure 6E</xref> shown as heat maps in <xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14E</xref>). This investigation again illustrates the repression of estrogen action by induction of ELF5, but indicates that many of the poorer prognostic aspects of the ER− subtypes may be due to ELF5-induced genes. Again ELF5 appears to have subtype-specific actions.</p>
+      </sec>
+      <sec id="s2g">
+        <title>ELF5 Specifies Breast Cancer Subtype</title>
+        <p>We examined the ability of the direct transcriptional targets of ELF5 to predict aspects of breast cancer phenotype. A set of 164 genes was defined as ChIP targets with altered expression in response to induction of ELF5 in T47D cells. This gene set accurately predicted ER status (<xref ref-type="supplementary-material" rid="pbio.1001461.s015">Figure S15A</xref>) in the Reyal breast cancer series <xref ref-type="bibr" rid="pbio.1001461-Reyal1">[28]</xref>. The Confusion Matrix (<xref ref-type="supplementary-material" rid="pbio.1001461.s015">Figure S15B</xref>) shows that the direct transcriptional targets of ELF5 accurately predicted intrinsic subtype, with nearly 100% of the luminal/basal distinctions correctly identified. Clustering of the NKI-295 set <xref ref-type="bibr" rid="pbio.1001461-vandeVijver1">[29]</xref>, using the direct transcriptional targets of ELF5, distinguished the intrinsic subtypes and produced a clear separation of tumor characteristics such as poor prognosis, early metastasis, early death, recurrence, survival, grade, mutation status, and marker expression, such as ER and PR (<xref ref-type="supplementary-material" rid="pbio.1001461.s015">Figure S15C</xref>).</p>
+        <p>We assessed the ability of <italic>ELF5</italic> expression to directly alter molecular subtype using two methods developed for this purpose, GSEA <xref ref-type="bibr" rid="pbio.1001461-Bernardo1">[30]</xref> and expression signature analysis <xref ref-type="bibr" rid="pbio.1001461-Lim1">[15]</xref> (<xref ref-type="fig" rid="pbio-1001461-g007">Figure 7</xref>). <xref ref-type="fig" rid="pbio-1001461-g007">Figure 7A</xref> shows a cytoscape network of gene sets distinguishing molecular subtype, which combines data from forced expression of <italic>ELF5</italic> in MCF7 luminal breast cancer cells (node center) with data from knockdown of ELF5 in HCC1937 basal breast cancer cells (outer node ring). This is a sub network of the complete cytoscape network (<xref ref-type="supplementary-material" rid="pbio.1001461.s016">Figure S16</xref>) and the T47D-HCC1937 sub network (<xref ref-type="supplementary-material" rid="pbio.1001461.s017">Figure S17</xref>) is almost identical. The gene sets clustered into four groups distinguishing luminal subtype, basal subtype, estrogen responsiveness, and the mesenchymal phenotype. ELF5 suppressed the mesenchymal phenotype in both luminal and basal cells, representing a subtype-independent action. In luminal cells forced <italic>ELF5</italic> expression suppressed the luminal subtype and estrogen-responsive phenotype. In basal cells knockdown of <italic>ELF5</italic> expression suppressed the basal subtype, illustrating subtype-specific actions of ELF5. <xref ref-type="fig" rid="pbio-1001461-g007">Figure 7B</xref> shows the expression signature analysis. In HCC1937 cells knockdown of ELF5 produced a very significant shift in molecular subtype away from the basal subtype toward the claudin-low and normal-like subtypes, consistent with the enrichment of the mesenchymal phenotype observed by GSEA and the suppression of patterns of basal gene expression. In both luminal cell lines a shift away from the luminal subtype was observed (<xref ref-type="fig" rid="pbio-1001461-g007">Figure 7C and 7D</xref>), consistent with the GSEA results. In MCF7 the shift was toward the basal and Her2+ subtypes and in T47D toward the normal-like and claudin-low subtypes.</p>
+        <fig id="pbio-1001461-g007" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g007</object-id>
+          <label>Figure 7</label>
+          <caption>
+            <title>ELF5 specifies breast cancer subtype.</title>
+            <p>(A) Sub network of breast cancer subtype gene sets derived from forced ELF5 expression in MCF7 luminal breast cancer cells (inner node color) and knockdown of ELF5 expression in HCC1937 basal breast cancer cells. Node size is proportional to gene set size; thicker green lines indicate greater gene set overlap. Nodes are positioned according to similarity in gene sets. Labels in bold type indicate the functional significance of the four clusters generated, label is plain type is the gene set name. The full network is shown in <xref ref-type="supplementary-material" rid="pbio.1001461.s016">Figure S16</xref>. (B–D) expression signature analysis of the ELF5-induced changes in molecular subtype produced by ELF5 knockdown in HCC1937 cells (B), or forced ELF5 expression in MCF7 cells (C), or T47D cells (D). Bars show the indicated comparisons that produce the associated <italic>p</italic>-values. BS, borderline significance; NS, not significant.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g007" position="float" xlink:type="simple"/>
+        </fig>
+      </sec>
+      <sec id="s2h">
+        <title>ELF5 Underpins the Acquisition of Antiestrogen Resistance</title>
+        <p>Expression studies and ChIP-Seq (<xref ref-type="fig" rid="pbio-1001461-g002">Figures 2</xref>, <xref ref-type="fig" rid="pbio-1001461-g006">6E</xref>, and <xref ref-type="fig" rid="pbio-1001461-g007">7</xref>) showed that ELF5 transcriptionally regulated a number of genes involved in resistance to antiestrogens. We examined <italic>ELF5</italic> expression in Tamoxifen (TAMR)- <xref ref-type="bibr" rid="pbio.1001461-Knowlden1">[31]</xref> or Faslodex (FASR)- <xref ref-type="bibr" rid="pbio.1001461-Hiscox1">[32]</xref> resistant cells, derived from MCF7 cells in Cardiff (MCF7C). Greatly elevated levels of <italic>ELF5</italic> mRNA were observed (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8A</xref>) compared to their parental MCF7C cells, accompanied by loss of expression of key estrogen response genes. The 164-gene ELF5 transcriptional signature used to classify subtype in <xref ref-type="fig" rid="pbio-1001461-g006">Figure 6</xref> showed a response in TAMR cells (22 genes significantly suppressed, 24 significantly induced) and FASR cells (34 genes significantly suppressed, 46 significantly induced). qPCR confirmed the elevation of <italic>ELF5</italic> mRNA in TAMR and FASR cells compared to the parental MCF7 (MCF7C) and MCF7 from the Garvan Institute (MCF7G) used elsewhere in this study (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8B</xref>). When we intersected the genes from the antiestrogen sets enriched in the expression data in response to forced <italic>ELF5</italic> expression (<xref ref-type="fig" rid="pbio-1001461-g002">Figure 2A</xref>) with ELF5 ChIP targets, and asked using Oncomine what drug treatments produced similar profiles, we found a predominance of signatures resembling those resulting from inhibition of EGFR (a key pathway driving Tamoxifen resistance in TAMRs <xref ref-type="bibr" rid="pbio.1001461-Knowlden1">[31]</xref>) among overexpressed genes, and signatures indicative of the IGFR1 pathway and other kinases, or mitosis-disrupting agents, among under expressed genes (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8C</xref>). Both these pathways have been implicated in the development of resistance to antiestrogens. Treatment with estrogen greatly reduced <italic>ELF5</italic> expression in MCF7C cells and this effect was blunted in the TAMR cells (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8D</xref>). Knockdown of ELF5 in TAMR cells completely stopped cell accumulation while in the parental MCF7C little effect on the rate of increase in cell number was seen (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8E</xref>). ELF5 IHC on TAMR cell pellets confirmed the knockdown. Measurements of S-phase showed that 25% of TAMR cells and 42% of MCF7C cells were in S-phase of the cell cycle during log-phase growth, consistent with the known characteristics of these lines. Knockdown of ELF5 reduced TAMR S-phase by 28%, and MCF7C S-phase by 12% (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8F</xref>), consistent with the observed effects on cell number. These observations demonstrate that elevation of <italic>ELF5</italic> expression and greatly increased reliance upon it for cell proliferation is a key event in the acquisition of Tamoxifen insensitivity.</p>
+        <fig id="pbio-1001461-g008" position="float">
+          <object-id pub-id-type="doi">10.1371/journal.pbio.1001461.g008</object-id>
+          <label>Figure 8</label>
+          <caption>
+            <title>Elevated ELF5 allows escape from antiestrogen-induced proliferative arrest.</title>
+            <p>(A) Affymetrix profiling of the expression (red high, green low) of key estrogen response genes in two models of antiestrogen resistance. The lines were derived from MCF7 cells from the Cardiff laboratory (MCF7C) to be resistant to TAMR or FASR. Additional two heat maps show the change in the expression of the ELF5 transcriptional signature in TAMR and FASR cells compared to parental. (B) PCR validation of the change in <italic>ELF5</italic> expression in TAMR and FASR cells. (C) Drug-response signatures from Oncomine enriched among genes implicated in antiestrogen resistance that are ELF5 ChIP targets. (D) Eduction in <italic>ELF5</italic> expression by estrogen treatment in MCF7C and TAMR cells. (E) Effects of ELF5 knockdown in TAMR cells on the expansion in cell number. Insets, demonstration of ELF5 knockdown by qPCR and IHC compared to both risc-free and scrambled siRNA controls. (F) BrdU labeling shows ELF5 knockdown inhibits cell proliferation in TAMR cells to a much greater extent than seen in the parental cells. (G) Model of ELF5 action in normal development and breast cancer, see the <xref ref-type="sec" rid="s3">Discussion</xref> for details.</p>
+          </caption>
+          <graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pbio.1001461.g008" position="float" xlink:type="simple"/>
+        </fig>
+        <p>Taken together, the results in this study show that ELF5 is involved in the proliferation of breast cancer cells in culture, that ELF5 suppressed the estrogen-responsive phenotype in luminal breast cancer cells, and induced aspects of the basal phenotype in basal breast cancer cells. In both subtypes ELF5 suppressed the mesenchymal phenotype. ELF5 specified patterns of gene expression that distinguished the breast cancer subtypes. Significantly for clinical management of breast cancer, elevation of ELF5 is a mechanism by which MCF7 cells can become insensitive to antiestrogen treatment.</p>
+      </sec>
+    </sec>
+    <sec id="s3">
+      <title>Discussion</title>
+      <p>In this report we show that ELF5 exerts wide transcriptional effects with functional outcomes on cell proliferation, adhesion, the molecular determinants of breast cancer subtype and phenotype, and acquired resistance to Tamoxifen. These outcomes are aspects of a general specification of an estrogen-insensitive cell fate exerted through modulation of ER, FOXA1, and other transcriptional regulators in luminal cells, and the induction of basal characteristics in basal cells.</p>
+      <p>Two key factors in determining the luminal phenotype are FOXA1 and ER. Recent findings show that ER-chromatin binding and the resulting transcriptional response to estrogens are dependent on FOXA1 expression and its action as a pioneer factor for chromatin-ER binding <xref ref-type="bibr" rid="pbio.1001461-Hurtado1">[3]</xref>. We show that forced expression of <italic>ELF5</italic> in the luminal context directly represses FOXA1 expression and transcriptional activity. We also show that ER expression falls, as does the expression of many estrogen-responsive genes and ER-driven transcription. This mechanism allows ELF5 to suppress key aspects of the luminal phenotype, demonstrated by GSEA and by expression signature analysis. The resulting loss of proliferation is likely to result from multiple mechanisms. Although the proliferation of MCF7 and T47D cells is stimulated by estrogen-driven signaling and transcription, the loss of ER signaling was not the sole cause of proliferative arrest as forced ER re-expression did not effect a rescue (<xref ref-type="fig" rid="pbio-1001461-g006">Figure 6C</xref>). Rather, ELF5 may act directly to regulate genes controlling cell proliferation (<xref ref-type="supplementary-material" rid="pbio.1001461.s014">Figure S14</xref>). In addition the loss of beta1-integrin was observed. Beta1-integrin acts in mammary cells via FAK and src to induce p21 and cell cycle arrest <xref ref-type="bibr" rid="pbio.1001461-Naylor1">[33]</xref>, a mechanism that is also apparent in our data (<xref ref-type="fig" rid="pbio-1001461-g005">Figures 5D</xref> and <xref ref-type="supplementary-material" rid="pbio.1001461.s013">S13C</xref>). There are additional large changes in the expression of many other key signaling molecules (<xref ref-type="fig" rid="pbio-1001461-g002">Figures 2</xref> and <xref ref-type="supplementary-material" rid="pbio.1001461.s004">S4</xref>) that may also act to suppress proliferation, including EGFR and IGFR signaling. Finally the changes in metabolic activity, including protein and RNA synthesis and oxidative phosphorylation are also likely to impinge on cell proliferation.</p>
+      <p>Loss of ELF5 expression in the basal subtype HCC1937 cells resulted in reduced cell proliferation, loss of basal patterns of gene expression, and a shift toward the mesenchymal phenotype, demonstrated by the GSEA results and the expression signature analysis. These results show that ELF5 specifies key characteristics of the basal phenotype, but also prevents the expression of the mesenchymal phenotype, as it does in the luminal context. Thus we can discern both subtype-dependent and -independent effects of ELF5. The subtype-dependent effects are a likely product of the differentiation state of the cell and the fate decisions made during differentiation produced by interactions of the ELF5 regulatory transcriptional network with other transcriptional regulatory networks present in the cell, while the independent effects are likely to result from direct transcriptional actions that lack these interactions and are thus subtype independent.</p>
+      <p>We propose that the effects of ELF5 in the breast cancer cell lines represent a carry over of the normal developmental role of ELF5 into breast cancer (<xref ref-type="fig" rid="pbio-1001461-g008">Figure 8G</xref>). The primary developmental target for ELF5 is the mammary progenitor cell population (P), produced from the stem cell population (S), and which exhibits aspects of the two cell lineages that it produces (drawn as P cell overlaps). Under the dominant influence of ELF5 a progenitor cell differentiates to become an ER− cell, and with further differentiation and hormonal stimulation ultimately produces a mature (M) alveolar cell capable of large-scale milk synthesis. By this process ELF5 establishes the secretory cell lineage <xref ref-type="bibr" rid="pbio.1001461-Oakes1">[12]</xref>. It is likely that under a dominant estrogen influence the same progenitor cell differentiates to become an ER+ cell with different functions, such as regulation of the stem and progenitor hierarchy by paracrine influence. Recent findings support this mechanism <xref ref-type="bibr" rid="pbio.1001461-Bernardo1">[30]</xref>. It is likely that ELF5 and FOXA1 provide the key to the decision made by the progenitor cell. We hypothesize that the outcome of competing estrogen and ELF5 actions on a precancerous instance of the progenitor cell may play a significant role in determining the subtype of breast cancer that results. Additional events may occur subsequent to this decision that alter ELF5 expression and these may be involved in aspects of tumor progression, such as the acquisition of insensitivity to antiestrogens when ELF5 expression increases in the context of luminal breast cancer, or the acquisition of the mesenchymal phenotype when ELF5 expression is lost in basal breast cancer. Some tumors, such as the claudin low subtype, may be innately mesenchymal, as a result of the oncogenic transformation of late stem or early progenitor cells that do not yet express ELF5 or FOXA1 and ER. ELF5 may act to specify epithelial characteristics during the normal differentiation of the stem cell to become a progenitor cell. In this context forced ectopic expression of ELF5 may reduce the mesenchymal nature of the claudin low subtype.</p>
+      <p>We have observed that progestin-induced inhibition of T47D cell proliferation is accompanied by an increase in ELF5 expression, and that this in turn acts to oppose the inhibitory action of progestins on cell cycle regulation <xref ref-type="bibr" rid="pbio.1001461-Hilton1">[34]</xref>. A similar effect may protect some cells from complete growth inhibition by Tamoxifen, and prime them for later ELF5-driven escape of antiestrogen therapy. Further increases in ELF5 expression provide both an alternate source of proliferative signals and further suppression of sensitivity to ER-mediated signals, producing a mechanism allowing TAMR cells to escape TAM-induced growth inhibition. In this scenario the ELF5 ChIP target c-MYC may provide the proliferative drive. These experiments shed new light on the process of acquired resistance to antiestrogens, implicating ELF5 as a potential therapeutic target in antiestrogen-resistant disease and providing a potential marker predicting the failure of antiestrogen therapy.</p>
+      <p>Overall we show that the transcriptional activity of ELF5 suppresses estrogen action in luminal breast cancer, enhances expression of the basal phenotype, specifies patterns of gene expression distinguishing molecular subtype, and exerts a proliferative influence that can be modified to allow luminal breast cancer to become resistant to antiestrogen treatment.</p>
+    </sec>
+    <sec id="s4" sec-type="materials|methods">
+      <title>Materials and Methods</title>
+      <sec id="s4a">
+        <title>Ethics Statement</title>
+        <p>Mice were maintained following the Australian code of practice for the care and use of animals for scientific purposes observed by The Garvan Institute of Medical Research/St. Vincent's Hospital Animal Ethics Committee (AEC).</p>
+      </sec>
+      <sec id="s4b">
+        <title>Plasmid Construction, Transfection, Infection, and Treatment</title>
+        <p>ESE2B was tagged at the 3′ end with V5 and incorporated into the pHUSH-ProEX vector <xref ref-type="bibr" rid="pbio.1001461-Gray1">[35]</xref> used as a retrovirus. Transient transfection used FuGENE (Roche). Puromycin was used at 1 µg/ml for MCF7-EcoR and 2 µg/ml for T47D-EcoR, DOX at 0.1 µg/ml changed daily, R5020 at 10 nM.</p>
+      </sec>
+      <sec id="s4c">
+        <title>Colony Formation Assays</title>
+        <p>Colonies were visualized with the Diff Quick Stain Kit (Lab Aids) or crystal violet. Colony number and size measured with Image J 1.41o (Wayne Rasband, US National Institutes of Health), excluding cells &lt;0.1 mm.</p>
+      </sec>
+      <sec id="s4d">
+        <title>Protein Analysis and Antibodies</title>
+        <p>Protein lysates (40 µg per lane) were prepared in NuPAGE LDS Sample Buffer and Sample Reducing Agent and separated on NuPAGE Bis-Tris acrylamide gels in MOPS buffer or Tris-Acetate gels run in Tris-Acetate SDS buffer, transferred to polyvinylidene difluoride membranes (BioRad), blocked with 1% skim milk powder, 50 nM Na<sub>3</sub>PO<sub>4</sub>, 50 mM NaCl, and 0.1% Tween 20 for 1 h, primary antibody for 2 h to overnight, and a horseradish peroxidase (HRP)-linked secondary antibody for 1 h, with four washes of 50 nM Na<sub>3</sub>PO<sub>4</sub>, 50 mM NaCl, and 0.1% Tween 20. Detection by enhanced chemiluminescence (Perkin-Elmer) on Fuji Medical X-ray Film (Fujifilm). Primary antibodies used were anti-β-actin (AC-15, Sigma), anti-cyclin B1 (GNS-11, BD), anti-cyclin D1 (DCS6, Novacastra), anti-cyclin E (HE12, sc-247, Santa Cruz), anti-ELF5/ESE2 (N20, sc-9645, Santa Cruz), anti<bold>-</bold>ERα (HC20, sc-543, Santa Cruz), anti-FAK (3285, Cell Signalling Technologies), anti-ILK (3/ILK, BD), anti-integrin β1 (18, BD), anti-p21 (70, BD), anti-p27 (C19, sc-528, Santa Cruz), anti-p107 (C19, sc-318, Santa Cruz), anti-pFAK (pY397, BD), anti-pRb (554136, BD), anti SRC (Calbiochem 327), anti pSRC (Cell Signalling 2101), and anti-V5 (R960-25, Invitrogen). Secondary antibodies were HRP-donkey anti-goat (Santa Cruz), HRP-donkey anti-rabbit (Amersham Biosciences), and HRP-sheep anti-mouse (Amersham Biosciences).</p>
+      </sec>
+      <sec id="s4e">
+        <title>Reporter Assays</title>
+        <p>Reporter plasmids, consensus ERE were a kind gift from Malcolm Parker (Imperial Cancer Research Fund, London); FOXA1 responsive UGT2B17/-155ApGL3 a kind gift from Peter Mackenzie (Flinders University, Australia) <xref ref-type="bibr" rid="pbio.1001461-Gregory1">[36]</xref>; and pRL-TK (Promega), β-galactosidase a kind gift from Gerald Clesham, University of Cambridge, Cambridge, UK. Solubilization was in Passive Lysis Buffer (Promega) and measured with Dual Luciferase Reporter Assay System (Promega) and Galacto-Light reagents (Applied Biosystems).</p>
+      </sec>
+      <sec id="s4f">
+        <title>Attachment Assays</title>
+        <p>Monolayers were detached with 0.25% trypsin, counted, and re-plated at equal density. Unattached cells were gently removed in PBS prior to counting with a haemocytometer.</p>
+      </sec>
+      <sec id="s4g">
+        <title>Flow Cytometry</title>
+        <p>Asychronous cells were pulsed with 10 µM BrdU (Sigma) for 2 h (MCF7 or 20 min (T47D) prior to harvesting. Where indicated cells were synchronised with 1 mM hydroxyurea treatment for 40 h. Cells were harvested via trypsinisation, and fixed in 70% ethanol for 24 h, stained with 10 µg/ml propidium iodide (Sigma) for 2–5 h, and incubated with 0.5 mg/ml RNase A (Sigma). Flow cytometry was performed using FACS Calibur or FACS Canto cytometers (BD Biosciences), and data analysis performed with FlowJo software (Tree Star Inc.).</p>
+      </sec>
+      <sec id="s4h">
+        <title>Microarray Analysis</title>
+        <p>Total RNA was extracted with the RNeasy Minikit (Qiagen) and DNase-treated with the DNase kit (Qiagen). RNA quality was assessed using a RNA Nano LabChip and Agilent Bioanalyzer 2100. Probe labeling and hybridization to Affymetrix Human Gene 1.0 ST Gene Arrays was done at the Ramaciotti Centre for Gene Function Analysis at the University of New South Wales. Microarrays were normalised using RMA via the <italic>NormalizeAffymetrixST</italic> GenePattern module <ext-link ext-link-type="uri" xlink:href="http://pwbc.garvan.unsw.edu.au/gp" xlink:type="simple">http://pwbc.garvan.unsw.edu.au/gp</ext-link>. Differentially expressed genes were detected using Limma, using positive false discovery rate (FDR) multiple hypothesis test correction. GSEA (version 2.04) used 1,000 permutations, in pre-ranked mode, using the t<italic>-</italic>statistic from Limma to rank each gene using gene sets from MSigDB version 3.0. Data are available from GEO with accession number GSE30407.</p>
+      </sec>
+      <sec id="s4i">
+        <title>ChIP-Sequencing Analysis</title>
+        <p>Cells were fixed in 1% formaldehyde, at 37°C for 10 min, washed 2× with cold PBS, scraped into 600 µl PBS with protease inhibitors (P8340, Sigma), spun 2 min at 6,000 <italic>g</italic>, washed as before, and snap frozen in liquid nitrogen. ChIP-Seq as previously described <xref ref-type="bibr" rid="pbio.1001461-Schmidt2">[37]</xref> using a 50%–50% mixture of V5-specific antibody and the Santa Cruz N20 anti ELF5 antibody. DNA was processed for Illumina sequencing using 36-bp reads on a GAIIx. Sequences were aligned against NCBI Build 36.3 of the human genome using MAQ (<ext-link ext-link-type="uri" xlink:href="http://maq.sourceforge.net/" xlink:type="simple">http://maq.sourceforge.net/</ext-link>) with default parameters. The aligned reads were converted to BED format using a custom script. ChIP-qPCR used the ABI Prism 7900HT Sequence Detection System.</p>
+      </sec>
+      <sec id="s4j">
+        <title>Mice</title>
+        <p>Balb/C Nude mice (Jackson Lab) were used as xenograft hosts.</p>
+      </sec>
+      <sec id="s4k">
+        <title>Breast Cancer Subtype</title>
+        <p>Potential as classifiers was investigated using the diagonal linear discriminant analysis (DLDA) or Naïve Bayes classifier, 100 iterations of 10-fold cross-validation (CV) and the misclassification rate recorded in each instance. Boxplots of ER misclassification rate were achieved for each of the 1,000 (100 iterations of 10-fold CV) classifiers built to predict ER status. The confusion matrix shows as percentages the relationship between true intrinsic subtype classification, as defined by <xref ref-type="bibr" rid="pbio.1001461-Perou1">[1]</xref> and <xref ref-type="bibr" rid="pbio.1001461-Hu1">[38]</xref> and predicted by the Naïve Bayes classifier. Expression signature analysis <xref ref-type="bibr" rid="pbio.1001461-Lim1">[15]</xref> and GSEA <xref ref-type="bibr" rid="pbio.1001461-Bernardo1">[30]</xref> to examine changes in subtype was carried out as described.</p>
+      </sec>
+    </sec>
+    <sec id="s5">
+      <title>Supporting Information</title>
+      <supplementary-material id="pbio.1001461.s001" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s001" position="float" xlink:type="simple">
+        <label>Figure S1</label>
+        <caption>
+          <p><bold><italic>ELF5</italic></bold><bold> expression in the breast cancer molecular subtypes.</bold> Top panels. Tumors from the indicated studies were classified by molecular subtype and their <italic>ELF5</italic> expression level given by the Affymetrix probe set 220625_s_at is graphed. Similar results were found with the 220624_s_at probes (not shown) The <italic>p</italic>-value for differential expression of <italic>ELF5</italic> by the basal subtype is shown. Bottom panel, Redrawn from Ma et al. <xref ref-type="bibr" rid="pbio.1001461-Ma1">[21]</xref> to combine the clinical data given as text with the graphical format. Ma et al. used laser capture microdissection to analyse <italic>ELF5</italic> expression in tumor and patient-associated adjacent normal epithelium. Data are expressed as fold change in expression and is colored according to ER and PR status. Grade 3 tumors are indicated by asterisks.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s002" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s002" position="float" xlink:type="simple">
+        <label>Figure S2</label>
+        <caption>
+          <p><bold><italic>ELF5</italic></bold><bold> expression in breast cancer.</bold> Each row shows the results from a study referenced by Oncomine. Total numbers of tumors are indicated including type, lobular (LBC), or ductal (DBC). Cell color indicates average fold change (see scale) in <italic>ELF5</italic> expression for the indicated phenotypic comparison contained within each cell. <italic>p</italic>-Values are given where &lt;0.05.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s003" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s003" position="float" xlink:type="simple">
+        <label>Figure S3</label>
+        <caption>
+          <p><bold>Construction and validation of an inducible </bold><bold><italic>ELF5-V5</italic></bold><bold> expression system in MCF7 and T47D breast cancer cell lines.</bold> (A) the retroviral expression vector was constructed as indicated using the Genentech pHUSH ProEX vector. Addition of DOX relives repression of cytomeglovirus promoter (CMV)-driven expression of <italic>ELF5</italic> tagged by V5, by binding the tetracycline repressor (TetR) and removing it from the <italic>Tet</italic> operon (TO). TetR expression is linked to Puromycin resistance (<italic>PURO</italic>) via an internal ribosome entry site (<italic>IRES</italic>) ensuring coexpression of these activities. Control cells were constructed using this vector without the <italic>ELF5-V5</italic> cassette. (B) Quantification of <italic>ELF5</italic> isoforms in T47D and MCF7 cells. qPCR specific to each isoform was used to compare expression levels. Amplification efficiency was very similar for both assays. Left-hand side panel, <italic>ESE2B</italic> was expressed at levels more than three orders of magnitude greater than <italic>ESE2A</italic>. Right-hand panel shows relative <italic>ESE2A</italic> expression. (C) Induction of <italic>ELF5-V5</italic> expression increases the mRNA level of its direct transcriptional target, whey acidic protein (<italic>Wap</italic>) compared to an empty vector control plasmid, in HC11 mouse mammary epithelial cells. Cells were treated from day 4 by the lactogenic hormones prolactin, insulin and hydrocortisone.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s004" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pbio.1001461.s004" position="float" xlink:type="simple">
+        <label>Figure S4</label>
+        <caption>
+          <p><bold>Visualization of the transcriptional functions of ELF5 in breast cancer.</bold> GSEA-identified signatures indicative of function within expression profiles derived from forced <italic>ELF5</italic> expression in T47D and MCF7 luminal breast cancer cells. <xref ref-type="sec" rid="s2">Results</xref> are visualized using the enrichment map plug-in for Cytoscape. Each node is a gene set, diameter indicates size, outer node color represents the magnitude and direction of enrichment (see scale) in T47D cells, inner node color enrichment in MCF7 cells. Thickness of the edges (green lines) is proportional the similarity of linked nodes. The most related clusters are placed nearest to each other. View the PDF at 800% or 1,600% to explore the network in detail.</p>
+          <p>(PDF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s005" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s005" position="float" xlink:type="simple">
+        <label>Figure S5</label>
+        <caption>
+          <p><bold>Visualization of the transcriptional functions of ELF5 in breast cancer cell cycle and cancer gene set sub network in T47D and MCF7 cells.</bold> Inset, the region of the complete network from <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref> that is highlighted in red and yellow is expanded here. Main panel, nodes, and edges forming the cell cycle and cancer-related network, as explained in the key and legend of <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref>.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s006" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s006" position="float" xlink:type="simple">
+        <label>Figure S6</label>
+        <caption>
+          <p><bold>Visualization of the transcriptional functions of ELF5 in breast cancer molecular subtype network in T47D and MCF7 cells.</bold> Inset, the region of the complete network from <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref> highlighted in red and yellow is expanded here. Main panel, nodes, and edges forming the molecular subtype network as explained in the key and legend of <xref ref-type="supplementary-material" rid="pbio.1001461.s004">Figure S4</xref>.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s007" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s007" position="float" xlink:type="simple">
+        <label>Figure S7</label>
+        <caption>
+          <p><bold>Heat maps of leading edge genes contained within the cell cycle cluster in T47D cells.</bold> Gene expression is high (dark red), middle (white), or low (purple) in row- normalized depictions of gene expression levels. First two columns from the left are duplicates –DOX then next two are duplicates +DOX. Labels indicate gene set name.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s008" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s008" position="float" xlink:type="simple">
+        <label>Figure S8</label>
+        <caption>
+          <p><bold>Heat maps of leading edge genes contained within the Cytoscape cancer cluster in T47D cells.</bold> Gene expression is high (dark red), middle (white), or low (purple) in row-normalized depictions of expression levels. First two columns from the left are duplicates –DOX then next two are duplicates +DOX. Labels indicate gene set name.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s009" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s009" position="float" xlink:type="simple">
+        <label>Figure S9</label>
+        <caption>
+          <p><bold>Heat maps of leading edge genes contained within the Cytoscape breast cancer subtype cluster in T47D or MCF7 cells.</bold> Gene expression is high (dark red), middle (white), or low (purple) in row-normalized depictions of expression levels. First two columns from the left are duplicates –DOX then next two are duplicates +DOX. Labels indicate cell model and gene set name.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s010" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s010" position="float" xlink:type="simple">
+        <label>Figure S10</label>
+        <caption>
+          <p><bold>Heat maps of leading edge genes contained within the Cytoscape breast cancer estrogen response cluster in T47D cells.</bold> Gene expression is high (dark red), middle (white), or low (purple) in row-normalized depictions of expression levels. First two columns from the left are duplicates –DOX then next two are duplicates +DOX. Labels indicate gene set name.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s011" mimetype="application/pdf" xlink:href="info:doi/10.1371/journal.pbio.1001461.s011" position="float" xlink:type="simple">
+        <label>Figure S11</label>
+        <caption>
+          <p><bold>Visualization of the transcriptional functions of ELF5 in luminal A breast cancers.</bold> GSEA identified signatures indicative of function within an expression profile derived by correlation of gene expression with <italic>ELF5</italic> expression in luminal A breast cancers from the UNC337 series using Pearson correlation. <xref ref-type="sec" rid="s2">Results</xref> are visualized using the enrichment map plug-in for Cytoscape. Each node is a gene set, diameter indicates size, node color represents the magnitude and direction of enrichment. Thickness of the edges (green lines) is proportional to the similarity of linked nodes. The most related clusters are placed nearest to each other. View the PDF at 800% or 1,600% to explore the network in detail.</p>
+          <p>(PDF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s012" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s012" position="float" xlink:type="simple">
+        <label>Figure S12</label>
+        <caption>
+          <p><bold>ELF5 modulates breast cancer cell accumulation.</bold> (A) Effects of DOX addition on cell number at 0 h (+D 0 h, closed circles), or at 24 h (+D24 h, closed circles), or at 48 h (+D48 h, closed circles), or not added (−D, open circles). Inset, comparison of the level of exogenous ELF5-V5 induction by DOX with that effected by treatment with the progestin R5020 on endogenous ELF5. (B) Effect of DOX withdrawal on cell number. Cells carrying the <italic>ELF5-V</italic>5 cassette were plated with DOX (+D0 h, closed circles) and remained on DOX or were withdrawn from DOX (+D0 h −D24 h, open circles) after 24 h. Inset decay in ELF5-V5 expression by Western blot. (C) T47D-ELF5-V5 cells were grown with (+D) or without (−D) DOX on agar gels for 3 wk. Colony numbers from pooled cells or a clonal line are shown. (D) T47D (circles, dashed lines) or MCF7 cells (squares, solid lines) were transfected with siRNA against <italic>ELF5</italic> mRNA (siELF5, solid symbols), or a RISC-complex inactive control siRNA (risc, open symbols). Inset, The degree of <italic>ELF5</italic> mRNA knockdown was measured by qPCR at 72 h. (E and F) quantification of Western blots in <xref ref-type="fig" rid="pbio-1001461-g005">Figure 5D</xref>, showing the effects of ELF5-V5 induction on cell adhesion molecules.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s013" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s013" position="float" xlink:type="simple">
+        <label>Figure S13</label>
+        <caption>
+          <p><bold>ELF5 modulates cell proliferation.</bold> (A) T47D-V5 and MCF7-V5 cells were treated with DOX for 48 h. DNA was labeled by BrdU incorporation for 2 h and analysed by flow cytometry using propidium iodide to measure total DNA content. BrdU incorporation (<italic>y</italic> axis) and DNA content (<italic>x</italic> axis) distinguish G0–G1, S, and G2-M phases of the cell cycle, with phase distribution expressed as a percentage of total cells (*<italic>p</italic>&lt;0.05, **<italic>p</italic>&lt;0.005). (B) Changes in the expression of the indicated key cell cycle regulatory genes with time measured by Western blot. (C) Changes in the expression of the indicated cell cycle regulatory genes with time measured by qPCR. (D) Flow cytometric profiles of hydroxyl urea arrested cells released into cycle, from which the data in <xref ref-type="fig" rid="pbio-1001461-g004">Figure 4H</xref> were derived. (E) Quantification of <xref ref-type="fig" rid="pbio-1001461-g004">Figure 4F</xref>, changes in cell cycle regulatory proteins occurring following the release of hydroxyl urea arrested cells.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s014" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s014" position="float" xlink:type="simple">
+        <label>Figure S14</label>
+        <caption>
+          <p><bold>Expression of the ELF5 transcriptional signature in breast cancer.</bold> (A) hypergeometric interaction between 943 genes repressed (DN) or 966 genes induced (UP) by forced expression of ELF5-V5 in T47D cells, or 785 ELF5 ChIP targets in T47D, with a 641 gene proliferation signature. (B) Left-hand side heat map shows the expression change in response to the induction of ELF5-V5 in T47D cells of the 55 ELF5 ChIP targets involved in proliferation that were identified in (A). Right-hand side heat map shows the expression of the 55 ELF5 ChIp targets in the Desmedt breast cancer series. <italic>p</italic>-Values and fold change (FC) for genes is shown where significant differential expression was observed between ER− and ER+ cancers. (C) Breast cancer series in Oncomine showing significant enrichment of the 55 ELF5 ChIP targets. (D) Heat maps showing the expression change of estrogen induced (E2 I) or repressed (E2 R) genes in response to forced ELF5-V5 expression (+D). Annotations at the side are examples of enriched gene sets with p values. T = T47D, M = MCF7. (E) Heat maps illustrating examples of differential expression of the ELF5 ChIP targets in relation to prognostic indicators within some of the breast cancer series indicated in <xref ref-type="fig" rid="pbio-1001461-g005">Figure 5E</xref> by asterisks.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s015" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s015" position="float" xlink:type="simple">
+        <label>Figure S15</label>
+        <caption>
+          <p><bold>The ELF5 transcriptional signature correctly distinguishes breast cancer subtype.</bold> An ELF5 transcriptional signature was defined as ELF5 ChIP targets with robust changes in expression in response to forced ELF5 expression in T47D cells. It was used to predict ER status (A) or breast cancer subtype (B) in the Reyal series. Rows of the confusion matrix show percent correct subtype prediction at the shaded cells and the distribution of confused predictions by subtype across the row. (C) Ability of this ELF5 transcriptional signature to predict breast cancer subtype and clinical characteristics in the NKI295 series. The 55 Elf5 gene signature was used to cluster the NKI295 series. Subtypes assigned to this series by its authors are colored as indicated. Heat map shows gene expression levels with enriched gene sets within the major gene clusters listed along side. Bottom panel shows associated clinical correlates with the significance of each colored bar indicated by the text at the right. Generally good outcomes are in yellow, poor outcomes in purple or red.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s016" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s016" position="float" xlink:type="simple">
+        <label>Figure S16</label>
+        <caption>
+          <p><bold>Visualization of the transcriptional functions of ELF5 in breast and mammary cancer.</bold> GSEA-identified signatures indicative of function within expression profiles derived from forced <italic>ELF5</italic> expression in T47D luminal breast cancer cells and knockdown of ELF5 function in HCC1937 basal breast cancer cells. <xref ref-type="sec" rid="s2">Results</xref> are visualized using the enrichment map plug-in for Cytoscape. Each node is a gene set, diameter indicates size, outer node color represents the magnitude and direction of enrichment (see scale) in HCC1937 cells, inner node color enrichment in T47D cells. Thickness of the edges (green lines) is proportional the similarity of linked nodes. The most related clusters are placed nearest to each other. The functions of prominent clusters are shown.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s017" mimetype="image/tiff" xlink:href="info:doi/10.1371/journal.pbio.1001461.s017" position="float" xlink:type="simple">
+        <label>Figure S17</label>
+        <caption>
+          <p><bold>ELF5 specifies breast cancer subtype.</bold> GSEA network derived from forced ELF5 expression in T47D luminal breast cancer cells (inner node color) and knockdown of ELF5 expression in HCC1937 basal breast cancer cells (outer node color). Node size is proportional to gene set size, thicker green lines indicate greater leading edge gene overlap. Nodes are positioned according to similarity in leading edge genes. Labels indicate the functional significance of the four clusters generated.</p>
+          <p>(TIF)</p>
+        </caption>
+      </supplementary-material>
+      <supplementary-material id="pbio.1001461.s018" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" xlink:href="info:doi/10.1371/journal.pbio.1001461.s018" position="float" xlink:type="simple">
+        <label>Table S1</label>
+        <caption>
+          <p><bold>ELF5 ChIP targets and expression changes in T47D-ELF5-V5 cells.</bold> Spreadsheet showing the ELF5 ChIP targets and their changed levels of expression in response to forced ELF5-V5 expression in T47D cells.</p>
+          <p>(XLSX)</p>
+        </caption>
+      </supplementary-material>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <p>We thank Gillian Lehrbach and the staff of the Garvan Biological Testing Facility for technical assistance. <bold>RLS, 18/7/1945-10/10/2012:</bold> Thank you so much Rob for the start in science that you gave to many of us.</p>
+    </ack>
+    <ref-list>
+      <title>References</title>
+      <ref id="pbio.1001461-Perou1">
+        <label>1</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Perou</surname><given-names>CM</given-names></name>, <name name-style="western"><surname>Sorlie</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Eisen</surname><given-names>MB</given-names></name>, <name name-style="western"><surname>van de Rijn</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Jeffrey</surname><given-names>SS</given-names></name>, <etal>et al</etal>. (<year>2000</year>) <article-title>Molecular portraits of human breast tumours</article-title>. <source>Nature</source> <volume>406</volume>: <fpage>747</fpage>–<lpage>752</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Andre1">
+        <label>2</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andre</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Pusztai</surname><given-names>L</given-names></name> (<year>2006</year>) <article-title>Molecular classification of breast cancer: implications for selection of adjuvant chemotherapy</article-title>. <source>Nat Clin Pract Oncol</source> <volume>3</volume>: <fpage>621</fpage>–<lpage>632</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Hurtado1">
+        <label>3</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hurtado</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Holmes</surname><given-names>KA</given-names></name>, <name name-style="western"><surname>Ross-Innes</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Schmidt</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Carroll</surname><given-names>JS</given-names></name> (<year>2011</year>) <article-title>FOXA1 is a key determinant of estrogen receptor function and endocrine response</article-title>. <source>Nat Genet</source> <volume>43</volume>: <fpage>27</fpage>–<lpage>33</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Lee1">
+        <label>4</label>
+        <mixed-citation publication-type="other" xlink:type="simple">Lee H, Ormandy CJ (2012) Elf5, hormones and cell fate. Trends Endocrinol Metab in press.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-GutierrezHartmann1">
+        <label>5</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gutierrez-Hartmann</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Duval</surname><given-names>DL</given-names></name>, <name name-style="western"><surname>Bradford</surname><given-names>AP</given-names></name> (<year>2007</year>) <article-title>ETS transcription factors in endocrine systems</article-title>. <source>Trends Endocrinol Metab</source> <volume>18</volume>: <fpage>150</fpage>–<lpage>158</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Oettgen1">
+        <label>6</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oettgen</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Kas</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Dube</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Gu</surname><given-names>X</given-names></name>, <name name-style="western"><surname>Grall</surname><given-names>F</given-names></name>, <etal>et al</etal>. (<year>1999</year>) <article-title>Characterization of ESE-2, a novel ESE-1-related Ets transcription factor that is restricted to glandular epithelium and differentiated keratinocytes</article-title>. <source>J Biol Chem</source> <volume>274</volume>: <fpage>29439</fpage>–<lpage>29452</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Zhou1">
+        <label>7</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhou</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Ng</surname><given-names>AY</given-names></name>, <name name-style="western"><surname>Tymms</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Jermiin</surname><given-names>LS</given-names></name>, <name name-style="western"><surname>Seth</surname><given-names>AK</given-names></name>, <etal>et al</etal>. (<year>1998</year>) <article-title>A novel transcription factor, ELF5, belongs to the ELF subfamily of ETS genes and maps to human chromosome 11p13-15, a region subject to LOH and rearrangement in human carcinoma cell lines</article-title>. <source>Oncogene</source> <volume>17</volume>: <fpage>2719</fpage>–<lpage>2732</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Lapinskas1">
+        <label>8</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lapinskas</surname><given-names>EJ</given-names></name>, <name name-style="western"><surname>Palmer</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Ricardo</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Hertzog</surname><given-names>PJ</given-names></name>, <name name-style="western"><surname>Hammacher</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2004</year>) <article-title>A major site of expression of the ets transcription factor Elf5 is epithelia of exocrine glands</article-title>. <source>Histochem Cell Biol</source> <volume>122</volume>: <fpage>521</fpage>–<lpage>526</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Donnison1">
+        <label>9</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Donnison</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Beaton</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Davey</surname><given-names>HW</given-names></name>, <name name-style="western"><surname>Broadhurst</surname><given-names>R</given-names></name>, <name name-style="western"><surname>L'Huillier</surname><given-names>P</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Loss of the extraembryonic ectoderm in Elf5 mutants leads to defects in embryonic patterning</article-title>. <source>Development</source> <volume>132</volume>: <fpage>2299</fpage>–<lpage>2308</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Hemberger1">
+        <label>10</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hemberger</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Udayashankar</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Tesar</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Moore</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Burton</surname><given-names>GJ</given-names></name> (<year>2010</year>) <article-title>ELF5-enforced transcriptional networks define an epigenetically regulated trophoblast stem cell compartment in the human placenta</article-title>. <source>Hum Mol Genet</source> <volume>19</volume>: <fpage>2456</fpage>–<lpage>2467</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Ng1">
+        <label>11</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ng</surname><given-names>RK</given-names></name>, <name name-style="western"><surname>Dean</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Dawson</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Lucifero</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Madeja</surname><given-names>Z</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Epigenetic restriction of embryonic cell lineage fate by methylation of Elf5</article-title>. <source>Nat Cell Biol</source> <volume>10</volume>: <fpage>1280</fpage>–<lpage>1290</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Oakes1">
+        <label>12</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oakes</surname><given-names>SR</given-names></name>, <name name-style="western"><surname>Naylor</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Asselin-Labat</surname><given-names>M-L</given-names></name>, <name name-style="western"><surname>Blazek</surname><given-names>KD</given-names></name>, <name name-style="western"><surname>Gardiner-Garden</surname><given-names>M</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>The Ets transcription factor Elf5 specifies mammary alveolar cell fate</article-title>. <source>Genes Dev</source> <volume>22</volume>: <fpage>581</fpage>–<lpage>586</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Choi1">
+        <label>13</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Choi</surname><given-names>YS</given-names></name>, <name name-style="western"><surname>Chakrabarti</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Escamilla-Hernandez</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Sinha</surname><given-names>S</given-names></name> (<year>2009</year>) <article-title>Elf5 conditional knockout mice reveal its role as a master regulator in mammary alveolar development: failure of Stat5 activation and functional differentiation in the absence of Elf5</article-title>. <source>Dev Biol</source> <volume>329</volume>: <fpage>227</fpage>–<lpage>241</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Harris1">
+        <label>14</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Harris</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Stanford</surname><given-names>PM</given-names></name>, <name name-style="western"><surname>Sutherland</surname><given-names>K</given-names></name>, <name name-style="western"><surname>Oakes</surname><given-names>SR</given-names></name>, <name name-style="western"><surname>Naylor</surname><given-names>MJ</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Socs2 and Elf5 mediate prolactin-induced mammary gland development</article-title>. <source>Mol Endo</source> <volume>20</volume>: <fpage>1177</fpage>–<lpage>1187</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Lim1">
+        <label>15</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lim</surname><given-names>E</given-names></name>, <name name-style="western"><surname>Vaillant</surname><given-names>F</given-names></name>, <name name-style="western"><surname>Wu</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Forrest</surname><given-names>NC</given-names></name>, <name name-style="western"><surname>Pal</surname><given-names>B</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Aberrant luminal progenitors as the candidate target population for basal tumor development in BRCA1 mutation carriers</article-title>. <source>Nat Med</source> <volume>15</volume>: <fpage>907</fpage>–<lpage>913</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Molyneux1">
+        <label>16</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Molyneux</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Geyer</surname><given-names>FC</given-names></name>, <name name-style="western"><surname>Magnay</surname><given-names>FA</given-names></name>, <name name-style="western"><surname>McCarthy</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Kendrick</surname><given-names>H</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>BRCA1 basal-like breast cancers originate from luminal epithelial progenitors and not from basal stem cells</article-title>. <source>Cell Stem Cell</source> <volume>7</volume>: <fpage>403</fpage>–<lpage>417</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Kendrick1">
+        <label>17</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kendrick</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Regan</surname><given-names>JL</given-names></name>, <name name-style="western"><surname>Magnay</surname><given-names>FA</given-names></name>, <name name-style="western"><surname>Grigoriadis</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Mitsopoulos</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Transcriptome analysis of mammary epithelial subpopulations identifies novel determinants of lineage commitment and cell fate</article-title>. <source>BMC Genomics</source> <volume>9</volume>: <fpage>591</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Prat1">
+        <label>18</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Prat</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Parker</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>Karginova</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Fan</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Livasy</surname><given-names>C</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>Phenotypic and molecular characterization of the claudin-low intrinsic subtype of breast cancer</article-title>. <source>Breast Cancer Res</source> <volume>12</volume>: <fpage>R68</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Pawitan1">
+        <label>19</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pawitan</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Bjohle</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Amler</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Borg</surname><given-names>AL</given-names></name>, <name name-style="western"><surname>Egyhazi</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene expression profiling spares early breast cancer patients from adjuvant therapy: derived and validated in two population-based cohorts</article-title>. <source>Breast Cancer Res</source> <volume>7</volume>: <fpage>R953</fpage>–<lpage>964</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Wang1">
+        <label>20</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Klijn</surname><given-names>JG</given-names></name>, <name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Sieuwerts</surname><given-names>AM</given-names></name>, <name name-style="western"><surname>Look</surname><given-names>MP</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene-expression profiles to predict distant metastasis of lymph-node-negative primary breast cancer</article-title>. <source>Lancet</source> <volume>365</volume>: <fpage>671</fpage>–<lpage>679</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Ma1">
+        <label>21</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname><given-names>XJ</given-names></name>, <name name-style="western"><surname>Salunga</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Tuggle</surname><given-names>JT</given-names></name>, <name name-style="western"><surname>Gaudet</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Enright</surname><given-names>E</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>Gene expression profiles of human breast cancer progression</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>100</volume>: <fpage>5974</fpage>–<lpage>5979</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Mootha1">
+        <label>22</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mootha</surname><given-names>VK</given-names></name>, <name name-style="western"><surname>Lindgren</surname><given-names>CM</given-names></name>, <name name-style="western"><surname>Eriksson</surname><given-names>KF</given-names></name>, <name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Sihag</surname><given-names>S</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>PGC-1alpha-responsive genes involved in oxidative phosphorylation are coordinately downregulated in human diabetes</article-title>. <source>Nat Genet</source> <volume>34</volume>: <fpage>267</fpage>–<lpage>273</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Subramanian1">
+        <label>23</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Subramanian</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Tamayo</surname><given-names>P</given-names></name>, <name name-style="western"><surname>Mootha</surname><given-names>VK</given-names></name>, <name name-style="western"><surname>Mukherjee</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Ebert</surname><given-names>BL</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles</article-title>. <source>Proc Natl Acad Sci U S A</source> <volume>102</volume>: <fpage>15545</fpage>–<lpage>15550</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Merico1">
+        <label>24</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Merico</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Isserlin</surname><given-names>R</given-names></name>, <name name-style="western"><surname>Stueker</surname><given-names>O</given-names></name>, <name name-style="western"><surname>Emili</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Bader</surname><given-names>GD</given-names></name> (<year>2010</year>) <article-title>Enrichment map: a network-based method for gene-set enrichment visualization and interpretation</article-title>. <source>PLoS One</source> <volume>5</volume>: <fpage>e13984</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0013984" xlink:type="simple">10.1371/journal.pone.0013984</ext-link></comment>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Schmidt1">
+        <label>25</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmidt</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Schwalie</surname><given-names>PC</given-names></name>, <name name-style="western"><surname>Ross-Innes</surname><given-names>CS</given-names></name>, <name name-style="western"><surname>Hurtado</surname><given-names>A</given-names></name>, <name name-style="western"><surname>Brown</surname><given-names>GD</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>A CTCF-independent role for cohesin in tissue-specific transcription</article-title>. <source>Genome Res</source> <volume>20</volume>: <fpage>578</fpage>–<lpage>588</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Zhang1">
+        <label>26</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Liu</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Meyer</surname><given-names>CA</given-names></name>, <name name-style="western"><surname>Eeckhoute</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Johnson</surname><given-names>DS</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>Model-based analysis of ChIP-Seq (MACS)</article-title>. <source>Genome Biol</source> <volume>9</volume>: <fpage>R137</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Alles1">
+        <label>27</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alles</surname><given-names>MC</given-names></name>, <name name-style="western"><surname>Gardiner-Garden</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Nott</surname><given-names>DJ</given-names></name>, <name name-style="western"><surname>Wang</surname><given-names>Y</given-names></name>, <name name-style="western"><surname>Foekens</surname><given-names>JA</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>Meta-analysis and gene set enrichment relative to er status reveal elevated activity of MYC and E2F in the “basal” breast cancer subgroup</article-title>. <source>PLoS One</source> <volume>4</volume>: <fpage>e4710</fpage> <comment>doi:<ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0004710" xlink:type="simple">10.1371/journal.pone.0004710</ext-link></comment>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Reyal1">
+        <label>28</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reyal</surname><given-names>F</given-names></name>, <name name-style="western"><surname>van Vliet</surname><given-names>MH</given-names></name>, <name name-style="western"><surname>Armstrong</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Horlings</surname><given-names>HM</given-names></name>, <name name-style="western"><surname>de Visser</surname><given-names>KE</given-names></name>, <etal>et al</etal>. (<year>2008</year>) <article-title>A comprehensive analysis of prognostic signatures reveals the high predictive capacity of the proliferation, immune response and RNA splicing modules in breast cancer</article-title>. <source>Breast Cancer Res</source> <volume>10</volume>: <fpage>R93</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-vandeVijver1">
+        <label>29</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van de Vijver</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>He</surname><given-names>YD</given-names></name>, <name name-style="western"><surname>van't Veer</surname><given-names>LJ</given-names></name>, <name name-style="western"><surname>Dai</surname><given-names>H</given-names></name>, <name name-style="western"><surname>Hart</surname><given-names>AA</given-names></name>, <etal>et al</etal>. (<year>2002</year>) <article-title>A gene-expression signature as a predictor of survival in breast cancer</article-title>. <source>N Engl J Med</source> <volume>347</volume>: <fpage>1999</fpage>–<lpage>2009</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Bernardo1">
+        <label>30</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bernardo</surname><given-names>GM</given-names></name>, <name name-style="western"><surname>Bebek</surname><given-names>G</given-names></name>, <name name-style="western"><surname>Ginther</surname><given-names>CL</given-names></name>, <name name-style="western"><surname>Sizemore</surname><given-names>ST</given-names></name>, <name name-style="western"><surname>Lozada</surname><given-names>KL</given-names></name>, <etal>et al</etal>. (<year>2012</year>) <article-title>FOXA1 represses the molecular phenotype of basal breast cancer cells</article-title>. <source>Oncogene</source> In press.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Knowlden1">
+        <label>31</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Knowlden</surname><given-names>JM</given-names></name>, <name name-style="western"><surname>Hutcheson</surname><given-names>IR</given-names></name>, <name name-style="western"><surname>Jones</surname><given-names>HE</given-names></name>, <name name-style="western"><surname>Madden</surname><given-names>T</given-names></name>, <name name-style="western"><surname>Gee</surname><given-names>JM</given-names></name>, <etal>et al</etal>. (<year>2003</year>) <article-title>Elevated levels of epidermal growth factor receptor/c-erbB2 heterodimers mediate an autocrine growth regulatory pathway in tamoxifen-resistant MCF-7 cells</article-title>. <source>Endocrinology</source> <volume>144</volume>: <fpage>1032</fpage>–<lpage>1044</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Hiscox1">
+        <label>32</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hiscox</surname><given-names>S</given-names></name>, <name name-style="western"><surname>Jordan</surname><given-names>NJ</given-names></name>, <name name-style="western"><surname>Jiang</surname><given-names>W</given-names></name>, <name name-style="western"><surname>Harper</surname><given-names>M</given-names></name>, <name name-style="western"><surname>McClelland</surname><given-names>R</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>Chronic exposure to fulvestrant promotes overexpression of the c-Met receptor in breast cancer cells: implications for tumour-stroma interactions</article-title>. <source>Endocr Relat Cancer</source> <volume>13</volume>: <fpage>1085</fpage>–<lpage>1099</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Naylor1">
+        <label>33</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Naylor</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Li</surname><given-names>N</given-names></name>, <name name-style="western"><surname>Cheung</surname><given-names>J</given-names></name>, <name name-style="western"><surname>Lowe</surname><given-names>ET</given-names></name>, <name name-style="western"><surname>Lambert</surname><given-names>E</given-names></name>, <etal>et al</etal>. (<year>2005</year>) <article-title>Ablation of beta1 integrin in mammary epithelium reveals a key role for integrin in glandular morphogenesis and differentiation</article-title>. <source>J Cell Biol</source> <volume>171</volume>: <fpage>717</fpage>–<lpage>728</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Hilton1">
+        <label>34</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hilton</surname><given-names>HN</given-names></name>, <name name-style="western"><surname>Kalyuga</surname><given-names>M</given-names></name>, <name name-style="western"><surname>Cowley</surname><given-names>MJ</given-names></name>, <name name-style="western"><surname>Alles</surname><given-names>MC</given-names></name>, <name name-style="western"><surname>Lee</surname><given-names>HJ</given-names></name>, <etal>et al</etal>. (<year>2010</year>) <article-title>The antiproliferative effects of progestins in T47D breast cancer cells are tempered by progestin induction of the ETS transcription factor Elf5</article-title>. <source>Mol Endocrinol</source> <volume>24</volume>: <fpage>1380</fpage>–<lpage>1392</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Gray1">
+        <label>35</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gray</surname><given-names>DC</given-names></name>, <name name-style="western"><surname>Hoeflich</surname><given-names>KP</given-names></name>, <name name-style="western"><surname>Peng</surname><given-names>L</given-names></name>, <name name-style="western"><surname>Gu</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Gogineni</surname><given-names>A</given-names></name>, <etal>et al</etal>. (<year>2007</year>) <article-title>pHUSH: a single vector system for conditional gene expression</article-title>. <source>BMC Biotechnol</source> <volume>7</volume>: <fpage>61</fpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Gregory1">
+        <label>36</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gregory</surname><given-names>PA</given-names></name>, <name name-style="western"><surname>Hansen</surname><given-names>AJ</given-names></name>, <name name-style="western"><surname>Mackenzie</surname><given-names>PI</given-names></name> (<year>2000</year>) <article-title>Tissue specific differences in the regulation of the UDP glucuronosyltransferase 2B17 gene promoter</article-title>. <source>Pharmacogenetics</source> <volume>10</volume>: <fpage>809</fpage>–<lpage>820</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Schmidt2">
+        <label>37</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmidt</surname><given-names>D</given-names></name>, <name name-style="western"><surname>Wilson</surname><given-names>MD</given-names></name>, <name name-style="western"><surname>Spyrou</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Brown</surname><given-names>GD</given-names></name>, <name name-style="western"><surname>Hadfield</surname><given-names>J</given-names></name>, <etal>et al</etal>. (<year>2009</year>) <article-title>ChIP-seq: using high-throughput sequencing to discover protein-DNA interactions</article-title>. <source>Methods</source> <volume>48</volume>: <fpage>240</fpage>–<lpage>248</lpage>.</mixed-citation>
+      </ref>
+      <ref id="pbio.1001461-Hu1">
+        <label>38</label>
+        <mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hu</surname><given-names>Z</given-names></name>, <name name-style="western"><surname>Fan</surname><given-names>C</given-names></name>, <name name-style="western"><surname>Oh</surname><given-names>DS</given-names></name>, <name name-style="western"><surname>Marron</surname><given-names>JS</given-names></name>, <name name-style="western"><surname>He</surname><given-names>X</given-names></name>, <etal>et al</etal>. (<year>2006</year>) <article-title>The molecular portraits of breast tumors are conserved across microarray platforms</article-title>. <source>BMC Genomics</source> <volume>7</volume>: <fpage>96</fpage>.</mixed-citation>
+      </ref>
+    </ref-list>
+    <glossary>
+      <title>Abbreviations</title>
+      <def-list>
+        <def-item>
+          <term>ChIP-Seq</term>
+          <def>
+            <p>chromatin immunoprecipitation of DNA followed by DNA sequencing</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>DOX</term>
+          <def>
+            <p>doxycycline</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>ER</term>
+          <def>
+            <p>estrogen receptor</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>ESE</term>
+          <def>
+            <p>epithelium specific</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>FAK</term>
+          <def>
+            <p>focal adhesion kinase</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>FASR</term>
+          <def>
+            <p>Faslodex</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>G1</term>
+          <def>
+            <p>gap 1 of the cell cycle</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>GSEA</term>
+          <def>
+            <p>gene set enrichment analysis</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>PR</term>
+          <def>
+            <p>progesterone receptor</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>qPCR</term>
+          <def>
+            <p>quantitative PCR</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>TAMR</term>
+          <def>
+            <p>Tamoxifen</p>
+          </def>
+        </def-item>
+        <def-item>
+          <term>TSS</term>
+          <def>
+            <p>transcription start site</p>
+          </def>
+        </def-item>
+      </def-list>
+    </glossary>
+  </back>
+</article>
