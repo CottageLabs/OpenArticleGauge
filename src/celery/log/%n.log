@@ -1,0 +1,6 @@
+[2013-01-22 10:32:29,863: WARNING/MainProcess] celery@holly ready.
+[2013-01-22 10:32:29,871: INFO/MainProcess] consumer: Connected to redis://localhost:6379//.
+[2013-01-22 10:36:21,264: INFO/MainProcess] Got task from broker: slavedriver.webfetch.plos_lookup[e9eae983-9660-4fd3-ac3e-74ae377750a1]
+[2013-01-22 10:36:21,287: INFO/MainProcess] Task slavedriver.webfetch.plos_lookup[e9eae983-9660-4fd3-ac3e-74ae377750a1] succeeded in 0.00449204444885s: u'delay - DOI?'
+[2013-01-22 10:36:25,106: INFO/MainProcess] Got task from broker: slavedriver.webfetch.plos_lookup[3c9145fd-19ea-44a7-b429-f127227841d6]
+[2013-01-22 10:36:25,159: INFO/MainProcess] Task slavedriver.webfetch.plos_lookup[3c9145fd-19ea-44a7-b429-f127227841d6] succeeded in 0.00476408004761s: u'delay - DOI?'

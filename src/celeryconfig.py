@@ -18,11 +18,11 @@ CELERYD_OPTS = '--time-limit=300 --concurrency=8'
 CELERY_CONFIG_MODULE = 'celeryconfig'
 
 # %n will be replaced with the nodename.
-CELERYD_LOG_FILE = '/var/log/celery/%n.log'
-CELERYD_PID_FILE = '/var/run/celery/%n.pid'
+CELERYD_LOG_FILE = 'celery/log/%n.log'
+CELERYD_PID_FILE = 'celery/run/%n.pid'
 
-BROKER_URL = 'amqp://'
-CELERY_RESULT_BACKEND = 'amqp://'
+BROKER_URL = 'redis://localhost'
+CELERY_RESULT_BACKEND = "redis://localhost"
 CELERY_IMPORTS = ('slavedriver.webfetch',)
 
 CELERY_TASK_SERIALIZER = 'json'
