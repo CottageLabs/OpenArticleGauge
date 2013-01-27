@@ -2,11 +2,6 @@ from __future__ import absolute_import
 
 from celery import Celery
 
-#celery = Celery('proj.celery',
-#                broker='amqp://',
-#                backend='amqp://',
-#                include=['slave.tasks'])
-
 celery = Celery()
 
 import celeryconfig
