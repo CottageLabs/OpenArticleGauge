@@ -4,12 +4,48 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>IsItOpenAccess?</h1>
-  <p> IsItOpenAccess is a service for determining the licence status of journal publicatios, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.</p>
-  <form action="/lookup/" method="POST">
-    <p>DOI(s) to look-up: 
-        <input name="query">
-    </p>
-    <input type="submit" value="IsItOpenAccess?" />
-  </form>
+
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    var success = function(data) {
+        alert("hi");
+    };
+    
+    var error = function(xhr, message, error) {
+        alert("Error... " + error)
+    };
+    
+    var iioa = function(event) {
+        event ? event.preventDefault() : false;
+        $('#topstrap').css({'margin-top':'-80px'});
+        var data = {};
+        $.ajax({
+            'type':'POST',
+            'url': '/lookup',
+            'data': JSON.stringify(data),
+            'contentType': "application/json; charset=utf-8", 
+            'processData': false,
+            'success': success,
+            'error': error
+        });
+    };
+    $('#iioa').bind('click',iioa);
+});
+</script>
+
+<div class="row-fluid">
+    <a name="lookup"></a>
+    <div id="topstrap" class="hero-unit clearfix">
+        <div class="span6">
+            <h1>IsItOpenAccess?</h1>
+            <p> IsItOpenAccess is a service for determining the licence status of journal publications, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.</p>
+        </div>
+        <div class="span6">
+            <form action="/lookup/" method="POST">
+                <p><textarea style="font-size:18px;width:100%;height:50px;margin-top:40px;" name="query" placeholder="list some DOIs or Pubmed IDs, separated by commas"></textarea></p>
+                <p><input id="iioa" class="btn" type="submit" value="IsItOpenAccess?" style="height:55px;"></p>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

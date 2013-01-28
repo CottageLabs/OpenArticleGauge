@@ -1,2 +1,9 @@
 *.pyc
+*.egg-info/*
+.*.swp
+build/*
+dist/*
+.DS_Store
+.Python
+app.cfg
 *.py~

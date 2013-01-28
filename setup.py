@@ -18,7 +18,6 @@ setup(
         "kombu==2.5.4",
         "python-dateutil==1.5",
         "wsgiref==0.1.2",
-        "Flask-Login",
         "Flask-WTF",
         "requests==1.1.0"
     ]

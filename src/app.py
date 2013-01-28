@@ -22,10 +22,32 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 3
 
 
+# static pages
 @app.route('/')
 @produces(HTML)
 def hello():
     return render_template('index.html')
+    
+@app.route("/api")
+@produces(HTML)
+def api():
+    return render_template('api.html')
+
+@app.route("/search")
+@produces(HTML)
+def search():
+    return render_template('search.html')
+
+@app.route("/submit", methods=['GET','POST'])
+@app.route("/submit/", methods=['GET','POST'])
+@produces(HTML)
+def submit():
+    if request.method == 'GET':
+        return render_template('submit.html')
+    elif request.method == 'POST':
+        # send the received list for processing
+        pass
+
 
 @app.route("/lookup/<ids>", methods=['GET'])
 @produces(HTML)
@@ -38,6 +60,7 @@ def get_lookup(ids):
 def get_lookup_json(ids):
     return "\n".join(ids.split(","))
 
+@app.route("/lookup", methods=['POST'])
 @app.route("/lookup/", methods=['POST'])
 @produces(HTML)
 def lookup():
@@ -56,6 +79,7 @@ def lookup():
     #     construct page that uses JS to pull in info for each ID queried async.
     return "Got something: '%s'" % ids
 
+@app.route("/lookup", methods=['POST'])
 @app.route("/lookup/", methods=['POST'])
 @consumes(JSON)
 @produces(JSON)
