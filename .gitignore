@@ -9,3 +9,5 @@ src*
 .DS_Store
 .Python
 app.cfg
+*.py~
+
