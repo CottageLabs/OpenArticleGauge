@@ -39,6 +39,7 @@ def search():
     return render_template('search.html')
 
 @app.route("/submit", methods=['GET','POST'])
+@app.route("/submit/", methods=['GET','POST'])
 @produces(HTML)
 def submit():
     if request.method == 'GET':
@@ -59,6 +60,7 @@ def get_lookup(ids):
 def get_lookup_json(ids):
     return "\n".join(ids.split(","))
 
+@app.route("/lookup", methods=['POST'])
 @app.route("/lookup/", methods=['POST'])
 @produces(HTML)
 def lookup():
@@ -77,6 +79,7 @@ def lookup():
     #     construct page that uses JS to pull in info for each ID queried async.
     return "Got something: '%s'" % ids
 
+@app.route("/lookup", methods=['POST'])
 @app.route("/lookup/", methods=['POST'])
 @consumes(JSON)
 @produces(JSON)
