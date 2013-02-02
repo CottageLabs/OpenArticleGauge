@@ -1,8 +1,11 @@
 from celery import chain
 from slavedriver.workers import detect_provider, provider_site_plugins, provider_page_plugins
 import models, config, cache, archive
+import logging
 
-def lookup(self, bibjson_ids):
+log = logging.getLogger(__name__)
+
+def lookup(bibjson_ids):
     """
     Take a list of bibjson id objects
     {
@@ -11,6 +14,7 @@ def lookup(self, bibjson_ids):
     }
     and process them, returning a models.ResultSet object of completed or incomplete results
     """
+    # FIXME: should we sanitise the inputs?
     
     # create a new resultset object
     rs = models.ResultSet(bibjson_ids)
@@ -20,17 +24,21 @@ def lookup(self, bibjson_ids):
     for bid in bibjson_ids:
         # first, create the basic record object
         record = { "identifier" : bid }
+        log.debug("initial record " + str(record))
         
         # trap any lookup errors
         try:
             # Step 1: identifier type detection/verification
             _detect_verify_type(record)
+            log.debug("type detected record " + str(record))
             
             # Step 2: create a canonical version of the identifier for cache keying
             _canonicalise_identifier(record)
+            log.debug("canonicalised record " + str(record))
             
             # Step 3: check the cache for an existing record
             cached_copy = _check_cache(record)
+            log.debug("cached record " + str(cached_copy))
             
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not cached or is stale
@@ -39,11 +47,13 @@ def lookup(self, bibjson_ids):
                     record['queued'] = True
                 elif cached_copy.has_key('bibjson'):
                     record['bibjson'] = cached_copy['bibjson']
+                log.debug("loaded from cache " + str(record))
                 rs.add_result_record(record)
                 continue
             
             # Step 4: check the archive for an existing record
             archived_bibjson = _check_archive(record)
+            log.debug("archived bibjson: " + str(archived_bibjson))
             
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not archived, or is stale
@@ -53,7 +63,7 @@ def lookup(self, bibjson_ids):
                 continue
             
         except models.LookupException as e:
-            record['error'] = e.value
+            record['error'] = e.message
         
         # write the resulting record into the result set
         rs.add_result_record(record)
@@ -65,8 +75,14 @@ def _check_archive(record):
     """
     check the record archive for a copy of the bibjson record
     """
+    if not record.has_key('identifier'):
+        raise models.LookupException("no identifier in record object")
+        
+    if not record['identifier'].has_key('canonical'):
+        raise models.LookupException("can't look anything up in the archive without a canonical id")
+        
     # obtain a copy of the archived bibjson
-    archived_bibjson = archive.check_archive(record['canonical'])
+    archived_bibjson = archive.check_archive(record['identifier']['canonical'])
     
     # if it's not in the archive, return
     if archived_bibjson is None:
@@ -100,10 +116,13 @@ def _check_cache(record):
     check the live local cache for a copy of the object.  Whatever we find,
     return it (a record of a queued item, a full item, or None)
     """
-    if not record.has_key('canonical'):
+    if not record.has_key('identifier'):
+        raise models.LookupException("no identifier in record object")
+        
+    if not record['identifier'].has_key('canonical'):
         raise models.LookupException("can't look anything up in the cache without a canonical id")
     
-    cached_copy = cache.check_cache(record['canonical'])
+    cached_copy = cache.check_cache(record['identifier']['canonical'])
     
     # if it's not in the cache, then return
     if cached_copy is None:
@@ -129,7 +148,7 @@ def _check_cache(record):
 def _canonicalise_identifier(record):
     """
     load the appropriate plugin to canonicalise the identifier.  This will add a "canonical" field
-    to the record with the canonical form of the identifier to be used in cache control and bibserver
+    to the "identifier" record with the canonical form of the identifier to be used in cache control and bibserver
     lookups
     """
     # verify that we have everything required for this step

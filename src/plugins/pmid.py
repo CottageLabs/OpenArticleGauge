@@ -11,7 +11,7 @@ def type_detect_verify(bibjson_identifier):
 def canonicalise(record):
     """
     create a canonical form of the identifier in the record['identifier'] field
-    and insert it into the record['canonical field'].  This is of the form pmid:12345678
+    and insert it into the record['identifier']['canonical'].  This is of the form pmid:12345678
     """
     pass
     
