@@ -1,12 +1,41 @@
+import re
+import models
+
 def type_detect_verify(bibjson_identifier):
     """
     determine if the provided bibjson identifier has a type of "DOI", by
     inspecting first the "type" parameter, and then by looking at the form
-    of the id.  If it is a DOI, then verify that it is a valid one.
+    of the id.  If it is a DOI, then verify that it is a valid one.  If it is not
+    valid
     
     Add "type" : "doi" to the bibjson_identifier object if so
     """
-    pass
+    # Something is a DOI if the following conditions are fulfilled:
+    # - it has the string "10." in it (at the start, if no prefix)
+    # - it either has no prefix, info:doi:, doi:, or dx.doi.org or http://dx.doi.org
+    
+    if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "doi":
+        return
+    
+    if not bibjson_identifier.has_key("id"):
+        return
+    
+    rx = "^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\\..+\/.+)"
+    result = re.match(rx, bibjson_identifier["id"])
+    
+    # validation
+    if bibjson_identifier.has_key("type") and bibjson_identifier["type"] == "doi" and result is None:
+        # the bibjson identifier asserts that it is a doi, but the regex does not
+        # support this assertion, so we raise an exception
+        raise models.LookupException("identifier asserts it is a DOI, but cannot validate: " + str(bibjson_identifier["id"]))
+    
+    if result is None:
+        # no assertion that this is a DOI, and no confirmation from the regex
+        return
+    
+    # otherwise, this is confirmed as a DOI
+    bibjson_identifier["type"] = "doi"
+    
 
 def canonicalise(record):
     """
