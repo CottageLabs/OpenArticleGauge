@@ -5,3 +5,9 @@ def check_archive(identifier):
     Return a bibjson record
     """
     pass
+    
+def store(bibjson):
+    """
+    Store the provided bibjson record in the archive
+    """
+    pass

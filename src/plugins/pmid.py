@@ -15,6 +15,9 @@ def canonicalise(record):
     """
     pass
     
-###########################################################
-def pmid_provider(record):
-    return "bmc"
+def provider_resolver(record):
+    """
+    Take a pubmed id (if that is the type) and obtain a reference to the base
+    URL of the resource that it links to.
+    """
+    pass

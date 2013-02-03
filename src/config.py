@@ -7,7 +7,7 @@ type_detection = [
     plugins.pmid.type_detect_verify
 ]
 
-# list of plugins that can be used to canonicalise all the different 
+# dictionary of plugins that can be used to canonicalise all the different 
 # identifier types.  Key is the identifier type as detected with type_detection,
 # value is the plugin to be used
 canonicalisers = {
@@ -15,17 +15,19 @@ canonicalisers = {
     "pmid" : plugins.pmid.canonicalise
 }
 
+# dictionary of lists of plugins that can be used to determine the provider
+# of an identifier type.  Key is the identifier type as detected with type_detection,
+# value is a list of plugins to be run in order.  When a plugin detects a provider,
+# processing of the chain will exit without passing any further.
 provider_detection = {
-    "doi" : [plugins.doi.doi_provider], 
-    "pmid" : [plugins.pmid.pmid_provider]
+    "doi" : [plugins.doi.provider_range_lookup, plugins.doi.provider_dereference], 
+    "pmid" : [plugins.pmid.provider_resolver]
 }
 
-site_detection = {
-    "http://www.plos.com/" : plugins.plos.plos_site,
-    "bmc" : plugins.bmc.bmc_site
-}
-
-page_detection = {
-    "http://www.plos.com/" : plugins.plos.plos_page,
-    "bmc" : plugins.bmc.bmc_page
+# dictionary of single plugins that can be used to determine the licence 
+# conditions of a given identifier.  Key is a string representing the provider,
+# value is a singple plugin to be run.  Plugins are selected based on selecting
+# the MOST GRANULAR or MOST SPECIFIC plugin
+licence_detection = {
+    "http://www.plos.com/" : plugins.plos.site_wide_licence
 }

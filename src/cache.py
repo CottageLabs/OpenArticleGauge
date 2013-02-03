@@ -17,3 +17,11 @@ def invalidate(key):
     remove anything identified by the supplied key from the cache
     """
     pass
+    
+def cache(key, obj):
+    """
+    take the provided python data structure, serialise it to a string, and
+    store it at the provided key with the appropriate timeout.  This may be
+    required to create a new cache entry or update an existing one
+    """
+    pass

@@ -1,6 +1,8 @@
-def plos_site(record):
-    return None
+def site_wide_licence(record):
+    """
+    To respond to the provider identifier: http://www.plos.com
     
-def plos_page(record):
-    return {"type" : "CC", "url": "http://creativecommons.org"}
-
+    This should determine the licence conditions of the PLOS article and populate
+    the record['bibjson']['license'] (note the US spelling) field.
+    """
+    pass

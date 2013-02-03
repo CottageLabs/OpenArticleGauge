@@ -1,7 +1,7 @@
 from celery import chain
-from slavedriver.workers import detect_provider, provider_site_plugins, provider_page_plugins
 import models, config, cache, archive
 import logging
+from slavedriver import celery
 
 log = logging.getLogger(__name__)
 
@@ -59,8 +59,31 @@ def lookup(bibjson_ids):
             # if the record is not archived, or is stale
             if archived_bibjson is not None:
                 record['bibjson'] = archived_bibjson
+                log.debug("loaded from archive " + str(archived_bibjson))
                 rs.add_result_record(record)
                 continue
+
+            # Step 5: we need to check to see if any record we have has already
+            # been queued.  In theory, this step is pointless, but we add it
+            # in for completeness, and just in case any of the above checks change
+            # in future
+            if record.get("queued", False):
+                # if the item is already queued, we just need to update the 
+                # cache (which may be a null operation anyway), and then carry on
+                # to the next record
+                _update_cache(record)
+                log.debug("caching record " + str(record))
+                continue
+                        
+            # Step 6: if we get to here, we need to set the state of the record
+            # queued, and then cache it.
+            record['queued'] = True
+            _update_cache(record)
+            log.debug("caching record " + str(record))
+            
+            # Step 7: the record needs the licence looked up on it, so we inject
+            # it into the asynchronous lookup workflow
+            _start_back_end(record)
             
         except models.LookupException as e:
             record['error'] = e.message
@@ -96,12 +119,28 @@ def _check_archive(record):
     # otherwise, just return the archived copy
     return archived_bibjson
 
+def _update_cache(record):
+    """
+    update the cache, and reset the timeout on the cached item
+    """
+    if not record.has_key('identifier'):
+        raise models.LookupException("no identifier in record object")
+    
+    if not record['identifier'].has_key('canonical'):
+        raise models.LookupException("can't create/update anything in the cache without a canonical id")
+    
+    # update or create the cache
+    cache.cache(record['identifier']['canonical'], record)
+    
 def _invalidate_cache(record):
     """
     invalidate any cache object associated with the passed record
     """
-    if not record.has_key('canonical'):
-        raise models.LookupException("can't look anything up in the cache without a canonical id")
+    if not record.has_key('identifier'):
+        raise models.LookupException("no identifier in record object")
+    
+    if not record['identifier'].has_key('canonical'):
+        raise models.LookupException("can't invalidate anything in the cache without a canonical id")
     
     cache.invalidate(record['canonical'])
 
@@ -183,8 +222,118 @@ def _detect_verify_type(record):
     for plugin in config.type_detection:
         plugin(record["identifier"])
     
-
-def start_back_end(record):
-    ch = chain(detect_provider.s(record), provider_site_plugins.s(), provider_page_plugins.s())
+def _start_back_end(record):
+    """
+    kick off the asynchronous licence lookup process.  There is no need for this to return
+    anything, although a handle on the asynchronous is provided for convenience of
+    testing
+    """
+    ch = chain(detect_provider.s(record), provider_licence.s(), store_results.s())
     r = ch.apply_async()
     return r
+
+############################################################################
+# Celery Tasks
+############################################################################    
+
+@celery.task
+def detect_provider(record):
+    # Step 1: see if we can actually detect a provider at all?
+    # as usual, this should never happen, but we should have a way to 
+    # handle it
+    if not record.has_key("identifier"):
+        return record
+    
+    if not record['identifier'].has_key("type"):
+        return record
+    
+    # Step 2: get the provider plugins that are relevant, and
+    # apply each one until a provider string is added
+    for plugin in config.provider_detection.get(record['identifier']["type"], []):
+        log.debug("applying plugin " + str(plugin))
+        plugin(record)
+        
+        # if the plugin detects or populates the provider, we are done
+        if record.has_key("provider"):
+            break
+    
+    # we have to return the record, so that the next step in the chain
+    # can deal with it
+    return record
+    
+@celery.task
+def provider_licence(record):
+    # Step 1: check that we have a provider indicator to work from
+    if not record.has_key("provider"):
+        return record
+    
+    # Step 2: get the plugin that will run for the given provider
+    plugin = _get_provider_plugin(record["provider"])
+    if plugin is None:
+        return record
+    
+    # Step 3: run the plugin on the record
+    plugin(record)
+    
+    # we have to return the record so that the next step in the chain can
+    # deal with it
+    return record
+
+@celery.task
+def store_results(record):
+    # Step 1: check that we have something worth storing
+    if not record.has_key("bibjson") or not record.has_key("identifier"):
+        return record
+    
+    # Step 2: unqueue the record
+    if record.has_key("queued"):
+        del record["queued"]
+    
+    # Step 3: update the archive
+    # FIXME: do we need to rationalise the identifiers at this point?
+    archive.store(record['bibjson'])
+    
+    # Step 4: update the cache
+    _update_cache(record)
+    
+    # we have to return the record so that the next step in the chain can
+    # deal with it (if such a step exists)
+    return record
+
+def _get_provider_plugin(provider):
+    keys = config.licence_detection.keys()
+    possible = []
+    for key in keys:
+        if provider.startswith(key):
+            possible.append(key)
+    if len(possible) == 0:
+        return None
+    selected = possible[0]
+    for p in possible:
+        if len(p) > len(selected):
+            selected = p
+    return config.licence_detection[selected]
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

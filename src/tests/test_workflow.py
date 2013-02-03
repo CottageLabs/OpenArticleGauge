@@ -15,6 +15,17 @@ There are other tests for working on specific plugins.
 from unittest import TestCase
 import config, workflow, models, cache, archive
 
+CACHE = {}
+ARCHIVE = []
+
+def mock_cache(key, obj):
+    global CACHE
+    CACHE[key] = obj
+
+def mock_store(bibjson):
+    global ARCHIVE
+    ARCHIVE.append(bibjson)
+
 def mock_doi_type(bibjson_identifier):
     if bibjson_identifier["id"].startswith("10"):
         bibjson_identifier["type"] = "doi"
@@ -52,7 +63,22 @@ def mock_check_archive(key):
     if key == "doi:10.bibjson": return {"title" : "whatever"}
     if key == "doi:10.archived": return {"title" : "archived"}
 
+def mock_null_archive(key): return None
 
+def mock_detect_provider(record):
+    record['provider'] = "http://provider"
+
+def mock_no_provider(record): pass
+
+def mock_other_detect(record):
+    record['provider'] = "http://other"
+
+def mock_licence_plugin(record):
+    record['bibjson'] = {}
+    record['bibjson']['license'] = {}
+    record['bibjson']['title'] = "mytitle"
+
+def mock_back_end(record): pass
 
 class TestWorkflow(TestCase):
 
@@ -181,20 +207,160 @@ class TestWorkflow(TestCase):
         assert result['identifier']['id'] == "12345"
         assert result['identifier']['type'] == "doi"
         assert result.has_key("error")
+    
+    def test_08_detect_provider(self):
+        record = {"identifier" : {"id" : "12345"}}
+        workflow.detect_provider(record)
+        
+        # the record should not have changed
+        assert not record.has_key('provider')
+        
+        record['identifier']['type'] = "unknown"
+        workflow.detect_provider(record)
+        
+        # the record should not have changed
+        assert not record.has_key('provider')
+        
+        # check that a plugin is applied
+        config.provider_detection = {"doi" : [mock_detect_provider]}
+        record['identifier']['type'] = "doi"
+        workflow.detect_provider(record)
+        assert record.has_key("provider"), record
+        assert record["provider"] == "http://provider"
+        
+        # now check that the chain exits after the first successful one
+        config.provider_detection = {"doi" : [mock_no_provider, mock_other_detect, mock_detect_provider]}
+        del record['provider']
+        workflow.detect_provider(record)
+        assert record.has_key("provider")
+        assert record["provider"] == "http://other"
+        
+    def test_09_load_provider_plugin(self):
+        # first try the simple case of a dictionary of plugins
+        config.licence_detection = {"one" : "one", "two" : "two"}
+        one = workflow._get_provider_plugin("one")
+        two = workflow._get_provider_plugin("two")
+        assert one == "one"
+        assert two == "two"
+        
+        # now try a couple of granular ones
+        config.licence_detection = {"one" : "one", "one/two" : "one/two", "two" : "two"}
+        one = workflow._get_provider_plugin("one")
+        onetwo = workflow._get_provider_plugin("one/two")
+        otherone = workflow._get_provider_plugin("one/three")
+        onetwothree = workflow._get_provider_plugin("one/two/three")
+        assert one == "one"
+        assert onetwo == "one/two"
+        assert otherone == "one"
+        assert onetwothree == "one/two"
+    
+    def test_10_provider_licence(self):
+        config.licence_detection = {"testprovider" : mock_licence_plugin}
+        
+        # first check that no provider results in no change
+        record = {}
+        workflow.provider_licence(record)
+        assert not record.has_key("bibjson")
+        
+        # now check there's no change if there's no plugin
+        record['provider'] = "provider"
+        workflow.provider_licence(record)
+        assert not record.has_key("bibjson")
+        
+        # check that it works when it's right
+        record['provider'] = "testprovider"
+        workflow.provider_licence(record)
+        assert record.has_key("bibjson")
+        assert record['bibjson'].has_key("license") # american spelling
+    
+    def test_11_check_cache_update_on_queued(self):
+        global CACHE
+        ids = [{"id" : "10.queued"}]
+        
+        # set up the configuration so that the type and canonical form are created
+        # but no copy of the id is found in the cache or archive
+        config.type_detection = [mock_doi_type, mock_pmid_type]
+        config.canonicalisers = {"doi" : mock_doi_canon, "pmid" : mock_pmid_canon}
+        cache.check_cache = mock_null_cache
+        archive.check_archive = mock_null_archive
+        
+        # mock out the cache method to allow us to record
+        # calls to it
+        cache.cache = mock_cache
+        
+        # mock out the _start_back_end so that we don't actually start the
+        # back end
+        old_back_end = workflow._start_back_end
+        workflow._start_back_end = mock_back_end
+        
+        # do the lookup
+        rs = workflow.lookup(ids)
+        
+        # assert that the result is in the appropriate bit of the response
+        assert len(rs.processing) == 1
+        result = rs.processing[0]
+        assert result['identifier']['id'] == "10.queued"
+        
+        # now check our cache and make sure that the item got cached
+        # correctly
+        assert CACHE.has_key("doi:10.queued")
+        assert CACHE["doi:10.queued"]['queued']
         
         
+        # reset the test cache and reinstate the old back-end
+        del CACHE["doi:10.queued"]
+        workflow._start_back_end = old_back_end
+    
+    def test_12_store(self):
+        global CACHE
+        global ARCHIVE
         
+        cache.cache = mock_cache
+        archive.store = mock_store
         
+        # first check that nothing happens if all the right fields aren't present
+        record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
+        workflow.store_results(record)
+        assert not CACHE.has_key("doi:10.1")
+        assert len(ARCHIVE) == 0
         
+        record["bibjson"] = {"title" : "mytitle"}
+        workflow.store_results(record)
+        assert CACHE.has_key("doi:10.1")
+        assert not CACHE["doi:10.1"].has_key("queued")
+        assert len(ARCHIVE) == 1
+        assert ARCHIVE[0]["title"] == "mytitle"
         
+        del CACHE['doi:10.1']
+        del ARCHIVE[0]
+    
+    def test_13_chain(self):
+        global CACHE
+        global ARCHIVE
         
+        record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         
+        config.provider_detection = {"doi" : [mock_detect_provider]}
+        config.licence_detection = {"http://prov" : mock_licence_plugin}
         
+        # run the chain synchronously
+        record = workflow.detect_provider(record)
+        record = workflow.provider_licence(record)
+        record = workflow.store_results(record)
         
+        assert record.has_key("provider")
+        assert record["provider"] == "http://provider"
         
+        assert record.has_key("bibjson")
+        assert record['bibjson'].has_key("license")
         
+        assert CACHE.has_key("doi:10.1")
+        assert not CACHE["doi:10.1"].has_key("queued")
+        assert len(ARCHIVE) == 1
+        assert ARCHIVE[0]["title"] == "mytitle"
         
-        
+        del CACHE['doi:10.1']
+        del ARCHIVE[0]
         
         
         
