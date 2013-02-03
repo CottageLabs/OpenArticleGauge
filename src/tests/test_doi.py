@@ -28,6 +28,15 @@ DOIS = [
     "info:doi:10.1021/jo01080a021"
 ]
 
+CANONICAL = {
+    "doi:10.1111/j.0954-6820.1964.tb06335.x" : "doi:10.1111/j.0954-6820.1964.tb06335.x",
+    "info:doi:10.1021/jm00376a026" : "doi:10.1021/jm00376a026",
+    "http://dx.doi.org/10.1016/j.jsg.2005.01.012" : "doi:10.1016/j.jsg.2005.01.012",
+    "dx.doi.org/10.1002/etc.5620210119" : "doi:10.1002/etc.5620210119",
+    "http://hdl.handle.net/10.2177/jsci.8.374" : "doi:10.2177/jsci.8.374",
+    "hdl.handle.net/10.1136/bmj.1.2822.189" : "doi:10.1136/bmj.1.2822.189"
+}
+
 class TestWorkflow(TestCase):
 
     def setUp(self):
@@ -88,8 +97,32 @@ class TestWorkflow(TestCase):
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         with self.assertRaises(models.LookupException):
             plugins.doi.type_detect_verify(bjid)
+    
+    def test_05_canonicalise_real(self):
+        counter = 0
+        for d in CANONICAL.keys():
+            bjid = {'id' : d, 'type' : 'doi'}
+            plugins.doi.canonicalise(bjid)
+            assert bjid.has_key("canonical")
+            assert bjid["canonical"] == CANONICAL[d]
+            counter += 1
+        assert counter == len(CANONICAL.keys())
+        assert counter > 0
         
+    def test_06_canonicalise_ignore(self):
+        bjid = {"id" : "whatever", "type" : "pmid"}
+        plugins.doi.canonicalise(bjid)
+        assert not bjid.has_key("canonical")
         
+    def test_07_canonicalise_error(self):
+        # create an invalid doi and assert it is a doi
+        bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
+        with self.assertRaises(models.LookupException):
+            plugins.doi.canonicalise(bjid)
+            
+        bjid = {"key" : "value"}
+        with self.assertRaises(models.LookupException):
+            plugins.doi.canonicalise(bjid)
         
         
         

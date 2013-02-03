@@ -38,8 +38,8 @@ def type_detect_verify(bibjson_identifier):
 
 def canonicalise(bibjson_identifier):
     """
-    create a canonical form of the identifier in the record['identifier'] field
-    and insert it into the record['identifier']['canonical'].  This is of the form pmid:12345678
+    create a canonical form of the identifier
+    and insert it into the bibjson_identifier['canonical'].  This is of the form pmid:12345678
     """
     pass
     

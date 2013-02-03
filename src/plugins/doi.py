@@ -20,6 +20,7 @@ def type_detect_verify(bibjson_identifier):
     if not bibjson_identifier.has_key("id"):
         return
     
+    # interpret the DOI
     rx = "^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\\..+\/.+)"
     result = re.match(rx, bibjson_identifier["id"])
     
@@ -39,10 +40,30 @@ def type_detect_verify(bibjson_identifier):
 
 def canonicalise(bibjson_identifier):
     """
-    create a canonical form of the identifier in the record['identifier'] field
-    and insert it into the record['identifier']['canonical'].  This is of the form doi:10.xxxx
+    create a canonical form of the identifier
+    and insert it into the bibjson_identifier['canonical'].  This is of the form doi:10.xxxx
     """
-    pass
+    # only canonicalise DOIs (this function should only ever be called in the right context)
+    if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "doi":
+        return
+    
+    # do we have enough information to canonicalise, raise an error
+    if not bibjson_identifier.has_key("id"):
+        raise models.LookupException("can't canonicalise an identifier without an 'id' property")
+    
+    # interpret the DOI
+    rx = "^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\\..+\/.+)"
+    result = re.match(rx, bibjson_identifier["id"])
+    
+    if result is None:
+        raise models.LookupException("identifier does not parse as a DOI: " + str(bibjson_identifier["id"]))
+    
+    # the last capture group is the 10.xxxx bit of the DOI
+    tendot = result.groups()[-1:][0]
+    
+    # canonicalised version is just "doi:10.xxxx"
+    canonical = "doi:" + tendot
+    bibjson_identifier['canonical'] = canonical
 
 def provider_range_lookup(record):
     """
