@@ -14,6 +14,15 @@ PMIDS = [
     "23373030"
 ]
 
+CANONICAL = {
+    "23373100" : "pmid:23373100",
+    "23373089" : "pmid:23373089",
+    "23373059" : "pmid:23373059",
+    "23373049" : "pmid:23373049",
+    "23373046" : "pmid:23373046",
+    "23373030" : "pmid:23373030"
+}
+
 class TestWorkflow(TestCase):
 
     def setUp(self):
@@ -71,5 +80,29 @@ class TestWorkflow(TestCase):
         with self.assertRaises(models.LookupException):
             plugins.pmid.type_detect_verify(bjid)
             
+    def test_05_canonicalise_real(self):
+        counter = 0
+        for d in CANONICAL.keys():
+            bjid = {'id' : d, 'type' : 'pmid'}
+            plugins.pmid.canonicalise(bjid)
+            assert bjid.has_key("canonical")
+            assert bjid["canonical"] == CANONICAL[d]
+            counter += 1
+        assert counter == len(CANONICAL.keys())
+        assert counter > 0
+        
+    def test_06_canonicalise_ignore(self):
+        bjid = {"id" : "whatever", "type" : "doi"}
+        plugins.pmid.canonicalise(bjid)
+        assert not bjid.has_key("canonical")
+        
+    def test_07_canonicalise_error(self):
+        # create an invalid pmid and assert it is a pmid
+        bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
+        with self.assertRaises(models.LookupException):
+            plugins.pmid.canonicalise(bjid)
             
+        bjid = {"key" : "value"}
+        with self.assertRaises(models.LookupException):
+            plugins.pmid.canonicalise(bjid)            
     

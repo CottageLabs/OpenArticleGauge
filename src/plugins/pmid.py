@@ -41,7 +41,24 @@ def canonicalise(bibjson_identifier):
     create a canonical form of the identifier
     and insert it into the bibjson_identifier['canonical'].  This is of the form pmid:12345678
     """
-    pass
+    # only canonicalise DOIs (this function should only ever be called in the right context)
+    if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
+        return
+    
+    # do we have enough information to canonicalise, raise an error
+    if not bibjson_identifier.has_key("id"):
+        raise models.LookupException("can't canonicalise an identifier without an 'id' property")
+    
+    # 8 digits long
+    rx = "^[\d]{8}$"
+    result = re.match(rx, bibjson_identifier["id"])
+    if result is None:
+        raise models.LookupException("identifier does not parse as a PMID: " + str(bibjson_identifier["id"]))
+    
+    # no need to validate the ID - we just prefix "pmid:" since there is an id, and the
+    # type is indicated as "pmid"
+    canonical = "pmid:" + bibjson_identifier['id']
+    bibjson_identifier['canonical'] = canonical
     
 def provider_resolver(record):
     """
