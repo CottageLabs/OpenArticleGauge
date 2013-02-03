@@ -37,7 +37,7 @@ def type_detect_verify(bibjson_identifier):
     bibjson_identifier["type"] = "doi"
     
 
-def canonicalise(record):
+def canonicalise(bibjson_identifier):
     """
     create a canonical form of the identifier in the record['identifier'] field
     and insert it into the record['identifier']['canonical'].  This is of the form doi:10.xxxx

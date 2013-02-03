@@ -36,7 +36,7 @@ def type_detect_verify(bibjson_identifier):
     # otherwise, this is confirmed as a PMID
     bibjson_identifier["type"] = "pmid"
 
-def canonicalise(record):
+def canonicalise(bibjson_identifier):
     """
     create a canonical form of the identifier in the record['identifier'] field
     and insert it into the record['identifier']['canonical'].  This is of the form pmid:12345678

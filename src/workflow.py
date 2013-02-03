@@ -204,7 +204,7 @@ def _canonicalise_identifier(record):
     plugin = config.canonicalisers.get(record['identifier']['type'])
     if plugin is None:
         raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
-    plugin(record)
+    plugin(record['identifier'])
 
 def _detect_verify_type(record):
     """

@@ -37,13 +37,13 @@ def mock_pmid_type(bibjson_identifier):
     if bibjson_identifier["id"] == "12345678":
         bibjson_identifier["type"] = "pmid"
         
-def mock_doi_canon(record):
-    if record['identifier']['type'] == 'doi':
-        record['identifier']['canonical'] = record['identifier']['type'] + ":" + record['identifier']['id']
+def mock_doi_canon(bibjson_identifier):
+    if bibjson_identifier['type'] == 'doi':
+        bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
     
-def mock_pmid_canon(record):
-    if record['identifier']['type'] == 'pmid':
-        record['identifier']['canonical'] = record['identifier']['type'] + ":" + record['identifier']['id']
+def mock_pmid_canon(bibjson_identifier):
+    if bibjson_identifier['type'] == 'pmid':
+        bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
 
 def mock_check_cache(key):
     if key == "doi:10.none": return None
