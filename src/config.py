@@ -31,3 +31,8 @@ provider_detection = {
 licence_detection = {
     "http://www.plos.com/" : plugins.plos.site_wide_licence
 }
+
+# Cache configuration
+redis_cache_host = "localhost"
+redis_cache_port = 6379
+redis_cache_db = 2

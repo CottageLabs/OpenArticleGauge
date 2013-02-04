@@ -1,9 +1,27 @@
+import redis, json
+import config
+
+
+
 def check_cache(key):
     """
     check the cache for an object stored under the given key, and convert it
     from a string into a python object
     """
-    pass
+    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    s = client.get(key)
+    
+    if s is None:
+        return None
+    
+    try:
+        obj = json.loads(s)
+    except ValueError as e:
+        # cache is corrupt, just get rid of it
+        invalidate(key)
+        return None
+    
+    return obj
     
 def is_stale(bibjson):
     """
@@ -16,7 +34,8 @@ def invalidate(key):
     """
     remove anything identified by the supplied key from the cache
     """
-    pass
+    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    client.delete(key)
     
 def cache(key, obj):
     """
