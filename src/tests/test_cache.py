@@ -111,7 +111,18 @@ class TestWorkflow(TestCase):
                   ]}
         assert cache.is_stale(bibjson)
         
+    def test_10_cache_not_json(self):
+        with self.assertRaises(cache.CacheException):
+            cache.cache("exists", self) # pass in something that won't json serialise
+    
+    def test_11_cache(self):
+        cache.cache("exists", {"key" : "value"})
         
+        client = redis.StrictRedis(host=test_host, port=test_port, db=test_db)
+        s = client.get("exists")
+        obj = json.loads(s)
+        assert obj.has_key("key")
+        assert obj["key"] == "value"
         
         
         

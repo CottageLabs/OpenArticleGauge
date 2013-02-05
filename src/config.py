@@ -36,6 +36,7 @@ licence_detection = {
 redis_cache_host = "localhost"
 redis_cache_port = 6379
 redis_cache_db = 2
+redis_cache_timeout = 7776000 # approximately 3 months
 
 # Number of seconds it takes for a licence record to be considered stale
 licence_stale_time = 15552000 # approximately 6 months

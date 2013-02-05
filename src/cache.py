@@ -75,8 +75,47 @@ def invalidate(key):
     
 def cache(key, obj):
     """
-    take the provided python data structure, serialise it to a string, and
+    take the provided python data structure, serialise it via json to a string, and
     store it at the provided key with the appropriate timeout.  This may be
     required to create a new cache entry or update an existing one
     """
-    pass
+    try:
+        s = json.dumps(obj)
+    except TypeError:
+        raise CacheException("can only cache python objects that can be sent through json.dumps")
+    
+    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    client.setex(key, config.redis_cache_timeout, s)
+    
+class CacheException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super(CacheException, self).__init__(self, message)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
