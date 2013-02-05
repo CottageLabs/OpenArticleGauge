@@ -29,10 +29,13 @@ provider_detection = {
 # value is a singple plugin to be run.  Plugins are selected based on selecting
 # the MOST GRANULAR or MOST SPECIFIC plugin
 licence_detection = {
-    "http://www.plos.com/" : plugins.plos.site_wide_licence
+    "http://www.plos.com/" : plugins.plos.page_licence
 }
 
 # Cache configuration
 redis_cache_host = "localhost"
 redis_cache_port = 6379
 redis_cache_db = 2
+
+# Number of seconds it takes for a licence record to be considered stale
+licence_stale_time = 15552000 # approximately 6 months

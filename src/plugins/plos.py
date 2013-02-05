@@ -1,4 +1,4 @@
-def site_wide_licence(record):
+def page_licence(record):
     """
     To respond to the provider identifier: http://www.plos.com
     

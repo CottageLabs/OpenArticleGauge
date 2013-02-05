@@ -48,7 +48,8 @@ def mock_pmid_canon(bibjson_identifier):
 def mock_check_cache(key):
     if key == "doi:10.none": return None
     if key == "doi:10.queued": return {"identifier" : {"id" : "10.queued", "type" : "doi", "canonical": "doi:10.queued"}, "queued" : True}
-    if key == "doi:10.bibjson": return {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}, "bibjson" : {}}
+    if key == "doi:10.bibjson": return {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}, "bibjson" : {"title" : "fresh"}}
+    if key == "doi:10.stale": return {"identifier" : {"id" : "10.stale", "type" : "doi", "canonical" : "doi:10.stale"}, "bibjson" : {"title" : "stale"}}
 
 def mock_queue_cache(key):
     return {"identifier" : {"id" : key}, "queued": True}
@@ -79,6 +80,11 @@ def mock_licence_plugin(record):
     record['bibjson']['title'] = "mytitle"
 
 def mock_back_end(record): pass
+
+def mock_is_stale(bibjson):
+    return bibjson["title"] == "stale"
+    
+def mock_invalidate(key): pass
 
 class TestWorkflow(TestCase):
 
@@ -126,6 +132,8 @@ class TestWorkflow(TestCase):
         
     def test_03_check_cache(self):
         cache.check_cache = mock_check_cache
+        cache.is_stale = mock_is_stale
+        cache.invalidate = mock_invalidate
         
         record = {"identifier" : {"id" : "10.none", "type" : "doi", "canonical" : "doi:10.none"}}
         cache_copy = workflow._check_cache(record)
@@ -138,6 +146,11 @@ class TestWorkflow(TestCase):
         record = {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}}
         cache_copy = workflow._check_cache(record)
         assert cache_copy.has_key("bibjson")
+        assert cache_copy["bibjson"]["title"] == "fresh"
+        
+        record = {"identifier" : {"id" : "10.stale", "type" : "doi", "canonical" : "doi:10.stale"}}
+        cache_copy = workflow._check_cache(record)
+        assert cache_copy is None
         
     def test_04_check_archive(self):
         archive.check_archive = mock_check_archive

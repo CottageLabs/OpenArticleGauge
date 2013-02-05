@@ -142,7 +142,7 @@ def _invalidate_cache(record):
     if not record['identifier'].has_key('canonical'):
         raise models.LookupException("can't invalidate anything in the cache without a canonical id")
     
-    cache.invalidate(record['canonical'])
+    cache.invalidate(record['identifier']['canonical'])
 
 def _is_stale(bibjson):
     """
