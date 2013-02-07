@@ -1,11 +1,17 @@
+import json
+
 class ResultSet(object):
     """
     {
-	    "requested": number_requested_in_batch,
-	    "available": number_of_those_already_known,
-	    "processing": number_waiting_for_processing,
-	    "results": [
+	    "requested" : number_requested_in_batch,
+	    "results" : [
 		    the list of bibjson record objects already known
+	    ],
+	    "errors" : [
+		    a list of JSON objects with an "identifier" key and an "error" key
+	    ],
+	    "processing" : [
+		    a list of bibjson identifier objects that are on the queue
 	    ]
     }
     """
@@ -30,6 +36,15 @@ class ResultSet(object):
             self.processing.append({"identifier" : record.get('identifier')})
         else:
             self.results.append(bibjson)
+    
+    def json(self):
+        obj = {
+            "requested" : self.requested,
+            "results" :  self.results,
+            "errors" :  self.errors,
+            "processing" : self.processing
+            }
+        return json.dumps(obj)
     
     def _get_bibjson(self, record):
         # first get the bibjson record

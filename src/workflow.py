@@ -314,7 +314,8 @@ def _get_provider_plugin(provider):
             selected = p
     return config.licence_detection[selected]
     
-    
+def _add_identifier_to_bibjson(identifier, bibjson):
+    pass
     
     
     
