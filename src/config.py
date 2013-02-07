@@ -40,3 +40,10 @@ redis_cache_timeout = 7776000 # approximately 3 months
 
 # Number of seconds it takes for a licence record to be considered stale
 licence_stale_time = 15552000 # approximately 6 months
+
+# bibserver confis
+bibserver_address = 'http://bibsoup.net'
+bibserver_api_key = '' # should be a real api key for the targeted instance
+bibserver_collection = 'isitopenaccess' # collection name that we will put IIOA files into
+bibserver_buffering = False # whether or not we are buffering posts to bibserver
+

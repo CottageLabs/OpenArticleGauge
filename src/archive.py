@@ -1,11 +1,5 @@
+import config
 import requests, json
-
-# I see you have a bunch of config...
-# Flask has a whole way of dealing with this but it is not in bens original code at all
-# Does it matter? Where would you want these config vars put if not?
-bibserver_query_address = 'http://bibsoup.net/query'
-bibserver_api_key = '' # should be a real api key for the targeted instance
-bibserver_collection = 'isitopenaccess' # collection name that we will put IIOA files into
 
 def check_archive(identifier):
     """
@@ -13,33 +7,52 @@ def check_archive(identifier):
     
     Return a bibjson record
     """
+    idtype, idid = identifier.split(':')
     
-    # before checking remote, check the redis store buffer queue
+    result = {}
+    if bibserver_buffering:
+        # before checking remote, check the redis buffer queue if one is enabled
+        result = {} # should update result to the matching record object found on buffer queue if any
+        
+    if not result:
+        # query bibserver for this identifier and order by descending last modified
+        query = {}
+        r = requests.post(bibserver_address + '/query', data=json.dumps(query))
+        results = r.json().get('hits',{}).get('hits',[])
+        if len(results) > 0: result = results[0]['_source']
     
-    # this identifier passed in is going to be the canonical iioa one like doi:10.1245/17476384
-    query = {} # Need to finish this to be a proper query object - order by descending last modified
+    return result
+    
 
-    r = requests.post(bibserver_query_address, data=json.dumps(query))
-    results = r.json().get('hits',{}).get('hits',[])
-
-    if len(results) > 0:
-        return results[0]['url'] # what do you want back here? The full bibjson object of the first result
-    else:
-        return False
-    
 def store(bibjson):
     """
     Store the provided bibjson record in the archive
     """
+    if bibserver_buffering:
+        # append this bibjson record to the buffer somehow
+        buf = 'whatever it was plus this new record'
+        # if buffer size limit reached or buffer timeout reached
+        if False: # change this to proper decision
+            bulk_save('list of the records in the buffer')
+            # flush the buffer however that is done
+    else:
+        # no buffering, just save this one record
+        save(bibjson)
 
-    # are you only going to send one record at a time? - YES
+
+def save(bibjson):
+    # send one record to bibserver
+    r = requests.post(
+        bibserver_address + '/record/' + bibjson['_id'] + '?api_key=' + bibserver_api_key, 
+        data=json.dumps(bibjson)
+    )
+    return r.json()
+
+
+def bulk_save(bibjson_list):
+    # send a batch of bibjson records to bibserver
+    # there is no bibserver batch endpoint yet. will add very soon then update this.
     pass
-
-
-def bulk_store(bibjson_list):
-    # write this as a store on a redis queue that then bulk loads after CONFIG time or CONFIG files
-    pass
-    
     
     
     

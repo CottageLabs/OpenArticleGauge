@@ -1,8 +1,6 @@
 import os
 from flask import Flask, render_template, request
 
-from flask_negotiate import consumes, produces
-
 import workflow
 
 try:
@@ -20,61 +18,58 @@ JSON = "application/json"
 
 app = Flask(__name__)
 
-# Put a 3M limit on uploads
+# Put a limit on uploads
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 3
 
 
-# static pages
+# static front page
 @app.route('/')
-@produces(HTML)
 def hello():
     return render_template('index.html')
 
-# just the api docs here
+# the api docs here
 @app.route("/api")
-@produces(HTML)
 def api():
     return render_template('api.html')
 
-# just a display of perhaps an embedded facetview pointing to bibsoup.net, and a link to there
+# a display of an embedded facetview pointing to bibsoup.net, and a link to there
 @app.route("/search")
-@produces(HTML)
 def search():
     return render_template('search.html')
-
-
-@app.route("/submit", methods=['GET','POST'])
-@app.route("/submit/", methods=['GET','POST'])
-@produces(HTML)
-def submit():
-    if request.method == 'GET':
-        return render_template('submit.html')
-    elif request.method == 'POST':
-        # store the received list unless we are going to do some sort of checking on it
-        pass
 
 
 @app.route("/lookup", methods=['GET','POST'])
 @app.route("/lookup/", methods=['GET','POST'])
 @app.route("/lookup/<ids>", methods=['GET','POST'])
 def api_lookup(ids=[]):
-    if request.method == 'GET':
-        if ids:
-            pass
-        # display the static front page with the info
-        pass
+    idlist = []
+    if ids:
+        idlist = [ {"id":i} for i in ids.split(',') ]
+    elif request.json:
+        idlist = request.json
+
+    if idlist:
+        results = workflow.lookup(idlist).json()
     else:
-        if ids:
-            pass # prep the data
-        elif request.json:
-            pass # prep the data
-        else:
-            abort(400)
-        
-        results = workflow.lookup('list of bibjson id objects')
-        resp = make_response( results.json() )
+        results = {}
+
+    if request.method == 'GET':
+        render_template('index.html', results=results)
+    else:
+        resp = make_response( results )
         resp.mimetype = "application/json"
         return resp
+
+
+@app.route("/submit", methods=['GET','POST'])
+@app.route("/submit/", methods=['GET','POST'])
+def submit():
+    if request.method == 'GET':
+        return render_template('submit.html')
+    elif request.method == 'POST':
+        # store the received list unless we are going to do some sort of checking on it
+        # pass through to bibserver with an API KEY perhaps?
+        pass
 
 
 @app.errorhandler(400)
