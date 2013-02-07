@@ -15,19 +15,25 @@ jQuery(document).ready(function () {
         alert("Error... " + error)
     };
     
-    var iioa = function(event) {
-        event ? event.preventDefault() : false;
-        $('#topstrap').css({'margin-top':'-80px'});
-        var data = {};
+    var idlist = [];
+    
+    var getiioa = function() {
         $.ajax({
             'type':'POST',
-            'url': '/lookup',
-            'data': JSON.stringify(data),
+            'url': '/lookup/',
+            'data': JSON.stringify(idlist),
             'contentType': "application/json; charset=utf-8", 
             'processData': false,
             'success': success,
             'error': error
         });
+    };
+    
+    var iioa = function(event) {
+        event ? event.preventDefault() : false;
+        $('#topstrap').css({'margin-top':'-80px'});
+        idlist = $('#iioa').val().split(',');
+        getiioa();
     };
     $('#iioa').bind('click',iioa);
 });

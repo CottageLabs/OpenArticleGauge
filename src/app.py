@@ -93,8 +93,9 @@ def api_lookup():
     
     # Check content-length and reject if above an arbitrary value for RAM sanity
     # -> accept up to 3MB of transmitted data - set on line 22 above.
+    print "HI"
     try:
-        passed_json = json.loads(request.data)
+        passed_json = request.json
         return '{"response": "Got parsable JSON"}'
     except ValueError:
         abort(400)
