@@ -19,7 +19,8 @@ setup(
         "python-dateutil==1.5",
         "wsgiref==0.1.2",
         "Flask-WTF",
-        "requests==1.1.0"
+        "requests==1.1.0",
+        "redis"
     ]
 )
 
