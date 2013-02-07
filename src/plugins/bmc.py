@@ -1,5 +1,8 @@
-def bmc_site(record):
-    return {"type" : "CC", "url": "http://creativecommons.org"}
-
-def bmc_page(record):
-    return {"type" : "CC", "url": "http://creativecommons.org"}
+def page_licence(record):
+    """
+    To respond to the provider identifier: http://www.plos.com
+    
+    This should determine the licence conditions of the BMC article and populate
+    the record['bibjson']['license'] (note the US spelling) field.
+    """
+    pass
