@@ -13,13 +13,17 @@ def check_archive(identifier):
     
     Return a bibjson record
     """
-    query = {} # Need to finish this to be a proper query object
+    
+    # before checking remote, check the redis store buffer queue
+    
+    # this identifier passed in is going to be the canonical iioa one like doi:10.1245/17476384
+    query = {} # Need to finish this to be a proper query object - order by descending last modified
 
     r = requests.post(bibserver_query_address, data=json.dumps(query))
     results = r.json().get('hits',{}).get('hits',[])
 
     if len(results) > 0:
-        return results[0]['url'] # what do you want back here? The url of the first found record?
+        return results[0]['url'] # what do you want back here? The full bibjson object of the first result
     else:
         return False
     
@@ -28,9 +32,12 @@ def store(bibjson):
     Store the provided bibjson record in the archive
     """
 
-    # are you only going to send one record at a time?
-    # will there be any need to bulk save? - does your processing pipeline allow for a batch to be sent at once?
-    # if you are sending 1000's to the bibserver very quickly it could fail a bit
+    # are you only going to send one record at a time? - YES
+    pass
+
+
+def bulk_store(bibjson_list):
+    # write this as a store on a redis queue that then bulk loads after CONFIG time or CONFIG files
     pass
     
     

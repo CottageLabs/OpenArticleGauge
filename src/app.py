@@ -3,6 +3,8 @@ from flask import Flask, render_template, request
 
 from flask_negotiate import consumes, produces
 
+import workflow
+
 try:
     import json
 except ImportError:
@@ -48,7 +50,7 @@ def submit():
     if request.method == 'GET':
         return render_template('submit.html')
     elif request.method == 'POST':
-        # send the received list for processing
+        # store the received list unless we are going to do some sort of checking on it
         pass
 
 
@@ -68,6 +70,11 @@ def api_lookup(ids=[]):
             pass # prep the data
         else:
             abort(400)
+        
+        results = workflow.lookup('list of bibjson id objects')
+        resp = make_response( results.json() )
+        resp.mimetype = "application/json"
+        return resp
 
 
 @app.errorhandler(400)
