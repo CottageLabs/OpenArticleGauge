@@ -43,7 +43,3 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license']['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license']['provenance']['description'] == 'License decided by scraping the resource at source_url and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href=\'http://creativecommons.org/licenses/by/2.0\'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
         assert not record['bibjson']['license']['provenance']['jurisdiction']
-
-        import json
-        print json.dumps(record, indent=4)
-        assert False
