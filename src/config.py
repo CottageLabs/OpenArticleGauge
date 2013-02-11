@@ -47,3 +47,11 @@ bibserver_api_key = '' # should be a real api key for the targeted instance
 bibserver_collection = 'isitopenaccess' # collection name that we will put IIOA files into
 bibserver_buffering = False # whether or not we are buffering posts to bibserver
 
+# IIOA version and user agent string
+# FIXME this information can't be kept here for usage by plugins!
+# the problem is that this file imports plugins, so a circular dependency
+# problem arises - a plugin needs this file, but this file needs all plugins
+# loaded! Copied to bmc.py for now, but we need to resolve.
+# still keeping info here as well as bmc.py for use by tests
+version = '0.1 alpha'
+agent = 'IsItOpenAccess Service/' + version
