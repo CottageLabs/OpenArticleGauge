@@ -6,6 +6,7 @@ import models
 # some random PMIDs obtained by just doing a search for "test" on the pubmed dataset
 
 PMIDS = [
+    "9254694", # example of (real) 7-digit PMID
     "23373100",
     "23373089",
     "23373059",
@@ -15,6 +16,7 @@ PMIDS = [
 ]
 
 CANONICAL = {
+    "9254694" : "pmid:9254694",
     "23373100" : "pmid:23373100",
     "23373089" : "pmid:23373089",
     "23373059" : "pmid:23373059",
@@ -44,7 +46,7 @@ class TestWorkflow(TestCase):
     
     def test_02_detect_verify_type_not_pmids(self):
         #Test the various erroneous PMID possibilities, which will include:
-        #- less than or more than 8 digits
+        #- less than 7 and more than 8 digits
         #- random strings (i.e. not just digits)
         
         # some random digits
@@ -53,11 +55,12 @@ class TestWorkflow(TestCase):
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'qp23u4.10238765.jewfiuwqr'} # has an 8 digit substring in it
+            # (therefore also has a 7-digit substring in it)
         plugins.pmid.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
-        # less than and more than 8 digits
-        bjid = {'id' : '1234567'}
+        # less than 7 and more than 8 digits
+        bjid = {'id' : '123456'}
         plugins.pmid.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
