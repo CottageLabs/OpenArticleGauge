@@ -33,7 +33,16 @@ provider_detection = {
 # value is a singple plugin to be run.  Plugins are selected based on selecting
 # the MOST GRANULAR or MOST SPECIFIC plugin
 licence_detection = {
-    "http://www.plos.com/" : "plugins.plos.page_licence"
+    # PLoS
+    "www.plosone.org" : "plugins.plos.page_license",
+    "www.plosbiology.org" : "plugins.plos.page_license",
+    "www.plosmedicine.org" : "plugins.plos.page_license",
+    "www.ploscompbiol.org" : "plugins.plos.page_license",
+    "www.plosgenetics.org" : "plugins.plos.page_license",
+    "www.plospathogens.org" : "plugins.plos.page_license",
+    "www.plosntds.org" : "plugins.plos.page_license",
+    # BMC
+    "www.biomedcentral.com" : "plugins.bmc.page_license"
 }
 
 # Cache configuration
