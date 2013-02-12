@@ -86,16 +86,23 @@ def mock_is_stale(bibjson):
     
 def mock_invalidate(key): pass
 
+def one(): return "one"
+def two(): return "two"
+def one_two(): return "one_two"
+
 class TestWorkflow(TestCase):
 
     def setUp(self):
-        pass
+        # add this test file to the search path for plugins
+        config.module_search_list.append("tests.test_workflow")
         
     def tearDown(self):
-        pass
+        for i in range(len(config.module_search_list)):
+            if config.module_search_list[i] == "tests.test_workflow":
+                del config.module_search_list[i]
         
     def test_01_detect_verify_type(self):
-        config.type_detection = [mock_doi_type, mock_pmid_type]
+        config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         
         # check that we can identify a doi
         record = {"identifier" : {"id" : "10.blah"}}
@@ -118,7 +125,7 @@ class TestWorkflow(TestCase):
         assert not record["identifier"].has_key("type")
 
     def test_02_canonicalise(self):
-        config.canonicalisers = {"doi" : mock_doi_canon, "pmid" : mock_pmid_canon}
+        config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         
         # check that we can canonicalise a doi
         record = {"identifier" : {"id" : "10.123456789", "type" : "doi"}}
@@ -167,8 +174,8 @@ class TestWorkflow(TestCase):
         ids = [{"id" : "10.cached"}]
         
         # set up the mocks for the first test
-        config.type_detection = [mock_doi_type, mock_pmid_type]
-        config.canonicalisers = {"doi" : mock_doi_canon, "pmid" : mock_pmid_canon}
+        config.type_detection = ["mock_doi_type", "mock_pmid_type"]
+        config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_queue_cache
         
         # first do a lookup on a queued version
@@ -196,8 +203,8 @@ class TestWorkflow(TestCase):
         ids = [{"id" : "10.archived"}]
         
         # set up the mocks for the first test
-        config.type_detection = [mock_doi_type, mock_pmid_type]
-        config.canonicalisers = {"doi" : mock_doi_canon, "pmid" : mock_pmid_canon}
+        config.type_detection = ["mock_doi_type", "mock_pmid_type"]
+        config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_null_cache
         archive.check_archive = mock_check_archive
         
@@ -212,7 +219,7 @@ class TestWorkflow(TestCase):
         
     def test_07_lookup_error(self):
         ids = [{"id" : "12345", "type" : "doi"}]
-        config.type_detection = [mock_doi_type, mock_pmid_type]
+        config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         
         rs = workflow.lookup(ids)
         assert len(rs.errors) == 1
@@ -235,14 +242,14 @@ class TestWorkflow(TestCase):
         assert not record.has_key('provider')
         
         # check that a plugin is applied
-        config.provider_detection = {"doi" : [mock_detect_provider]}
+        config.provider_detection = {"doi" : ["mock_detect_provider"]}
         record['identifier']['type'] = "doi"
         workflow.detect_provider(record)
         assert record.has_key("provider"), record
         assert record["provider"] == "http://provider"
         
         # now check that the chain exits after the first successful one
-        config.provider_detection = {"doi" : [mock_no_provider, mock_other_detect, mock_detect_provider]}
+        config.provider_detection = {"doi" : ["mock_no_provider", "mock_other_detect", "mock_detect_provider"]}
         del record['provider']
         workflow.detect_provider(record)
         assert record.has_key("provider")
@@ -253,22 +260,22 @@ class TestWorkflow(TestCase):
         config.licence_detection = {"one" : "one", "two" : "two"}
         one = workflow._get_provider_plugin("one")
         two = workflow._get_provider_plugin("two")
-        assert one == "one"
-        assert two == "two"
+        assert one() == "one"
+        assert two() == "two"
         
         # now try a couple of granular ones
-        config.licence_detection = {"one" : "one", "one/two" : "one/two", "two" : "two"}
+        config.licence_detection = {"one" : "one", "one/two" : "one_two", "two" : "two"}
         one = workflow._get_provider_plugin("one")
         onetwo = workflow._get_provider_plugin("one/two")
         otherone = workflow._get_provider_plugin("one/three")
         onetwothree = workflow._get_provider_plugin("one/two/three")
-        assert one == "one"
-        assert onetwo == "one/two"
-        assert otherone == "one"
-        assert onetwothree == "one/two"
+        assert one() == "one"
+        assert onetwo() == "one_two"
+        assert otherone() == "one"
+        assert onetwothree() == "one_two"
     
     def test_10_provider_licence(self):
-        config.licence_detection = {"testprovider" : mock_licence_plugin}
+        config.licence_detection = {"testprovider" : "mock_licence_plugin"}
         
         # first check that no provider results in no change
         record = {}
@@ -292,8 +299,8 @@ class TestWorkflow(TestCase):
         
         # set up the configuration so that the type and canonical form are created
         # but no copy of the id is found in the cache or archive
-        config.type_detection = [mock_doi_type, mock_pmid_type]
-        config.canonicalisers = {"doi" : mock_doi_canon, "pmid" : mock_pmid_canon}
+        config.type_detection = ["mock_doi_type", "mock_pmid_type"]
+        config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_null_cache
         archive.check_archive = mock_null_archive
         
@@ -353,8 +360,8 @@ class TestWorkflow(TestCase):
         
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         
-        config.provider_detection = {"doi" : [mock_detect_provider]}
-        config.licence_detection = {"http://prov" : mock_licence_plugin}
+        config.provider_detection = {"doi" : ["mock_detect_provider"]}
+        config.licence_detection = {"http://prov" : "mock_licence_plugin"}
         
         # run the chain synchronously
         record = workflow.detect_provider(record)

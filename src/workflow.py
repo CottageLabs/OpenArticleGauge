@@ -1,5 +1,5 @@
 from celery import chain
-import models, config, cache, archive
+import models, config, cache, archive, plugloader
 import logging
 from slavedriver import celery
 
@@ -201,9 +201,10 @@ def _canonicalise_identifier(record):
         raise models.LookupException("bibjson identifier object does not contain a 'type' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
-    plugin = config.canonicalisers.get(record['identifier']['type'])
+    plugin_name = config.canonicalisers.get(record['identifier']['type'])
+    plugin = plugloader.load(plugin_name)
     if plugin is None:
-        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
+        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'] + " (plugin name " + plugin_name + ")")
     plugin(record['identifier'])
 
 def _detect_verify_type(record):
@@ -219,7 +220,10 @@ def _detect_verify_type(record):
     
     # run through /all/ of the plugins and give each a chance to augment/check
     # the identifier
-    for plugin in config.type_detection:
+    for plugin_name in config.type_detection:
+        plugin = plugloader.load(plugin_name)
+        if plugin is None:
+            raise models.LookupException("unable to load plugin for detecting identifier type: " + plugin_name)
         plugin(record["identifier"])
     
 def _start_back_end(record):
@@ -249,8 +253,9 @@ def detect_provider(record):
     
     # Step 2: get the provider plugins that are relevant, and
     # apply each one until a provider string is added
-    for plugin in config.provider_detection.get(record['identifier']["type"], []):
-        log.debug("applying plugin " + str(plugin))
+    for plugin_name in config.provider_detection.get(record['identifier']["type"], []):
+        plugin = plugloader.load(plugin_name)
+        log.debug("applying plugin " + str(plugin_name))
         plugin(record)
         
         # if the plugin detects or populates the provider, we are done
@@ -312,7 +317,8 @@ def _get_provider_plugin(provider):
     for p in possible:
         if len(p) > len(selected):
             selected = p
-    return config.licence_detection[selected]
+    plugin_name = config.licence_detection[selected]
+    return plugloader.load(plugin_name)
     
 def _add_identifier_to_bibjson(identifier, bibjson):
     pass
