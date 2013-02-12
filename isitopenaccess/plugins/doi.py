@@ -1,5 +1,5 @@
 import re
-import models
+import isitopenaccess.models
 
 def type_detect_verify(bibjson_identifier):
     """

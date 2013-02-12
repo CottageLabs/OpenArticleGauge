@@ -1,5 +1,5 @@
 import re
-import models
+import isitopenaccess.models
 
 _rx = "^[\d]{7,8}$"
 

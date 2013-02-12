@@ -2,7 +2,7 @@
 # it can't find them straight away in the running context.  Note that an installed
 # application and an application run from its directory will have different
 # running contexts, so this is important.
-module_search_list = ["iioa"]
+module_search_list = ["isitopenaccess"]
 
 # List of plugins that will run in order to detect the type of an identifier.
 # All plugins will run

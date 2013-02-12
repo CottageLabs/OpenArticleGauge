@@ -3,7 +3,7 @@ from copy import deepcopy
 from datetime import datetime
 
 #import config
-from licenses import LICENSES
+from isitopenaccess.licenses import LICENSES
 
 version = '0.1 alpha'
 agent = 'IsItOpenAccess Service/' + version
