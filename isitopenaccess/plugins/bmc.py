@@ -2,12 +2,9 @@ import requests
 from copy import deepcopy
 from datetime import datetime
 
-#import config
+from isitopenaccess import config
 from isitopenaccess.licenses import LICENSES
-
-version = '0.1 alpha'
-agent = 'IsItOpenAccess Service/' + version
-
+from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
 def page_license(record):
     """
@@ -44,8 +41,6 @@ def page_license(record):
             # license identified, now use that to construct the license object
             license = deepcopy(LICENSES[lic_id])
             license['version'] = lic_version
-            license['type'] = license['id'] # conform to spec in API doc, but
-                # is a bit daft to do, maybe pick a field and stick with it
             license['description'] = ''
 
             # add provenance information to the license object
@@ -53,11 +48,11 @@ def page_license(record):
                 'date': datetime.now().isoformat(),
                 'iioa': statement_mapping[statement]['iioa'],
                 'source': record['provider'],
-                'agent': agent, #config.agent, # FIXME should be reading from config.py but have circular dependency problem!
+                'agent': config.agent,
                 'jurisdiction': '', # TODO later (or later version of IIOA!)
                 'category': 'page_scrape', # TODO we need to think how the
                     # users get to know what the values here mean.. docs?
-                'description': 'License decided by scraping the resource at source_url and looking for the following license statement: "' + statement + '".'
+                'description': cpl.gen_provenance_description(record['provider'], statement)
             }
 
             license['provenance'] = provenance
