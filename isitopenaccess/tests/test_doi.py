@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from isitopenaccess.plugins import doi
 from isitopenaccess import models
+import requests
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
 # and then augmented with some semi-random prefixes
@@ -36,6 +37,19 @@ CANONICAL = {
     "http://hdl.handle.net/10.2177/jsci.8.374" : "doi:10.2177/jsci.8.374",
     "hdl.handle.net/10.1136/bmj.1.2822.189" : "doi:10.1136/bmj.1.2822.189"
 }
+
+class MockResponse():
+    def __init__(self, status):
+        self.status_code = status
+        self.headers = {}
+
+def get_no_location(url, allow_redirects=True):
+    return MockResponse(303)
+
+def get_success(url, allow_redirects=True):
+    r = MockResponse(303)
+    r.headers['location'] = "http://location"
+    return r
 
 class TestWorkflow(TestCase):
 
@@ -123,7 +137,49 @@ class TestWorkflow(TestCase):
         bjid = {"key" : "value"}
         with self.assertRaises(models.LookupException):
             doi.canonicalise(bjid)
+    
+    def test_08_dereference_not_relevant(self):
+        record = {}
         
+        doi.provider_dereference(record)
+        assert len(record.keys()) == 0
+        
+        record['identifier'] = {}
+        doi.provider_dereference(record)
+        assert len(record['identifier'].keys()) == 0
+        
+        record['identifier']['id'] = "123"
+        record['identifier']['type'] = "pmid"
+        record['identifier']['canonical'] = "pmid:123"
+        doi.provider_dereference(record)
+        assert not "provider" in record
+        
+        record['identifier']['type'] = "doi"
+        del record['identifier']['canonical']
+        doi.provider_dereference(record)
+        assert not "provider" in record
+    
+    def test_09_dereference_no_location(self):
+        oldget = requests.get
+        requests.get = get_no_location
+        
+        record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        doi.provider_dereference(record)
+        assert not "provider" in record
+        
+        requests.get = oldget
+        
+    def test_10_dereference_success(self):
+        oldget = requests.get
+        requests.get = get_success
+        
+        record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        doi.provider_dereference(record)
+        assert "provider" in record
+        assert "url" in record["provider"]
+        assert record['provider']['url'] == "http://location"
+        
+        requests.get = oldget
         
         
         
