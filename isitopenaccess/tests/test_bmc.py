@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import plugins.bmc
-import config
+from isitopenaccess.plugins import bmc
+from isitopenaccess import config
 
 # URL-s ("provider") of several BMC articles
 
@@ -18,7 +18,7 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = 'http://www.biomedcentral.com/1471-2164/13/425'
 
-        plugins.bmc.page_license(record)
+        bmc.page_license(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')

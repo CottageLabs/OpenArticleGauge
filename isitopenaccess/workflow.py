@@ -254,13 +254,10 @@ def detect_provider(record):
     # Step 2: get the provider plugins that are relevant, and
     # apply each one until a provider string is added
     for plugin_name in config.provider_detection.get(record['identifier']["type"], []):
+        # all provider plugins run, until each plugin has had a go at determining provider information
         plugin = plugloader.load(plugin_name)
         log.debug("applying plugin " + str(plugin_name))
         plugin(record)
-        
-        # if the plugin detects or populates the provider, we are done
-        if record.has_key("provider"):
-            break
     
     # we have to return the record, so that the next step in the chain
     # can deal with it
@@ -305,11 +302,17 @@ def store_results(record):
     # deal with it (if such a step exists)
     return record
 
-def _get_provider_plugin(provider):
+def _get_provider_plugin(provider_record):
+    # FIXME: for the moment this only supports URL lookup
+    if not "url" in provider_record:
+        return None
+    provider_url = provider_record['url']
+    
+    # check to see if there's a plugin that can handle the provider url
     keys = config.licence_detection.keys()
     possible = []
     for key in keys:
-        if provider.startswith(key):
+        if provider_url.startswith(key):
             possible.append(key)
     if len(possible) == 0:
         return None

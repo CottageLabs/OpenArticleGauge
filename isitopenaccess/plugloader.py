@@ -50,5 +50,6 @@ def _load_callable(modpath, call):
     except AttributeError as e:
         # found the module but failed to load the attribute (probably the
         # callable isn't in that module)
-        log.error("attribute error loading " + call + " from " + modpath + " - path is correct, but callable isn't part of that module")
-        raise e
+        log.error("attribute error loading " + call + " from " + modpath + " - path is valid, but callable isn't part of that module")
+        #raise e
+        return None

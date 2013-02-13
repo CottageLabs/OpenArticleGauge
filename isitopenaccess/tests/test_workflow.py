@@ -13,7 +13,7 @@ There are other tests for working on specific plugins.
 """
 
 from unittest import TestCase
-import config, workflow, models, cache, archive
+from isitopenaccess import config, workflow, models, cache, archive
 
 CACHE = {}
 ARCHIVE = []
@@ -67,12 +67,12 @@ def mock_check_archive(key):
 def mock_null_archive(key): return None
 
 def mock_detect_provider(record):
-    record['provider'] = "http://provider"
+    record['provider'] = {"url" : "http://provider"}
 
 def mock_no_provider(record): pass
 
 def mock_other_detect(record):
-    record['provider'] = "http://other"
+    record['provider'] = {"url" : "http://other"}
 
 def mock_licence_plugin(record):
     record['bibjson'] = {}
@@ -95,11 +95,17 @@ class TestWorkflow(TestCase):
     def setUp(self):
         # add this test file to the search path for plugins
         config.module_search_list.append("tests.test_workflow")
+        config.module_search_list.append("isitopenaccess.tests.test_workflow")
         
     def tearDown(self):
         for i in range(len(config.module_search_list)):
             if config.module_search_list[i] == "tests.test_workflow":
                 del config.module_search_list[i]
+                break
+        for i in range(len(config.module_search_list)):
+            if config.module_search_list[i] == "isitopenaccess.tests.test_workflow":
+                del config.module_search_list[i]
+                break
         
     def test_01_detect_verify_type(self):
         config.type_detection = ["mock_doi_type", "mock_pmid_type"]
@@ -239,36 +245,38 @@ class TestWorkflow(TestCase):
         workflow.detect_provider(record)
         
         # the record should not have changed
-        assert not record.has_key('provider')
+        assert not "provider" in record
         
         # check that a plugin is applied
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
         record['identifier']['type'] = "doi"
         workflow.detect_provider(record)
-        assert record.has_key("provider"), record
-        assert record["provider"] == "http://provider"
+        assert "provider" in record, record
+        assert "url" in record['provider']
+        assert record["provider"]["url"] == "http://provider"
         
-        # now check that the chain exits after the first successful one
+        # now check that the chain continues all the way to the end
         config.provider_detection = {"doi" : ["mock_no_provider", "mock_other_detect", "mock_detect_provider"]}
         del record['provider']
         workflow.detect_provider(record)
-        assert record.has_key("provider")
-        assert record["provider"] == "http://other"
+        assert "provider" in record
+        assert "url" in record['provider']
+        assert record["provider"]["url"] == "http://provider"
         
     def test_09_load_provider_plugin(self):
         # first try the simple case of a dictionary of plugins
         config.licence_detection = {"one" : "one", "two" : "two"}
-        one = workflow._get_provider_plugin("one")
-        two = workflow._get_provider_plugin("two")
+        one = workflow._get_provider_plugin({"url" : "one"})
+        two = workflow._get_provider_plugin({"url" : "two"})
         assert one() == "one"
         assert two() == "two"
         
         # now try a couple of granular ones
         config.licence_detection = {"one" : "one", "one/two" : "one_two", "two" : "two"}
-        one = workflow._get_provider_plugin("one")
-        onetwo = workflow._get_provider_plugin("one/two")
-        otherone = workflow._get_provider_plugin("one/three")
-        onetwothree = workflow._get_provider_plugin("one/two/three")
+        one = workflow._get_provider_plugin({"url" : "one"})
+        onetwo = workflow._get_provider_plugin({"url" : "one/two"})
+        otherone = workflow._get_provider_plugin({"url" : "one/three"})
+        onetwothree = workflow._get_provider_plugin({"url" : "one/two/three"})
         assert one() == "one"
         assert onetwo() == "one_two"
         assert otherone() == "one"
@@ -283,12 +291,12 @@ class TestWorkflow(TestCase):
         assert not record.has_key("bibjson")
         
         # now check there's no change if there's no plugin
-        record['provider'] = "provider"
+        record['provider'] = {"url" : "provider"}
         workflow.provider_licence(record)
         assert not record.has_key("bibjson")
         
         # check that it works when it's right
-        record['provider'] = "testprovider"
+        record['provider'] = {"url" : "testprovider"}
         workflow.provider_licence(record)
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license") # american spelling
@@ -368,8 +376,8 @@ class TestWorkflow(TestCase):
         record = workflow.provider_licence(record)
         record = workflow.store_results(record)
         
-        assert record.has_key("provider")
-        assert record["provider"] == "http://provider"
+        assert "provider" in record
+        assert record["provider"]["url"] == "http://provider"
         
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license")

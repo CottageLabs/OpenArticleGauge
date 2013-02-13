@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import plugins.doi
-import models
+from isitopenaccess.plugins import doi
+from isitopenaccess import models
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
 # and then augmented with some semi-random prefixes
@@ -49,7 +49,7 @@ class TestWorkflow(TestCase):
         counter = 0
         for d in DOIS:
             bjid = {'id' : d}
-            plugins.doi.type_detect_verify(bjid)
+            doi.type_detect_verify(bjid)
             assert bjid.has_key("type")
             assert bjid["type"] == "doi"
             counter += 1
@@ -63,46 +63,46 @@ class TestWorkflow(TestCase):
         
         # try some prefixes
         bjid = {'id' : 'doi:'}
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'http://dx.doi.org/'}
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
         # try some random strings
         bjid = {'id' : 'qp23u4ehjkjewfiuwqr'}
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'qp23u410.jewfiuwqr'} # has the 10. substring in it
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'doi:qp23u4ehjkjewfiuwqr'} # starts with a doi prefix, but isn't one
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
     def test_03_detect_verify_type_ignores(self):
         bjid = {"id" : "whatever", "type" : "pmid"}
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert bjid['type'] == "pmid"
         
         bjid = {"key" : "value"}
-        plugins.doi.type_detect_verify(bjid)
+        doi.type_detect_verify(bjid)
         assert not bjid.has_key("type")
     
     def test_04_detect_verify_type_error(self):
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         with self.assertRaises(models.LookupException):
-            plugins.doi.type_detect_verify(bjid)
+            doi.type_detect_verify(bjid)
     
     def test_05_canonicalise_real(self):
         counter = 0
         for d in CANONICAL.keys():
             bjid = {'id' : d, 'type' : 'doi'}
-            plugins.doi.canonicalise(bjid)
+            doi.canonicalise(bjid)
             assert bjid.has_key("canonical")
             assert bjid["canonical"] == CANONICAL[d]
             counter += 1
@@ -111,18 +111,18 @@ class TestWorkflow(TestCase):
         
     def test_06_canonicalise_ignore(self):
         bjid = {"id" : "whatever", "type" : "pmid"}
-        plugins.doi.canonicalise(bjid)
+        doi.canonicalise(bjid)
         assert not bjid.has_key("canonical")
         
     def test_07_canonicalise_error(self):
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         with self.assertRaises(models.LookupException):
-            plugins.doi.canonicalise(bjid)
+            doi.canonicalise(bjid)
             
         bjid = {"key" : "value"}
         with self.assertRaises(models.LookupException):
-            plugins.doi.canonicalise(bjid)
+            doi.canonicalise(bjid)
         
         
         

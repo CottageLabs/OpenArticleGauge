@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-import plugloader, config
+from isitopenaccess import plugloader, config
 
 def patch():
     return "patched"
@@ -28,12 +28,12 @@ class TestWorkflow(TestCase):
     def test_03_load_error(self):
         # an attempt to load a non existant callable from an
         # existing module
-        with self.assertRaises(AttributeError):
-            call = plugloader.load("tests.test_plugloader.nothing")
+        call = plugloader.load("tests.test_plugloader.nothing")
+        assert call is None
     
     def test_04_with_search(self):
         old_search_list = config.module_search_list
-        config.module_search_list = ["tests"]
+        config.module_search_list = ["isitopenaccess.tests"]
         
         call = plugloader.load("test_plugloader.patch")
         assert call is not None

@@ -1,5 +1,5 @@
 import re
-import isitopenaccess.models
+from isitopenaccess import models
 
 def type_detect_verify(bibjson_identifier):
     """
@@ -68,8 +68,10 @@ def canonicalise(bibjson_identifier):
 def provider_range_lookup(record):
     """
     Check the DOI (if this is a DOI) against a known set of DOI ranges to determine
-    the provider.  Populate the record['provider'] field with the string which describes
-    the provider (ideally a URI)
+    the provider.  Populate the record['provider'] field with the relevant doi range
+    information.
+    
+    FIXME: how exactly is doi range lookup relevant to determining the provider?
     
     DOI ranges - maintain a lookup table of DOI ranges/regexes which define the providers
     not necessarily robust, as a publisher may run out of DOIs in their range
@@ -79,7 +81,7 @@ def provider_range_lookup(record):
 def provider_dereference(record):
     """
     Check the URL that the DOI dereferences to, by taking advantage of the fact that
-    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider'] 
+    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider']['url']
     field with the string which describes the provider (ideally a URI)
     """
     pass

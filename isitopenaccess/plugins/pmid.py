@@ -1,5 +1,5 @@
 import re
-import isitopenaccess.models
+from isitopenaccess import models
 
 _rx = "^[\d]{7,8}$"
 
@@ -63,6 +63,6 @@ def canonicalise(bibjson_identifier):
 def provider_resolver(record):
     """
     Take a pubmed id (if that is the type) and obtain a reference to the base
-    URL of the resource that it links to.
+    URL of the resource that it links to and place it in the record['provider']['url'] field
     """
     pass
