@@ -161,16 +161,19 @@ def _check_cache(record):
     if not record['identifier'].has_key('canonical'):
         raise models.LookupException("can't look anything up in the cache without a canonical id")
     
+    log.debug("checking cache for key: " + record['identifier']['canonical'])
     cached_copy = cache.check_cache(record['identifier']['canonical'])
     
     # if it's not in the cache, then return
     if cached_copy is None:
+        log.debug(record['identifier']['canonical'] + " not found in cache")
         return None
         
     # if the cached copy exists ...
         
     # first check to see if the cached copy is already on the queue
     if cached_copy.get('queued', False):
+        log.debug(record['identifier']['canonical'] + " is in the cache and is queued for processing")
         return cached_copy
     
     # next check to see if the cached copy has a bibjson record in it
@@ -178,10 +181,12 @@ def _check_cache(record):
         # if it does, we need to see if the record is stale.  If so, we remember that fact,
         # and we'll deal with updating stale items later (once we've checked bibserver)
         if _is_stale(cached_copy['bibjson']):
+            log.debug(record['identifier']['canonical'] + " is in the cache but is a stale record")
             _invalidate_cache(record)
             return None
     
     # otherwise, just return the cached copy
+    log.debug(record['identifier']['canonical'] + " is in the cache")
     return cached_copy
 
 def _canonicalise_identifier(record):
