@@ -22,20 +22,21 @@ class TestWorkflow(TestCase):
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
 
-        keys_in_license = ['provenance', 'description', 'type', 'title', 'url']
+        keys_in_license = ['provenance', 'description', 'type', 'title', 'url', 'jurisdiction']
         # NB: some examples may fail the 'url' test since the Open Definition
         # data we're using as the basis for our licenses dictionary does not
         # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
         # TODO remove this "all" assertion - if it fails, doesn't say which key missing
         assert all (key in record['bibjson']['license'] for key in keys_in_license)
 
-        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'jurisdiction', 'category', 'description']
+        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'category', 'description']
         assert all (key in record['bibjson']['license']['provenance'] for key in keys_in_provenance)
 
         # some content checks now
         assert record['bibjson']['license']['type'] == 'uk-ogl'
         assert record['bibjson']['license']['version'] == ''
         assert 'id' not in record['bibjson']['license'] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license']['jurisdiction']
 
         assert record['bibjson']['license']['provenance']['iioa'] == True
         assert record['bibjson']['license']['provenance']['agent'] == config.agent
@@ -43,7 +44,6 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license']['provenance']['date']
         assert record['bibjson']['license']['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license']['provenance']['description'] == 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089 and looking for the following license statement: "This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.".'
-        assert not record['bibjson']['license']['provenance']['jurisdiction']
 
     def test_02_plos_standard_OA_example1(self):
         record = {}
@@ -56,20 +56,21 @@ class TestWorkflow(TestCase):
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
 
-        keys_in_license = ['provenance', 'description', 'type', 'title', 'url']
+        keys_in_license = ['provenance', 'description', 'type', 'title', 'url', 'jurisdiction']
         # NB: some examples may fail the 'url' test since the Open Definition
         # data we're using as the basis for our licenses dictionary does not
         # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
         # TODO remove this "all" assertion - if it fails, doesn't say which key missing
         assert all (key in record['bibjson']['license'] for key in keys_in_license)
 
-        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'jurisdiction', 'category', 'description']
+        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'category', 'description']
         assert all (key in record['bibjson']['license']['provenance'] for key in keys_in_provenance)
 
         # some content checks now
         assert record['bibjson']['license']['type'] == 'cc-by'
         assert record['bibjson']['license']['version'] == ''
         assert 'id' not in record['bibjson']['license'] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license']['jurisdiction']
 
         assert record['bibjson']['license']['provenance']['iioa'] == True
         assert record['bibjson']['license']['provenance']['agent'] == config.agent
@@ -77,7 +78,6 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license']['provenance']['date']
         assert record['bibjson']['license']['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license']['provenance']['description'] == 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".'
-        assert not record['bibjson']['license']['provenance']['jurisdiction']
 
     def test_03_plos_standard_OA_example2(self):
         record = {}
@@ -90,20 +90,21 @@ class TestWorkflow(TestCase):
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
 
-        keys_in_license = ['provenance', 'description', 'type', 'title', 'url']
+        keys_in_license = ['provenance', 'description', 'type', 'title', 'url', 'jurisdiction']
         # NB: some examples may fail the 'url' test since the Open Definition
         # data we're using as the basis for our licenses dictionary does not
         # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
         # TODO remove this "all" assertion - if it fails, doesn't say which key missing
         assert all (key in record['bibjson']['license'] for key in keys_in_license)
 
-        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'jurisdiction', 'category', 'description']
+        keys_in_provenance = ['date', 'iioa', 'agent', 'source', 'category', 'description']
         assert all (key in record['bibjson']['license']['provenance'] for key in keys_in_provenance)
 
         # some content checks now
         assert record['bibjson']['license']['type'] == 'cc-by'
         assert record['bibjson']['license']['version'] == ''
         assert 'id' not in record['bibjson']['license'] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license']['jurisdiction']
 
         assert record['bibjson']['license']['provenance']['iioa'] == True
         assert record['bibjson']['license']['provenance']['agent'] == config.agent
@@ -111,4 +112,3 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license']['provenance']['date']
         assert record['bibjson']['license']['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license']['provenance']['description'] == 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".'
-        assert not record['bibjson']['license']['provenance']['jurisdiction']

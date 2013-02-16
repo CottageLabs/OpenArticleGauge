@@ -46,6 +46,7 @@ def simple_extract(lic_statements, record):
             license = deepcopy(LICENSES[lic_id])
             license['version'] = lic_version
             license['description'] = ''
+            license['jurisdiction'] = '' # TODO later (or later version of IIOA!)
 
             # add provenance information to the license object
             provenance = {
@@ -53,7 +54,6 @@ def simple_extract(lic_statements, record):
                 'iioa': statement_mapping[statement]['iioa'],
                 'source': url,
                 'agent': config.agent,
-                'jurisdiction': '', # TODO later (or later version of IIOA!)
                 'category': 'page_scrape', # TODO we need to think how the
                     # users get to know what the values here mean.. docs?
                 'description': cpl.gen_provenance_description(url, statement)
