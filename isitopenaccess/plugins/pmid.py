@@ -1,7 +1,7 @@
 import re
 from isitopenaccess import models
 
-_rx = "^[\d]{7,8}$"
+_rx = "^[\d]{1,8}$"
 
 def type_detect_verify(bibjson_identifier):
     """
@@ -13,7 +13,7 @@ def type_detect_verify(bibjson_identifier):
     
     NOTE: PMIDs could come prefixed with a bunch of URL spaces, but we don't really
     have an exhaustive list of these, so for the time being this method will FAIL
-    to identify any PMID which is not just a 7 or 8 digit number
+    to identify any PMID which is not just a 1 to 8 digit number
     """
     if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
         return
@@ -21,7 +21,7 @@ def type_detect_verify(bibjson_identifier):
     if not bibjson_identifier.has_key("id"):
         return
     
-    # 7 or 8 digits long
+    # 1 to 8 digits long
     result = re.match(_rx, bibjson_identifier["id"])
     
     # validation
@@ -50,7 +50,7 @@ def canonicalise(bibjson_identifier):
     if not bibjson_identifier.has_key("id"):
         raise models.LookupException("can't canonicalise an identifier without an 'id' property")
     
-    # 7 or 8 digits long
+    # 1 to 8 digits long
     result = re.match(_rx, bibjson_identifier["id"])
     if result is None:
         raise models.LookupException("identifier does not parse as a PMID: " + str(bibjson_identifier["id"]))

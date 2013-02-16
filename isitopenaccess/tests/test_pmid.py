@@ -4,9 +4,18 @@ from isitopenaccess.plugins import pmid
 from isitopenaccess import models
 
 # some random PMIDs obtained by just doing a search for "test" on the pubmed dataset
+# and adding random numbers to the end of http://www.ncbi.nlm.nih.gov/pubmed/<number>
+# e.g. http://www.ncbi.nlm.nih.gov/pubmed/1
 
 PMIDS = [
-    "9254694", # example of (real) 7-digit PMID
+    # These are all real PMIDs
+    "1",
+    "12",
+    "123",
+    "1234",
+    "12345",
+    "123456",
+    "9254694",
     "23373100",
     "23373089",
     "23373059",
@@ -16,6 +25,12 @@ PMIDS = [
 ]
 
 CANONICAL = {
+    "1" : "pmid:1",
+    "12" : "pmid:12",
+    "123" : "pmid:123",
+    "1234" : "pmid:1234",
+    "12345" : "pmid:12345",
+    "123456" : "pmid:123456",
     "9254694" : "pmid:9254694",
     "23373100" : "pmid:23373100",
     "23373089" : "pmid:23373089",
@@ -46,7 +61,7 @@ class TestWorkflow(TestCase):
     
     def test_02_detect_verify_type_not_pmids(self):
         #Test the various erroneous PMID possibilities, which will include:
-        #- less than 7 and more than 8 digits
+        #- less than 1 and more than 8 digits
         #- random strings (i.e. not just digits)
         
         # some random digits
@@ -55,12 +70,13 @@ class TestWorkflow(TestCase):
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'qp23u4.10238765.jewfiuwqr'} # has an 8 digit substring in it
-            # (therefore also has a 7-digit substring in it)
+            # (therefore also has a 1,2..7-digit substring in it)
         pmid.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
-        # less than 7 and more than 8 digits
-        bjid = {'id' : '123456'}
+        # less than 1 and more than 8 digits
+        bjid = {'id' : ''} # well, less than 1 digit doesn't exist
+            # and letters are covered elsewhere...
         pmid.type_detect_verify(bjid)
         assert not bjid.has_key("type")
         
