@@ -14,7 +14,8 @@ class TestWorkflow(TestCase):
     def test_01_bmc_standard_OA_license_from_doi(self):
         record = {}
         record['bibjson'] = {}
-        record['provider'] = 'http://www.biomedcentral.com/1471-2164/13/425'
+        record['provider'] = {}
+        record['provider']['url'] = 'http://www.biomedcentral.com/1471-2164/13/425'
 
         bmc.page_license(record)
 
@@ -37,7 +38,7 @@ class TestWorkflow(TestCase):
 
         assert record['bibjson']['license']['provenance']['iioa'] == True
         assert record['bibjson']['license']['provenance']['agent'] == config.agent
-        assert record['bibjson']['license']['provenance']['source'] == record['provider']
+        assert record['bibjson']['license']['provenance']['source'] == record['provider']['url']
         assert record['bibjson']['license']['provenance']['date']
         assert record['bibjson']['license']['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license']['provenance']['description'] == 'License decided by scraping the resource at http://www.biomedcentral.com/1471-2164/13/425 and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href=\'http://creativecommons.org/licenses/by/2.0\'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
