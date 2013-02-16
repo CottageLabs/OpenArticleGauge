@@ -2,9 +2,7 @@ import requests
 from copy import deepcopy
 from datetime import datetime
 
-from isitopenaccess import config
-from isitopenaccess.licenses import LICENSES
-from isitopenaccess.plugins import common as cpl # Common Plugin Logic
+from isitopenaccess.plugins import string_matcher
 
 def page_license(record):
     """
@@ -29,38 +27,5 @@ def page_license(record):
             {'id': 'cc-by', 'iioa': True}
         }
     ]
-    # get content
-    r = requests.get(record['provider'])
-    
-    # see if one of the licensing statements is in content 
-    # and populate record with appropriate license info
-    for statement_mapping in lic_statements:
-        # get the statement string itself - always the first key of the dict
-        # mapping statements to licensing info
-        statement = statement_mapping.keys()[0]
 
-        if statement in r.content:
-            # okay, statement found on the page -> get license id (, version)
-            lic_id = statement_mapping[statement]['id']
-            lic_version = statement_mapping[statement].get('version', '')
-
-            # license identified, now use that to construct the license object
-            license = deepcopy(LICENSES[lic_id])
-            license['version'] = lic_version
-            license['description'] = ''
-
-            # add provenance information to the license object
-            provenance = {
-                'date': datetime.now().isoformat(),
-                'iioa': statement_mapping[statement]['iioa'],
-                'source': record['provider'],
-                'agent': config.agent,
-                'jurisdiction': '', # TODO later (or later version of IIOA!)
-                'category': 'page_scrape', # TODO we need to think how the
-                    # users get to know what the values here mean.. docs?
-                'description': cpl.gen_provenance_description(record['provider'], statement)
-            }
-
-            license['provenance'] = provenance
-
-            record['bibjson']['license'] = license
+    string_matcher.simple_extract(lic_statements, record)
