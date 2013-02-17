@@ -19,7 +19,7 @@ def simple_extract(lic_statements, record):
 
     :param lic_statements: licensing statements to look for on this publisher's 
     pages. Take the form of {statement: meaning}
-    where meaning['id'] identifies the license (see licenses.py)
+    where meaning['type'] identifies the license (see licenses.py)
     and meaning['version'] identifies the license version (if available)
     See a publisher plugin for an example, e.g. bmc.py
     :param record: a request for the IIOA status of an article, see IIOA docs for
@@ -39,19 +39,24 @@ def simple_extract(lic_statements, record):
 
         if statement in r.content:
             # okay, statement found on the page -> get license id (, version)
-            lic_id = statement_mapping[statement]['id']
+            lic_type = statement_mapping[statement]['type']
             lic_version = statement_mapping[statement].get('version', '')
 
             # license identified, now use that to construct the license object
-            license = deepcopy(LICENSES[lic_id])
+            license = deepcopy(LICENSES[lic_type])
             license['version'] = lic_version
             license['description'] = ''
             license['jurisdiction'] = '' # TODO later (or later version of IIOA!)
-
+            
+            # Copy over all information about the license from the license statement mapping
+            # In essence, transfer the knowledge of the publisher plugin authors to the
+            # license object.
+            for attribute in statement_mapping[statement].keys():
+                license[attribute] = statement_mapping[statement][attribute]
+            
             # add provenance information to the license object
             provenance = {
                 'date': datetime.now().isoformat(),
-                'iioa': statement_mapping[statement]['iioa'],
                 'source': url,
                 'agent': config.agent,
                 'category': 'page_scrape', # TODO we need to think how the

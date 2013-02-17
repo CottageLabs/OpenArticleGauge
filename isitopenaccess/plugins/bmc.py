@@ -14,11 +14,11 @@ def page_license(record):
 
     # licensing statements to look for on this publisher's pages
     # take the form of {statement: meaning}
-    # where meaning['id'] identifies the license (see licenses.py)
+    # where meaning['type'] identifies the license (see licenses.py)
     # and meaning['version'] identifies the license version (if available)
     lic_statements = [
         {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
-            {'id': 'cc-by', 'version':'2.0', 'iioa': True}
+            {'type': 'cc-by', 'version':'2.0', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False}
         }
     ]
 
