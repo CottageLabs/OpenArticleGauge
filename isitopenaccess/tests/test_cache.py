@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import redis, json, datetime
-import config, cache
+from isitopenaccess import config, cache
 
 test_host = "localhost"
 test_port = 6379

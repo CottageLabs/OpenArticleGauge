@@ -1,5 +1,5 @@
 from celery import chain
-import models, config, cache, archive
+import models, config, cache, archive, plugloader
 import logging
 from slavedriver import celery
 
@@ -161,16 +161,19 @@ def _check_cache(record):
     if not record['identifier'].has_key('canonical'):
         raise models.LookupException("can't look anything up in the cache without a canonical id")
     
+    log.debug("checking cache for key: " + record['identifier']['canonical'])
     cached_copy = cache.check_cache(record['identifier']['canonical'])
     
     # if it's not in the cache, then return
     if cached_copy is None:
+        log.debug(record['identifier']['canonical'] + " not found in cache")
         return None
         
     # if the cached copy exists ...
         
     # first check to see if the cached copy is already on the queue
     if cached_copy.get('queued', False):
+        log.debug(record['identifier']['canonical'] + " is in the cache and is queued for processing")
         return cached_copy
     
     # next check to see if the cached copy has a bibjson record in it
@@ -178,10 +181,12 @@ def _check_cache(record):
         # if it does, we need to see if the record is stale.  If so, we remember that fact,
         # and we'll deal with updating stale items later (once we've checked bibserver)
         if _is_stale(cached_copy['bibjson']):
+            log.debug(record['identifier']['canonical'] + " is in the cache but is a stale record")
             _invalidate_cache(record)
             return None
     
     # otherwise, just return the cached copy
+    log.debug(record['identifier']['canonical'] + " is in the cache")
     return cached_copy
 
 def _canonicalise_identifier(record):
@@ -201,9 +206,10 @@ def _canonicalise_identifier(record):
         raise models.LookupException("bibjson identifier object does not contain a 'type' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
-    plugin = config.canonicalisers.get(record['identifier']['type'])
+    plugin_name = config.canonicalisers.get(record['identifier']['type'])
+    plugin = plugloader.load(plugin_name)
     if plugin is None:
-        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
+        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'] + " (plugin name " + plugin_name + ")")
     plugin(record['identifier'])
 
 def _detect_verify_type(record):
@@ -219,7 +225,10 @@ def _detect_verify_type(record):
     
     # run through /all/ of the plugins and give each a chance to augment/check
     # the identifier
-    for plugin in config.type_detection:
+    for plugin_name in config.type_detection:
+        plugin = plugloader.load(plugin_name)
+        if plugin is None:
+            raise models.LookupException("unable to load plugin for detecting identifier type: " + plugin_name)
         plugin(record["identifier"])
     
 def _start_back_end(record):
@@ -249,13 +258,11 @@ def detect_provider(record):
     
     # Step 2: get the provider plugins that are relevant, and
     # apply each one until a provider string is added
-    for plugin in config.provider_detection.get(record['identifier']["type"], []):
-        log.debug("applying plugin " + str(plugin))
+    for plugin_name in config.provider_detection.get(record['identifier']["type"], []):
+        # all provider plugins run, until each plugin has had a go at determining provider information
+        plugin = plugloader.load(plugin_name)
+        log.debug("applying plugin " + str(plugin_name))
         plugin(record)
-        
-        # if the plugin detects or populates the provider, we are done
-        if record.has_key("provider"):
-            break
     
     # we have to return the record, so that the next step in the chain
     # can deal with it
@@ -300,11 +307,17 @@ def store_results(record):
     # deal with it (if such a step exists)
     return record
 
-def _get_provider_plugin(provider):
+def _get_provider_plugin(provider_record):
+    # FIXME: for the moment this only supports URL lookup
+    if not "url" in provider_record:
+        return None
+    provider_url = provider_record['url']
+    
+    # check to see if there's a plugin that can handle the provider url
     keys = config.licence_detection.keys()
     possible = []
     for key in keys:
-        if provider.startswith(key):
+        if provider_url.startswith(key):
             possible.append(key)
     if len(possible) == 0:
         return None
@@ -312,7 +325,8 @@ def _get_provider_plugin(provider):
     for p in possible:
         if len(p) > len(selected):
             selected = p
-    return config.licence_detection[selected]
+    plugin_name = config.licence_detection[selected]
+    return plugloader.load(plugin_name)
     
 def _add_identifier_to_bibjson(identifier, bibjson):
     pass

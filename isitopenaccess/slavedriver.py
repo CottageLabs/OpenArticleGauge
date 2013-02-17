@@ -4,7 +4,7 @@ from celery import Celery
 
 celery = Celery()
 
-import celeryconfig
+from isitopenaccess import celeryconfig
 
 celery.config_from_object(celeryconfig)
 

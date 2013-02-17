@@ -4,17 +4,17 @@ IsItOpenAccess is a service for determining the licence status of journal public
 
 ##Installation
 
-Install a suitable backend for [Celery](http://celeryproject.org) such as [RabbitMQ](http://www.rabbitmq.com/) or [Redis](http://redis.io)
-
-    sudo apt-get install rabbitmq-server
+Install [Redis](http://redis.io)
 
 Install the project requirements using pip (recommended to also use a virtualenv):
 
-    pip install -r requirements.txt
+    pip install -e .
+    
+or with setuptools:
+
+    python setup.py install
 
 Configure the queue backend for celery (access permissions, etc)
-
-> [Celery instructions for RabbitMQ](http://docs.celeryproject.org/en/latest/getting-started/brokers/rabbitmq.html#setting-up-rabbitmq)
 
 Check that you can start the celery backend (in IsItOpenAccess/src):
 
@@ -35,7 +35,10 @@ You should see something like this:
     --- ***** ----- 
     
     [Tasks]
-      . slavedriver.webfetch.plos_lookup
+        . workflow.detect_provider
+        . workflow.provider_licence
+        . workflow.store_results
+
       (... etc)
 
 (NB Ctrl-C will shut the celery instance down.)

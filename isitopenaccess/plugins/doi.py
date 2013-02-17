@@ -1,5 +1,5 @@
-import re
-import models
+import re, requests
+from isitopenaccess import models
 
 def type_detect_verify(bibjson_identifier):
     """
@@ -68,8 +68,10 @@ def canonicalise(bibjson_identifier):
 def provider_range_lookup(record):
     """
     Check the DOI (if this is a DOI) against a known set of DOI ranges to determine
-    the provider.  Populate the record['provider'] field with the string which describes
-    the provider (ideally a URI)
+    the provider.  Populate the record['provider'] field with the relevant doi range
+    information.
+    
+    FIXME: how exactly is doi range lookup relevant to determining the provider?
     
     DOI ranges - maintain a lookup table of DOI ranges/regexes which define the providers
     not necessarily robust, as a publisher may run out of DOIs in their range
@@ -79,7 +81,63 @@ def provider_range_lookup(record):
 def provider_dereference(record):
     """
     Check the URL that the DOI dereferences to, by taking advantage of the fact that
-    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider'] 
+    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider']['url']
     field with the string which describes the provider (ideally a URI)
     """
-    pass
+    # check that we can actually work on this record
+    # - must have an indentifier
+    # - must be a doi
+    # - must have a canonical form
+    if not "identifier" in record:
+        return
+    
+    if not "type" in record["identifier"]:
+        return
+    
+    if record["identifier"]["type"] != "doi":
+        return
+    
+    if not "canonical" in record["identifier"]:
+        return
+    
+    # first construct a dereferenceable doi (prefix it with dx.doi.org)
+    canon = record['identifier']['canonical']
+    resolvable = "http://dx.doi.org/" + canon[4:]
+    
+    # now dereference it and find out the target of the 303
+    response = requests.get(resolvable, allow_redirects=False)
+    
+    if response.status_code != 303:
+        return
+    
+    loc = response.headers.get('location')
+    
+    # if we find something, record it
+    if loc is None:
+        return
+    
+    if not "provider" in record:
+        record['provider'] = {}
+    
+    record['provider']['url'] = loc
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

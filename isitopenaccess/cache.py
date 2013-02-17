@@ -31,10 +31,11 @@ def is_stale(bibjson):
     not have a licence, it is stale.
     """
     # check that the record has a licence at all
-    if not bibjson.has_key("license"):
+    if not "license" in bibjson:
         return True
     
     # get the date strings of all the licences
+    log.debug("stale check on: " + str(bibjson))
     date_strings = [licence.get("provenance", {}).get("date") 
                 for licence in bibjson.get("license", []) 
                 if licence.get("provenance", {}).get("date") is not None]

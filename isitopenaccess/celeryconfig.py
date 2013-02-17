@@ -23,7 +23,7 @@ CELERYD_PID_FILE = 'celery/run/%n.pid'
 
 BROKER_URL = 'redis://localhost'
 CELERY_RESULT_BACKEND = "redis://localhost"
-CELERY_IMPORTS = ('slavedriver.workers',)
+CELERY_IMPORTS = ('workflow',)
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

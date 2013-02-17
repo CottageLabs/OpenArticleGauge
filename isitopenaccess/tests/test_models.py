@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from models import ResultSet
+from isitopenaccess.models import ResultSet
 import json
 
 class TestWorkflow(TestCase):
