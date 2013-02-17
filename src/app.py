@@ -13,8 +13,6 @@ except ImportError:
         import sys
         sys.exit(1)
 
-HTML = "text/html"
-JSON = "application/json"
 
 app = Flask(__name__)
 
@@ -51,7 +49,7 @@ def api_lookup(ids=[]):
     if idlist:
         results = workflow.lookup(idlist).json()
     else:
-        results = {}
+        results = json.dumps({})
 
     if request.method == 'GET':
         render_template('index.html', results=results)

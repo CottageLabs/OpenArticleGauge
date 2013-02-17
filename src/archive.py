@@ -17,7 +17,17 @@ def check_archive(identifier):
         
     if not result:
         # query bibserver for this identifier and order by descending last modified
-        query = {}
+        query = {
+            'query':{
+                'bool':{
+                    'must':[]
+                }
+            },
+            'sort':{
+                
+            }
+        }
+
         r = requests.post(bibserver_address + '/query', data=json.dumps(query))
         results = r.json().get('hits',{}).get('hits',[])
         if len(results) > 0: result = results[0]['_source']
