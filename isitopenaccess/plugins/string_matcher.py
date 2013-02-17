@@ -38,21 +38,22 @@ def simple_extract(lic_statements, record):
         statement = statement_mapping.keys()[0]
 
         if statement in r.content:
-            # okay, statement found on the page -> get license id (, version)
+            # okay, statement found on the page -> get license type
             lic_type = statement_mapping[statement]['type']
-            lic_version = statement_mapping[statement].get('version', '')
 
             # license identified, now use that to construct the license object
             license = deepcopy(LICENSES[lic_type])
-            license['version'] = lic_version
-            license['description'] = ''
-            license['jurisdiction'] = '' # TODO later (or later version of IIOA!)
+            # set some defaults which have to be there, even if empty
+            license.setdefault('version','')
+            license.setdefault('description','')
+            license.setdefault('jurisdiction','') # TODO later (or later version of IIOA!)
             
-            # Copy over all information about the license from the license statement mapping
-            # In essence, transfer the knowledge of the publisher plugin authors to the
-            # license object.
-            for attribute in statement_mapping[statement].keys():
-                license[attribute] = statement_mapping[statement][attribute]
+            # Copy over all information about the license from the license
+            # statement mapping. In essence, transfer the knowledge of the 
+            # publisher plugin authors to the license object.
+            # Consequence: Values coming from the publisher plugin overwrite
+            # values specified in the licenses module.
+            license.update(statement_mapping[statement])
             
             # add provenance information to the license object
             provenance = {
