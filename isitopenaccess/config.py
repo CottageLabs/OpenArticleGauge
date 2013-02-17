@@ -1,3 +1,8 @@
+# how to run the iioa app
+host = '0.0.0.0'
+port = '5000'
+debug = True
+
 # packages that the plugloader should look in to find callable plugins if
 # it can't find them straight away in the running context.  Note that an installed
 # application and an application run from its directory will have different
@@ -54,11 +59,16 @@ redis_cache_timeout = 7776000 # approximately 3 months
 # Number of seconds it takes for a licence record to be considered stale
 licence_stale_time = 15552000 # approximately 6 months
 
-# bibserver confis
+# bibserver configs
 bibserver_address = 'http://bibsoup.net'
-bibserver_api_key = '' # should be a real api key for the targeted instance
+bibserver_api_key = '' # valid api_key for a user on the addressed bibserver - REQUIRED if bibserver is not on localhost
 bibserver_collection = 'isitopenaccess' # collection name that we will put IIOA files into
 bibserver_buffering = False # whether or not we are buffering posts to bibserver
+
+# elasticsearch configs - if running bibserver locally or you want to talk direct to ES instead, these will be used
+es_address = 'http://localhost:9200' # if this is set, it is used in preference to the bibserver_address above. So leave blank otherwise
+es_indexname = 'test' # NO ATTEMPT IS MADE TO CREATE THESE - IIOA assumes your index is ready to go (which it will be if you use bibserver)
+es_indextype = 'record'
 
 # IIOA version and user agent string
 version = '0.1 alpha'
