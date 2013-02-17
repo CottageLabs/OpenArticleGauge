@@ -1331,10 +1331,10 @@ LICENSES = {
     "title": "Zope Public License", 
     "url": "http://www.opensource.org/licenses/zpl.php"
   },
-# Licenses added by IsItOpenAccess committers due to having to deal with them :)
 
-# Eh, TODO - this one doesn't have a name/title or a URL. Awaiting more info.
-#  "plos-who": {
-#   "type": "plos-who"
-#  }"
+# Licenses added by IsItOpenAccess committers due to having to deal with them :)
+  "plos-who": {
+    "type": "plos-who",
+    "title": "World Health Organisation (PLoS) License"
+  }
 }
