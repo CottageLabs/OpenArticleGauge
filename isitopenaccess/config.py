@@ -67,7 +67,7 @@ bibserver_buffering = False # whether or not we are buffering posts to bibserver
 
 # elasticsearch configs - if running bibserver locally or you want to talk direct to ES instead, these will be used
 es_address = 'http://localhost:9200' # if this is set, it is used in preference to the bibserver_address above. So leave blank otherwise
-es_indexname = 'test' # NO ATTEMPT IS MADE TO CREATE THESE - IIOA assumes your index is ready to go (which it will be if you use bibserver)
+es_indexname = 'iioa' # NO ATTEMPT IS MADE TO CREATE THESE - IIOA assumes your index is ready to go (which it will be if you use bibserver)
 es_indextype = 'record'
 
 # IIOA version and user agent string

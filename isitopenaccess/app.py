@@ -70,7 +70,11 @@ def api_lookup(path=False,ids=[]):
         results = json.dumps({})
 
     if request.method == 'GET':
-        render_template('index.html', results=results)
+        if path:
+            triggered = idlist
+        else:
+            triggered = False
+        return render_template('index.html', results=results, triggered=triggered)
     else:
         resp = make_response( results )
         resp.mimetype = "application/json"
