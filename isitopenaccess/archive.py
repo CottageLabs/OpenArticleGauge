@@ -1,5 +1,6 @@
 import config
 import requests, json
+from datetime import datetime
 
 def check_archive(identifier):
     """
@@ -35,7 +36,7 @@ def check_archive(identifier):
                 }
             },
             'sort':{
-                '_last_modified':{
+                '_last_modified.exact':{
                     'order':'descending'
                 }
             }
@@ -47,11 +48,12 @@ def check_archive(identifier):
             addr = config.bibserver_address + '/query'
 
         r = requests.post(addr, data=json.dumps(query))
+        if r.status_code == 500:
+            del query['sort']
+            r = requests.post(addr, data=json.dumps(query))
         results = r.json().get('hits',{}).get('hits',[])
         if len(results) > 0: result = results[0]['_source']
     
-    print r.json()
-    print result
     return result
     
 
@@ -60,6 +62,9 @@ def store(bibjson):
     Store the provided bibjson record in the archive (overwriting any item which
     has the same canonical identifier)
     """
+    
+    bibjson['_last_modified'] = datetime.now().strftime("%Y-%m-%d %H%M")
+    
     if config.bibserver_buffering:
         # append this bibjson record to the buffer somehow
         buf = 'whatever it was plus this new record'
