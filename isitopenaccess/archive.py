@@ -8,7 +8,7 @@ def check_archive(identifier):
     
     Return a bibjson record
     """
-    idtype, idid = identifier.split(':')
+    idtype, idid = identifier.split(':',1)
     
     result = {}
     if config.bibserver_buffering:
@@ -19,12 +19,25 @@ def check_archive(identifier):
         # query bibserver for this identifier and order by descending last modified
         query = {
             'query':{
-                'term':{
-                    "identifier.id.exact": identifier
+                'bool':{
+                    'must':[
+                        {
+                            'term':{
+                               "identifier.type.exact": idtype
+                            }
+                        },
+                        {
+                            'term':{
+                               "identifier.id.exact": idid
+                            }
+                        }
+                    ]
                 }
             },
             'sort':{
-                
+                '_last_modified':{
+                    'order':'descending'
+                }
             }
         }
 
@@ -37,6 +50,8 @@ def check_archive(identifier):
         results = r.json().get('hits',{}).get('hits',[])
         if len(results) > 0: result = results[0]['_source']
     
+    print r.json()
+    print result
     return result
     
 
@@ -50,14 +65,14 @@ def store(bibjson):
         buf = 'whatever it was plus this new record'
         # if buffer size limit reached or buffer timeout reached
         if False: # change this to proper decision
-            bulk_save('list of the records in the buffer')
+            _bulk_save('list of the records in the buffer')
             # flush the buffer however that is done
     else:
         # no buffering, just save this one record
-        save(bibjson)
+        _save(bibjson)
 
 
-def save(bibjson):
+def _save(bibjson):
     # send one record to bibserver / es
     if config.es_address:
         addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + bibjson['_id']
@@ -68,7 +83,7 @@ def save(bibjson):
     return r.json()
 
 
-def bulk_save(bibjson_list):
+def _bulk_save(bibjson_list):
     # send a batch of bibjson records to bibserver / es
     if config.es_address:
         data = ''
@@ -80,7 +95,8 @@ def bulk_save(bibjson_list):
         return r.json()
     else:
         # there is no bibserver batch endpoint yet. will add very soon then update this.
-        pass
+        for item in bibjson_list:
+            return _save(item)
     
     
     
