@@ -67,4 +67,5 @@ def simple_extract(lic_statements, record):
 
             license['provenance'] = provenance
 
-            record['bibjson']['license'] = license
+            record['bibjson'].setdefault('license', [])
+            record['bibjson']['license'].append(license)
