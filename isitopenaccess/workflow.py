@@ -3,6 +3,7 @@ import models, config, cache, archive, plugloader
 import logging
 from slavedriver import celery
 
+logging.basicConfig(filename='iioa.log',level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 def lookup(bibjson_ids):
@@ -17,6 +18,7 @@ def lookup(bibjson_ids):
     # FIXME: should we sanitise the inputs?
     
     # create a new resultset object
+    log.debug("looking up ids: " + str(bibjson_ids))
     rs = models.ResultSet(bibjson_ids)
     
     # now run through each passed id, and either obtain a cached copy or 
@@ -49,6 +51,7 @@ def lookup(bibjson_ids):
                     record['bibjson'] = cached_copy['bibjson']
                 log.debug("loaded from cache " + str(record))
                 rs.add_result_record(record)
+                log.debug(str(bid) + " added to result, continuing ...")
                 continue
             
             # Step 4: check the archive for an existing record
@@ -105,18 +108,22 @@ def _check_archive(record):
         raise models.LookupException("can't look anything up in the archive without a canonical id")
         
     # obtain a copy of the archived bibjson
+    log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
     archived_bibjson = archive.check_archive(record['identifier']['canonical'])
     
     # if it's not in the archive, return
     if archived_bibjson is None:
+        log.debug(record['identifier']['canonical'] + " is not in the archive")
         return None
     
     # if there is archived bibjson, then we need to check whether it is stale
     # or not
     if _is_stale(archived_bibjson):
+        log.debug(record['identifier']['canonical'] + " is in the archive, but is stale")
         return None
         
     # otherwise, just return the archived copy
+    log.debug(record['identifier']['canonical'] + " is in the archive")
     return archived_bibjson
 
 def _update_cache(record):

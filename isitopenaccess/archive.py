@@ -1,6 +1,8 @@
 import config
-import requests, json
+import requests, json, logging
 from datetime import datetime
+
+log = logging.getLogger(__name__)
 
 def check_archive(identifier):
     """
@@ -9,10 +11,14 @@ def check_archive(identifier):
     
     Return a bibjson record
     """
+    # FIXME: this makes an assumption about the form of the canonical identifier
+    # and is therefore unreliable.  The search should look in the 
+    # bibjson['identifier']['canonical'] field as specified above
     idtype, idid = identifier.split(':',1)
     
     result = {}
     if config.bibserver_buffering:
+        log.debug("Bibserver buffering ...")
         # before checking remote, check the redis buffer queue if one is enabled
         result = {} # should update result to the matching record object found on buffer queue if any
         
@@ -41,19 +47,31 @@ def check_archive(identifier):
                 }
             }
         }
+        log.debug("prepared search query: " + str(query))
 
         if config.es_address:
             addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/_search'
         else:
             addr = config.bibserver_address + '/query'
-
-        r = requests.post(addr, data=json.dumps(query))
+        
+        log.debug("sending search query to " + addr)
+        try:
+            r = requests.post(addr, data=json.dumps(query))
+        except requests.ConnectionError:
+            # we can actually survive for some time without the archive layer, so no need
+            # to cause a fatal exceptions
+            log.error("ConnectionError attempting to contact BibServer - possibly the archive is down")
+            return None
+            
         if r.status_code == 500:
+            log.debug("Bibserver responded with HTTP code 500; retrying without 'sort' query parameter...")
             del query['sort']
             r = requests.post(addr, data=json.dumps(query))
+        log.debug("Bibserver responded with result set: " + r.text)
         results = r.json().get('hits',{}).get('hits',[])
         if len(results) > 0: result = results[0]['_source']
     
+    log.debug(identifier + " yielded result from archive: " + str(result))
     return result
     
 
@@ -83,7 +101,7 @@ def _save(bibjson):
         addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + bibjson['_id']
     else:
         addr = config.bibserver_address + '/record/' + bibjson['_id'] + '?api_key=' + config.bibserver_api_key
-
+    
     r = requests.post(addr,data=json.dumps(bibjson))
     return r.json()
 
