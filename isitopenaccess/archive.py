@@ -1,5 +1,6 @@
 import config
 import requests, json
+from datetime import datetime
 
 def check_archive(identifier):
     """
@@ -8,17 +9,48 @@ def check_archive(identifier):
     
     Return a bibjson record
     """
-    idtype, idid = identifier.split(':')
+    idtype, idid = identifier.split(':',1)
     
     result = {}
-    if bibserver_buffering:
+    if config.bibserver_buffering:
         # before checking remote, check the redis buffer queue if one is enabled
         result = {} # should update result to the matching record object found on buffer queue if any
         
     if not result:
         # query bibserver for this identifier and order by descending last modified
-        query = {}
-        r = requests.post(bibserver_address + '/query', data=json.dumps(query))
+        query = {
+            'query':{
+                'bool':{
+                    'must':[
+                        {
+                            'term':{
+                               "identifier.type.exact": idtype
+                            }
+                        },
+                        {
+                            'term':{
+                               "identifier.id.exact": idid
+                            }
+                        }
+                    ]
+                }
+            },
+            'sort':{
+                '_last_modified.exact':{
+                    'order':'descending'
+                }
+            }
+        }
+
+        if config.es_address:
+            addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/_search'
+        else:
+            addr = config.bibserver_address + '/query'
+
+        r = requests.post(addr, data=json.dumps(query))
+        if r.status_code == 500:
+            del query['sort']
+            r = requests.post(addr, data=json.dumps(query))
         results = r.json().get('hits',{}).get('hits',[])
         if len(results) > 0: result = results[0]['_source']
     
@@ -30,31 +62,46 @@ def store(bibjson):
     Store the provided bibjson record in the archive (overwriting any item which
     has the same canonical identifier)
     """
-    if bibserver_buffering:
+    
+    bibjson['_last_modified'] = datetime.now().strftime("%Y-%m-%d %H%M")
+    
+    if config.bibserver_buffering:
         # append this bibjson record to the buffer somehow
         buf = 'whatever it was plus this new record'
         # if buffer size limit reached or buffer timeout reached
         if False: # change this to proper decision
-            bulk_save('list of the records in the buffer')
+            _bulk_save('list of the records in the buffer')
             # flush the buffer however that is done
     else:
         # no buffering, just save this one record
-        save(bibjson)
+        _save(bibjson)
 
 
-def save(bibjson):
-    # send one record to bibserver
-    r = requests.post(
-        bibserver_address + '/record/' + bibjson['_id'] + '?api_key=' + bibserver_api_key, 
-        data=json.dumps(bibjson)
-    )
+def _save(bibjson):
+    # send one record to bibserver / es
+    if config.es_address:
+        addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + bibjson['_id']
+    else:
+        addr = config.bibserver_address + '/record/' + bibjson['_id'] + '?api_key=' + config.bibserver_api_key
+
+    r = requests.post(addr,data=json.dumps(bibjson))
     return r.json()
 
 
-def bulk_save(bibjson_list):
-    # send a batch of bibjson records to bibserver
-    # there is no bibserver batch endpoint yet. will add very soon then update this.
-    pass
+def _bulk_save(bibjson_list):
+    # send a batch of bibjson records to bibserver / es
+    if config.es_address:
+        data = ''
+        for r in bibjson_list:
+            data += json.dumps( {'index':{'_id':r['_id']}} ) + '\n'
+            data += json.dumps( r ) + '\n'
+        addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/_bulk'
+        r = requests.post(addr, data=data)
+        return r.json()
+    else:
+        # there is no bibserver batch endpoint yet. will add very soon then update this.
+        for item in bibjson_list:
+            return _save(item)
     
     
     
