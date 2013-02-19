@@ -44,6 +44,9 @@ class TestWorkflow(TestCase):
         assert not record['bibjson']['license']['NC']
         assert not record['bibjson']['license']['SA']
         assert not record['bibjson']['license']['ND']
+        # In this case we also expect the BMC plugin to overwrite the ['license']['url']
+        # property with a more specific one from the license statement.
+        assert record['bibjson']['license']['url'] == 'http://creativecommons.org/licenses/by/2.0'
 
         assert record['bibjson']['license']['provenance']['agent'] == config.agent
         assert record['bibjson']['license']['provenance']['source'] == record['provider']['url']
