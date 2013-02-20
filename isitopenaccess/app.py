@@ -1,7 +1,8 @@
-import os
+import os, json, urllib2
 from flask import Flask, render_template, request, make_response
+from functools import wraps
 
-import workflow, config
+import workflow, config, archive
 
 try:
     import json
@@ -18,6 +19,63 @@ app = Flask(__name__)
 
 # Put a limit on uploads
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 3
+
+
+# ensures query endpoint will handle JSONP
+def jsonp(f):
+    """Wraps JSONified output for JSONP"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        callback = request.args.get('callback', False)
+        if callback:
+            content = str(callback) + '(' + str(f(*args,**kwargs).data) + ')'
+            return app.response_class(content, mimetype='application/javascript')
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
+
+def _request_wants_json():
+    best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
+    if best == 'application/json' and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']:
+        best = True
+    else:
+        best = False
+    if request.values.get('format','').lower() == 'json' or request.path.endswith(".json"):
+        best = True
+    return best
+
+
+# a query endpoint so we can expose what is in the index without leaving it open to attack
+# pass queries direct to index. POST only for receipt of complex query objects
+@app.route('/query/<tid>')
+@app.route('/query', methods=['GET','POST'])
+@app.route('/query/', methods=['GET','POST'])
+@jsonp
+def query(tid=False):    
+    if tid:
+        rec = archive.retrieve(tid)
+        if rec:
+            resp = make_response( json.dumps(rec) )
+        else:
+            abort(404)
+    else:
+        if request.method == "POST":
+            if request.json:
+                qs = request.json
+            else:
+                qs = dict(request.form).keys()[-1]
+        elif 'q' in request.values:
+            qs = {'query': {'query_string': { 'query': request.values['q'] }}}
+        elif 'source' in request.values:
+            qs = json.loads(urllib2.unquote(request.values['source']))
+        else: 
+            qs = {'query': {'match_all': {}}}
+        for item in request.values:
+            if item not in ['q','source','callback','_']:
+                qs[item] = request.values[item]
+        resp = make_response( json.dumps(archive.query(q=qs)) )
+    resp.mimetype = "application/json"
+    return resp
 
 
 # static front page
@@ -45,7 +103,10 @@ def dispute():
 @app.route("/lookup", methods=['GET','POST'])
 @app.route("/lookup/", methods=['GET','POST'])
 @app.route("/lookup/<path:path>", methods=['GET','POST'])
-def api_lookup(path=False,ids=[]):
+def api_lookup(path='',ids=[]):
+    givejson = _request_wants_json()
+    path = path.replace('.json','')
+
     idlist = []
     if ids and isinstance(ids,basestring):
         idlist = [ {"id":i} for i in ids.split(',') ]
@@ -69,7 +130,7 @@ def api_lookup(path=False,ids=[]):
     else:
         results = json.dumps({})
 
-    if request.method == 'GET':
+    if request.method == 'GET' and not givejson:
         if path:
             triggered = idlist
         else:
