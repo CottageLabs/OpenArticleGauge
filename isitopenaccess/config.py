@@ -1,7 +1,7 @@
 # how to run the iioa app
 host = '0.0.0.0'
 port = '5000'
-debug = True
+debug = False
 
 # packages that the plugloader should look in to find callable plugins if
 # it can't find them straight away in the running context.  Note that an installed
@@ -59,16 +59,36 @@ redis_cache_timeout = 7776000 # approximately 3 months
 # Number of seconds it takes for a licence record to be considered stale
 licence_stale_time = 15552000 # approximately 6 months
 
-# bibserver configs
-bibserver_address = 'http://bibsoup.net'
-bibserver_api_key = '' # valid api_key for a user on the addressed bibserver - REQUIRED if bibserver is not on localhost
-bibserver_collection = 'isitopenaccess' # collection name that we will put IIOA files into
-bibserver_buffering = False # whether or not we are buffering posts to bibserver
+# whether or not we are buffering posts to the index
+buffering = False
 
-# elasticsearch configs - if running bibserver locally or you want to talk direct to ES instead, these will be used
-es_address = 'http://localhost:9200' # if this is set, it is used in preference to the bibserver_address above. So leave blank otherwise
-es_indexname = 'iioa' # NO ATTEMPT IS MADE TO CREATE THESE - IIOA assumes your index is ready to go (which it will be if you use bibserver)
+# elasticsearch configs
+es_address = 'http://localhost:9200'
+es_indexname = 'iioa'
 es_indextype = 'record'
+
+# if index does not exist, it will be created first time round using the mapping below
+es_mapping = {
+    "record" : {
+        "date_detection" : "false",
+        "dynamic_templates" : [
+            {
+                "default" : {
+                    "match" : "*",
+                    "match_mapping_type": "string",
+                    "mapping" : {
+                        "type" : "multi_field",
+                        "fields" : {
+                            "{name}" : {"type" : "{dynamic_type}", "index" : "analyzed", "store" : "no"},
+                            "exact" : {"type" : "{dynamic_type}", "index" : "not_analyzed", "store" : "yes"}
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
+
 
 # IIOA version and user agent string
 version = '0.1 alpha'
