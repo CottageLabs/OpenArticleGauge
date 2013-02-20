@@ -167,6 +167,10 @@ def not_found(error):
 
     
 if __name__ == '__main__':
+    # wipe the redis temp cache (not the non-temp one)
+    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    client.flushdb()
+
     # Bind to PORT if defined, otherwise whatever is in config.
     port = int(os.environ.get('PORT', config.port))
     app.debug = config.debug
