@@ -32,7 +32,7 @@ def retrieve(_id):
     addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + _id
     log.debug("sending GET query to " + addr)
     try:
-        r = requests.get(_id)
+        r = requests.get(addr)
         log.debug("Index responded with result set: " + r.text)
         return r.json().get('_source',{})
     except requests.ConnectionError:
