@@ -29,10 +29,10 @@ def check_archive(identifier):
     
 
 def retrieve(_id):
-    addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + _id
+    addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + _id.replace('/','_')
     log.debug("sending GET query to " + addr)
     try:
-        r = requests.get(_id)
+        r = requests.get(addr)
         log.debug("Index responded with result set: " + r.text)
         return r.json().get('_source',{})
     except requests.ConnectionError:
@@ -58,7 +58,7 @@ def store(bibjson):
 
     for idobj in bibjson.get('identifier',[]):
         if 'canonical' in idobj.keys():
-            bibjson['_id'] = idobj['canonical']
+            bibjson['_id'] = idobj['canonical'].replace('/','_')
     bibjson['_last_modified'] = datetime.now().strftime("%Y-%m-%d %H%M")
     
     if config.buffering:
