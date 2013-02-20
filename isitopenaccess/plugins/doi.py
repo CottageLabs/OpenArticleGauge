@@ -104,21 +104,16 @@ def provider_dereference(record):
     canon = record['identifier']['canonical']
     resolvable = "http://dx.doi.org/" + canon[4:]
     
-    # now dereference it and find out the target of the 303
-    response = requests.get(resolvable, allow_redirects=False)
+    # now dereference it and find out the target of the (chain of) 303(s)
+    response = requests.get(resolvable)
+    loc = response.url
     
-    if response.status_code != 303:
-        return
-    
-    loc = response.headers.get('location')
-    
-    # if we find something, record it
     if loc is None:
         return
     
+    # if we find something, record it
     if not "provider" in record:
         record['provider'] = {}
-    
     record['provider']['url'] = loc
     
     

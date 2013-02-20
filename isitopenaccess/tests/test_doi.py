@@ -42,13 +42,14 @@ class MockResponse():
     def __init__(self, status):
         self.status_code = status
         self.headers = {}
+        self.url = None
 
-def get_no_location(url, allow_redirects=True):
-    return MockResponse(303)
+def get_no_location(url):
+    return MockResponse(200)
 
-def get_success(url, allow_redirects=True):
-    r = MockResponse(303)
-    r.headers['location'] = "http://location"
+def get_success(url):
+    r = MockResponse(200)
+    r.url = "http://location"
     return r
 
 class TestWorkflow(TestCase):
