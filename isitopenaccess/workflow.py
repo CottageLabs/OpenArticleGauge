@@ -253,7 +253,7 @@ def _start_back_end(record):
 # Celery Tasks
 ############################################################################    
 
-@celery.task
+@celery.task(name="isitopenaccess.workflow.detect_provider")
 def detect_provider(record):
     # Step 1: see if we can actually detect a provider at all?
     # as usual, this should never happen, but we should have a way to 
@@ -277,7 +277,7 @@ def detect_provider(record):
     log.debug("yielded result " + str(record))
     return record
     
-@celery.task
+@celery.task(name="isitopenaccess.workflow.provider_licence")
 def provider_licence(record):
     # Step 1: check that we have a provider indicator to work from
     if not record.has_key("provider"):
@@ -302,7 +302,7 @@ def provider_licence(record):
     log.debug("plugin " + str(plugin) + " yielded result " + str(record))
     return record
 
-@celery.task
+@celery.task(name="isitopenaccess.workflow.store_results")
 def store_results(record):
     # Step 1: ensure that a licence was applied, and if not apply one
     if "bibjson" not in record:
