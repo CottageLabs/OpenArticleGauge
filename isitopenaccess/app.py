@@ -168,6 +168,7 @@ def not_found(error):
     
 if __name__ == '__main__':
     # wipe the redis temp cache (not the non-temp one)
+    import redis
     client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
     client.flushdb()
 
