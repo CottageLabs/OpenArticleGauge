@@ -346,18 +346,35 @@ class TestWorkflow(TestCase):
         cache.cache = mock_cache
         archive.store = mock_store
         
-        # first check that nothing happens if all the right fields aren't present
+        # first check that we get the right behaviour if no licence is provided
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         workflow.store_results(record)
-        assert not CACHE.has_key("doi:10.1")
-        assert len(ARCHIVE) == 0
+        assert CACHE.has_key("doi:10.1")
+        assert len(ARCHIVE) == 1
+        assert "queued" not in record
+        assert "bibjson" in record
+        assert "license" in record['bibjson']
+        assert record['bibjson']['license'][0]['type'] == "failed-to-obtain-license"
+        assert "identifier" in record["bibjson"]
         
-        record["bibjson"] = {"title" : "mytitle"}
+        del CACHE['doi:10.1']
+        del ARCHIVE[0]
+        
+        # now provide a bibjson record with a licence
+        record["bibjson"] = {
+            "title" : "mytitle",
+            "license" : [{
+                "url" : "http://license"   
+            }]
+        }
+        record["queued"] = True
         workflow.store_results(record)
         assert CACHE.has_key("doi:10.1")
-        assert not CACHE["doi:10.1"].has_key("queued")
+        assert "queued" not in CACHE["doi:10.1"]
         assert len(ARCHIVE) == 1
         assert ARCHIVE[0]["title"] == "mytitle"
+        assert "queued" not in record
+        assert "identifier" in record['bibjson']
         
         del CACHE['doi:10.1']
         del ARCHIVE[0]

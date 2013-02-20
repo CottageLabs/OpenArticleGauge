@@ -22,7 +22,7 @@ This means that, contrary to those statements, not all copyright rights are rese
 
 Of course, even we, as human users, cannot be sure of what the licensing status of this article actually is, since the licensing information we receive depends on whether we turn on Javascript in our browsers.
 
-Since the Javascript operations are possible, but prohibitively difficult for a machine to perform, we are forced to mark all content by this publisher\'s as NOT Open Access.
+Since the Javascript operations are possible, but prohibitively difficult for a machine to perform, we are forced to mark all content by this publisher as NOT Open Access.
 '''
 
 fail_suggested_solution = '''Ideally, metadata can be embedded in the HTML of the page itself, as well as displayed to the user.

@@ -7,3 +7,4 @@ dist/*
 .Python
 app.cfg
 *.py~
+*.log

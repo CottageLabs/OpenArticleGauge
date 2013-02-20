@@ -1,5 +1,6 @@
 from celery import chain
 import models, config, cache, archive, plugloader
+from plugins.common import describe_license_fail
 import logging
 from slavedriver import celery
 
@@ -273,45 +274,58 @@ def detect_provider(record):
     
     # we have to return the record, so that the next step in the chain
     # can deal with it
+    log.debug("yielded result " + str(record))
     return record
     
 @celery.task
 def provider_licence(record):
     # Step 1: check that we have a provider indicator to work from
     if not record.has_key("provider"):
+        log.debug("record has no provider, so unable to look for licence: " + str(record))
         return record
     
     # Step 2: get the plugin that will run for the given provider
     plugin = _get_provider_plugin(record["provider"])
     if plugin is None:
+        log.debug("No plugin to handle provider: " + str(record['provider']))
         return record
+    log.debug("Plugin " + str(plugin) + " to handle provider " + str(record['provider']))
     
     # Step 3: run the plugin on the record
     plugin(record)
     
     # we have to return the record so that the next step in the chain can
     # deal with it
+    log.debug("plugin " + str(plugin) + " yielded result " + str(record))
     return record
 
 @celery.task
 def store_results(record):
-    # Step 1: check that we have something worth storing
-    if not record.has_key("bibjson") or not record.has_key("identifier"):
-        return record
-    
+    # Step 1: ensure that a licence was applied, and if not apply one
+    if not record.has_key("bibjson"):
+        log.debug("record does not have a bibjson record.  Licence could not be detected, therefore adding 'unknown' licence")
+        record['bibjson'] = {}
+        describe_license_fail(record, 
+            "we were unable to detect the licence for this item", 
+            "This is a semi-permanent error, that requires the IsItOpenAccess service to intervene")
+        
     # Step 2: unqueue the record
     if record.has_key("queued"):
+        log.debug(str(record['identifier']) + ": removing this item from the queue")
         del record["queued"]
     
     # Step 3: update the archive
-    # FIXME: do we need to rationalise the identifiers at this point?
+    _add_identifier_to_bibjson(record['identifier'], record['bibjson'])
+    log.debug(str(record['identifier']) + ": storing this item in the archive")
     archive.store(record['bibjson'])
     
     # Step 4: update the cache
+    log.debug(str(record['identifier']) + ": storing this item in the cache")
     _update_cache(record)
     
     # we have to return the record so that the next step in the chain can
     # deal with it (if such a step exists)
+    log.debug("yielded result " + str(record))
     return record
 
 def _get_provider_plugin(provider_record):
@@ -336,7 +350,16 @@ def _get_provider_plugin(provider_record):
     return plugloader.load(plugin_name)
     
 def _add_identifier_to_bibjson(identifier, bibjson):
-    pass
+    # FIXME: this is pretty blunt, could be a lot smarter
+    if not bibjson.has_key("identifier"):
+        bibjson["identifier"] = []
+    found = False
+    for identifier in bibjson['identifier']:
+        if identifier.has_key("canonical") and identifier['canonical'] == bibjson['identifier']['canonical']:
+            found = True
+            break
+    if not found:
+        bibjson['identifier'].append(identifier)
     
     
     

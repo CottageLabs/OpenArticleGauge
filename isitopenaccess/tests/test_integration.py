@@ -123,3 +123,4 @@ class TestWorkflow(TestCase):
         assert obj["requested"] == 4
         assert len(obj["results"]) == 3, obj
         assert len(obj["processing"]) == 1
+        

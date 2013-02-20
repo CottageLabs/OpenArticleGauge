@@ -29,9 +29,9 @@ def describe_license_fail(record, why, suggested_solution=''):
         "suggested_solution": suggested_solution,
         "provenance": {
             "category": "page_scrape",
-            "description": gen_provenance_description_fail(record['provider']['url']),
+            "description": gen_provenance_description_fail(record.get('provider', {}).get('url', "none")),
             "agent": config.agent,
-            "source": record['provider']['url'],
+            "source": record.get('provider', {}).get('url', "unknown"),
             "date": datetime.now().isoformat()
         }
      }
