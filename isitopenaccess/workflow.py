@@ -292,6 +292,9 @@ def provider_licence(record):
     log.debug("Plugin " + str(plugin) + " to handle provider " + str(record['provider']))
     
     # Step 3: run the plugin on the record
+    if "bibjson" not in record:
+        # if the record doesn't have a bibjson element, add a blank one
+        record['bibjson'] = {}
     plugin(record)
     
     # we have to return the record so that the next step in the chain can
@@ -302,9 +305,14 @@ def provider_licence(record):
 @celery.task
 def store_results(record):
     # Step 1: ensure that a licence was applied, and if not apply one
-    if not record.has_key("bibjson"):
-        log.debug("record does not have a bibjson record.  Licence could not be detected, therefore adding 'unknown' licence")
+    if "bibjson" not in record:
+        # no bibjson record, so add a blank one
+        log.debug("record does not have a bibjson record.")
         record['bibjson'] = {}
+        
+    if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+        # the bibjson record does not contain a license list OR the license list is of zero length
+        log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record['bibjson']))
         describe_license_fail(record, 
             "we were unable to detect the licence for this item", 
             "This is a semi-permanent error, that requires the IsItOpenAccess service to intervene")
@@ -334,6 +342,14 @@ def _get_provider_plugin(provider_record):
         return None
     provider_url = provider_record['url']
     
+    # strip any leading http:// or https://
+    if provider_url.startswith("http://"):
+        provider_url = provider_url[len("http://"):]
+    elif provider_url.startswith("https://"):
+        provider_url = provider_url[len("https://"):]
+    
+    log.debug("checking for plugin to handle " + provider_url)
+    
     # check to see if there's a plugin that can handle the provider url
     keys = config.licence_detection.keys()
     possible = []
@@ -347,6 +363,8 @@ def _get_provider_plugin(provider_record):
         if len(p) > len(selected):
             selected = p
     plugin_name = config.licence_detection[selected]
+    
+    log.debug(plugin_name + " services provider " + provider_url)
     return plugloader.load(plugin_name)
     
 def _add_identifier_to_bibjson(identifier, bibjson):

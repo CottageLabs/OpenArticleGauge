@@ -37,6 +37,9 @@ provider_detection = {
 # conditions of a given identifier.  Key is a string representing the provider,
 # value is a singple plugin to be run.  Plugins are selected based on selecting
 # the MOST GRANULAR or MOST SPECIFIC plugin
+#
+# NOTE: URLs should be presented without leading http or https protocol specifiers
+# (so https://www.plosone.org should be www.plosone.org)
 licence_detection = {
     # PLoS
     "www.plosone.org" : "plugins.plos.page_license",

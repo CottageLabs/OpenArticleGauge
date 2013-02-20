@@ -76,7 +76,7 @@ def mock_other_detect(record):
 
 def mock_licence_plugin(record):
     record['bibjson'] = {}
-    record['bibjson']['license'] = {}
+    record['bibjson']['license'] = [{}]
     record['bibjson']['title'] = "mytitle"
 
 def mock_back_end(record): pass
@@ -266,8 +266,8 @@ class TestWorkflow(TestCase):
     def test_09_load_provider_plugin(self):
         # first try the simple case of a dictionary of plugins
         config.licence_detection = {"one" : "one", "two" : "two"}
-        one = workflow._get_provider_plugin({"url" : "one"})
-        two = workflow._get_provider_plugin({"url" : "two"})
+        one = workflow._get_provider_plugin({"url" : "http://one"})
+        two = workflow._get_provider_plugin({"url" : "https://two"})
         assert one() == "one"
         assert two() == "two"
         
@@ -386,7 +386,7 @@ class TestWorkflow(TestCase):
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
-        config.licence_detection = {"http://prov" : "mock_licence_plugin"}
+        config.licence_detection = {"prov" : "mock_licence_plugin"}
         
         # run the chain synchronously
         record = workflow.detect_provider(record)
