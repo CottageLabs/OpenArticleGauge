@@ -57,7 +57,7 @@ def simple_extract(lic_statements, record):
             
             # add provenance information to the license object
             provenance = {
-                'date': datetime.now().isoformat(),
+                'date': datetime.strftime(datetime.now(), config.date_format),
                 'source': url,
                 'agent': config.agent,
                 'category': 'page_scrape', # TODO we need to think how the

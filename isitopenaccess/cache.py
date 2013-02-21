@@ -48,7 +48,7 @@ def is_stale(bibjson):
     dates = []
     for d in date_strings:
         try:
-            dt = datetime.datetime.strptime(d, "%Y-%m-%dT%H:%M:%SZ")
+            dt = datetime.datetime.strptime(d, config.date_format)
             dates.append(dt)
         except ValueError as e:
             continue

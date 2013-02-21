@@ -32,7 +32,7 @@ def describe_license_fail(record, why, suggested_solution=''):
             "description": gen_provenance_description_fail(record.get('provider', {}).get('url', "none")),
             "agent": config.agent,
             "source": record.get('provider', {}).get('url', "unknown"),
-            "date": datetime.now().isoformat()
+            "date": datetime.strftime(datetime.now(), config.date_format)
         }
      }
 
