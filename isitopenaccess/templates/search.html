@@ -6,18 +6,94 @@
 {% block content %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+
+    var resdisplay = [
+            [
+                {
+                    "pre": "IDENTIFIER(S): ",
+                    "field": "identifier.id"
+                }
+            ],
+            [
+                {
+                    "pre": "LICENSE(S): ",
+                    "field": "license.title"
+                },
+                {
+                    "pre": " (",
+                    "field": "license.type",
+                    "post": ")"
+                }
+            ],
+            [
+                {
+                    "field": "license.provenance.description"
+                }
+            ],
+            [
+                {
+                    "pre": "IS IT OPEN ACCESS?: ",
+                    "field": "license.open_access"
+                }
+            ],
+            [
+                {
+                    "pre": "BY: ",
+                    "field": "license.BY"
+                },
+                {
+                    "pre": " NC: ",
+                    "field": "license.NC"
+                },
+                {
+                    "pre": " SA: ",
+                    "field": "license.SA"
+                },
+                {
+                    "pre": " ND: ",
+                    "field": "license.ND"
+                }
+            ],
+            [
+                {
+                    "pre": "OKD compliant? ",
+                    "field": "license.is_okd_compliant"
+                },
+                {
+                    "pre": " OSI compliant? ",
+                    "field": "license.is_osi_compliant"
+                }
+            ],
+            [
+                {
+                    "pre": "Learn more about this license at ",
+                    "field": "license.url"
+                }
+            ],
+            [
+                {
+                    "pre": "We retrieved this information from ",
+                    "field": "license.provenance.source",
+                    "post": ". "
+                },
+                {
+                    "pre": "Last checked on ",
+                    "field":"_last_modified",
+                    "post":"."
+                }
+            ]
+        ];
+
+
     $('#facetview').facetview({
-        search_url: 'http://bibsoup.net/query?',
-        search_index: 'elasticsearch',
-        datatype: 'jsonp',
+        search_url: '/query?',
+        datatype: 'JSON',
         facets: [
             {'field': 'journal.name.exact', 'display': 'journal'},
-            {'field': 'author.name.exact', 'display': 'author'},
-            {'field': 'year.exact', 'display': 'year'},
-            {'field': 'collection.exact', 'display': 'collection'},
+            {'field': 'author.name.exact', 'display': 'author'}
         ],
-        search_sortby: [{'display':'year', 'field':'year.exact'},{'display':'journal','field':'journal.name.exact'}],
-        searchbox_fieldselect: [{'display':'author','field':'author.name'},{'display':'journal','field':'journal.name'}],
+        result_display: resdisplay,
+        sharesave_link: false,
         paging: {
             size: 10
         }

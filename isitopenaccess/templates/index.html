@@ -25,7 +25,18 @@ jQuery(document).ready(function () {
         data.processing.length == 0 ? $('#done').html( 'Done.' ) : false;
         for ( var i in data.results ) {
             var record = data.results[i];
-            var resobj = '<div class="resultitem">' + JSON.stringify(record,"","    ") + '</div>'
+            var resobj = '<div class="resultitem">';
+            resobj += JSON.stringify(record,"","    ");
+            resobj += '<h3>IDENTIFIER(S): ' + record.identifier.id + '</h3>';
+            resobj += '<h4>LICENSE(S): ' + record.license.title + ' (' + record.license.type + ')</h4>';
+            resobj += '<p>' + license.provenance.description + '</p>';
+            resobj += '<p>IS IT OPEN ACCESS? ' + license.open_access + '. BY: ' + license.BY;
+            resobj += '. NC: ' + license.NC + '. SA: ' + license.SA + '. ND: ' + license.ND + '</p>';
+            resobj += '<p>OKD compliant? ' + license.is_okd_compliant + '. OSI compliant? ' + license.is_osi_compliant + '</p>';
+            resobj += '<p>Learn more about this license at ' + license.url + '</p>';
+            resobj += '<p>We retrieved this information from ' + license.provenance.source + '.</p>';
+            resobj += '<p>Last checked on ' + _last_modified + '.</p>';
+            resobj += '</div>';
             $('#results').append(resobj);
         }
         idlist = [];
@@ -92,10 +103,12 @@ jQuery(document).ready(function () {
             <h1>IsItOpenAccess?</h1>
             <p> IsItOpenAccess is a service for determining the licence status of journal publications, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.</p>
         </div>
-        <div class="span6">
+        <div class="span1">
+        </div>
+        <div class="span5">
             <form action="/lookup/" method="POST">
-                <p><textarea id="idlist" style="font-size:18px;width:100%;height:50px;margin-top:40px;" name="query" placeholder="list some DOIs or Pubmed IDs, separated by commas">{% if triggered %}{% for item in triggered %}{% if item['id'] != triggered[0]['id'] %},{% endif %}{{ item['id'] }}{% endfor %}{% else %}10.1371/journal.pone.0035089{% endif %}</textarea></p>
-                <p><input id="iioa" class="btn" type="submit" value="IsItOpenAccess?" style="height:55px;"></p>
+                <p><textarea id="idlist" style="font-size:18px;width:400px;height:100px;margin-top:40px;" name="query" placeholder="list some DOIs or Pubmed IDs, separated by commas">{% if triggered %}{% for item in triggered %}{% if item['id'] != triggered[0]['id'] %},{% endif %}{{ item['id'] }}{% endfor %}{% else %}10.1371/journal.pone.0035089{% endif %}</textarea></p>
+                <p><input id="iioa" class="btn" type="submit" value="IsItOpenAccess?" style="height:55px;width:410px;"></p>
             </form>
         </div>
     </div>
