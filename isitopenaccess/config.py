@@ -96,3 +96,6 @@ es_mapping = {
 # IIOA version and user agent string
 version = '0.1 alpha'
 agent = 'IsItOpenAccess Service/' + version
+
+# Date format to be used throughout the system
+date_format = "%Y-%m-%dT%H:%M:%SZ"

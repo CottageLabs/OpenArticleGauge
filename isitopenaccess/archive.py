@@ -48,7 +48,7 @@ def retrieve(_id):
     try:
         r = requests.get(addr)
         log.debug("Index responded to retrieve with result set: " + r.text)
-        return r.json().get('_source',{})
+        return r.json().get('_source', {})
     except requests.ConnectionError:
         # we can actually survive for some time without the archive layer, so no need
         # to cause a fatal exceptions

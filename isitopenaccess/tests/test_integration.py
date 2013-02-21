@@ -9,7 +9,7 @@ test_db = 2 # use the real cache database, since this is an integration tests
 
 lookup_url = "http://localhost:5000/lookup/"
 
-class TestWorkflow(TestCase):
+class TestIntegration(TestCase):
 
     def setUp(self):
         config.redis_cache_host = test_host
@@ -24,6 +24,9 @@ class TestWorkflow(TestCase):
         client.delete("doi:10.stale/1")
         client.delete("doi:10.archived/1")
         client.delete("doi:10.1371/journal.pone.0035089")
+        archive.delete("doi:10.stale/1")
+        archive.delete("doi:10.archived/1")
+        archive.delete("doi:10.1371/journal.pone.0035089")
         
     def test_01_http_lookup_cache_only(self):
         # The various vectors we want to test
@@ -188,6 +191,12 @@ class TestWorkflow(TestCase):
         assert cached_result["bibjson"]["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert cached_result["bibjson"]["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
-            
+        # now we know it is done, re-request the result set
+        resp = requests.post(lookup_url + "10.1371/journal.pone.0035089")
+        obj = json.loads(resp.text)
         
+        assert len(obj["results"]) == 1
+        assert len(obj["processing"]) == 0
+        assert len(obj["errors"]) == 0
+        assert obj["requested"] == 1
         
