@@ -515,3 +515,86 @@ TypeError: 'NoneType' object is not callable
 [2013-02-20 00:23:06,204: DEBUG/MainProcess] TaskPool: Apply <function _fast_trace_task at 0x109a5f0> (args:(u'workflow.store_results', u'ed1ae8e7-ce64-4f0b-b854-c70b1f06d6e5', [{u'identifier': {u'type': u'doi', u'id': u'10.1371/journal.pone.0035089', u'canonical': u'doi:10.1371/journal.pone.0035089'}, u'queued': True, u'provider': {u'url': u'http://dx.plos.org/10.1371/journal.pone.0035089'}}], {}, {u'utc': True, 'is_eager': False, u'chord': None, 'group': None, u'args': [{u'identifier': {u'type': u'doi', u'id': u'10.1371/journal.pone.0035089', u'canonical': u'doi:10.1371/journal.pone.0035089'}, u'queued': True, u'provider': {u'url': u'http://dx.plos.org/10.1371/journal.pone.0035089'}}], u'retries': 0, 'delivery_info': {'priority': 0, 'routing_key': 'celery', 'exchange': 'celery'}, u'expires': None, u'task': u'workflow.store_results', u'callbacks': None, u'errbacks': None, 'hostname': 'holly', u'taskset': None, u'kwargs': {}, u'eta': None, u'id': u'ed1ae8e7-ce64-4f0b-b854-c70b1f06d6e5'}) kwargs:{})
 [2013-02-20 00:23:06,206: DEBUG/MainProcess] Task accepted: workflow.store_results[ed1ae8e7-ce64-4f0b-b854-c70b1f06d6e5] pid:30159
 [2013-02-20 00:23:06,206: INFO/MainProcess] Task workflow.store_results[ed1ae8e7-ce64-4f0b-b854-c70b1f06d6e5] succeeded in 0.00186491012573s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:30,957: WARNING/MainProcess] celery@two ready.
+[2013-02-21 12:06:30,961: INFO/MainProcess] consumer: Connected to redis://localhost:6379//.
+[2013-02-21 12:06:30,971: ERROR/MainProcess] Received unregistered task of type u'workflow.detect_provider'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+More: http://docs.celeryq.org/en/latest/userguide/tasks.html#names
+
+The full contents of the message body was:
+{u'utc': True, u'chord': None, u'args': [{u'identifier': {u'type': u'doi', u'id': u'10.1186/1758-2946-3-47', u'canonical': u'doi:10.1186/1758-2946-3-47'}, u'queued': True}], u'retries': 0, u'expires': None, u'task': u'workflow.detect_provider', u'callbacks': [{u'task': u'workflow.provider_licence', u'args': [], u'options': {u'link': [{u'task': u'workflow.store_results', u'args': [], u'options': {u'task_id': u'8835dfae-88f9-4109-b787-8a6a0be21244'}, u'subtask_type': None, u'kwargs': {}, u'immutable': False}], u'task_id': u'8f08c5f6-cdec-4a8b-93d7-2cd9f00e7e41'}, u'subtask_type': None, u'kwargs': {}, u'immutable': False}], u'errbacks': None, u'taskset': None, u'kwargs': {}, u'eta': None, u'id': u'7c28ab56-311c-4720-a0e2-4704bd9c76d9'} (701b)
+Traceback (most recent call last):
+  File "/home/one/code/iioa/local/lib/python2.7/site-packages/celery/worker/consumer.py", line 435, in on_task_received
+    strategies[name](message, body, message.ack_log_error)
+KeyError: u'workflow.detect_provider'
+[2013-02-21 12:06:30,973: ERROR/MainProcess] Received unregistered task of type u'workflow.detect_provider'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+More: http://docs.celeryq.org/en/latest/userguide/tasks.html#names
+
+The full contents of the message body was:
+{u'utc': True, u'chord': None, u'args': [{u'identifier': {u'type': u'doi', u'id': u'10.1371/journal.pone.0035089', u'canonical': u'doi:10.1371/journal.pone.0035089'}, u'queued': True}], u'retries': 0, u'expires': None, u'task': u'workflow.detect_provider', u'callbacks': [{u'task': u'workflow.provider_licence', u'args': [], u'options': {u'link': [{u'task': u'workflow.store_results', u'args': [], u'options': {u'task_id': u'a2c40de8-5f6a-4c22-9a54-012057f9ad5d'}, u'subtask_type': None, u'kwargs': {}, u'immutable': False}], u'task_id': u'6b7a4a39-0e44-45e7-b0fe-d391e1c5bd8c'}, u'subtask_type': None, u'kwargs': {}, u'immutable': False}], u'errbacks': None, u'taskset': None, u'kwargs': {}, u'eta': None, u'id': u'3fff0237-d0ee-4269-8a48-e4148b95ff39'} (713b)
+Traceback (most recent call last):
+  File "/home/one/code/iioa/local/lib/python2.7/site-packages/celery/worker/consumer.py", line 435, in on_task_received
+    strategies[name](message, body, message.ack_log_error)
+KeyError: u'workflow.detect_provider'
+[2013-02-21 12:06:30,975: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.detect_provider[436fa19a-0eb2-45dd-9fc0-f8fe8231e479]
+[2013-02-21 12:06:30,976: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.detect_provider[0c40246d-86b3-4aca-9d80-337ba495798a]
+[2013-02-21 12:06:31,001: INFO/MainProcess] Starting new HTTP connection (1): dx.doi.org
+[2013-02-21 12:06:31,002: INFO/MainProcess] Starting new HTTP connection (1): dx.doi.org
+[2013-02-21 12:06:31,381: INFO/MainProcess] Starting new HTTP connection (1): dx.plos.org
+[2013-02-21 12:06:31,436: INFO/MainProcess] Starting new HTTP connection (1): dx.plos.org
+[2013-02-21 12:06:32,094: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:06:33,520: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:06:35,680: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.provider_licence[5cd0e943-f3fe-4362-a9ce-082c2e7d1db2]
+[2013-02-21 12:06:35,681: INFO/MainProcess] Task isitopenaccess.workflow.detect_provider[436fa19a-0eb2-45dd-9fc0-f8fe8231e479] succeeded in 4.69047498703s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:35,685: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.provider_licence[84ffa927-1197-443a-9f64-8104d894727c]
+[2013-02-21 12:06:35,685: INFO/MainProcess] Task isitopenaccess.workflow.detect_provider[0c40246d-86b3-4aca-9d80-337ba495798a] succeeded in 4.69396495819s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:35,714: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:06:35,715: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:06:36,874: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.store_results[fb91d57d-e97a-4356-b55f-e786976baab9]
+[2013-02-21 12:06:36,875: INFO/MainProcess] Task isitopenaccess.workflow.provider_licence[5cd0e943-f3fe-4362-a9ce-082c2e7d1db2] succeeded in 1.16229510307s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:36,886: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:36,947: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:36,951: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:36,954: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:36,965: INFO/MainProcess] Task isitopenaccess.workflow.store_results[fb91d57d-e97a-4356-b55f-e786976baab9] succeeded in 0.0859618186951s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:36,978: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.store_results[ec495a27-69de-473c-a888-e38255634450]
+[2013-02-21 12:06:36,979: INFO/MainProcess] Task isitopenaccess.workflow.provider_licence[84ffa927-1197-443a-9f64-8104d894727c] succeeded in 1.26585888863s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:06:37,000: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:37,003: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:37,006: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:37,010: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:06:37,019: INFO/MainProcess] Task isitopenaccess.workflow.store_results[ec495a27-69de-473c-a888-e38255634450] succeeded in 0.0260570049286s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:44,358: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.detect_provider[31a552f9-2672-4a1d-a4ad-5d69484374bb]
+[2013-02-21 12:07:44,364: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.detect_provider[f258e0e5-369d-48bb-b84f-d6472786079c]
+[2013-02-21 12:07:44,400: INFO/MainProcess] Starting new HTTP connection (1): dx.doi.org
+[2013-02-21 12:07:44,402: INFO/MainProcess] Starting new HTTP connection (1): dx.doi.org
+[2013-02-21 12:07:44,632: INFO/MainProcess] Starting new HTTP connection (1): www.biomedcentral.com
+[2013-02-21 12:07:44,768: INFO/MainProcess] Starting new HTTP connection (1): dx.plos.org
+[2013-02-21 12:07:45,437: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:07:45,718: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.provider_licence[e6270ad8-316a-4004-ad6d-a1b58994fcc7]
+[2013-02-21 12:07:45,719: INFO/MainProcess] Task isitopenaccess.workflow.detect_provider[f258e0e5-369d-48bb-b84f-d6472786079c] succeeded in 1.31750607491s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:45,722: INFO/MainProcess] Starting new HTTP connection (1): www.biomedcentral.com
+[2013-02-21 12:07:46,694: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.provider_licence[c11a455b-c014-469f-af31-aba9463950cb]
+[2013-02-21 12:07:46,694: INFO/MainProcess] Task isitopenaccess.workflow.detect_provider[31a552f9-2672-4a1d-a4ad-5d69484374bb] succeeded in 2.29502296448s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:46,714: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.store_results[c1d82679-a4db-47ae-8b95-584247e009af]
+[2013-02-21 12:07:46,715: INFO/MainProcess] Task isitopenaccess.workflow.provider_licence[e6270ad8-316a-4004-ad6d-a1b58994fcc7] succeeded in 0.995015859604s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:46,721: INFO/MainProcess] Starting new HTTP connection (1): www.plosone.org
+[2013-02-21 12:07:46,721: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:46,725: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:46,732: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:46,739: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:46,765: INFO/MainProcess] Task isitopenaccess.workflow.store_results[c1d82679-a4db-47ae-8b95-584247e009af] succeeded in 0.044312953949s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:47,837: INFO/MainProcess] Got task from broker: isitopenaccess.workflow.store_results[c728e2af-9231-4916-a1d8-685b35f22cef]
+[2013-02-21 12:07:47,838: INFO/MainProcess] Task isitopenaccess.workflow.provider_licence[c11a455b-c014-469f-af31-aba9463950cb] succeeded in 1.11701798439s: {u'identifier': {u'type': u'doi', u'id':...
+[2013-02-21 12:07:47,888: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:47,892: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:47,899: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:47,907: INFO/MainProcess] Starting new HTTP connection (1): localhost
+[2013-02-21 12:07:47,922: INFO/MainProcess] Task isitopenaccess.workflow.store_results[c728e2af-9231-4916-a1d8-685b35f22cef] succeeded in 0.0357689857483s: {u'identifier': {u'type': u'doi', u'id':...

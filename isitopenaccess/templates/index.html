@@ -25,17 +25,16 @@ jQuery(document).ready(function () {
         data.processing.length == 0 ? $('#done').html( 'Done.' ) : false;
         for ( var i in data.results ) {
             var record = data.results[i];
-            var resobj = '<div class="resultitem">';
-            resobj += JSON.stringify(record,"","    ");
-            resobj += '<h3>IDENTIFIER(S): ' + record.identifier.id + '</h3>';
-            resobj += '<h4>LICENSE(S): ' + record.license.title + ' (' + record.license.type + ')</h4>';
-            resobj += '<p>' + license.provenance.description + '</p>';
-            resobj += '<p>IS IT OPEN ACCESS? ' + license.open_access + '. BY: ' + license.BY;
-            resobj += '. NC: ' + license.NC + '. SA: ' + license.SA + '. ND: ' + license.ND + '</p>';
-            resobj += '<p>OKD compliant? ' + license.is_okd_compliant + '. OSI compliant? ' + license.is_osi_compliant + '</p>';
-            resobj += '<p>Learn more about this license at ' + license.url + '</p>';
-            resobj += '<p>We retrieved this information from ' + license.provenance.source + '.</p>';
-            resobj += '<p>Last checked on ' + _last_modified + '.</p>';
+            var resobj = '<div class="resultitem"style="margin-bottom:50px;">';
+            resobj += '<h3>IDENTIFIER(S): ' + record.identifier[0].id + '</h3>';
+            resobj += '<h4>LICENSE(S): ' + record.license[0].title + ' (' + record.license[0].type + ')</h4>';
+            resobj += '<p>' + record.license[0].provenance.description + '</p>';
+            resobj += '<p>IS IT OPEN ACCESS? ' + record.license[0].open_access + '. BY: ' + record.license[0].BY;
+            resobj += '. NC: ' + record.license[0].NC + '. SA: ' + record.license[0].SA + '. ND: ' + record.license[0].ND + '. ';
+            resobj += 'OKD compliant? ' + record.license[0].is_okd_compliant + '. OSI compliant? ' + record.license[0].is_osi_compliant + '</p>';
+            resobj += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>';
+            resobj += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
+            resobj += '<p>Last checked on ' + record._last_modified + '.</p>';
             resobj += '</div>';
             $('#results').append(resobj);
         }
