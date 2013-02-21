@@ -33,7 +33,7 @@ def delete(_id):
     log.debug("sending DELETE to " + addr)
     try:
         r = requests.delete(addr)
-        log.debug("Index responded with result set: " + r.text)
+        log.debug("Index responded to delete with result set: " + r.text)
         return r.json()
     except requests.ConnectionError:
         # we can actually survive for some time without the archive layer, so no need
@@ -47,7 +47,7 @@ def retrieve(_id):
     log.debug("sending GET query to " + addr)
     try:
         r = requests.get(addr)
-        log.debug("Index responded with result set: " + r.text)
+        log.debug("Index responded to retrieve with result set: " + r.text)
         return r.json().get('_source',{})
     except requests.ConnectionError:
         # we can actually survive for some time without the archive layer, so no need
@@ -58,7 +58,9 @@ def retrieve(_id):
 
 def query(q):
     addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/_search'
+    log.debug("Querying index with query " + json.dumps(q))
     r = requests.post(addr, data=json.dumps(q))
+    log.debug("Index responded to query with result set: " + r.text)
     return r.json()
 
 
@@ -89,7 +91,9 @@ def store(bibjson):
 
 def _save(bibjson):
     addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + bibjson['_id']
+    log.debug("Saving bibjson to index: " + json.dumps(bibjson))
     r = requests.post(addr,data=json.dumps(bibjson))
+    log.debug("Index responded to save with " + json.dumps(r.json()))
     return r.json()
 
 
@@ -99,7 +103,9 @@ def _bulk_save(bibjson_list):
         data += json.dumps( {'index':{'_id':r['_id']}} ) + '\n'
         data += json.dumps( r ) + '\n'
     addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/_bulk'
+    log.debug("Bulk saving bibjson to index: " + json.dumps([i['_id'] for i in bibjson_list]))
     r = requests.post(addr, data=data)
+    log.debug("Index responded to bulk save with: " + json.dumps(r.json()))
     return r.json()
 
     
@@ -110,24 +116,24 @@ def _check_index():
     try:
         hi = requests.get(test)
         if hi.status_code != 200:
-            print "there is no elasticsearch index available at " + test
+            log.debug("there is no elasticsearch index available at " + test)
     except:
-        print "there is no elasticsearch index available at " + test
+        log.debug("there is no elasticsearch index available at " + test)
 
     # check to see if index exists - in which case it will have a mapping even if it is empty, create if not
     dbaddr = test + '/' + config.es_indexname
     if requests.get(dbaddr + '/_mapping').status_code == 404:
-        print "creating the index"
+        log.debug("creating the index")
         c = requests.post(dbaddr)
-        print c.status_code
+        log.debug(c.status_code)
 
     # check for mapping and create one if provided and does not already exist
     # this will automatically create the necessary index type if it is not already there
     if config.es_mapping:
         t = dbaddr + '/' + config.es_indextype + '/' + '_mapping' 
         if requests.get(t).status_code == 404:
-            print "putting the index type mapping"
+            log.debug("PUTting the index type mapping")
             p = requests.put(t, data=json.dumps(config.es_mapping) )
-            print p.status_code
+            log.debug(p.status_code)
 
     
