@@ -26,7 +26,21 @@ def check_archive(identifier):
     
     log.debug(identifier + " yielded result from archive: " + str(result))
     return result
-    
+
+
+def delete(_id):
+    addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + _id.replace('/','_')
+    log.debug("sending DELETE to " + addr)
+    try:
+        r = requests.delete(addr)
+        log.debug("Index responded with result set: " + r.text)
+        return r.json()
+    except requests.ConnectionError:
+        # we can actually survive for some time without the archive layer, so no need
+        # to cause a fatal exceptions
+        log.error("ConnectionError attempting to contact index - possibly the archive is down")
+        return None
+
 
 def retrieve(_id):
     addr = config.es_address + '/' + config.es_indexname + '/' + config.es_indextype + '/' + _id.replace('/','_')
