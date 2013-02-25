@@ -1,7 +1,3 @@
-import requests
-from copy import deepcopy
-from datetime import datetime
-
 from isitopenaccess.plugins import string_matcher
 
 def page_license(record):
