@@ -31,7 +31,7 @@ class TestWorkflow(TestCase):
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : { "url" : ["http://www.hindawi.com/article"]},
                     "bibjson" : {"title" :  "my title"}
                  }
         rs.add_result_record(result)
@@ -56,7 +56,7 @@ class TestWorkflow(TestCase):
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "error" : "broken"
                  }
         rs.add_result_record(result)
@@ -78,7 +78,7 @@ class TestWorkflow(TestCase):
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "queued" : True
                  }
         rs.add_result_record(result)
@@ -99,25 +99,25 @@ class TestWorkflow(TestCase):
         results = []
         results.append({
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "bibjson" : {"title" :  "my title"}
                  })
                  
         results.append({
                     "identifier" : {"id" : "2", "type" : "doi", "canonical" : "doi:2"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : { "url" : ["http://www.hindawi.com/article"]},
                     "error" : "broken"
                  })
         
         results.append({
                     "identifier" : {"id" : "3", "type" : "doi", "canonical" : "doi:3"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : { "url" : ["http://www.hindawi.com/article"]},
                     "queued" : True
                  })
         
         results.append({
                 "identifier" : {"id" : "4", "type" : "doi", "canonical" : "doi:4"},
-                "provider" : "http://www.hindawi.com/hello",
+                "provider" : {"url" : ["http://www.hindawi.com/hello"]},
                 "bibjson" : {"title" :  "another title"}
             })
             
@@ -139,25 +139,25 @@ class TestWorkflow(TestCase):
         results = []
         results.append({
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "bibjson" : {"title" :  "my title"}
                  })
                  
         results.append({
                     "identifier" : {"id" : "2", "type" : "doi", "canonical" : "doi:2"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "error" : "broken"
                  })
         
         results.append({
                     "identifier" : {"id" : "3", "type" : "doi", "canonical" : "doi:3"},
-                    "provider" : "http://www.hindawi.com/article",
+                    "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "queued" : True
                  })
         
         results.append({
                 "identifier" : {"id" : "4", "type" : "doi", "canonical" : "doi:4"},
-                "provider" : "http://www.hindawi.com/hello",
+                "provider" : { "url" : ["http://www.hindawi.com/hello"]},
                 "bibjson" : {"title" :  "another title"}
             })
             

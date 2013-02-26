@@ -1,5 +1,6 @@
 import re, requests
 from isitopenaccess import models
+from isitopenaccess.plugins import common
 
 def type_detect_verify(bibjson_identifier):
     """
@@ -85,8 +86,8 @@ def provider_range_lookup(record):
 def provider_dereference(record):
     """
     Check the URL that the DOI dereferences to, by taking advantage of the fact that
-    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider']['url']
-    field with the string which describes the provider (ideally a URI)
+    DOI lookups use HTTP 303 to redirect you to the resource. Append to the record['provider']['url']
+    list with the string which describes the provider (ideally a URI)
     """
     # check that we can actually work on this record
     # - must have an indentifier
@@ -112,9 +113,7 @@ def provider_dereference(record):
         return
     
     # if we find something, record it
-    if not "provider" in record:
-        record['provider'] = {}
-    record['provider']['url'] = loc
+    common.record_provider_url(record, loc)
 
 def dereference(canonical):
     resolvable = "http://dx.doi.org/" + canonical[4:]

@@ -67,12 +67,12 @@ def mock_check_archive(key):
 def mock_null_archive(key): return None
 
 def mock_detect_provider(record):
-    record['provider'] = {"url" : "http://provider"}
+    record['provider'] = {"url" : ["http://provider"]}
 
 def mock_no_provider(record): pass
 
 def mock_other_detect(record):
-    record['provider'] = {"url" : "http://other"}
+    record['provider'] = {"url" : ["http://other"]}
 
 def mock_licence_plugin(record):
     record['bibjson'] = {}
@@ -253,7 +253,7 @@ class TestWorkflow(TestCase):
         workflow.detect_provider(record)
         assert "provider" in record, record
         assert "url" in record['provider']
-        assert record["provider"]["url"] == "http://provider"
+        assert record["provider"]["url"][0] == "http://provider"
         
         # now check that the chain continues all the way to the end
         config.provider_detection = {"doi" : ["mock_no_provider", "mock_other_detect", "mock_detect_provider"]}
@@ -261,22 +261,22 @@ class TestWorkflow(TestCase):
         workflow.detect_provider(record)
         assert "provider" in record
         assert "url" in record['provider']
-        assert record["provider"]["url"] == "http://provider"
+        assert record["provider"]["url"][0] == "http://provider"
         
     def test_09_load_provider_plugin(self):
         # first try the simple case of a dictionary of plugins
         config.licence_detection = {"one" : "one", "two" : "two"}
-        one = workflow._get_provider_plugin({"url" : "http://one"})
-        two = workflow._get_provider_plugin({"url" : "https://two"})
+        one = workflow._get_provider_plugin({"url" : ["http://one"]})
+        two = workflow._get_provider_plugin({"url" : ["https://two"]})
         assert one() == "one"
         assert two() == "two"
         
         # now try a couple of granular ones
         config.licence_detection = {"one" : "one", "one/two" : "one_two", "two" : "two"}
-        one = workflow._get_provider_plugin({"url" : "one"})
-        onetwo = workflow._get_provider_plugin({"url" : "one/two"})
-        otherone = workflow._get_provider_plugin({"url" : "one/three"})
-        onetwothree = workflow._get_provider_plugin({"url" : "one/two/three"})
+        one = workflow._get_provider_plugin({"url" : ["one"]})
+        onetwo = workflow._get_provider_plugin({"url" : ["one/two"]})
+        otherone = workflow._get_provider_plugin({"url" : ["one/three"]})
+        onetwothree = workflow._get_provider_plugin({"url" : ["one/two/three"]})
         assert one() == "one"
         assert onetwo() == "one_two"
         assert otherone() == "one"
@@ -291,12 +291,12 @@ class TestWorkflow(TestCase):
         assert not record.has_key("bibjson")
         
         # now check there's no change if there's no plugin
-        record['provider'] = {"url" : "provider"}
+        record['provider'] = {"url" : ["provider"]}
         workflow.provider_licence(record)
         assert not record.has_key("bibjson")
         
         # check that it works when it's right
-        record['provider'] = {"url" : "testprovider"}
+        record['provider'] = {"url" : ["testprovider"]}
         workflow.provider_licence(record)
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license") # american spelling
@@ -394,7 +394,7 @@ class TestWorkflow(TestCase):
         record = workflow.store_results(record)
         
         assert "provider" in record
-        assert record["provider"]["url"] == "http://provider"
+        assert record["provider"]["url"][0] == "http://provider"
         
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license")

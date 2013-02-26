@@ -40,4 +40,8 @@ def page_license(record):
     This will always fail since we can't get the license for this publisher.
     It populates the record['bibjson']['license'] (note the US spelling) field.
     """
-    cpl.describe_license_fail(record, fail_why, fail_suggested_solution)
+    source_url = None
+    source_urls = record.get('provider', {}).get("url", [])
+    if len(source_urls) > 0:
+        source_url = source_urls[0]
+    cpl.describe_license_fail(record, source_url, fail_why, fail_suggested_solution)

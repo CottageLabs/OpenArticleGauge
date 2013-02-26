@@ -174,7 +174,7 @@ class TestWorkflow(TestCase):
         pmid.provider_resolver(record)
         assert "provider" in record
         assert "url" in record["provider"]
-        assert record['provider']["url"] == "http://jb.asm.org/content/195/3/502"
+        assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502"
         
         requests.get = old_get
     

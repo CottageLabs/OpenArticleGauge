@@ -27,7 +27,8 @@ def simple_extract(lic_statements, record):
     """
 
     # get content
-    url = record['provider']['url']
+    # FIXME: just uses the first provider url
+    url = record['provider']['url'][0]
     r = requests.get(url)
     
     # see if one of the licensing statements is in content 

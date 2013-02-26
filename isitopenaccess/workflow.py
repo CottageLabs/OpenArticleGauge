@@ -313,7 +313,7 @@ def store_results(record):
     if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
         # the bibjson record does not contain a license list OR the license list is of zero length
         log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record['bibjson']))
-        describe_license_fail(record, 
+        describe_license_fail(record, "none"
             "we were unable to detect the licence for this item", 
             "This is a semi-permanent error, that requires the IsItOpenAccess service to intervene")
         
@@ -340,7 +340,7 @@ def _get_provider_plugin(provider_record):
     # FIXME: for the moment this only supports URL lookup
     if not "url" in provider_record:
         return None
-    provider_url = provider_record['url']
+    provider_url = provider_record['url'][0]
     
     # strip any leading http:// or https://
     if provider_url.startswith("http://"):

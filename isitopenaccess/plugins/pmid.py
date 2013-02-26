@@ -1,7 +1,7 @@
 import re, logging, requests
 from isitopenaccess import models
 from lxml import etree
-from isitopenaccess.plugins import doi
+from isitopenaccess.plugins import doi, common
 
 log = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ def canonicalise(bibjson_identifier):
 def provider_resolver(record):
     """
     Take a pubmed id (if that is the type) and obtain a reference to the base
-    URL of the resource that it links to and place it in the record['provider']['url'] field
+    URL of the resource that it links to and append it to the record['provider']['url'] list
     """
     # check that we can actually work on this record
     # - must have an indentifier
@@ -91,19 +91,14 @@ def provider_resolver(record):
     
     if loc is not None:
         # if we find something, record it
-        if not "provider" in record:
-            record['provider'] = {}
-        record['provider']['url'] = loc
+        common.record_provider_url(record, loc)
         return
     
     # if we get to here, the DOI lookup failed, so we need to scrape the NCBI site for possible urls
     urls = _scrape_urls(canon)
     if urls is not None and len(urls) > 0:
         # if we find something, record it
-        if not "provider" in record:
-            record['provider'] = {}
-        # NOTE: at the moment we're only recording the first url - this will change when we change the provider object
-        record['provider']['url'] = urls[0]
+        common.record_provider_urls(record, urls)
 
 def _scrape_urls(canonical_pmid):
     """
