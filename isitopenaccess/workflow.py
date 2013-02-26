@@ -4,7 +4,7 @@ from plugins.common import describe_license_fail
 import logging
 from slavedriver import celery
 
-logging.basicConfig(filename='iioa.log',level=logging.DEBUG)
+#logging.basicConfig(filename='iioa.log',level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 def lookup(bibjson_ids):

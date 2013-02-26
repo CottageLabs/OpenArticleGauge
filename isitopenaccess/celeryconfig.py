@@ -2,6 +2,7 @@
 # Workers should run as an unprivileged user.
 # CELERYD_USER = 'celery'
 # CELERYD_GROUP = 'celery'
+import os
 
 CELERYD_NODES = 'w1'
 
@@ -15,15 +16,15 @@ CELERYD_NODES = 'w1'
 CELERYD_OPTS = '--time-limit=300 --concurrency=8'
 
 # Name of the celery config module.
-CELERY_CONFIG_MODULE = 'celeryconfig'
+CELERY_CONFIG_MODULE = 'isitopenaccess.celeryconfig'
 
 # %n will be replaced with the nodename.
-CELERYD_LOG_FILE = 'celery/log/%n.log'
-CELERYD_PID_FILE = 'celery/run/%n.pid'
+#CELERYD_LOG_FILE = 'celery/log/%n.log')
+#CELERYD_PID_FILE = 'celery/run/%n.pid'
 
 BROKER_URL = 'redis://localhost'
 CELERY_RESULT_BACKEND = "redis://localhost"
-CELERY_IMPORTS = ('workflow',)
+CELERY_IMPORTS = ('isitopenaccess.workflow',)
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
