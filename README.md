@@ -4,9 +4,22 @@ IsItOpenAccess is a service for determining the licence status of journal public
 
 ##Installation
 
-Install [Redis](http://redis.io)
+###Redis
 
-Install the project requirements using pip (recommended to also use a virtualenv):
+You need to install [Redis](http://redis.io), and start it as per the Redis documentation
+
+###Elasticsearch
+
+You need to install [Elasticsearch](http://www.elasticsearch.org/), and start it as per the documentation
+
+###IsItOpenAccess Application
+
+Configure the application, if necessary:
+
+    isitopenaccess/config.py
+    isitopenaccess/celeryconfig.py
+
+Then install the project requirements using pip (recommended to also use a virtualenv):
 
     pip install -e .
     
@@ -14,34 +27,25 @@ or with setuptools:
 
     python setup.py install
 
-Configure the queue backend for celery (access permissions, etc)
+###Celery
 
-Check that you can start the celery backend (in IsItOpenAccess/src):
+Start the celery backend
 
-    sh start_celery_in_cmdline.sh
+    sh bin/start_celery_in_cmdline.sh
 
-You should see something like this:
+or start the daemon with
 
-     -------------- celery@TheBebop v3.0.13 (Chiastic Slide)
-    ---- **** ----- 
-    --- * ***  * -- [Configuration]
-    -- * - **** --- . broker:      amqp://guest@localhost:5672//
-    - ** ---------- . app:         __main__:0x2d3c5d0
-    - ** ---------- . concurrency: 8 (processes)
-    - ** ---------- . events:      OFF (enable -E to monitor this worker)
-    - ** ---------- 
-    - *** --- * --- [Queues]
-    -- ******* ---- . celery:      exchange:celery(direct) binding:celery
-    --- ***** ----- 
+    sh bin/start_celery_daemon.sh
     
-    [Tasks]
-        . workflow.detect_provider
-        . workflow.provider_licence
-        . workflow.store_results
+if you start the daemon, you can stop it with
 
-      (... etc)
+    sh bin/stop_celery_daemon.sh
 
-(NB Ctrl-C will shut the celery instance down.)
+**Note** you may want to modify the shell scripts with paths to the log files you want it to use
 
-You should be able to start up the web API at this point by running 'python app.py'
+###Web Application
+
+Start the web application with:
+
+    python isitopenaccess/app.py
 
