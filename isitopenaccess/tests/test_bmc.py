@@ -15,8 +15,18 @@ class TestWorkflow(TestCase):
         
     def tearDown(self):
         pass
-
-    def test_01_bmc_standard_OA_license_from_doi(self):
+    
+    def test_01_bmc_supports_success(self):
+        test_urls = ["http://www.biomedcentral.com/983242"]
+        for url in test_urls:
+            assert bmc.supports({"url" : [url]})
+        
+    def test_02_bmc_supports_fail(self):
+        test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
+        for url in test_urls:
+            assert not bmc.supports({"url" : [url]})
+    
+    def test_03_bmc_standard_OA_license_from_doi(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

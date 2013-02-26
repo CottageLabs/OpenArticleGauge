@@ -1,5 +1,24 @@
 from isitopenaccess.plugins import string_matcher
 
+def supports(provider):
+    """
+    Does the page_license plugin support this provider
+    """
+    base_urls = ["www.biomedcentral.com"]
+    
+    for url in provider.get("url", []):
+        # strip any leading http:// or https://
+        if url.startswith("http://"):
+            url = url[len("http://"):]
+        elif url.startswith("https://"):
+            url = url[len("https://"):]
+        
+        for bu in base_urls:
+            if url.startswith(bu):
+                return True
+                
+    return False
+
 def page_license(record):
     """
     To respond to the provider identifier: http://www.biomedcentral.com

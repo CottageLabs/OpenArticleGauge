@@ -337,6 +337,21 @@ def store_results(record):
     return record
 
 def _get_provider_plugin(provider_record):
+    for plugin_name in config.licence_detection:
+        log.debug("checking " + plugin_name + " for support of provider " + str(provider_record))
+        supporter = plugloader.load_sibling(plugin_name, "supports")
+        
+        if supporter is None:
+            log.debug(plugin_name + " does not have a 'supports()' sibling function, so cannot determine if it supports the provider")
+            continue
+        
+        if supporter(provider_record):
+            log.debug(plugin_name + " services provider " + str(provider_record))
+            return plugloader.load(plugin_name)
+    return None
+
+"""
+def _get_provider_plugin_old(provider_record):
     # FIXME: for the moment this only supports URL lookup
     if not "url" in provider_record:
         return None
@@ -366,7 +381,8 @@ def _get_provider_plugin(provider_record):
     
     log.debug(plugin_name + " services provider " + provider_url)
     return plugloader.load(plugin_name)
-    
+"""
+
 def _add_identifier_to_bibjson(identifier, bibjson):
     # FIXME: this is pretty blunt, could be a lot smarter
     if not bibjson.has_key("identifier"):

@@ -16,7 +16,18 @@ class TestWorkflow(TestCase):
     def tearDown(self):
         pass
 
-    def test_01_oup_standard_OA_license_example1(self):
+    def test_01_oup_supports_success(self):
+        test_urls = ["http://www.oxfordjournals.org/983242", "http://chemistry.oxfordjournals.org/2987433",
+                        "https://www.biology.oxfordjournals.org/jsafkjsaf"]
+        for url in test_urls:
+            assert oup.supports({"url" : [url]})
+        
+    def test_02_oup_supports_fail(self):
+        test_urls = ["http://www.plosone.org/", "www.biomedcentral.com", "askjdfsakjdhfsa"]
+        for url in test_urls:
+            assert not oup.supports({"url" : [url]})
+    
+    def test_03_oup_standard_OA_license_example1(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -56,7 +67,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['description'] == '''License decided by scraping the resource at ''' + record['provider']['url'][0] + ''' and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
                      which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.".'''
 
-    def test_02_oup_standard_OA_license_example2(self):
+    def test_04_oup_standard_OA_license_example2(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -96,7 +107,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['description'] == '''License decided by scraping the resource at ''' + record['provider']['url'][0] + ''' and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
                      which permits unrestricted, distribution, and reproduction in any medium, provided the original work is properly cited.".'''
 
-    def test_03_oup_OA_NC_license(self):
+    def test_05_oup_OA_NC_license(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

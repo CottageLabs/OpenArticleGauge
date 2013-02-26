@@ -1,5 +1,24 @@
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
+def supports(provider):
+    """
+    Does the page_license plugin support this provider
+    """
+    base_urls = []
+    
+    for url in provider.get("url", []):
+        # strip any leading http:// or https://
+        if url.startswith("http://"):
+            url = url[len("http://"):]
+        elif url.startswith("https://"):
+            url = url[len("https://"):]
+        
+        for bu in base_urls:
+            if url.startswith(bu):
+                return True
+                
+    return False
+
 fail_why = '''It is currently not possible to obtain the license information of a Cell Reports article automatically.
 The website makes heavy use of Javascript to update its pages dynamically.
 Instead of just hiding text and using Javascript to show as appropriate (as users use the navigation menus), the website actually fetches previously unavailable content onto the page (using AJAX).

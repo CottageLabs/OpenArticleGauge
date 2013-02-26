@@ -4,6 +4,27 @@ from datetime import datetime
 
 from isitopenaccess.plugins import string_matcher
 
+def supports(provider):
+    """
+    Does the page_license plugin support this provider
+    """
+    base_urls = ["www.plosone.org", "www.plosbiology.org", "www.plosmedicine.org",
+                 "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
+                 "www.plosntds.org"]
+    
+    for url in provider.get("url", []):
+        # strip any leading http:// or https://
+        if url.startswith("http://"):
+            url = url[len("http://"):]
+        elif url.startswith("https://"):
+            url = url[len("https://"):]
+        
+        for bu in base_urls:
+            if url.startswith(bu):
+                return True
+                
+    return False
+
 def page_license(record):
     """
     To respond to the PLoS provider indentifiers (see config.license_detection)

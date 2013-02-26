@@ -40,6 +40,7 @@ provider_detection = {
 #
 # NOTE: URLs should be presented without leading http or https protocol specifiers
 # (so https://www.plosone.org should be www.plosone.org)
+"""
 licence_detection = {
     # TODO - how to add the OUP plugin?
     # each OUP journal (quite a few..) is a subdomain of oxfordjournals.org
@@ -55,6 +56,11 @@ licence_detection = {
     # BMC
     "www.biomedcentral.com" : "plugins.bmc.page_license"
 }
+"""
+licence_detection = [
+    "plugins.plos.page_license",
+    "plugins.bmc.page_license"
+]
 
 # Cache configuration
 redis_cache_host = "localhost"

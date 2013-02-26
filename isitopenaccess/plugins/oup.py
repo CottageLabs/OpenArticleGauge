@@ -1,4 +1,19 @@
 from isitopenaccess.plugins import string_matcher
+import re
+
+def supports(provider):
+    """
+    Does the page_license plugin support this provider
+    """
+    base_urls = ["www.biomedcentral.com"]
+    
+    rx = 'https{0,1}://.+?\.oxfordjournals.org/.+'
+    
+    for url in provider.get("url", []):
+        if re.match(rx, url):
+            return True
+                
+    return False
 
 def page_license(record):
     """
