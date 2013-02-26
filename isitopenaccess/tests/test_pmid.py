@@ -3,6 +3,8 @@ from unittest import TestCase
 from isitopenaccess.plugins import pmid
 from isitopenaccess import models
 
+import os, requests
+
 # some random PMIDs obtained by just doing a search for "test" on the pubmed dataset
 # and adding random numbers to the end of http://www.ncbi.nlm.nih.gov/pubmed/<number>
 # e.g. http://www.ncbi.nlm.nih.gov/pubmed/1
@@ -39,6 +41,23 @@ CANONICAL = {
     "23373046" : "pmid:23373046",
     "23373030" : "pmid:23373030"
 }
+
+ENTREZ_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "entrez_pmid_23175652.xml")
+
+class MockResponse():
+    def __init__(self, status):
+        self.status_code = status
+        self.text = None
+        self.url = None
+        
+def get_pmid(url):
+    resp = MockResponse(200)
+    if url == "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=23175652&retmode=xml":
+        with open(ENTREZ_FILE) as f:
+            resp.text = f.read()
+    elif url == "http://dx.doi.org/10.1128/JB.01321-12":
+        resp.url = "http://jb.asm.org/content/195/3/502"
+    return resp
 
 class TestWorkflow(TestCase):
 
@@ -123,5 +142,39 @@ class TestWorkflow(TestCase):
             
         bjid = {"key" : "value"}
         with self.assertRaises(models.LookupException):
-            pmid.canonicalise(bjid)            
+            pmid.canonicalise(bjid)
+    
+    def test_08_provider_resolve_not_relevant(self):
+        record = {}
+        
+        pmid.provider_resolver(record)
+        assert len(record.keys()) == 0
+        
+        record['identifier'] = {}
+        pmid.provider_resolver(record)
+        assert len(record['identifier'].keys()) == 0
+        
+        record['identifier']['id'] = "123"
+        record['identifier']['type'] = "doi"
+        record['identifier']['canonical'] = "doi:123"
+        pmid.provider_resolver(record)
+        assert not "provider" in record
+        
+        record['identifier']['type'] = "pmid"
+        del record['identifier']['canonical']
+        pmid.provider_resolver(record)
+        assert not "provider" in record
+        
+    def test_09_provider_resolve_doi(self):
+        old_get = requests.get
+        requests.get = get_pmid
+        
+        record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
+        
+        pmid.provider_resolver(record)
+        assert "provider" in record
+        assert "url" in record["provider"]
+        assert record['provider']["url"] == "http://jb.asm.org/content/195/3/502"
+        
+        requests.get = old_get
     
