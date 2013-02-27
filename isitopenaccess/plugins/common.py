@@ -50,3 +50,15 @@ def record_provider_url(record, url):
 def record_provider_urls(record, urls):
     for url in urls:
         record_provider_url(record, url)
+
+def clean_urls(urls):
+    cleaned_urls = []
+    for url in urls:
+        # strip any leading http:// or https://
+        if url.startswith("http://"):
+            url = url[len("http://"):]
+        elif url.startswith("https://"):
+            url = url[len("https://"):]
+        cleaned_urls.append(url)
+
+    return cleaned_urls

@@ -3,6 +3,7 @@ from copy import deepcopy
 from datetime import datetime
 
 from isitopenaccess.plugins import string_matcher
+from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
 def supports(provider):
     """
@@ -12,17 +13,13 @@ def supports(provider):
                  "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
                  "www.plosntds.org"]
     
-    for url in provider.get("url", []):
-        # strip any leading http:// or https://
-        if url.startswith("http://"):
-            url = url[len("http://"):]
-        elif url.startswith("https://"):
-            url = url[len("https://"):]
-        
+    work_on = cpl.clean_urls(provider.get("url", []))
+
+    for url in work_on:
         for bu in base_urls:
             if url.startswith(bu):
                 return True
-                
+
     return False
 
 def page_license(record):

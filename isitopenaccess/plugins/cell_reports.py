@@ -4,15 +4,11 @@ def supports(provider):
     """
     Does the page_license plugin support this provider
     """
-    base_urls = []
+    base_urls = ['www.cell.com']
     
-    for url in provider.get("url", []):
-        # strip any leading http:// or https://
-        if url.startswith("http://"):
-            url = url[len("http://"):]
-        elif url.startswith("https://"):
-            url = url[len("https://"):]
-        
+    work_on = cpl.clean_urls(provider.get("url", []))
+    
+    for url in work_on:
         for bu in base_urls:
             if url.startswith(bu):
                 return True
