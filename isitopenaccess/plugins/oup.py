@@ -7,7 +7,7 @@ def supports(provider):
     """
     base_urls = ["www.biomedcentral.com"]
     
-    rx = 'https{0,1}://.+?\.oxfordjournals.org/.+'
+    rx = '(http|https){0,1}://.+?\.oxfordjournals.org/.+'
     
     for url in provider.get("url", []):
         if re.match(rx, url):
