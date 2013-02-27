@@ -1,5 +1,9 @@
-import re
+import re, logging, requests
 from isitopenaccess import models
+from lxml import etree
+from isitopenaccess.plugins import doi, common
+
+log = logging.getLogger(__name__)
 
 _rx = "^[\d]{1,8}$"
 
@@ -63,6 +67,72 @@ def canonicalise(bibjson_identifier):
 def provider_resolver(record):
     """
     Take a pubmed id (if that is the type) and obtain a reference to the base
-    URL of the resource that it links to and place it in the record['provider']['url'] field
+    URL of the resource that it links to and append it to the record['provider']['url'] list
     """
-    pass
+    # check that we can actually work on this record
+    # - must have an indentifier
+    # - must be a pmid
+    # - must have a canonical form
+    if not "identifier" in record:
+        return
+    
+    if not "type" in record["identifier"]:
+        return
+    
+    if record["identifier"]["type"] != "pmid":
+        return
+    
+    if not "canonical" in record["identifier"]:
+        return
+    
+    # first construct a dereferenceable doi (prefix it with dx.doi.org)
+    canon = record['identifier']['canonical']
+    loc = _resolve_doi(canon)
+    
+    if loc is not None:
+        # if we find something, record it
+        common.record_provider_url(record, loc)
+        return
+    
+    # if we get to here, the DOI lookup failed, so we need to scrape the NCBI site for possible urls
+    urls = _scrape_urls(canon)
+    if urls is not None and len(urls) > 0:
+        # if we find something, record it
+        common.record_provider_urls(record, urls)
+
+def _scrape_urls(canonical_pmid):
+    """
+    return a list of urls which might be a suitable provider from the NCBI page
+    """
+    ncbi_url = "http://www.ncbi.nlm.nih.gov/pubmed/" + canonical_pmid[5:]
+    return []
+
+def _resolve_doi(canonical_pmid):
+    xml_url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=" + canonical_pmid[5:] + "&retmode=xml"
+    
+    # now dereference it and find out the target of the (chain of) 303(s)
+    response = requests.get(xml_url)
+    try:
+        xml = etree.fromstring(response.text.encode("utf-8"))
+    except:
+        log.error("Error parsing the XML from " + xml_url)
+        return None
+    
+    xp = "/PubmedArticleSet/PubmedArticle/PubmedData/ArticleIdList/ArticleId[@IdType='doi']"
+    els = xml.xpath(xp)
+    
+    if len(els) == 0:
+        # we didn't find a DOI
+        return None
+        
+    # FIXME: we assume there is only one DOI in the record - is this really true?
+    doi_string = els[0].text
+    canonical_doi = doi.canonical_form(doi_string)
+    loc = doi.dereference(canonical_doi)
+    
+    return loc
+    
+    
+    
+    
+    

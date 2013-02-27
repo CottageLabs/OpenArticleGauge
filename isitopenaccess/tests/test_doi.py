@@ -178,7 +178,7 @@ class TestWorkflow(TestCase):
         doi.provider_dereference(record)
         assert "provider" in record
         assert "url" in record["provider"]
-        assert record['provider']['url'] == "http://location"
+        assert record['provider']['url'][0] == "http://location"
         
         requests.get = oldget
         
