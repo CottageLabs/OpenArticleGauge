@@ -1,1 +1,2 @@
-import bmc, doi, plos, pmid
+import bmc, plos, cell_reports, oup
+import doi, pmid
