@@ -59,7 +59,9 @@ licence_detection = {
 """
 licence_detection = [
     "plugins.plos.page_license",
-    "plugins.bmc.page_license"
+    "plugins.bmc.page_license",
+    "plugins.cell_reports.page_license",
+    "plugins.oup.page_license"
 ]
 
 # Cache configuration
