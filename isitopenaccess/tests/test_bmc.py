@@ -26,7 +26,17 @@ class TestWorkflow(TestCase):
         for url in test_urls:
             assert not bmc.supports({"url" : [url]})
     
-    def test_03_bmc_standard_OA_license_from_doi(self):
+    def test_03_bmc_supports_url_success(self):
+        test_urls = ["http://www.biomedcentral.com/983242"]
+        for url in test_urls:
+            assert bmc.supports_url(url)
+    
+    def test_04_bmc_supports_url_fail(self):
+        test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
+        for url in test_urls:
+            assert not bmc.supports_url(url)
+    
+    def test_05_bmc_standard_OA_license(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

@@ -1,17 +1,23 @@
 from isitopenaccess.plugins import string_matcher
 import re
 
+supported_url_format = '(http|https){0,1}://.+?\.oxfordjournals.org/.+'
+
 def supports(provider):
     """
     Does the page_license plugin support this provider
     """
-    rx = '(http|https){0,1}://.+?\.oxfordjournals.org/.+'
     
     for url in provider.get("url", []):
-        if re.match(rx, url):
+        if supports_url(url):
             return True
-                
+
     return False
+
+def supports_url(url):
+    if re.match(supported_url_format , url):
+        return True
+
 
 def page_license(record):
     """
@@ -48,4 +54,6 @@ def page_license(record):
         }
     ]
 
-    string_matcher.simple_extract(lic_statements, record)
+    for url in record['provider']['url']:
+        if supports_url(url):
+            string_matcher.simple_extract(lic_statements, record, url)

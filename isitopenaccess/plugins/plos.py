@@ -1,26 +1,27 @@
-import requests
-from copy import deepcopy
-from datetime import datetime
-
 from isitopenaccess.plugins import string_matcher
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
+
+base_urls = ["www.plosone.org", "www.plosbiology.org", "www.plosmedicine.org",
+                 "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
+                 "www.plosntds.org"]
 
 def supports(provider):
     """
     Does the page_license plugin support this provider
     """
-    base_urls = ["www.plosone.org", "www.plosbiology.org", "www.plosmedicine.org",
-                 "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
-                 "www.plosntds.org"]
     
     work_on = cpl.clean_urls(provider.get("url", []))
 
     for url in work_on:
-        for bu in base_urls:
-            if url.startswith(bu):
-                return True
+        if supports_url(url):
+            return True
 
     return False
+
+def supports_url(url):
+    for bu in base_urls:
+        if cpl.clean_url(url).startswith(bu):
+            return True
 
 def page_license(record):
     """
@@ -46,4 +47,6 @@ def page_license(record):
         }
     ]
 
-    string_matcher.simple_extract(lic_statements, record)
+    for url in record['provider']['url']:
+        if supports_url(url):
+            string_matcher.simple_extract(lic_statements, record, url)
