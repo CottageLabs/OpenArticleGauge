@@ -5,8 +5,6 @@ def supports(provider):
     """
     Does the page_license plugin support this provider
     """
-    base_urls = ["www.biomedcentral.com"]
-    
     rx = '(http|https){0,1}://.+?\.oxfordjournals.org/.+'
     
     for url in provider.get("url", []):
@@ -34,7 +32,8 @@ def page_license(record):
                 # also declare some properties which override info about this license in the licenses list (see licenses module)
                 'url': 'http://creativecommons.org/licenses/by/3.0/'}
         },
-        {"""This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
+        { # this license statement is the same as the one above, but somebody's missed out the "reuse" word after unrestricted
+        """This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
                      which permits unrestricted, distribution, and reproduction in any medium, provided the original work is properly cited.""":
             {'type': 'cc-by', 'version':'3.0', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False,
                 # also declare some properties which override info about this license in the licenses list (see licenses module)
