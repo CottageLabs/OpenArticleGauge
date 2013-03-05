@@ -18,7 +18,8 @@ setup(
         "wsgiref==0.1.2",
         "Flask-WTF",
         "requests==1.1.0",
-        "redis"
-    ]
+        "redis",
+        "lxml"
+		]
 )
 

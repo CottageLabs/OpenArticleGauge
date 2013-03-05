@@ -89,8 +89,9 @@ jQuery(document).ready(function($) {
         search_url: '/query?',
         datatype: 'JSON',
         facets: [
-            {'field': 'journal.name.exact', 'display': 'journal'},
-            {'field': 'author.name.exact', 'display': 'author'}
+            {'field': 'license.open_access.exact', 'display': 'IIOA?'},
+            {'field': 'license.type.exact', 'display': 'License type'},
+            {'field': 'license.title.exact', 'display': 'License title'}
         ],
         sort:[{"_last_modified":{"order":"desc"}}],
         result_display: resdisplay,
