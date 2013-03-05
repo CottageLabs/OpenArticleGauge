@@ -2,6 +2,9 @@ from unittest import TestCase
 
 from isitopenaccess import plugloader, config
 
+def sibling(provider):
+    return "sibling"
+
 def patch():
     return "patched"
 
@@ -39,5 +42,26 @@ class TestWorkflow(TestCase):
         assert call is not None
         res = call()
         assert res == "patched"
+        
+        config.module_search_list = old_search_list
+        
+    def test_05_load_sibling(self):
+        sib = plugloader.load_sibling("tests.test_plugloader.patch", "sibling")
+        assert sib is not None
+        res = sib({})
+        assert res == "sibling"
+        
+    def test_06_load_no_sibling(self):
+        sib = plugloader.load_sibling("tests.test_plugloader.patch", "whatever")
+        assert sib is None
+        
+    def test_07_load_sibling_with_search(self):
+        old_search_list = config.module_search_list
+        config.module_search_list = ["isitopenaccess.tests"]
+        
+        sib = plugloader.load_sibling("test_plugloader.patch", "sibling")
+        assert sib is not None
+        res = sib({})
+        assert res == "sibling"
         
         config.module_search_list = old_search_list

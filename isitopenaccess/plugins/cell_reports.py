@@ -1,5 +1,25 @@
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
+base_urls = ['www.cell.com']
+
+def supports(provider):
+    """
+    Does the page_license plugin support this provider
+    """
+    
+    work_on = cpl.clean_urls(provider.get("url", []))
+    
+    for url in work_on:
+        if supports_url(url):
+            return True
+
+    return False
+
+def supports_url(url):
+    for bu in base_urls:
+        if cpl.clean_url(url).startswith(bu):
+            return True
+
 fail_why = '''It is currently not possible to obtain the license information of a Cell Reports article automatically.
 The website makes heavy use of Javascript to update its pages dynamically.
 Instead of just hiding text and using Javascript to show as appropriate (as users use the navigation menus), the website actually fetches previously unavailable content onto the page (using AJAX).
@@ -40,4 +60,6 @@ def page_license(record):
     This will always fail since we can't get the license for this publisher.
     It populates the record['bibjson']['license'] (note the US spelling) field.
     """
-    cpl.describe_license_fail(record, fail_why, fail_suggested_solution)
+    for source_url in record['provider']['url']:
+        if supports_url(source_url):
+            cpl.describe_license_fail(record, source_url, fail_why, fail_suggested_solution)

@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2013//EN" "http://www.ncbi.nlm.nih.gov/corehtml/query/DTD/pubmed_130101.dtd">
+<PubmedArticleSet>
+<PubmedArticle>
+    <MedlineCitation Owner="NLM" Status="In-Process">
+        <PMID Version="1">23175652</PMID>
+        <DateCreated>
+            <Year>2013</Year>
+            <Month>01</Month>
+            <Day>15</Day>
+        </DateCreated>
+        <Article PubModel="Print-Electronic">
+            <Journal>
+                <ISSN IssnType="Electronic">1098-5530</ISSN>
+                <JournalIssue CitedMedium="Internet">
+                    <Volume>195</Volume>
+                    <Issue>3</Issue>
+                    <PubDate>
+                        <Year>2013</Year>
+                        <Month>Feb</Month>
+                    </PubDate>
+                </JournalIssue>
+                <Title>Journal of bacteriology</Title>
+                <ISOAbbreviation>J. Bacteriol.</ISOAbbreviation>
+            </Journal>
+            <ArticleTitle>Impact of Lactobacillus plantarum sortase on target protein sorting, gastrointestinal persistence, and host immune response modulation.</ArticleTitle>
+            <Pagination>
+                <MedlinePgn>502-9</MedlinePgn>
+            </Pagination>
+            <ELocationID EIdType="doi" ValidYN="Y">10.1128/JB.01321-12</ELocationID>
+            <Abstract>
+                <AbstractText>Sortases are transpeptidases that couple surface proteins to the peptidoglycan of Gram-positive bacteria, and several sortase-dependent proteins (SDPs) have been demonstrated to be crucial for the interactions of pathogenic and nonpathogenic bacteria with their hosts. Here, we studied the role of sortase A (SrtA) in Lactobacillus plantarum WCFS1, a model Lactobacillus for probiotic organisms. An isogenic srtA deletion derivative was constructed which did not show residual SrtA activity. DNA microarray-based transcriptome analysis revealed that the srtA deletion had only minor impact on the full-genome transcriptome of L. plantarum, while the expression of SDP-encoding genes remained completely unaffected. Mass spectrometry analysis of the bacterial cell surface proteome, which was assessed by trypsinization of intact bacterial cells and by LiCl protein extraction, revealed that SrtA is required for the appropriate subcellular location of specific SDPs and for their covalent coupling to the cell envelope, respectively. We further found that SrtA deficiency did not affect the persistence and/or survival of L. plantarum in the gastrointestinal tract of mice. In addition, an in vitro immature dendritic cell (iDC) assay revealed that the removal of surface proteins by LiCl strongly affected the proinflammatory signaling properties of the SrtA-deficient strain but not of the wild type, which suggests a role of SDPs in host immune response modulation.</AbstractText>
+            </Abstract>
+            <Affiliation>TI Food &amp; Nutrition, Wageningen, The Netherlands.</Affiliation>
+            <AuthorList CompleteYN="Y">
+                <Author ValidYN="Y">
+                    <LastName>Remus</LastName>
+                    <ForeName>Daniela M</ForeName>
+                    <Initials>DM</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Bongers</LastName>
+                    <ForeName>Roger S</ForeName>
+                    <Initials>RS</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Meijerink</LastName>
+                    <ForeName>Marjolein</ForeName>
+                    <Initials>M</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Fusetti</LastName>
+                    <ForeName>Fabrizia</ForeName>
+                    <Initials>F</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Poolman</LastName>
+                    <ForeName>Bert</ForeName>
+                    <Initials>B</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>de Vos</LastName>
+                    <ForeName>Paul</ForeName>
+                    <Initials>P</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Wells</LastName>
+                    <ForeName>Jerry M</ForeName>
+                    <Initials>JM</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Kleerebezem</LastName>
+                    <ForeName>Michiel</ForeName>
+                    <Initials>M</Initials>
+                </Author>
+                <Author ValidYN="Y">
+                    <LastName>Bron</LastName>
+                    <ForeName>Peter A</ForeName>
+                    <Initials>PA</Initials>
+                </Author>
+            </AuthorList>
+            <Language>eng</Language>
+            <DataBankList CompleteYN="Y">
+                <DataBank>
+                    <DataBankName>GEO</DataBankName>
+                    <AccessionNumberList>
+                        <AccessionNumber>GSE34999</AccessionNumber>
+                    </AccessionNumberList>
+                </DataBank>
+            </DataBankList>
+            <PublicationTypeList>
+                <PublicationType>Journal Article</PublicationType>
+            </PublicationTypeList>
+            <ArticleDate DateType="Electronic">
+                <Year>2012</Year>
+                <Month>11</Month>
+                <Day>21</Day>
+            </ArticleDate>
+        </Article>
+        <MedlineJournalInfo>
+            <Country>United States</Country>
+            <MedlineTA>J Bacteriol</MedlineTA>
+            <NlmUniqueID>2985120R</NlmUniqueID>
+            <ISSNLinking>0021-9193</ISSNLinking>
+        </MedlineJournalInfo>
+        <CitationSubset>IM</CitationSubset>
+        <OtherID Source="NLM">PMC3554011</OtherID>
+    </MedlineCitation>
+    <PubmedData>
+        <History>
+            <PubMedPubDate PubStatus="aheadofprint">
+                <Year>2012</Year>
+                <Month>11</Month>
+                <Day>21</Day>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="entrez">
+                <Year>2012</Year>
+                <Month>11</Month>
+                <Day>24</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="pubmed">
+                <Year>2012</Year>
+                <Month>11</Month>
+                <Day>24</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="medline">
+                <Year>2012</Year>
+                <Month>11</Month>
+                <Day>24</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="pmc-release">
+                <Year>2013</Year>
+                <Month>8</Month>
+                <Day>1</Day>
+                <Hour>0</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+        </History>
+        <PublicationStatus>ppublish</PublicationStatus>
+        <ArticleIdList>
+            <ArticleId IdType="pii">JB.01321-12</ArticleId>
+            <ArticleId IdType="doi">10.1128/JB.01321-12</ArticleId>
+            <ArticleId IdType="pubmed">23175652</ArticleId>
+            <ArticleId IdType="pmc">PMC3554011</ArticleId>
+        </ArticleIdList>
+    </PubmedData>
+</PubmedArticle>
+
+</PubmedArticleSet>

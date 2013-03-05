@@ -6,7 +6,7 @@ from isitopenaccess import config
 from isitopenaccess.licenses import LICENSES
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
-def simple_extract(lic_statements, record):
+def simple_extract(lic_statements, record, url):
     """
     Generic code which looks for a particular string in a given web page (URL),
     determines the licence conditions of the article and populates
@@ -27,7 +27,6 @@ def simple_extract(lic_statements, record):
     """
 
     # get content
-    url = record['provider']['url']
     r = requests.get(url)
     
     # see if one of the licensing statements is in content 

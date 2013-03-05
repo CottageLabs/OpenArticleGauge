@@ -10,9 +10,9 @@ def gen_provenance_description(source_url, statement):
 def gen_provenance_description_fail(source_url):
     return 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + source_url + '. See "error_message" in the "license" object for more information.'
 
-def describe_license_fail(record, why, suggested_solution=''):
+def describe_license_fail(record, source_url, why, suggested_solution=''):
     record['bibjson'].setdefault('license', [])
-
+    
     license = {
         "description": "",
         "title": "",
@@ -29,12 +29,40 @@ def describe_license_fail(record, why, suggested_solution=''):
         "suggested_solution": suggested_solution,
         "provenance": {
             "category": "page_scrape",
-            "description": gen_provenance_description_fail(record.get('provider', {}).get('url', "none")),
+            "description": gen_provenance_description_fail(source_url),
             "agent": config.agent,
-            "source": record.get('provider', {}).get('url', "unknown"),
+            "source": source_url,
             "date": datetime.strftime(datetime.now(), config.date_format)
         }
      }
 
 
     record['bibjson']['license'].append(license)
+
+def record_provider_url(record, url):
+    if not "provider" in record:
+        record['provider'] = {}
+    if not "url" in record["provider"]:
+        record["provider"]["url"] = []
+    if url not in record['provider']['url']:
+        record['provider']['url'].append(url)
+    
+def record_provider_urls(record, urls):
+    for url in urls:
+        record_provider_url(record, url)
+
+def clean_url(url):
+    # strip any leading http:// or https://
+    if url.startswith("http://"):
+        url = url[len("http://"):]
+    elif url.startswith("https://"):
+        url = url[len("https://"):]
+
+    return url
+
+def clean_urls(urls):
+    cleaned_urls = []
+    for url in urls:
+        cleaned_urls.append(clean_url(url))
+
+    return cleaned_urls

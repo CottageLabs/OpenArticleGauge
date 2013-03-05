@@ -1,5 +1,6 @@
 import re, requests
 from isitopenaccess import models
+from isitopenaccess.plugins import common
 
 def type_detect_verify(bibjson_identifier):
     """
@@ -51,19 +52,23 @@ def canonicalise(bibjson_identifier):
     if not bibjson_identifier.has_key("id"):
         raise models.LookupException("can't canonicalise an identifier without an 'id' property")
     
+    canonical = canonical_form(bibjson_identifier["id"])
+    bibjson_identifier['canonical'] = canonical
+
+def canonical_form(doi):
     # interpret the DOI
     rx = "^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\\..+\/.+)"
-    result = re.match(rx, bibjson_identifier["id"])
+    result = re.match(rx, doi)
     
     if result is None:
-        raise models.LookupException("identifier does not parse as a DOI: " + str(bibjson_identifier["id"]))
+        raise models.LookupException("identifier does not parse as a DOI: " + str(doi))
     
     # the last capture group is the 10.xxxx bit of the DOI
     tendot = result.groups()[-1:][0]
     
     # canonicalised version is just "doi:10.xxxx"
     canonical = "doi:" + tendot
-    bibjson_identifier['canonical'] = canonical
+    return canonical
 
 def provider_range_lookup(record):
     """
@@ -81,8 +86,8 @@ def provider_range_lookup(record):
 def provider_dereference(record):
     """
     Check the URL that the DOI dereferences to, by taking advantage of the fact that
-    DOI lookups use HTTP 303 to redirect you to the resource. Populate the record['provider']['url']
-    field with the string which describes the provider (ideally a URI)
+    DOI lookups use HTTP 303 to redirect you to the resource. Append to the record['provider']['url']
+    list with the string which describes the provider (ideally a URI)
     """
     # check that we can actually work on this record
     # - must have an indentifier
@@ -102,20 +107,20 @@ def provider_dereference(record):
     
     # first construct a dereferenceable doi (prefix it with dx.doi.org)
     canon = record['identifier']['canonical']
-    resolvable = "http://dx.doi.org/" + canon[4:]
-    
-    # now dereference it and find out the target of the (chain of) 303(s)
-    response = requests.get(resolvable)
-    loc = response.url
+    loc = dereference(canon)
     
     if loc is None:
         return
     
     # if we find something, record it
-    if not "provider" in record:
-        record['provider'] = {}
-    record['provider']['url'] = loc
+    common.record_provider_url(record, loc)
+
+def dereference(canonical):
+    resolvable = "http://dx.doi.org/" + canonical[4:]
     
+    # now dereference it and find out the target of the (chain of) 303(s)
+    response = requests.get(resolvable)
+    return response.url
     
     
     

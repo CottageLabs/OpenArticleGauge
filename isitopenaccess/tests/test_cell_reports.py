@@ -20,7 +20,7 @@ class TestWorkflow(TestCase):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
-        record['provider']['url'] = 'http://www.cell.com/cell-reports/fulltext/S2211-1247%2812%2900426-3'
+        record['provider']['url'] = ['http://www.cell.com/cell-reports/fulltext/S2211-1247%2812%2900426-3']
 
         cell_reports.page_license(record)
 
@@ -47,7 +47,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['suggested_solution'] == cell_reports.fail_suggested_solution
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
-        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url']
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
-        assert record['bibjson']['license'][-1]['provenance']['description'] == 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + record['provider']['url'] + '. See "error_message" in the "license" object for more information.'
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + record['provider']['url'][0] + '. See "error_message" in the "license" object for more information.'

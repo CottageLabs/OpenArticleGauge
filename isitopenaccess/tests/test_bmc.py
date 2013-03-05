@@ -15,12 +15,32 @@ class TestWorkflow(TestCase):
         
     def tearDown(self):
         pass
-
-    def test_01_bmc_standard_OA_license_from_doi(self):
+    
+    def test_01_bmc_supports_success(self):
+        test_urls = ["http://www.biomedcentral.com/983242"]
+        for url in test_urls:
+            assert bmc.supports({"url" : [url]})
+        
+    def test_02_bmc_supports_fail(self):
+        test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
+        for url in test_urls:
+            assert not bmc.supports({"url" : [url]})
+    
+    def test_03_bmc_supports_url_success(self):
+        test_urls = ["http://www.biomedcentral.com/983242"]
+        for url in test_urls:
+            assert bmc.supports_url(url)
+    
+    def test_04_bmc_supports_url_fail(self):
+        test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
+        for url in test_urls:
+            assert not bmc.supports_url(url)
+    
+    def test_05_bmc_standard_OA_license(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
-        record['provider']['url'] = 'http://www.biomedcentral.com/1471-2164/13/425'
+        record['provider']['url'] = ['http://www.biomedcentral.com/1471-2164/13/425']
 
         bmc.page_license(record)
 
@@ -50,7 +70,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by/2.0'
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
-        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url']
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.biomedcentral.com/1471-2164/13/425 and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href=\'http://creativecommons.org/licenses/by/2.0\'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".'

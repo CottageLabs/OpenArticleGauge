@@ -3,6 +3,19 @@ import logging
 
 log = logging.getLogger(__name__)
 
+def load_sibling(callable_path, sibling_name):
+    if callable_path is None:
+        log.debug("attempted to load plugin with no plugin path")
+        return None
+    
+    components = callable_path.split(".")
+    call = components[-1:][0]
+    modpath = ".".join(components[:-1])
+    
+    # construct the new callable
+    sibling = modpath + "." + sibling_name
+    return load(sibling)
+    
 def load(callable_path):
     if callable_path is None:
         log.debug("attempted to load plugin with no plugin path")
