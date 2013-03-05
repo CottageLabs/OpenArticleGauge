@@ -92,6 +92,7 @@ jQuery(document).ready(function($) {
             {'field': 'journal.name.exact', 'display': 'journal'},
             {'field': 'author.name.exact', 'display': 'author'}
         ],
+        sort:[{"_last_modified":{"order":"desc"}}],
         result_display: resdisplay,
         sharesave_link: false,
         paging: {
@@ -101,13 +102,6 @@ jQuery(document).ready(function($) {
 });
 
 </script>
-
-<div class="row-fluid">
-    <div class="span12">
-        <p>A link through to the bibserver where the results are being stored. May well just be a blurb then a link to go direct to it.</p>
-        <p>Below is just an example, and the CSS has fallen over a wee bit.</p>
-    </div>
-</div>
 
 <div class="row-fluid">
     <div id="facetview"></div>
