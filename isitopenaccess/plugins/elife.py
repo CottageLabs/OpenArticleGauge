@@ -1,5 +1,12 @@
+import requests
+from lxml import etree
+from copy import deepcopy
+from datetime import datetime
+
 from isitopenaccess.plugins import string_matcher
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
+from isitopenaccess.licenses import LICENSES
+from isitopenaccess import config
 
 base_urls = ["elife.elifesciences.org"]
 
@@ -30,16 +37,54 @@ def page_license(record):
     """
 
     # 1. get DOI from record object
-    # record['identifier'] I think
+    if record['identifier']['type'] == 'doi':
+        doi = record['identifier']['id']
 
     # 2. query elife XML api
+        url = 'http://elife.elifesciences.org/elife-source-xml/' + doi
+        response = requests.get(url)
 
-    # 3. ???
+        try:
+            xml = etree.fromstring(response.text.encode("utf-8"))
+        except:
+            log.error("Error parsing the XML from " + xml_url)
+    
+        xp = '//license[@xlink:href="http://creativecommons.org/licenses/by/3.0/" and @license-type="open-access"]'
+        ns = {'xlink': 'http://www.w3.org/1999/xlink'}
+        els = xml.xpath(xp, namespaces=ns)
 
-    # 4. Profit!
+        if len(els) > 0:
+            result = {'type': 'cc-by', 'version':'3.0', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False,
+                # also declare some properties which override info about this license in the licenses list (see licenses module)
+                'url': 'http://creativecommons.org/licenses/by/3.0'}
 
-    # 5. don't forget to add test_elife.py
+            lic_type = result['type']
 
-    #for url in record['provider']['url']:
-    #    if supports_url(url):
-    #        string_matcher.simple_extract(lic_statements, record, url)
+            # license identified, now use that to construct the license object
+            license = deepcopy(LICENSES[lic_type])
+            # set some defaults which have to be there, even if empty
+            license.setdefault('version','')
+            license.setdefault('description','')
+            license.setdefault('jurisdiction','') # TODO later (or later version of IIOA!)
+
+            # Copy over all information about the license from the license
+            # statement mapping. In essence, transfer the knowledge of the 
+            # publisher plugin authors to the license object.
+            # Consequence: Values coming from the publisher plugin overwrite
+            # values specified in the licenses module.
+            license.update(result)
+
+            # add provenance information to the license object
+            provenance = {
+                'date': datetime.strftime(datetime.now(), config.date_format),
+                'source': url,
+                'agent': config.agent,
+                'category': 'xml_api', # TODO we need to think how the
+                    # users get to know what the values here mean.. docs?
+                'description': 'License decided by querying the eLife XML API at ' + url
+            }
+
+            license['provenance'] = provenance
+
+            record['bibjson'].setdefault('license', [])
+            record['bibjson']['license'].append(license)
