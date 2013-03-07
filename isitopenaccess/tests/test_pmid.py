@@ -195,6 +195,7 @@ class TestPmid(TestCase):
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502", record['provider']['url']
+        assert record["provider"]["doi"] == "doi:10.1128/JB.01321-12"
         
         requests.get = old_get
     

@@ -109,6 +109,9 @@ def provider_dereference(record):
     canon = record['identifier']['canonical']
     loc = dereference(canon)
     
+    # either way we are going to copy the doi into the provider object
+    common.record_provider_doi(record, canon)
+    
     if loc is None:
         return
     

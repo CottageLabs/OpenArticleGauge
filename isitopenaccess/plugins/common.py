@@ -51,6 +51,11 @@ def record_provider_urls(record, urls):
     for url in urls:
         record_provider_url(record, url)
 
+def record_provider_doi(record, doi):
+    if not "provider" in record:
+        record['provider'] = {}
+    record["provider"]["doi"] = doi
+
 def clean_url(url):
     # strip any leading http:// or https://
     if url.startswith("http://"):
