@@ -2,6 +2,7 @@ import re, logging, requests
 from isitopenaccess import models
 from lxml import etree
 from isitopenaccess.plugins import doi, common
+from bs4 import BeautifulSoup
 
 log = logging.getLogger(__name__)
 
@@ -105,7 +106,31 @@ def _scrape_urls(canonical_pmid):
     return a list of urls which might be a suitable provider from the NCBI page
     """
     ncbi_url = "http://www.ncbi.nlm.nih.gov/pubmed/" + canonical_pmid[5:]
-    return []
+    resp = requests.get(ncbi_url)
+    if resp.status_code != 200:
+        return []
+    
+    soup = BeautifulSoup(resp.text)
+    
+    # first look for the canonical link under the "icons" class div
+    icons = soup.find(class_="icons")
+    if icons is not None:
+        anchors = icons.find_all("a")
+        if len(anchors) > 0:
+            return [anchors[0]['href']]
+        
+    # if we don't find an "icons" div, then we need to scrape from the "linkoutlist"
+    linkout = soup.find_all(class_="linkoutlist")
+    if len(linkout) == 0:
+        return []
+    anchors = linkout[0].find_all("a")
+    if len(anchors) == 0:
+        return []
+    
+    urls = []
+    for a in anchors:
+        urls.append(a['href'])
+    return urls
 
 def _resolve_doi(canonical_pmid):
     xml_url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=" + canonical_pmid[5:] + "&retmode=xml"
