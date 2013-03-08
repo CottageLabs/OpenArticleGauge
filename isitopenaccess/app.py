@@ -2,7 +2,7 @@ import os, json, urllib2
 from flask import Flask, render_template, request, make_response
 from functools import wraps
 
-import workflow, config, archive
+import workflow, config, archive, dispute
 
 try:
     import json
@@ -83,26 +83,77 @@ def query(tid=False):
 def hello():
     return render_template('index.html')
 
-# the api docs here
-@app.route("/api")
-def api():
-    return render_template('api.html')
+# about page with a bit more info
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
-# a display of an embedded facetview pointing to the targeted bibserver instance, and a link to there
-@app.route("/search")
+# about page with a bit more info
+@app.route('/contact', methods=['GET','POST'])
+def contact():
+    if request.method == 'GET':
+        return render_template('contact.html')
+    elif request.method == 'POST':
+        pass
+
+# the info for devs goes here
+@app.route("/developers")
+def dev():
+    return render_template('developers/index.html')
+
+# the info about the api goes here
+@app.route("/developers/api")
+def api():
+    return render_template('developers/api.html')
+
+# a display of an embedded facetview for browsing the stored records
+@app.route("/developers/search")
 def search():
-    return render_template('search.html')
+    return render_template('developers/search.html')
+
+# dev explanation of how to write a plugin
+@app.route("/developers/plugins")
+def plugins():
+    return render_template('developers/plugins.html')
 
 # present and accept dispute processing
 @app.route("/dispute", methods=['GET','POST'])
+@app.route("/dispute.json", methods=['GET','POST'])
 @app.route("/dispute/", methods=['GET','POST'])
-def dispute():
-    return render_template('dispute.html')
+@app.route("/dispute/<path:path>", methods=['GET','POST'])
+@jsonp
+def dispute(path=''):
+    givejson = _request_wants_json()
+    path = path.replace('.json','')
+
+    d = {}
+    
+    if path:
+        d = dispute.retrieve(path)
+
+    if request.method == 'GET':
+        return render_template('dispute.html', dispute=d)
+    elif request.method == 'POST':
+        if not d and request.json:
+            d = dispute.new(**request.json)
+        else:
+            # add to the dispute and save
+            pass
+        # should email someone here too perhaps
+        if config.contact_email:
+            pass
+        resp = make_response( results )
+        resp.mimetype = "application/json"
+        return resp
+    else:
+        abort(404)
 
 
 @app.route("/lookup", methods=['GET','POST'])
+@app.route("/lookup.json", methods=['GET','POST'])
 @app.route("/lookup/", methods=['GET','POST'])
 @app.route("/lookup/<path:path>", methods=['GET','POST'])
+@jsonp
 def api_lookup(path='',ids=[]):
     givejson = _request_wants_json()
     path = path.replace('.json','')
@@ -141,20 +192,6 @@ def api_lookup(path='',ids=[]):
         resp.mimetype = "application/json"
         return resp
 
-
-
-
-# a potential route for receiving submissions of updates for the index
-# decided not to implement at this stage
-'''@app.route("/submit", methods=['GET','POST'])
-@app.route("/submit/", methods=['GET','POST'])
-def submit():
-    if request.method == 'GET':
-        return render_template('submit.html')
-    elif request.method == 'POST':
-        # store the received list unless we are going to do some sort of checking on it
-        # pass through to bibserver with an API KEY perhaps?
-        pass'''
 
 
 @app.errorhandler(400)
