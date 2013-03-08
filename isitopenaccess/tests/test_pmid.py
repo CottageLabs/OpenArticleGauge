@@ -43,6 +43,8 @@ CANONICAL = {
 }
 
 ENTREZ_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "entrez_pmid_23175652.xml")
+NCBI_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "ncbi.23175652.html")
+NCBI_NO_ICON_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "ncbi.1234567.html")
 
 class MockResponse():
     def __init__(self, status):
@@ -50,7 +52,7 @@ class MockResponse():
         self.text = None
         self.url = None
         
-def get_pmid(url):
+def get_doi(url):
     resp = MockResponse(200)
     if url == "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=23175652&retmode=xml":
         with open(ENTREZ_FILE) as f:
@@ -59,7 +61,25 @@ def get_pmid(url):
         resp.url = "http://jb.asm.org/content/195/3/502"
     return resp
 
-class TestWorkflow(TestCase):
+def get_icon(url):
+    resp = MockResponse(200)
+    if url == "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=23175652&retmode=xml":
+        resp.text = ""
+    elif url == "http://www.ncbi.nlm.nih.gov/pubmed/23175652":
+        with open(NCBI_FILE) as f:
+            resp.text = f.read()
+    return resp
+
+def get_linkout(url):
+    resp = MockResponse(200)
+    if url == "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1234567&retmode=xml":
+        resp.text = ""
+    elif url == "http://www.ncbi.nlm.nih.gov/pubmed/1234567":
+        with open(NCBI_NO_ICON_FILE) as f:
+            resp.text = f.read()
+    return resp
+
+class TestPmid(TestCase):
 
     def setUp(self):
         pass
@@ -167,14 +187,43 @@ class TestWorkflow(TestCase):
         
     def test_09_provider_resolve_doi(self):
         old_get = requests.get
-        requests.get = get_pmid
+        requests.get = get_doi
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
         
         pmid.provider_resolver(record)
         assert "provider" in record
         assert "url" in record["provider"]
-        assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502"
+        assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502", record['provider']['url']
+        assert record["provider"]["doi"] == "doi:10.1128/JB.01321-12"
+        
+        requests.get = old_get
+    
+    def test_10_provider_resolve_from_icon(self):
+        old_get = requests.get
+        requests.get = get_icon
+        
+        record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
+        
+        pmid.provider_resolver(record)
+        assert "provider" in record
+        assert "url" in record["provider"]
+        assert record['provider']["url"][0] == "http://jb.asm.org/cgi/pmidlookup?view=long&pmid=23175652", record['provider']["url"][0]
+        
+        requests.get = old_get
+        
+    def test_11_provider_resolve_from_resources(self):
+        old_get = requests.get
+        requests.get = get_linkout
+        
+        record = {"identifier" : {"id" : "1234567", "type" : "pmid", "canonical" : "pmid:1234567"}}
+        
+        pmid.provider_resolver(record)
+        assert "provider" in record
+        assert "url" in record["provider"]
+        assert "http://www.nlm.nih.gov/medlineplus/menopause.html" in record["provider"]["url"], record["provider"]["url"]
+        assert "http://toxnet.nlm.nih.gov/cgi-bin/sis/search/r?dbs+hsdb:@term+@rn+50-28-2" in record["provider"]["url"], record["provider"]["url"]
+        assert len(record['provider']['url']) == 2
         
         requests.get = old_get
     

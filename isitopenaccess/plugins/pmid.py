@@ -2,6 +2,7 @@ import re, logging, requests
 from isitopenaccess import models
 from lxml import etree
 from isitopenaccess.plugins import doi, common
+from bs4 import BeautifulSoup
 
 log = logging.getLogger(__name__)
 
@@ -85,13 +86,14 @@ def provider_resolver(record):
     if not "canonical" in record["identifier"]:
         return
     
-    # first construct a dereferenceable doi (prefix it with dx.doi.org)
+    # see if we can resolve a doi for the item
     canon = record['identifier']['canonical']
-    loc = _resolve_doi(canon)
+    doi, loc = _resolve_doi(canon)
     
     if loc is not None:
         # if we find something, record it
         common.record_provider_url(record, loc)
+        common.record_provider_doi(record, doi)
         return
     
     # if we get to here, the DOI lookup failed, so we need to scrape the NCBI site for possible urls
@@ -105,7 +107,31 @@ def _scrape_urls(canonical_pmid):
     return a list of urls which might be a suitable provider from the NCBI page
     """
     ncbi_url = "http://www.ncbi.nlm.nih.gov/pubmed/" + canonical_pmid[5:]
-    return []
+    resp = requests.get(ncbi_url)
+    if resp.status_code != 200:
+        return []
+    
+    soup = BeautifulSoup(resp.text)
+    
+    # first look for the canonical link under the "icons" class div
+    icons = soup.find(class_="icons")
+    if icons is not None:
+        anchors = icons.find_all("a")
+        if len(anchors) > 0:
+            return [anchors[0]['href']]
+        
+    # if we don't find an "icons" div, then we need to scrape from the "linkoutlist"
+    linkout = soup.find_all(class_="linkoutlist")
+    if len(linkout) == 0:
+        return []
+    anchors = linkout[0].find_all("a")
+    if len(anchors) == 0:
+        return []
+    
+    urls = []
+    for a in anchors:
+        urls.append(a['href'])
+    return urls
 
 def _resolve_doi(canonical_pmid):
     xml_url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=" + canonical_pmid[5:] + "&retmode=xml"
@@ -116,21 +142,21 @@ def _resolve_doi(canonical_pmid):
         xml = etree.fromstring(response.text.encode("utf-8"))
     except:
         log.error("Error parsing the XML from " + xml_url)
-        return None
+        return None, None
     
     xp = "/PubmedArticleSet/PubmedArticle/PubmedData/ArticleIdList/ArticleId[@IdType='doi']"
     els = xml.xpath(xp)
     
     if len(els) == 0:
         # we didn't find a DOI
-        return None
+        return None, None
         
     # FIXME: we assume there is only one DOI in the record - is this really true?
     doi_string = els[0].text
     canonical_doi = doi.canonical_form(doi_string)
     loc = doi.dereference(canonical_doi)
     
-    return loc
+    return canonical_doi, loc
     
     
     

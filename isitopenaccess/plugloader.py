@@ -3,6 +3,31 @@ import logging
 
 log = logging.getLogger(__name__)
 
+def get_info(callable_path):
+    if callable_path is None:
+        log.debug("attempted to load plugin with no plugin path")
+        return None
+    
+    # callable_path is a function in a module, and the module itself holds
+    # the info, so we need to just load the module
+    components = callable_path.split(".")
+    modpath = ".".join(components[:-1])
+    
+    if modpath == "" or modpath is None:
+        return None, None
+    
+    # ok, so now we know the path to the module, load it
+    module = load(modpath)
+    
+    name = "unknown"
+    version = -1
+    if hasattr(module, "__name__"):
+        name = module.__name__.split(".")[-1]
+    if hasattr(module, "__version__"):
+        version = module.__version__
+    
+    return name, version
+    
 def load_sibling(callable_path, sibling_name):
     if callable_path is None:
         log.debug("attempted to load plugin with no plugin path")

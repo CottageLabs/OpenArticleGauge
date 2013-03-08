@@ -166,7 +166,10 @@ class TestWorkflow(TestCase):
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
         doi.provider_dereference(record)
-        assert not "provider" in record
+        assert "provider" in record
+        assert "url" not in record["provider"]
+        assert "doi" in record["provider"]
+        assert record["provider"]["doi"] == "doi:123"
         
         requests.get = oldget
         
@@ -179,6 +182,7 @@ class TestWorkflow(TestCase):
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']['url'][0] == "http://location"
+        assert record["provider"]["doi"] == "doi:123"
         
         requests.get = oldget
         

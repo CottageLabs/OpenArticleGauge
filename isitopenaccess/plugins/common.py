@@ -10,13 +10,13 @@ def gen_provenance_description(source_url, statement):
 def gen_provenance_description_fail(source_url):
     return 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + source_url + '. See "error_message" in the "license" object for more information.'
 
-def describe_license_fail(record, source_url, why, suggested_solution=''):
+def describe_license_fail(record, source_url, why, suggested_solution='', licence_url="", handler="", handler_version=""):
     record['bibjson'].setdefault('license', [])
     
     license = {
         "description": "",
         "title": "",
-        "url": "",
+        "url": licence_url,
         "version": "",
         "jurisdiction": "",
         "type": "failed-to-obtain-license",
@@ -32,7 +32,9 @@ def describe_license_fail(record, source_url, why, suggested_solution=''):
             "description": gen_provenance_description_fail(source_url),
             "agent": config.agent,
             "source": source_url,
-            "date": datetime.strftime(datetime.now(), config.date_format)
+            "date": datetime.strftime(datetime.now(), config.date_format),
+            "handler" : handler,
+            "handler_version" : handler_version
         }
      }
 
@@ -50,6 +52,11 @@ def record_provider_url(record, url):
 def record_provider_urls(record, urls):
     for url in urls:
         record_provider_url(record, url)
+
+def record_provider_doi(record, doi):
+    if not "provider" in record:
+        record['provider'] = {}
+    record["provider"]["doi"] = doi
 
 def clean_url(url):
     # strip any leading http:// or https://

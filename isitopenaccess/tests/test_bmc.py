@@ -1,4 +1,5 @@
 from unittest import TestCase
+import requests
 
 from isitopenaccess.plugins import bmc
 from isitopenaccess import config
@@ -7,6 +8,16 @@ keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
     'jurisdiction', 'open_access', 'BY', 'NC', 'SA', 'ND']
 
 keys_in_provenance = ['date', 'agent', 'source', 'category', 'description']
+
+class MockResponse():
+    def __init__(self, status):
+        self.status_code = status
+        self.text = None
+        self.url = None
+
+def get_unknown(url, *args, **kwargs):
+    resp = MockResponse(200)
+    resp.text = "some text"
 
 class TestWorkflow(TestCase):
 
@@ -74,3 +85,20 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.biomedcentral.com/1471-2164/13/425 and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href=\'http://creativecommons.org/licenses/by/2.0\'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
+    
+    def test_06_unknown(self):
+        old_get = requests.get
+        requests.get = get_unknown
+        
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://unknown']
+        
+        bmc.page_license(record)
+
+        # check if all the important keys were created
+        assert "license" not in record['bibjson']
+        
+        requests.get = old_get
+        
