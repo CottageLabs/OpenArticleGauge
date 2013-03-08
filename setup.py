@@ -19,7 +19,8 @@ setup(
         "Flask-WTF",
         "requests==1.1.0",
         "redis",
-        "lxml"
+        "lxml",
+        "beautifulsoup4"
 		]
 )
 
