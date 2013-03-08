@@ -285,7 +285,7 @@ def provider_licence(record):
         return record
     
     # Step 2: get the plugin that will run for the given provider
-    plugin = _get_provider_plugin(record["provider"])
+    plugin, plugin_name, plugin_version = _get_provider_plugin(record["provider"])
     if plugin is None:
         log.debug("No plugin to handle provider: " + str(record['provider']))
         return record
@@ -297,6 +297,12 @@ def provider_licence(record):
         record['bibjson'] = {}
     plugin(record)
     
+    # was the plugin able to detect a licence?
+    # if not, we need to add an unknown licence for this provider
+    if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+        log.debug("No licence detected by plugin " + plugin_name + " so adding unknown licence")
+        describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url, plugin_name, plugin_version)
+
     # we have to return the record so that the next step in the chain can
     # deal with it
     log.debug("plugin " + str(plugin) + " yielded result " + str(record))
@@ -313,9 +319,7 @@ def store_results(record):
     if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
         # the bibjson record does not contain a license list OR the license list is of zero length
         log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record['bibjson']))
-        describe_license_fail(record, "none"
-            "we were unable to detect the licence for this item", 
-            "This is a semi-permanent error, that requires the IsItOpenAccess service to intervene")
+        describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url)
         
     # Step 2: unqueue the record
     if record.has_key("queued"):
@@ -346,42 +350,10 @@ def _get_provider_plugin(provider_record):
             continue
         
         if supporter(provider_record):
-            log.debug(plugin_name + " services provider " + str(provider_record))
-            return plugloader.load(plugin_name)
-    return None
-
-"""
-def _get_provider_plugin_old(provider_record):
-    # FIXME: for the moment this only supports URL lookup
-    if not "url" in provider_record:
-        return None
-    provider_url = provider_record['url'][0]
-    
-    # strip any leading http:// or https://
-    if provider_url.startswith("http://"):
-        provider_url = provider_url[len("http://"):]
-    elif provider_url.startswith("https://"):
-        provider_url = provider_url[len("https://"):]
-    
-    log.debug("checking for plugin to handle " + provider_url)
-    
-    # check to see if there's a plugin that can handle the provider url
-    keys = config.licence_detection.keys()
-    possible = []
-    for key in keys:
-        if provider_url.startswith(key):
-            possible.append(key)
-    if len(possible) == 0:
-        return None
-    selected = possible[0]
-    for p in possible:
-        if len(p) > len(selected):
-            selected = p
-    plugin_name = config.licence_detection[selected]
-    
-    log.debug(plugin_name + " services provider " + provider_url)
-    return plugloader.load(plugin_name)
-"""
+            name, version = plugloader.get_info(plugin_name)
+            log.debug(plugin_name + " (" + name + " v" + str(version) + ") services provider " + str(provider_record))
+            return plugloader.load(plugin_name), name, version
+    return None, None, None
 
 def _add_identifier_to_bibjson(identifier, bibjson):
     # FIXME: this is pretty blunt, could be a lot smarter

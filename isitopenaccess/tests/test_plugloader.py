@@ -2,6 +2,8 @@ from unittest import TestCase
 
 from isitopenaccess import plugloader, config
 
+__version__ = "1.0"
+
 def sibling(provider):
     return "sibling"
 
@@ -63,5 +65,15 @@ class TestWorkflow(TestCase):
         assert sib is not None
         res = sib({})
         assert res == "sibling"
+        
+        config.module_search_list = old_search_list
+        
+    def test_08_get_info(self):
+        old_search_list = config.module_search_list
+        config.module_search_list = ["isitopenaccess.tests"]
+        
+        name, version = plugloader.get_info("test_plugloader.patch")
+        assert name == "test_plugloader", name
+        assert version == "1.0", version
         
         config.module_search_list = old_search_list

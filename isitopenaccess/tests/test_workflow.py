@@ -15,6 +15,8 @@ There are other tests for working on specific plugins.
 from unittest import TestCase
 from isitopenaccess import config, workflow, models, cache, archive
 
+__version__ = "1.0"
+
 CACHE = {}
 ARCHIVE = []
 
@@ -79,6 +81,9 @@ def mock_licence_plugin(record):
     record['bibjson']['license'] = [{}]
     record['bibjson']['title'] = "mytitle"
 
+def mock_unknown_licence_plugin(record):
+    record['bibjson'] = {}
+
 def mock_back_end(record): pass
 
 def mock_is_stale(bibjson):
@@ -107,6 +112,7 @@ class TestWorkflow(TestCase):
 
     def setUp(self):
         # add this test file to the search path for plugins
+        config.module_search_list.append("isitopenaccess.tests")
         config.module_search_list.append("tests.test_workflow")
         config.module_search_list.append("isitopenaccess.tests.test_workflow")
         current_support_request = 0
@@ -285,26 +291,30 @@ class TestWorkflow(TestCase):
         global who_to_support
         global current_support_request
         # first try the simple case of a dictionary of plugins
-        config.licence_detection = ["one", "two"]
+        # FIXME: note that we can't just use the function name in licence_detection, due to limitations
+        # of the plugloader, so we need to give it also the name of this module
+        config.licence_detection = ["test_workflow.one", "test_workflow.two"]
         who_to_support = 0
-        one = workflow._get_provider_plugin({"url" : ["http://one"]})
+        one, nameone, versionone = workflow._get_provider_plugin({"url" : ["http://one"]})
         who_to_support = 1
-        two = workflow._get_provider_plugin({"url" : ["https://two"]})
+        two, nametwo, versiontwo = workflow._get_provider_plugin({"url" : ["https://two"]})
         assert one() == "one"
+        assert nameone == "test_workflow", nameone
+        assert versionone == "1.0"
         assert two() == "two"
         
         # now try a couple of granular ones
         current_support_request = 0
-        config.licence_detection = ["one", "one_two", "two"]
+        config.licence_detection = ["test_workflow.one", "test_workflow.one_two", "test_workflow.two"]
         who_to_support = 0
-        one = workflow._get_provider_plugin({"url" : ["one"]})
+        one, nameone, nametwo = workflow._get_provider_plugin({"url" : ["one"]})
         who_to_support = 1
-        onetwo = workflow._get_provider_plugin({"url" : ["one/two"]})
+        onetwo, nameonetwo, versiononetwo = workflow._get_provider_plugin({"url" : ["one/two"]})
         current_support_request = 0
         who_to_support = 0
-        otherone = workflow._get_provider_plugin({"url" : ["one/three"]})
+        otherone, nameotherone, versionotherone = workflow._get_provider_plugin({"url" : ["one/three"]})
         who_to_support = 1
-        onetwothree = workflow._get_provider_plugin({"url" : ["one/two/three"]})
+        onetwothree, nameonetwothree, versiononetwothree = workflow._get_provider_plugin({"url" : ["one/two/three"]})
         assert one() == "one"
         assert onetwo() == "one_two"
         assert otherone() == "one"
@@ -314,7 +324,7 @@ class TestWorkflow(TestCase):
         global supports
         global no_support
         global who_to_support
-        config.licence_detection = ["mock_licence_plugin"]
+        config.licence_detection = ["test_workflow.mock_licence_plugin"]
         
         # first check that no provider results in no change
         record = {}
@@ -336,8 +346,32 @@ class TestWorkflow(TestCase):
         supports = old_supports
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license") # american spelling
+        assert len(record['bibjson']['license']) == 1
+        
+    def test_11_provider_unknown_licence(self):
+        global supports
+        config.licence_detection = ["test_workflow.mock_unknown_licence_plugin"]
+        
+        # check that it works when it's right
+        old_supports = supports
+        supports = does_support
+        record = {}
+        record['provider'] = {"url" : ["testprovider"]}
+        workflow.provider_licence(record)
+        
+        supports = old_supports
+        
+        # mock_unknown_plugin runs but does not provide us with a licence,
+        # but nonetheless, we expect an unknown licence to exist
+        assert record.has_key("bibjson")
+        assert record['bibjson'].has_key("license") # american spelling
+        assert len(record['bibjson']['license']) == 1
+        licence = record['bibjson']['license'][0]
+        assert licence['url'] == config.unknown_url, (licence['url'], config.unknown_url)
+        assert licence['provenance']['handler'] == "test_workflow", licence['provenance']['handler']
+        assert licence['provenance']['handler_version'] == "1.0", licence['provenance']['handler_version']
     
-    def test_11_check_cache_update_on_queued(self):
+    def test_12_check_cache_update_on_queued(self):
         global CACHE
         ids = [{"id" : "10.queued"}]
         
@@ -375,7 +409,7 @@ class TestWorkflow(TestCase):
         del CACHE["doi:10.queued"]
         workflow._start_back_end = old_back_end
     
-    def test_12_store(self):
+    def test_13_store(self):
         global CACHE
         global ARCHIVE
         
@@ -415,14 +449,14 @@ class TestWorkflow(TestCase):
         del CACHE['doi:10.1']
         del ARCHIVE[0]
     
-    def test_13_chain(self):
+    def test_14_chain(self):
         global CACHE
         global ARCHIVE
         
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
-        config.licence_detection = ["mock_licence_plugin"]
+        config.licence_detection = ["test_workflow.mock_licence_plugin"]
         
         # run the chain synchronously
         record = workflow.detect_provider(record)

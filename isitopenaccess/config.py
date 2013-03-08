@@ -110,3 +110,8 @@ agent = 'IsItOpenAccess Service/' + version
 
 # Date format to be used throughout the system
 date_format = "%Y-%m-%dT%H:%M:%SZ"
+
+# urls to be used by plugins or the processing pipeline when the licence cannot be detected
+unknown_url = "http://iioa.cottagelabs.com/licences/unknown"
+known_unknown_url = "http://iioa.cottagelabs.com/licences/known-unknown"
+
