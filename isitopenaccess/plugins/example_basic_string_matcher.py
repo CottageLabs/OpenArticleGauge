@@ -1,3 +1,4 @@
+# ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
 """
 This plugin handles BioMedCentral articles.
 This is an example plugin that should not actually run without modification as
