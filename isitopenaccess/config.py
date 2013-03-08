@@ -1,7 +1,10 @@
 # how to run the iioa app
 host = '0.0.0.0'
 port = '5000'
-debug = False
+debug = True
+
+# provide an email address for receiving errors or dispute warning
+contact_email = ''
 
 # packages that the plugloader should look in to find callable plugins if
 # it can't find them straight away in the running context.  Note that an installed
@@ -80,6 +83,7 @@ buffering = False
 es_address = 'http://localhost:9200'
 es_indexname = 'iioa'
 es_indextype = 'record'
+es_disputetype = 'dispute'
 
 # if index does not exist, it will be created first time round using the mapping below
 es_mapping = {

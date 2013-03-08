@@ -16,7 +16,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Is it Open Access{% if title %} | {{ title }}{% endif %}</title>
+    <title>How Open Is It{% if title %} | {{ title }}{% endif %}</title>
 
     <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
 
@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
 
     <link rel="stylesheet" type="text/css" media="all" href="/static/vendor/bootstrap/css/bootstrap.min.css" />
-    <!--<link rel="stylesheet" type="text/css" media="all" href="/static/css/bootstrap-superhero.min.css" />-->
     <link rel="stylesheet" type="text/css" media="all" href="/static/vendor/bootstrap/css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" type="text/css" media="all" href="/static/css/style.css" />
     <link rel="stylesheet" type="text/css" media="all" href="/static/vendor/facetview/css/facetview.css" />
@@ -43,9 +42,9 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".subnav" data-offset="50">
+<body>
 
-<div class="navbar navbar-fixed-top">
+<div id="topnav" class="navbar navbar-fixed-top">
     <div>
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -53,13 +52,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
+            <h1 class="brand">HowOpenIsIt?</h1>
             <div class="nav-collapse">
                 <ul id="mainnavlist" class="nav">
-                    <li><a href="/#lookup">lookup</a></li>
-                    <li><a href="/search">search</a></li>
+                    <li><a href="/lookup">lookup</a></li>
                     <li><a href="/dispute">dispute</a></li>
-                    <li><a href="/#support">supported by</a></li>
-                    <li><a href="/api">the API</a></li>               
+                    <li><a href="/about">about</a></li>
+                    <li><a href="/developers">developers</a></li>
+                    {% block subnav %}{% endblock %}
                 </ul>
             </div>
         </div>
@@ -89,18 +89,18 @@
 </div>
 
 <footer>
-    <div class="container" style="padding-top:30px;">
-        <hr></hr>
+    <div class="container">
         <a name="support"></a>
         <div class="row-fluid">
             <div class="span4">
-                <p>supported by blah</p>
+                <p>Supported by PLOS</p>
+                <p><a href="/about">Read more about us and this service.</a></p>
             </div>
             <div class="span4">
-                <p>and other people / stuff ...</p>
+                <p>Do you have more questions? <a href="/contact">Contact us</a></p>
             </div>
             <div class="span4">
-                <p>contact / enquiries</p>
+                <p>© PLOS 2012/13 - Site content and source code available under the terms of the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> or <a href="https://github.com/CottageLabs/IsItOpenAccess/blob/master/LICENCE">BSD licence</a>.</p>
             </div>
         </div>
     </div>

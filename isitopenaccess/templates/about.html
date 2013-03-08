@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+<a name="about"></a>
+<div class="row-fluid iioa-unit">
+    <div class="hero-unit clearfix">
+
+<p>The OpenArticleGauge service is part of HowOpenIsIt, a suite of tools developed by PLOS, SPARC, and OASPA to make it easier to determine how open journals and journal articles are. The initial development of OAG was funded by PLOS and carried out by a team from CottageLabs [link].</p>
+
+<p>The OpenArticleGauge provides information on how open a specific journal article is. It does this by going to the article itself and looking for licensing information. The service is available as a website, an API, and as source code. For more details on the software architecture and design see the documentation[link].</p>
+
+<p>The further development and hosting of the OAG is supported by PLOS[link to support page].</p>
+
+<p>For information on reading the output of the OAG see the guide[link to guide page].</p>
+
+<p>For information on the legal status of the license information see legal[link to legal].</p>
+
+<p>For how to help out or get involved see the contact page[link to contacts].</p>
+
+    </div>
+</div>
+
+
+
+<a name="support"></a>
+<div class="row-fluid iioa-unit">
+    <div class="hero-unit clearfix">
+
+<p>The OpenArticleGauge service is part of HowOpenIsIt, a suite of tools developed by PLOS, SPARC, and OASPA to make it easier to determine how open journals and journal articles are. The initial development of OAG was funded by PLOS and carried out by a team from CottageLabs [link].</p>
+
+<p>The further development and hosting of the OAG is supported by PLOS[link to support page]. If you would like get involved and support the further development of OAG then get in touch[link to contact page].</p>
+
+    </div>
+</div>
+
+
+
+<a name="credits"></a>
+<div class="row-fluid iioa-unit">
+    <div class="hero-unit clearfix">
+
+<p>The OpenArticleGauge was built by CottageLabs. Additional work has been contributed by...</p>
+
+    </div>
+</div>
+
+
+
+
+<a name="legal"></a>
+<div class="row-fluid iioa-unit">
+    <div class="hero-unit clearfix">
+
+<p>This website and the codebase are © PLOS 2012-13. Website content is available under a CC BY 3.0 license[link]. Source code is made available under a BSD license[link to github].</p>
+
+<p>License information for each article is determined by following the DOI or Pubmed link to the article page and obtaining license information from the page itself. Each publisher site has an individual plugin to deal with the specifics of how license information is available.</p>
+
+<p>By preference plugins search for the full text of the license statement, and check this against a known list of license statements for that publisher. Where possible license terms are obtained from a specified tag within an XML record. The response will tell provide both the means by which the license was determined (page scraping, an XML record) and the precise text that was obtained from the page.</p>
+
+<p>This information is provided without warranty...Neither PLOS, CottageLabs, or the website will accept liability for...</p>
+
+<p>If you identify an incorrect or incomplete license statement then please raise a dispute[link] and we will investigate.</p>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
