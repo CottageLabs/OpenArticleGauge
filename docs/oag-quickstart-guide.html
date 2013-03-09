@@ -16,15 +16,18 @@
     }
     .extrahelp {
         color: #666;
-        font-family: Arial;
+        font-family: Arial, sans-serif;
         font-size: 90%;
     }
     .inlinecode {
-        font-family: sans-serif;
+        font-family: Courier, sans-serif;
         background-color: #DDD;
     }
     pre {
         background-color: #DDD;
+    }
+    ol li {
+        margin-top: 0.75em;
     }
     </style>
 </head>
@@ -35,11 +38,13 @@
 <h2 id="aim">Aim:</h2>
 <p>Get a working plugin which understands the article page of a particular publisher and gets licensing information - hopefully for all articles by that publisher.</p>
 
-<p>The target publisher has to:<br>
-A. provide licensing statements in the HTML (no Javascript/AJAX).<br>
-This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. License has to be on the page you get after following a DOI.<br>
-B. serve their articles from no more than a few domains. You will be copy/pasting the domains that a publisher supports into your plugin, so this list has to be easy to get.<br>
-You can actually use regular expressions to detect supported domains, but this quick-start will not go there. See the <span class="inlinecode">oup</span> plugin for an example.
+<p>The target publisher has to:
+<ol type="A">
+<li>provide licensing statements in the HTML (no Javascript/AJAX).<br>
+This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. License has to be on the page you get after following a DOI.</li>
+<li>serve their articles from no more than a few domains. You will be copy/pasting the domains that a publisher supports into your plugin, so this list has to be easy to get.<br>
+You can actually use regular expressions to detect supported domains, but this quick-start will not go there. See the <span class="inlinecode">oup</span> plugin for an example.</li>
+</ol>
 </p>
 
 <h2 id="prerequisites">Prerequisites</h2>
@@ -177,17 +182,40 @@ The bits that you need to change are at the top of the file.<br>
 <span class="extrahelp">You can convert its DOI into a filename, e.g. pbio.1001406.html</span>
 </p>
 <p>
-4. Put the local filename you gave your article into the following variable:
-<pre class="python">RESOURCE = "pbio.1001406.html" # change the value</pre>
-5. Put the original URL of the publisher's article page into the following variable:
-<pre class="python">RESOURCE_ORIG_URL = "http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406" # change the value</pre>
-6. Put the license statement that you used in your plugin into the following variable:
-<pre class="python">LICENSE_STATEMENT = "This is an open-access article" # change value</pre>
+4. Now you need to tell the test what you expect the license object produced by your plugin to look like.<br>
+The <span class="inlinecode">RESOURCE_AND_RESULT</span> dictionary is the last bit you need to edit. It maps filenames on the local filesystem (e.g. the article page from the previous step) to expected license objects.
+</p>
+<p>
+We'll look at both of these in turn.
 </p>
 
 <p>
-7. Now edit the license comparison object to reflect the values you're expecting your plugin to write into the license object.
-For this quickstart guide, make sure the values of the <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.
+4.1. The key: change the filename (in bold) to the filename you gave to the downloaded article page in step 3.
+<pre class="python">os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "<strong>pbio.1001406.html</strong>") :</pre>
+</p>
+
+
+<p>
+4.2. The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.<br>
+For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.
+</p>
+
+<p>
+4.3. You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.
+</p>
+
+<p>
+Change the URL inside the quotes (in bold) to the original URL of the article you downloaded in step 3.
+<pre class="python">
+"source": "<strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong>", # source is the url where we look this record up
+</pre>
+</p>
+
+<p>The <span class="inlinecode">description</span> field inside the <span class="inlinecode">provenance</span> dictionary is a short human-readable description of your plugin's logic - where and how did it retrieve the license?<br>
+You need to change two things inside the <span class="inlinecode">description</span>: the original URL of the article (<strong>in bold</strong>) and the license statement that your plugin is looking for (the key in <span class="inlinecode">lic_statements</span> dictionary in your plugin code). The license statement bit is <u>underlined</u>.
+<div class="inlinecode">
+"description": 'License decided by scraping the resource at <strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong> and looking for the following license statement: "<u>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</u>".', # description is a long string
+</div>
 </p>
 
 <p>
