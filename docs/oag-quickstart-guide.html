@@ -165,24 +165,32 @@ vim test_new_plugin.py # or your favourite editor
 </p>
 
 <p>
-The bits that you need to change are at the top of the file.<br>
-1. We'll start with URL-s your plugin should say it can support.
+1. We'll start with pointing the test to your plugin. Change the <span class="inlinecode">plos</span> plugin name to the name of your plugin (without the .py extension).<br>
+<span class="extrahelp">The example line below has the name that you need to change <strong>in bold</strong>.</span>
+<pre class="python">
+from isitopenaccess.plugins import <strong>plos</strong> as plugin
+</pre>
+
+</p>
+
+<p>
+2. Next, URL-s your plugin should say it can support.
 <pre class="python">SUPPORTED_URLS = ["http://www.plosone.org/1234", "www.plosbiology.org/fakjsskjdaf"]</pre>
 <span class="extrahelp">This is a comma-delimited list of quoted strings.<br>
 (This is just a URL format test, they don't have to really exist. IIOA users might not always give us correct URL-s!)</span>
 </p>
 <p>
-2. Moving on to URL-s your plugin should say it CANNOT support.
+3. Moving on to URL-s your plugin should say it CANNOT support.
 <pre class="python">UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]</pre>
 <span class="extrahelp">This is a comma-delimited list of quoted strings.</span>
 </p>
 
 <p>
-3. Download the publisher's article page that you're trying to process to <span class="inlinecode">IsItOpenAccess/isitopenaccess/tests/resources/&lt;local_filename&gt;</span><br>
+4. Download the publisher's article page that you're trying to process to <span class="inlinecode">IsItOpenAccess/isitopenaccess/tests/resources/&lt;local_filename&gt;</span><br>
 <span class="extrahelp">You can convert its DOI into a filename, e.g. pbio.1001406.html</span>
 </p>
 <p>
-4. Now you need to tell the test what you expect the license object produced by your plugin to look like.<br>
+5. Now you need to tell the test what you expect the license object produced by your plugin to look like.<br>
 The <span class="inlinecode">RESOURCE_AND_RESULT</span> dictionary is the last bit you need to edit. It maps filenames on the local filesystem (e.g. the article page from the previous step) to expected license objects.
 </p>
 <p>
@@ -190,22 +198,22 @@ We'll look at both of these in turn.
 </p>
 
 <p>
-4.1. The key: change the filename (in bold) to the filename you gave to the downloaded article page in step 3.
+5.1. The key: change the filename (<strong>in bold</strong>) to the filename you gave to the downloaded article page in step 4.
 <pre class="python">os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "<strong>pbio.1001406.html</strong>") :</pre>
 </p>
 
 
 <p>
-4.2. The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.<br>
+5.2. The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.<br>
 For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.
 </p>
 
 <p>
-4.3. You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.
+5.3. You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.
 </p>
 
 <p>
-Change the URL inside the quotes (in bold) to the original URL of the article you downloaded in step 3.
+Change the URL inside the quotes (<strong>in bold</strong>) to the original URL of the article you downloaded in step 4.
 <pre class="python">
 "source": "<strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong>", # source is the url where we look this record up
 </pre>
