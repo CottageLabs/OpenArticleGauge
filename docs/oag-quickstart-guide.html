@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Article Gauge quick-start plugin development guide</title>
+    <style>
+    body {
+        background-color: white;
+    }
+    .quote {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        font-family: Verdana;
+        background-color: #DDD;
+    }
+    .extrahelp {
+        color: #666;
+        font-family: Arial, sans-serif;
+        font-size: 90%;
+    }
+    .inlinecode {
+        font-family: Courier, sans-serif;
+        background-color: #DDD;
+    }
+    pre {
+        background-color: #DDD;
+    }
+    ol li {
+        margin-top: 0.75em;
+    }
+    </style>
+</head>
+
+<body>
+<h1>Quick-start Open Article Gauge plugin development guide</h1>
+
+<h2 id="aim">Aim:</h2>
+<p>Get a working plugin which understands the article page of a particular publisher and gets licensing information - hopefully for all articles by that publisher.</p>
+
+<p>The target publisher has to:
+<ol type="A">
+<li>provide licensing statements in the HTML (no Javascript/AJAX).<br>
+This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. License has to be on the page you get after following a DOI.</li>
+<li>serve their articles from no more than a few domains. You will be copy/pasting the domains that a publisher supports into your plugin, so this list has to be easy to get.<br>
+You can actually use regular expressions to detect supported domains, but this quick-start will not go there. See the <span class="inlinecode">oup</span> plugin for an example.</li>
+</ol>
+</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+<p>
+You need:<br>
+1. Python. IIOA is mostly tested on Python 2.7. Older 2.x or newer 3.x may or may not work.<br>
+2. nosetests to make sure your plugin works: pip install nosetests
+</p>
+
+<p>You don't need to actually run the application in order to develop a plugin. So this guide is not going to talk about setting IIOA up.<br>
+If you want to run IIOA itself, follow instructions at: <a href="https://github.com/CottageLabs/IsItOpenAccess">https://github.com/CottageLabs/IsItOpenAccess</a>
+</p>
+
+<h2 id="writeplugin">Writing the plugin</h2>
+<p>
+OK, now do in terminal:
+</p>
+<pre class="shell">git clone git@github.com:CottageLabs/IsItOpenAccess.git</pre>
+
+<pre class="shell">
+cd IsItOpenAccess/isitopenaccess/plugins
+cp example_basic_string_matcher.py new_plugin.py
+# change new_plugin.py to a suitable filename
+vim new_plugin.py # or your favourite editor
+</pre>
+
+<p>
+Now look for <pre>~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~ in the file.</pre>
+This marker is above each line or section that you will have to edit.
+</p>
+
+<p>
+1. Change the docstring at the very start of the file to reflect the aims of your plugin:
+<pre class="python">"""This plugin handles BioMedCentral articles. [...]"""</pre>
+</p>
+
+<p>
+2. Put your publisher's supported domains in this list of quoted strings separated by commas.
+<pre class="python">base_urls = ["www.biomedcentral.com"]</pre>
+</p>
+
+<p>3. Modify the docstring of this function to point out which publisher your plugin supports.
+<pre class="python">def page_license(record)</pre>
+</p>
+
+<p>4. This is the actual meat of the plugin - the licensing statements to look for on your chosen publisher's pages.
+<pre class="python">lic_statements</pre>
+It is a list of mappings. Each maps a statement string to a meaning object.<br>
+Modify the example mapping provided. <strong>It is discussed line-by-line here.</strong>
+<pre class="python">{</pre>
+<p>Find and get a license statement from one of the article pages. Make sure this is the page that you get after following a DOI!<br>
+<span id="extrahelp">(In order to be sure, find the DOI of the article on the page you've opened, and type <span class="inlinecode">http://dx.doi.org/&lt;put DOI here&gt;</span> in your browser.)</span>
+</p>
+<p>
+Replace the statement inside the quotes
+<div class="quote">"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited."<strong>:</strong></div>
+with the one you found.
+</p>
+
+<p>
+Now modify the meaning object
+<pre class="python">{</pre>
+<p>
+The type field is a short unique identifier for the license. The example is Creative Commons Attribution.<br>
+If yours is different, open <span class="inlinecode">isitopenaccess/licenses.py</span> and try to look for the title of your license (e.g. Open Government, PLoS WHO) and get its type.<br>
+If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).
+<pre class="python">
+'type': 'cc-by',
+</pre>
+
+The licenses module usually contains more general descriptions of licenses, not particular versions, so use the version attribute to denote something like Creative Commons Attribution v.2.0.<br>
+<span class="extrahelp">It's just a string. You can leave it blank if not applicable.</span>
+<pre class="python">
+'version':'2.0',
+</pre>
+Is the license open access? This is your judgement call.<br>
+<span class="extrahelp">See if the license terms conform to the opendefinition.org of "Openness". If you really aren't sure, ask on the okfn-discuss mailing list of the Open Knowledge Foundation. We do usually set this to True even if there are non-commercial or other restrictions which wouldn't fit into the Open Definition since the articles can at least. Perhaps we should not be doing this, however!</span>
+<pre class="python">
+'open_access': True,
+</pre>
+Does the license require attribution?
+<pre class="python">
+'BY': True,
+</pre>
+Does the license have non-commercial restrictions?
+<pre class="python">
+'NC': False,
+</pre>
+Does the license require that derivative works be licensed under the same or similar license?
+<pre class="python">
+'SA': False,
+</pre>
+Does the license forbid derivative works?
+<pre class="python">
+'ND': False,
+</pre>
+If you wish to override the URL provided by the licenses module for this license, do so here.<br>
+<span class="extrahelp">You should probably do this if the license statement on the page points to a particular URL which is supposed to contain the license terms.</span><br>
+<span class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</span>
+<pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'
+}</pre>
+</p>
+
+<p>
+That's it, you're done with the plugin.
+</p>
+
+<h2>Something that is untested is broken.</h2>
+<p>
+Now, you need a test.
+
+<pre class="shell">
+cd IsItOpenAccess/isitopenaccess/tests
+cp test_provider_skeleton.py test_new_plugin.py
+# change new_plugin to your plugin's name
+vim test_new_plugin.py # or your favourite editor
+</pre>
+</p>
+
+<p>
+1. We'll start with pointing the test to your plugin. Change the <span class="inlinecode">plos</span> plugin name to the name of your plugin (without the .py extension).<br>
+<span class="extrahelp">The example line below has the name that you need to change <strong>in bold</strong>.</span>
+<pre class="python">
+from isitopenaccess.plugins import <strong>plos</strong> as plugin
+</pre>
+
+</p>
+
+<p>
+2. Next, URL-s your plugin should say it can support.
+<pre class="python">SUPPORTED_URLS = ["http://www.plosone.org/1234", "www.plosbiology.org/fakjsskjdaf"]</pre>
+<span class="extrahelp">This is a comma-delimited list of quoted strings.<br>
+(This is just a URL format test, they don't have to really exist. IIOA users might not always give us correct URL-s!)</span>
+</p>
+<p>
+3. Moving on to URL-s your plugin should say it CANNOT support.
+<pre class="python">UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]</pre>
+<span class="extrahelp">This is a comma-delimited list of quoted strings.</span>
+</p>
+
+<p>
+4. Download the publisher's article page that you're trying to process to <span class="inlinecode">IsItOpenAccess/isitopenaccess/tests/resources/&lt;local_filename&gt;</span><br>
+<span class="extrahelp">You can convert its DOI into a filename, e.g. pbio.1001406.html</span>
+</p>
+<p>
+5. Now you need to tell the test what you expect the license object produced by your plugin to look like.<br>
+The <span class="inlinecode">RESOURCE_AND_RESULT</span> dictionary is the last bit you need to edit. It maps filenames on the local filesystem (e.g. the article page from the previous step) to expected license objects.
+</p>
+<p>
+We'll look at both of these in turn.
+</p>
+
+<p>
+5.1. The key: change the filename (<strong>in bold</strong>) to the filename you gave to the downloaded article page in step 4.
+<pre class="python">os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "<strong>pbio.1001406.html</strong>") :</pre>
+</p>
+
+
+<p>
+5.2. The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.<br>
+For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.
+</p>
+
+<p>
+5.3. You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.
+</p>
+
+<p>
+Change the URL inside the quotes (<strong>in bold</strong>) to the original URL of the article you downloaded in step 4.
+<pre class="python">
+"source": "<strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong>", # source is the url where we look this record up
+</pre>
+</p>
+
+<p>The <span class="inlinecode">description</span> field inside the <span class="inlinecode">provenance</span> dictionary is a short human-readable description of your plugin's logic - where and how did it retrieve the license?<br>
+You need to change two things inside the <span class="inlinecode">description</span>: the original URL of the article (<strong>in bold</strong>) and the license statement that your plugin is looking for (the key in <span class="inlinecode">lic_statements</span> dictionary in your plugin code). The license statement bit is <u>underlined</u>.
+<div class="inlinecode">
+"description": 'License decided by scraping the resource at <strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong> and looking for the following license statement: "<u>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</u>".', # description is a long string
+</div>
+</p>
+
+<p>
+And that's it. Now just:
+<pre class="shell">nosetests test_new_plugin.py # change filename to the one you gave it above</pre>
+You should see a message telling you 3 tests have run, and ending in a simple "OK".
+</p>
+</body>
+</html>
