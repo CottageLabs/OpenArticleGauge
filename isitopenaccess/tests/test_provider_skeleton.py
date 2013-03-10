@@ -38,12 +38,8 @@ UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]
 # - if a key's value is None, the resulting object MUST NOT have the key or MUST be the empty string
 # - if a key's value is -1, the resulting object MUST have the key
 #
-RESOURCE = "pbio.1001406.html"
-RESOURCE_ORIG_URL = "http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406"
-LICENSE_STATEMENT = 'This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.'
-
 RESOURCE_AND_RESULT = {
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", RESOURCE) : 
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pbio.1001406.html") : 
         {
             "id" : None,            # there should be no id field
             "version": "",          # version should be the empty string
@@ -56,9 +52,9 @@ RESOURCE_AND_RESULT = {
             "SA": False,            # SA is false
             "provenance": {
                 "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at ' + RESOURCE_ORIG_URL + ' and looking for the following license statement: "' + LICENSE_STATEMENT + '".', # description is a long string
+                "description": 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
                 "agent": config.agent, # agent is from configuration
-                "source": RESOURCE_ORIG_URL, # source is the url where we look this record up
+                "source": "http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
        }

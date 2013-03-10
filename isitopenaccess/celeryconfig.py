@@ -4,7 +4,7 @@
 # CELERYD_GROUP = 'celery'
 import os
 
-CELERYD_NODES = 'w1'
+# CELERYD_NODES = 'w1'
 
 # Where to chdir at start.
 # CELERYD_CHDIR = '/path/to/isitopenaccess/'
@@ -28,3 +28,9 @@ CELERY_IMPORTS = ('isitopenaccess.workflow',)
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_ROUTES = {
+    'isitopenaccess.workflow.detect_provider' : {"queue": "detect_provider"},
+    'isitopenaccess.workflow.provider_licence' : {"queue" : "provider_licence"},
+    'isitopenaccess.workflow.store_results' : {"queue" : "store_results"}
+}
