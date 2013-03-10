@@ -200,3 +200,31 @@ class TestIntegration(TestCase):
         assert len(obj["errors"]) == 0
         assert obj["requested"] == 1
         
+    def test_06_known_failures_cell_reports(self):
+        """
+        Make sure that the error information of plugins which always fail due
+        to publishers not publishing license info (or similar) is properly
+        present when such a DOI is handed to us.
+
+        This particular test ensures that failure info from the Cell Reports
+        plugin is present when a Cell Reports DOI is looked up.
+        """
+        from isitopenaccess.plugins.cell_reports import fail_why as expected_error_message
+        from isitopenaccess.plugins.cell_reports import fail_why as expected_suggested_solution
+
+        resp = requests.get(lookup_url + "10.1016/j.celrep.2012.11.027" + '.json')
+        time.sleep(10) # wait for the app to process the request
+        resp = requests.get(lookup_url + "10.1016/j.celrep.2012.11.027" + '.json')
+
+        #result = json.loads(resp.text)
+        #import logging
+        #logging.debug(json.dumps(result, indent=4))
+        assert 'license' in result['results']
+        assert len(result['results']['license']) > 0
+
+        assert result['results']['license']['type'] == 'failed-to-obtain-license'
+
+        assert 'error_message' in result['results']['license']
+        assert 'suggested_solution' in result['results']['license']
+        assert result['results']['license']['error_message'] == expected_error_message
+        assert result['results']['license']['suggested_solution'] == expected_suggested_solution
