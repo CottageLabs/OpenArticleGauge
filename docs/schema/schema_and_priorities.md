@@ -130,6 +130,25 @@ The licensing terms are found in the same div element as above:
 	</p>
 	</div>
 
+####A CC-Zero (Public Domain Dedication) article
+
+DOI: 10.1371/journal.pone.0037743
+
+Dereferenced URL: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743
+
+Status: Open Access
+
+License: CC Zero (Public Domain Dedication), version not specified (only v.1.0 published at time of writing)
+
+The license is found a <div class="articleinfo"> as a separate paragraph as follows:
+
+	<div class="articleinfo">
+	[…]
+	<strong>Published:</strong> May 30, 2012</p>
+	<p>This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.</p>
+	<p><strong>Funding: </strong>
+	[…]
+	</div>
 
 ##Below here still needs work!	
 
