@@ -54,9 +54,9 @@ def page_license(record):
     ]
 
     # 1. get DOI from record object
-    if record['identifier']['type'] == 'doi':
-        doi = record['identifier']['id']
+    doi = record['provider'].get('doi')
 
+    if doi:
     # 2. query elife XML api
         url = 'http://elife.elifesciences.org/elife-source-xml/' + doi
         response = requests.get(url)

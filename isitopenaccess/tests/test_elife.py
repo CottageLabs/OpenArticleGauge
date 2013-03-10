@@ -149,10 +149,7 @@ class TestProvider(TestCase):
             record['bibjson'] = {}
             record['provider'] = {}
             record['provider']['url'] = [comparison['provenance']['source']]
-
-            record['identifier'] = {}
-            record['identifier']['type'] = 'doi'
-            record['identifier']['id'] = '10.7554/eLife.00160'
+            record['provider']['doi'] = '10.7554/eLife.00160'
             
             # set the current request so that the monkey patch knows how to respond
             CURRENT_REQUEST = comparison['provenance']['source']
