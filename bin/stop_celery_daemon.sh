@@ -13,4 +13,5 @@
 # celery multi restart w1 -A isitopenaccess.slavedriver -l info
 
 # Stopping:
-celery multi stop w1 -A isitopenaccess.slavedriver -l info --pidfile=%n.pid --logfile=%n.log
+celery multi stop 7 -A isitopenaccess.slavedriver -l info --pidfile=%n.pid --logfile=%n.log -Q:1-3 detect_provider -Q:4-6 provider_licence -Q:7 store_results
+
