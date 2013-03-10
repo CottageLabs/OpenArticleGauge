@@ -62,9 +62,10 @@ def page_license(record):
         response = requests.get(url)
 
         try:
-            xml = etree.fromstring(response.text.encode("utf-8"))
-        except:
+            xml = etree.fromstring(response.text.decode("utf-8"))
+        except Exception as e:
             log.error("Error parsing the XML from " + url)
+            log.error(e)
     
         # process the XML response
         namespaces = {'xlink': 'http://www.w3.org/1999/xlink'}
