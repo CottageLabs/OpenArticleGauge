@@ -137,3 +137,40 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".'
+
+    def test_06_plos_public_domain_dedication(self):
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743']
+
+        plos.page_license(record)
+
+        # check if all the important keys were created
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        # NB: some examples may fail the 'url' test since the Open Definition
+        # data we're using as the basis for our licenses dictionary does not
+        # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
+        # TODO remove this "all" assertion - if it fails, doesn't say which key missing
+        assert all (key in record['bibjson']['license'][-1] for key in keys_in_license)
+
+        assert all (key in record['bibjson']['license'][-1]['provenance'] for key in keys_in_provenance)
+
+        # some content checks now
+        assert record['bibjson']['license'][-1]['type'] == 'cc-zero'
+        assert record['bibjson']['license'][-1]['version'] == ''
+        assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license'][-1]['jurisdiction']
+        assert record['bibjson']['license'][-1]['open_access']
+        assert not record['bibjson']['license'][-1]['BY']
+        assert not record['bibjson']['license'][-1]['NC']
+        assert not record['bibjson']['license'][-1]['SA']
+        assert not record['bibjson']['license'][-1]['ND']
+
+        assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
+        assert record['bibjson']['license'][-1]['provenance']['date']
+        assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743 and looking for the following license statement: "This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.".'
