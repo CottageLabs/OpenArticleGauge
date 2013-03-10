@@ -3,7 +3,10 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    var resdisplay = [
+    var record_url = 'http://iioa.cottagelabs.com/query?';
+    var record_datatype = 'JSONP';
+    
+    var record_resdisplay = [
             [
                 {
                     "pre": "IDENTIFIER(S): ",
@@ -80,22 +83,74 @@ jQuery(document).ready(function($) {
             ]
         ];
 
+    var record_facets = [
+        {'field': 'license.open_access', 'display': 'IIOA?'},
+        {'field': 'license.type.exact', 'display': 'License type'},
+        {'field': 'license.title.exact', 'display': 'License title'}
+    ];
 
-    $('#facetview').facetview({
-        search_url: '/query?',
-        datatype: 'JSON',
-        facets: [
-            {'field': 'license.open_access', 'display': 'IIOA?'},
-            {'field': 'license.type.exact', 'display': 'License type'},
-            {'field': 'license.title.exact', 'display': 'License title'}
-        ],
+    var log_url = 'http://test.cottagelabs.com:9200/iioa/log/_search?';
+    var log_datatype = 'JSONP';
+
+    var log_resdisplay = [
+            [
+                {
+                    "field": "date"
+                },
+                {
+                    "field": "type"
+                },
+                {
+                    "field": "process"
+                }
+            ],
+            [
+                {
+                    "field": "log"
+                }
+            ]
+        ];
+
+    var log_facets = [
+        {'field': 'process.exact', 'display': 'Process'},
+        {'field': 'logfile.exact', 'display': 'Log file'},
+        {'field': 'type.exact', 'display': 'Type'}
+    ];
+
+    var opts = {
+        search_url: record_url,
+        datatype: record_datatype,
+        facets: record_facets,
         searchbox_shade: "#fff",
-        result_display: resdisplay,
+        result_display: record_resdisplay,
         sharesave_link: false,
         paging: {
             size: 10
         }
-    });
+    };
+
+    $('#facetview').facetview(opts);
+
+    var searchtype = function(event) {
+        event ? event.preventDefault() : false;
+        var type = $(this).attr('data-type');
+        if (type == 'records') {
+            opts.search_url = record_url;
+            opts.datatype = record_datatype;
+            opts.facets = record_facets;
+            opts.result_display = record_resdisplay;
+        } else if (type == 'logs') {
+            opts.search_url = log_url;
+            opts.datatype = log_datatype;
+            opts.facets = log_facets;
+            opts.result_display = log_resdisplay;
+        };
+        var p = $('#facetview').parent();
+        $('#facetview').remove();
+        p.append('<div id="facetview"></div>');
+        $('#facetview').facetview(opts);
+    }
+    $('.searchtype').bind('click',searchtype);
 });
 
 </script>
@@ -103,7 +158,8 @@ jQuery(document).ready(function($) {
 
 <div class="row-fluid iioa-unit">
     <div class="hero-unit clearfix">
-You can search the existing database of articles and licenses from here. Note if an article has not previously been run through the system, either from the front page or the API, it will not appear here.
+<p>You can search the existing database of articles and licenses from here. Note if an article has not previously been run through the system, either from the front page or the API, it will not appear here.</p>
+    <p><a class="btn searchtype" data-type="records" href="#">search records</a> <a class="btn searchtype" data-type="logs" href="#">search logs</a></p>
     </div>
 </div>
 
