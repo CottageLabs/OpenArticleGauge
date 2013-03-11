@@ -17,6 +17,10 @@ def simple_extract(lic_statements, record, url):
     contains (allows re-use) the logic that any "dumb string matching" plugin 
     would use.
 
+    :param handler: The name of the plugin which called this function to
+    handle the record.
+    :param handler_version: The __version__ of the plugin which called this
+    function to handle the record.
     :param lic_statements: licensing statements to look for on this publisher's 
     pages. Take the form of {statement: meaning}
     where meaning['type'] identifies the license (see licenses.py)
@@ -24,6 +28,8 @@ def simple_extract(lic_statements, record, url):
     See a publisher plugin for an example, e.g. bmc.py
     :param record: a request for the IIOA status of an article, see IIOA docs for
     more info.
+    :param url: source url of the item to be fetched. This is where the HTML
+    page that's going to be scraped is expected to reside.
     """
 
     # get content
