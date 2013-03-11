@@ -52,7 +52,7 @@ def page_license(record):
         {"""This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0),
                      which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is
                      properly cited.""":
-            {'type': 'cc-nc', 'version':'3.0', 'open_access': True, 'BY': True, 'NC': True, 'SA': False, 'ND': False,
+            {'type': 'cc-nc', 'version':'3.0', 'open_access': False, 'BY': True, 'NC': True, 'SA': False, 'ND': False,
                 # also declare some properties which override info about this license in the licenses list (see licenses module)
                 'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
         }
