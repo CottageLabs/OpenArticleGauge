@@ -26,8 +26,30 @@ class TestWorkflow(TestCase):
         test_urls = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not plos.supports({"url" : [url]})
+
+    def test_03_name_and_version(self):
+        """
+        Take an example supported article and check just the handler fields
+        """
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089']
+
+        plos.page_license(record)
+
+        # just barebones checks to make sure the license and provenance objects
+        # exist in the first place so the handler fields can be checked
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        assert 'provenance' in record['bibjson']['license'][-1]
+
+        assert 'handler' in record['bibjson']['license'][-1]['provenance']
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == plos._short_name
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == plos.__version__
     
-    def test_03_plos_OGL_OA_example1(self):
+    def test_04_plos_OGL_OA_example1(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -64,7 +86,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089 and looking for the following license statement: "This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.".'
 
-    def test_04_plos_standard_OA_example1(self):
+    def test_05_plos_standard_OA_example1(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -101,7 +123,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".'
 
-    def test_05_plos_standard_OA_example2(self):
+    def test_06_plos_standard_OA_example2(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -138,7 +160,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".'
 
-    def test_06_plos_public_domain_dedication(self):
+    def test_07_plos_public_domain_dedication(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

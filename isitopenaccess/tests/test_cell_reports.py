@@ -16,7 +16,30 @@ class TestWorkflow(TestCase):
     def tearDown(self):
         pass
 
-    def test_01_cell_reports_standard_OA_license(self):
+    def test_01_name_and_version(self):
+        """
+        Take an example supported article and check just the handler fields
+        """
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://www.cell.com/cell-reports/fulltext/S2211-1247%2812%2900426-3']
+
+        cell_reports.page_license(record)
+
+        # just barebones checks to make sure the license and provenance objects
+        # exist in the first place so the handler fields can be checked
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        assert 'provenance' in record['bibjson']['license'][-1]
+
+        assert 'handler' in record['bibjson']['license'][-1]['provenance']
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == cell_reports._short_name
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == cell_reports.__version__
+
+
+    def test_02_cell_reports_standard_OA_license(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

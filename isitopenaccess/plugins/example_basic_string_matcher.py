@@ -1,3 +1,7 @@
+_short_name = __name__.split(".")[-1]
+__version__='0.1' # consider incrementing or at least adding a minor version
+                    # e.g. "0.1.1" if you change this plugin
+
 # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
 """
 This plugin handles BioMedCentral articles.
@@ -105,4 +109,4 @@ def page_license(record):
     for url in record['provider']['url']:
         # ... run the dumb string matcher if the URL is supported.
         if supports_url(url):
-            string_matcher.simple_extract(lic_statements, record, url)
+            string_matcher.simple_extract(_short_name, __version__, lic_statements, record, url)

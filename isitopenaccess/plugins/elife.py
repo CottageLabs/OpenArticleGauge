@@ -1,3 +1,7 @@
+_short_name = __name__.split(".")[-1]
+__version__='0.1' # consider incrementing or at least adding a minor version
+                    # e.g. "0.1.1" if you change this plugin
+
 import requests, logging
 from lxml import etree
 from copy import deepcopy
@@ -94,6 +98,8 @@ def page_license(record):
     
                 # add provenance information to the license object
                 provenance = {
+                    'handler': _short_name,
+                    'handler_version': __version__,
                     'date': datetime.strftime(datetime.now(), config.date_format),
                     'source': url,
                     'agent': config.agent,

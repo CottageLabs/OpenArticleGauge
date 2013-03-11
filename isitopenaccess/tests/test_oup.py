@@ -26,8 +26,30 @@ class TestWorkflow(TestCase):
         test_urls = ["http://www.plosone.org/", "www.biomedcentral.com", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not oup.supports({"url" : [url]})
+
+    def test_03_name_and_version(self):
+        """
+        Take an example supported article and check just the handler fields
+        """
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2898']
+
+        oup.page_license(record)
+
+        # just barebones checks to make sure the license and provenance objects
+        # exist in the first place so the handler fields can be checked
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        assert 'provenance' in record['bibjson']['license'][-1]
+
+        assert 'handler' in record['bibjson']['license'][-1]['provenance']
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == oup._short_name
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == oup.__version__
     
-    def test_03_oup_standard_OA_license_example1(self):
+    def test_04_oup_standard_OA_license_example1(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

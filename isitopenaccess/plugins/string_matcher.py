@@ -6,7 +6,7 @@ from isitopenaccess import config
 from isitopenaccess.licenses import LICENSES
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
-def simple_extract(lic_statements, record, url):
+def simple_extract(handler, handler_version, lic_statements, record, url):
     """
     Generic code which looks for a particular string in a given web page (URL),
     determines the licence conditions of the article and populates
@@ -67,7 +67,9 @@ def simple_extract(lic_statements, record, url):
                 'agent': config.agent,
                 'category': 'page_scrape', # TODO we need to think how the
                     # users get to know what the values here mean.. docs?
-                'description': cpl.gen_provenance_description(url, statement)
+                'description': cpl.gen_provenance_description(url, statement),
+                'handler': handler, # the name of the plugin processing this record
+                'handler_version': handler_version # version of the plugin processing this record
             }
 
             license['provenance'] = provenance
