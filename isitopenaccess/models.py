@@ -25,8 +25,11 @@ class Record(DomainObject):
             # by just making an ID and GETting and POSTing to it, we can do things faster.
             _id = identifier.replace('/','_')
             result = cls.pull(_id)
-        
-        return result.data
+
+        try:
+            return result.data
+        except:
+            return result
 
     @classmethod
     def store(cls, bibjson):
