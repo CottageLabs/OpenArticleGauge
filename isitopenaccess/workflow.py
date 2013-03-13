@@ -34,6 +34,10 @@ def lookup(bibjson_ids):
             _detect_verify_type(record)
             log.debug("type detected record " + str(record))
             
+            # Step 1a: if we don't find a type for the identifier, there's no point in us continuing
+            if record.get("identifier", {}).get("type") is None:
+                raise models.LookupException("unable to determine the type of the identifier")
+            
             # Step 2: create a canonical version of the identifier for cache keying
             _canonicalise_identifier(record)
             log.debug("canonicalised record " + str(record))
@@ -217,14 +221,6 @@ def _canonicalise_identifier(record):
     if p is None:
         raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
     p.canonicalise(record['identifier'])
-    """
-    PRE-PLUGIN REFACTOR
-    plugin_name = config.canonicalisers.get(record['identifier']['type'])
-    plugin = plugloader.load(plugin_name)
-    if plugin is None:
-        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'] + " (plugin name " + plugin_name + ")")
-    plugin(record['identifier'])
-    """
 
 def _detect_verify_type(record):
     """
@@ -242,14 +238,6 @@ def _detect_verify_type(record):
     plugins = plugin.PluginFactory.type_detect_verify()
     for p in plugins:
         p.type_detect_verify(record['identifier'])
-    """
-    PRE-PLUGIN REFACTOR CODE
-    for plugin_name in config.type_detection:
-        plugin = plugloader.load(plugin_name)
-        if plugin is None:
-            raise models.LookupException("unable to load plugin for detecting identifier type: " + plugin_name)
-        plugin(record["identifier"])
-    """
     
 def _start_back_end(record):
     """
@@ -282,14 +270,7 @@ def detect_provider(record):
     for p in plugins:
         log.debug("applying plugin " + str(p._short_name))
         p.detect_provider(record)
-    """
-    PRE-PLUGIN REFACTOR
-    for plugin_name in config.provider_detection.get(record['identifier']["type"], []):
-        # all provider plugins run, until each plugin has had a go at determining provider information
-        plugin = plugloader.load(plugin_name)
-        log.debug("applying plugin " + str(plugin_name))
-        plugin(record)
-    """
+    
     # we have to return the record, so that the next step in the chain
     # can deal with it
     log.debug("yielded result " + str(record))
@@ -303,7 +284,7 @@ def provider_licence(record):
         return record
     
     # Step 2: get the plugin that will run for the given provider
-    p = _get_provider_plugin(record["provider"])
+    p = plugin.PluginFactory.license_detect(record["provider"])
     if p is None:
         log.debug("No plugin to handle provider: " + str(record['provider']))
         return record
@@ -375,25 +356,6 @@ def store_results(record):
     # deal with it (if such a step exists)
     log.debug("yielded result " + str(record))
     return record
-
-def _get_provider_plugin(provider_record):
-    return plugin.PluginFactory.license_detect(provider_record)
-    """
-    PRE-PLUGIN REFACTOR
-    for plugin_name in config.licence_detection:
-        log.debug("checking " + plugin_name + " for support of provider " + str(provider_record))
-        supporter = plugloader.load_sibling(plugin_name, "supports")
-        
-        if supporter is None:
-            log.debug(plugin_name + " does not have a 'supports()' sibling function, so cannot determine if it supports the provider")
-            continue
-        
-        if supporter(provider_record):
-            name, version = plugloader.get_info(plugin_name)
-            log.debug(plugin_name + " (" + name + " v" + str(version) + ") services provider " + str(provider_record))
-            return plugloader.load(plugin_name), name, version
-    return None, None, None
-    """
 
 def _add_identifier_to_bibjson(identifier, bibjson):
     # FIXME: this is pretty blunt, could be a lot smarter

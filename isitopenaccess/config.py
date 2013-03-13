@@ -18,13 +18,6 @@ type_detection = [
     "isitopenaccess.plugins.doi.DOIPlugin",
     "isitopenaccess.plugins.pmid.PMIDPlugin"
 ]
-"""
-PRE-PLUGIN REFACTOR
-type_detection = [
-    "plugins.doi.type_detect_verify",
-    "plugins.pmid.type_detect_verify"
-]
-"""
 
 # dictionary of plugins that can be used to canonicalise all the different 
 # identifier types.  Key is the identifier type as detected with type_detection,
@@ -33,13 +26,6 @@ canonicalisers = {
     "doi" : "isitopenaccess.plugins.doi.DOIPlugin",
     "pmid" : "isitopenaccess.plugins.pmid.PMIDPlugin"
 }
-"""
-PRE-PLUGIN REFACTOR
-canonicalisers = {
-    "doi" : "plugins.doi.canonicalise",
-    "pmid" : "plugins.pmid.canonicalise"
-}
-"""
 
 # dictionary of lists of plugins that can be used to determine the provider
 # of an identifier type.  Key is the identifier type as detected with type_detection,
@@ -49,13 +35,6 @@ provider_detection = {
     "doi" : ["isitopenaccess.plugins.doi.DOIPlugin"], 
     "pmid" : ["isitopenaccess.plugins.pmid.PMIDPlugin"]
 }
-"""
-PRE-PLUGIN REFACTOR
-provider_detection = {
-    "doi" : ["plugins.doi.provider_range_lookup", "plugins.doi.provider_dereference"], 
-    "pmid" : ["plugins.pmid.provider_resolver"]
-}
-"""
 
 # dictionary of single plugins that can be used to determine the licence 
 # conditions of a given identifier.  Key is a string representing the provider,
@@ -71,15 +50,6 @@ license_detection = [
     "isitopenaccess.plugins.oup.OUPPlugin",
     "isitopenaccess.plugins.elife.ELifePlugin"
 ]
-"""
-PRE-PLUGIN REFACTOR
-license_detection = [
-    "plugins.plos.page_license",
-    "plugins.bmc.page_license",
-    "plugins.cell_reports.page_license",
-    "plugins.oup.page_license"
-]
-"""
 
 # Cache configuration
 redis_cache_host = "localhost"

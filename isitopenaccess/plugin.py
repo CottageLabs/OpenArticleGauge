@@ -182,40 +182,7 @@ class Plugin(object):
             handler=self._short_name,
             handler_version=self.__version__
         )
-        
-        """
-        PRE-PLUGIN REFACTOR
-        record['bibjson'].setdefault('license', [])
-        
-        license = {
-            "description": "",
-            "title": "",
-            "url": licence_url,
-            "version": "",
-            "jurisdiction": "",
-            "type": "failed-to-obtain-license",
-            "open_access": False,
-            "BY": "",
-            "NC": "",
-            "ND": "",
-            "SA": "",
-            "error_message": why,
-            "suggested_solution": suggested_solution,
-            "provenance": {
-                "category": "page_scrape",
-                "description": self.gen_provenance_description_fail(source_url),
-                "agent": config.agent,
-                "source": source_url,
-                "date": datetime.strftime(datetime.now(), config.date_format),
-                "handler" : self._short_name,
-                "handler_version" : self.__version__
-            }
-         }
 
-        record['bibjson']['license'].append(license)
-        """
-    
-    
 class PluginFactory(object):
     
     @classmethod

@@ -4,6 +4,9 @@ import logging
 log = logging.getLogger(__name__)
 
 """
+NOTE: these might be useful to someone in the future, but we don't need them
+right now, so leaving them commented out
+
 def get_info(callable_path):
     if callable_path is None:
         log.debug("attempted to load plugin with no plugin path")
