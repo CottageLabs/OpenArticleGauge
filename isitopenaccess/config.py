@@ -1,4 +1,5 @@
 # how to run the iioa app
+SECRET_KEY = 'reallysecret...'
 HOST = '0.0.0.0'
 PORT = '5000'
 DEBUG = True
@@ -8,7 +9,7 @@ ANONYMOUS_SEARCH_FILTER = False
 SEARCH_SORT = False
 
 # provide an email address for receiving errors or dispute warning
-contact_email = ''
+CONTACT_EMAIL = ''
 
 # packages that the plugloader should look in to find callable plugins if
 # it can't find them straight away in the running context.  Note that an installed

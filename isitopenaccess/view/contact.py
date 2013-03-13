@@ -2,7 +2,7 @@
 A contact-form backend mailer endpoint
 '''
 
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, render_template, flash
 
 from isitopenaccess.core import app
 import isitopenaccess.util as util
@@ -15,21 +15,21 @@ blueprint = Blueprint('contact', __name__)
 @blueprint.route('/', methods=['GET','POST'])
 def mailer():
     if request.method == 'GET':
-        pass
+        return render_template('contact.html')
+
     elif request.method == 'POST':
-        try:
-            if request.values.get('message',False) and not request.values.get('not',False):
-                util.send_mail(
-                    [app.config['ADMIN_NAME'] + ' <' + app.config['ADMIN_EMAIL'] + '>'],
-                    request.values.get('email',app.config['ADMIN_NAME'] + ' <' + app.config['ADMIN_EMAIL'] + '>'),
-                    'website enquiry',
-                    request.values['message']
-                )
-                return ''
-            else:
-                abort(403)
-        except:
-            abort(500)
+        if app.config['CONTACT_EMAIL'] and not app.config['DEBUG'] and request.values.get('message',False) and not request.values.get('not',False):
+            util.send_mail(
+                [app.config['CONTACT_EMAIL'] + '>'],
+                app.config['CONTACT_EMAIL'],
+                'HOII enquiry',
+                request.values['message']
+            )
+            flash('Thanks, your query will be processed soon.', 'success')
+            return render_template('contact.html')
+        else:
+            flash('Sorry, your request was missing something, or we have not enabled the contact form...')
+            return render_template('contact.html')
 
  
 

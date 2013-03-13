@@ -5,16 +5,53 @@
 {% endblock %}
 {% block content %}
 
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+
+        var deletethis = function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'DELETE',
+                url: $(this).attr('data-id')
+            });
+            window.location = '/dispute';
+        }
+        $('.deletethis').bind('click',deletethis);
+    })
+</script>
+
 <div class="row-fluid iioa-unit">
-    <div class="hero-unit clearfix">
+    <div class="span7">
+        <div class="hero-unit clearfix" style="min-height:430px;">
 
-<p>License information is obtained by looking for specific elements on the article pages. Searching for the license may fail for several reasons. The publisher may not provide licensing information that can be read by the service, the publisher might change the text they use to refer to a specific license. In these cases the service should indicate that it cannot determine a license.</p>
+            <h3>Disputes</h3>
 
-<p>OAG stores license license information to speed up the response. If the publisher has changed the license it is possible that the stored information may be out of date.</p>
+            <p>License information is obtained by looking for specific elements on the article pages. Searching for the license may fail for several reasons. The publisher may not provide licensing information that can be read by the service, the publisher might change the text they use to refer to a specific license. In these cases the service should indicate that it cannot determine a license.</p>
 
-<p>If you do not obtain a license where you believe you should have, or if the license details are wrong, please provide the information here. If you are obtaining licenses via the API you can also raise a dispute programmatically. See the API documentation.</p>
+            <p>OAG stores license license information to speed up the response. If the publisher has changed the license it is possible that the stored information may be out of date.</p>
 
+            <p>If you do not obtain a license where you believe you should have, or if the license details are wrong, please provide the information here. If you are obtaining licenses via the API you can also raise a dispute <a href="/developers/api">programmatically</a>.</p>
+
+        </div>
+    </div>
+    
+    <div class="span5">
+        <div class="hero-unit" style="min-height:430px;">
+            <h3>Submit a dispute</h3>
+            <p>NOT OPERATIONAL YET!</p>
+            <form method="POST" action="/dispute/">
+                <input style="width:100%;" type="text" name="about" placeholder="Provide the ID you wish to dispute" {% if dispute %}value="{{ dispute.data['about'] }}"{% endif %}>
+                <br><br>
+                <textarea style="width:100%;height:200px;" name="dispute" placeholder="Please describe the nature of your dispute">{% if dispute %}{{ dispute.data['dispute'] }}{% endif %}</textarea>
+                <input style="width:100%;" type="text" placeholder="Provide a contact email address" name="email" {% if dispute %}value="{{ dispute.data['email'] }}"{% endif %}>
+                <br><input class="btn" type="submit" name="submit" value="submit your dispute">
+                {% if dispute %}
+                 <a class="btn btn-danger deletethis" href="#" data-id="{{ dispute.data['id'] }}">delete this dispute</a>
+                {% endif %}
+            </form> 
+        </div>
     </div>
 </div>
+
 
 {% endblock %}

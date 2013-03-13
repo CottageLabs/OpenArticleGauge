@@ -122,9 +122,31 @@ jQuery(document).ready(function($) {
     var dispute_datatype = 'JSON';
 
     var dispute_resdisplay = [
+        [
+            {
+                "pre": '<a target="_blank" href="/dispute/',
+                "field": "id",
+                "post": '">'
+            },
+            {
+                "field": "about",
+                "post": '</a>'
+            },
+            {
+                "pre": " submitted by ",
+                "field": "email"
+            }
+        ],
+        [
+            {
+                "field": "dispute"
+            }
+        ]
     ];
 
     var dispute_facets = [
+        {'field': 'about.exact', 'display': 'About'},
+        {'field': 'email.exact', 'display': 'Submitted by'}
     ];
 
     var opts = {
