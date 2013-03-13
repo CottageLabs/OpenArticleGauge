@@ -1,7 +1,11 @@
 # how to run the iioa app
-host = '0.0.0.0'
-port = '5000'
-debug = True
+HOST = '0.0.0.0'
+PORT = '5000'
+DEBUG = True
+MAX_CONTENT_LENGTH = 1024 * 1024 * 3
+NO_QUERY_VIA_API = []
+ANONYMOUS_SEARCH_FILTER = False
+SEARCH_SORT = False
 
 # provide an email address for receiving errors or dispute warning
 contact_email = ''
@@ -68,45 +72,48 @@ licence_detection = [
 ]
 
 # Cache configuration
-redis_cache_host = "localhost"
-redis_cache_port = 6379
-redis_cache_db = 2
-redis_cache_timeout = 7776000 # approximately 3 months
+REDIS_CACHE_HOST = "localhost"
+REDIS_CACHE_PORT = 6379
+REDIS_CACHE_DB = 2
+REDIS_CACHE_TIMEOUT = 7776000 # approximately 3 months
 
 # Number of seconds it takes for a licence record to be considered stale
 licence_stale_time = 15552000 # approximately 6 months
 
 # whether or not we are buffering posts to the index
-buffering = False
+BUFFERING = False
 
 # elasticsearch configs
-es_address = 'http://localhost:9200'
-es_indexname = 'iioa'
-es_indextype = 'record'
-es_disputetype = 'dispute'
+ELASTIC_SEARCH_HOST = 'http://localhost:9200'
+ELASTIC_SEARCH_DB = 'iioa'
+INITIALISE_INDEX = True
 
 # if index does not exist, it will be created first time round using the mapping below
-es_mapping = {
-    "record" : {
-        "date_detection" : "false",
-        "dynamic_templates" : [
-            {
-                "default" : {
-                    "match" : "*",
-                    "match_mapping_type": "string",
-                    "mapping" : {
-                        "type" : "multi_field",
-                        "fields" : {
-                            "{name}" : {"type" : "{dynamic_type}", "index" : "analyzed", "store" : "no"},
-                            "exact" : {"type" : "{dynamic_type}", "index" : "not_analyzed", "store" : "yes"}
+FACET_FIELD = '.exact'
+MAPPINGS = {
+    "record": {
+        "record" : {
+            "date_detection" : "false",
+            "dynamic_templates" : [
+                {
+                    "default" : {
+                        "match" : "*",
+                        "match_mapping_type": "string",
+                        "mapping" : {
+                            "type" : "multi_field",
+                            "fields" : {
+                                "{name}" : {"type" : "{dynamic_type}", "index" : "analyzed", "store" : "no"},
+                                "exact" : {"type" : "{dynamic_type}", "index" : "not_analyzed", "store" : "yes"}
+                            }
                         }
                     }
                 }
-            }
-        ]
+            ]
+        }
     }
 }
-
+MAPPINGS['dispute'] = {'dispute':MAPPINGS['record']['record']}
+MAPPINGS['log'] = {'log':MAPPINGS['record']['record']}
 
 # IIOA version and user agent string
 version = '0.1 alpha'
