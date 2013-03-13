@@ -52,6 +52,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,            # ND is False
             "SA": False,            # SA is false
             "provenance": {
+                "handler": plugin._short_name, # name of plugin which processed this record
+                "handler_version": plugin.__version__, # version of plugin which processed this record
                 "category": "xml_api", # category is xml_api
                 "description": 'License decided by querying the eLife XML API at http://elife.elifesciences.org/elife-source-xml/10.7554/eLife.00160', # description is a long string
                 "agent": config.agent, # agent is from configuration
@@ -149,10 +151,7 @@ class TestProvider(TestCase):
             record['bibjson'] = {}
             record['provider'] = {}
             record['provider']['url'] = [comparison['provenance']['source']]
-
-            record['identifier'] = {}
-            record['identifier']['type'] = 'doi'
-            record['identifier']['id'] = '10.7554/eLife.00160'
+            record['provider']['doi'] = '10.7554/eLife.00160'
             
             # set the current request so that the monkey patch knows how to respond
             CURRENT_REQUEST = comparison['provenance']['source']

@@ -45,8 +45,30 @@ class TestWorkflow(TestCase):
         test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not bmc.supports_url(url)
+
+    def test_05_name_and_version(self):
+        """
+        Take an example supported article and check just the handler fields
+        """
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://www.biomedcentral.com/1471-2164/13/425']
+
+        bmc.page_license(record)
+
+        # just barebones checks to make sure the license and provenance objects
+        # exist in the first place so the handler fields can be checked
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        assert 'provenance' in record['bibjson']['license'][-1]
+
+        assert 'handler' in record['bibjson']['license'][-1]['provenance']
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == bmc._short_name
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == bmc.__version__
     
-    def test_05_bmc_standard_OA_license(self):
+    def test_06_bmc_standard_OA_license(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}

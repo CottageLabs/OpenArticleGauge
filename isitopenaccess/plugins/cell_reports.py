@@ -1,3 +1,7 @@
+_short_name = __name__.split(".")[-1]
+__version__='0.1' # consider incrementing or at least adding a minor version
+                    # e.g. "0.1.1" if you change this plugin
+
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
 base_urls = ['www.cell.com']
@@ -62,4 +66,4 @@ def page_license(record):
     """
     for source_url in record['provider']['url']:
         if supports_url(source_url):
-            cpl.describe_license_fail(record, source_url, fail_why, fail_suggested_solution)
+            cpl.describe_license_fail(record, source_url, fail_why, fail_suggested_solution, handler=_short_name, handler_version=__version__)

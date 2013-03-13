@@ -1,3 +1,7 @@
+_short_name = __name__.split(".")[-1]
+__version__='0.1' # consider incrementing or at least adding a minor version
+                    # e.g. "0.1.1" if you change this plugin
+
 from isitopenaccess.plugins import string_matcher
 import re
 
@@ -48,7 +52,7 @@ def page_license(record):
         {"""This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0),
                      which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is
                      properly cited.""":
-            {'type': 'cc-nc', 'version':'3.0', 'open_access': True, 'BY': True, 'NC': True, 'SA': False, 'ND': False,
+            {'type': 'cc-nc', 'version':'3.0', 'open_access': False, 'BY': True, 'NC': True, 'SA': False, 'ND': False,
                 # also declare some properties which override info about this license in the licenses list (see licenses module)
                 'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
         }
@@ -56,4 +60,4 @@ def page_license(record):
 
     for url in record['provider']['url']:
         if supports_url(url):
-            string_matcher.simple_extract(lic_statements, record, url)
+            string_matcher.simple_extract(_short_name, __version__, lic_statements, record, url)

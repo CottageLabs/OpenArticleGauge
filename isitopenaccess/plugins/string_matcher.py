@@ -6,7 +6,7 @@ from isitopenaccess import config
 from isitopenaccess.licenses import LICENSES
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
-def simple_extract(lic_statements, record, url):
+def simple_extract(handler, handler_version, lic_statements, record, url):
     """
     Generic code which looks for a particular string in a given web page (URL),
     determines the licence conditions of the article and populates
@@ -17,6 +17,10 @@ def simple_extract(lic_statements, record, url):
     contains (allows re-use) the logic that any "dumb string matching" plugin 
     would use.
 
+    :param handler: The name of the plugin which called this function to
+    handle the record.
+    :param handler_version: The __version__ of the plugin which called this
+    function to handle the record.
     :param lic_statements: licensing statements to look for on this publisher's 
     pages. Take the form of {statement: meaning}
     where meaning['type'] identifies the license (see licenses.py)
@@ -24,6 +28,8 @@ def simple_extract(lic_statements, record, url):
     See a publisher plugin for an example, e.g. bmc.py
     :param record: a request for the IIOA status of an article, see IIOA docs for
     more info.
+    :param url: source url of the item to be fetched. This is where the HTML
+    page that's going to be scraped is expected to reside.
     """
 
     # get content
@@ -61,7 +67,9 @@ def simple_extract(lic_statements, record, url):
                 'agent': config.agent,
                 'category': 'page_scrape', # TODO we need to think how the
                     # users get to know what the values here mean.. docs?
-                'description': cpl.gen_provenance_description(url, statement)
+                'description': cpl.gen_provenance_description(url, statement),
+                'handler': handler, # the name of the plugin processing this record
+                'handler_version': handler_version # version of the plugin processing this record
             }
 
             license['provenance'] = provenance

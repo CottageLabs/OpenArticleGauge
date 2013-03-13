@@ -1,3 +1,7 @@
+_short_name = __name__.split(".")[-1]
+__version__='0.1' # consider incrementing or at least adding a minor version
+                    # e.g. "0.1.1" if you change this plugin
+
 from isitopenaccess.plugins import string_matcher
 from isitopenaccess.plugins import common as cpl # Common Plugin Logic
 
@@ -43,7 +47,7 @@ def page_license(record):
             {'type': 'cc-by', 'version':'', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False}
         },
         {"This is an Open Access article in the spirit of the Public Library of Science (PLoS) principles for Open Access http://www.plos.org/oa/, without any waiver of WHO's privileges and immunities under international law, convention, or agreement. This article should not be reproduced for use in association with the promotion of commercial products, services, or any legal entity. There should be no suggestion that WHO endorses any specific organization or products. The use of the WHO logo is not permitted. This notice should be preserved along with the article's original URL.":
-            {'type': 'plos-who', 'version':'', 'open_access': True, 'BY': True, 'NC': '', 'SA': False, 'ND': False}
+            {'type': 'plos-who', 'version':'', 'open_access': False, 'BY': True, 'NC': '', 'SA': False, 'ND': False}
         },
         {"This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.":
             {'type': 'cc-zero', 'version':'', 'open_access': True, 'BY': False, 'NC': False, 'SA': False, 'ND': False}
@@ -52,4 +56,4 @@ def page_license(record):
 
     for url in record['provider']['url']:
         if supports_url(url):
-            string_matcher.simple_extract(lic_statements, record, url)
+            string_matcher.simple_extract(_short_name, __version__, lic_statements, record, url)
