@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isitopenaccess.plugins import pmid
+from isitopenaccess.plugins.pmid import PMIDPlugin
 from isitopenaccess import models
 
 import os, requests
@@ -88,6 +88,7 @@ class TestPmid(TestCase):
         pass
         
     def test_01_detect_verify_type_real_pmids(self):
+        pmid = PMIDPlugin()
         counter = 0
         for d in PMIDS:
             bjid = {'id' : d}
@@ -102,6 +103,7 @@ class TestPmid(TestCase):
         #Test the various erroneous PMID possibilities, which will include:
         #- less than 1 and more than 8 digits
         #- random strings (i.e. not just digits)
+        pmid = PMIDPlugin()
         
         # some random digits
         bjid = {'id' : 'qp23u4ehjkjewfiuwqr'} # random numbers and digits
@@ -124,6 +126,8 @@ class TestPmid(TestCase):
         assert not bjid.has_key("type")
         
     def test_03_detect_verify_type_ignores(self):
+        pmid = PMIDPlugin()
+        
         bjid = {"id" : "whatever", "type" : "doi"}
         pmid.type_detect_verify(bjid)
         assert bjid['type'] == "doi"
@@ -134,11 +138,13 @@ class TestPmid(TestCase):
     
     def test_04_detect_verify_type_error(self):
         # create an invalid pmid and assert it is a pmid
+        pmid = PMIDPlugin()
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
         with self.assertRaises(models.LookupException):
             pmid.type_detect_verify(bjid)
             
     def test_05_canonicalise_real(self):
+        pmid = PMIDPlugin()
         counter = 0
         for d in CANONICAL.keys():
             bjid = {'id' : d, 'type' : 'pmid'}
@@ -150,11 +156,13 @@ class TestPmid(TestCase):
         assert counter > 0
         
     def test_06_canonicalise_ignore(self):
+        pmid = PMIDPlugin()
         bjid = {"id" : "whatever", "type" : "doi"}
         pmid.canonicalise(bjid)
         assert not bjid.has_key("canonical")
         
     def test_07_canonicalise_error(self):
+        pmid = PMIDPlugin()
         # create an invalid pmid and assert it is a pmid
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
         with self.assertRaises(models.LookupException):
@@ -165,6 +173,7 @@ class TestPmid(TestCase):
             pmid.canonicalise(bjid)
     
     def test_08_provider_resolve_not_relevant(self):
+        pmid = PMIDPlugin()
         record = {}
         
         pmid.provider_resolver(record)
@@ -188,6 +197,7 @@ class TestPmid(TestCase):
     def test_09_provider_resolve_doi(self):
         old_get = requests.get
         requests.get = get_doi
+        pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
         
@@ -202,6 +212,7 @@ class TestPmid(TestCase):
     def test_10_provider_resolve_from_icon(self):
         old_get = requests.get
         requests.get = get_icon
+        pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
         
@@ -215,6 +226,7 @@ class TestPmid(TestCase):
     def test_11_provider_resolve_from_resources(self):
         old_get = requests.get
         requests.get = get_linkout
+        pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "1234567", "type" : "pmid", "canonical" : "pmid:1234567"}}
         

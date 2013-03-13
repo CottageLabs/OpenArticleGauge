@@ -15,26 +15,47 @@ module_search_list = ["isitopenaccess"]
 # List of plugins that will run in order to detect the type of an identifier.
 # All plugins will run
 type_detection = [
+    "isitopenaccess.plugins.doi.DOIPlugin",
+    "isitopenaccess.plugins.pmid.PMIDPlugin"
+]
+"""
+PRE-PLUGIN REFACTOR
+type_detection = [
     "plugins.doi.type_detect_verify",
     "plugins.pmid.type_detect_verify"
 ]
+"""
 
 # dictionary of plugins that can be used to canonicalise all the different 
 # identifier types.  Key is the identifier type as detected with type_detection,
 # value is the plugin to be used
 canonicalisers = {
+    "doi" : "isitopenaccess.plugins.doi.DOIPlugin",
+    "pmid" : "isitopenaccess.plugins.pmid.PMIDPlugin"
+}
+"""
+PRE-PLUGIN REFACTOR
+canonicalisers = {
     "doi" : "plugins.doi.canonicalise",
     "pmid" : "plugins.pmid.canonicalise"
 }
+"""
 
 # dictionary of lists of plugins that can be used to determine the provider
 # of an identifier type.  Key is the identifier type as detected with type_detection,
 # value is a list of plugins to be run in order.  When a plugin detects a provider,
 # processing of the chain will exit without passing any further.
 provider_detection = {
+    "doi" : ["isitopenaccess.plugins.doi.DOIPlugin"], 
+    "pmid" : ["isitopenaccess.plugins.pmid.PMIDPlugin"]
+}
+"""
+PRE-PLUGIN REFACTOR
+provider_detection = {
     "doi" : ["plugins.doi.provider_range_lookup", "plugins.doi.provider_dereference"], 
     "pmid" : ["plugins.pmid.provider_resolver"]
 }
+"""
 
 # dictionary of single plugins that can be used to determine the licence 
 # conditions of a given identifier.  Key is a string representing the provider,
@@ -43,29 +64,22 @@ provider_detection = {
 #
 # NOTE: URLs should be presented without leading http or https protocol specifiers
 # (so https://www.plosone.org should be www.plosone.org)
+license_detection = [
+    "isitopenaccess.plugins.plos.PLOSPlugin",
+    "isitopenaccess.plugins.bmc.BMCPlugin",
+    "isitopenaccess.plugins.cell_reports.CellReportsPlugin",
+    "isitopenaccess.plugins.oup.OUPPlugin",
+    "isitopenaccess.plugins.elife.ELifePlugin"
+]
 """
-licence_detection = {
-    # TODO - how to add the OUP plugin?
-    # each OUP journal (quite a few..) is a subdomain of oxfordjournals.org
-    # so the equivalent of *.oxfordjournals.org would be... ?
-    # PLoS
-    "www.plosone.org" : "plugins.plos.page_license",
-    "www.plosbiology.org" : "plugins.plos.page_license",
-    "www.plosmedicine.org" : "plugins.plos.page_license",
-    "www.ploscompbiol.org" : "plugins.plos.page_license",
-    "www.plosgenetics.org" : "plugins.plos.page_license",
-    "www.plospathogens.org" : "plugins.plos.page_license",
-    "www.plosntds.org" : "plugins.plos.page_license",
-    # BMC
-    "www.biomedcentral.com" : "plugins.bmc.page_license"
-}
-"""
-licence_detection = [
+PRE-PLUGIN REFACTOR
+license_detection = [
     "plugins.plos.page_license",
     "plugins.bmc.page_license",
     "plugins.cell_reports.page_license",
     "plugins.oup.page_license"
 ]
+"""
 
 # Cache configuration
 redis_cache_host = "localhost"
@@ -116,6 +130,6 @@ agent = 'IsItOpenAccess Service/' + version
 date_format = "%Y-%m-%dT%H:%M:%SZ"
 
 # urls to be used by plugins or the processing pipeline when the licence cannot be detected
-unknown_url = "http://iioa.cottagelabs.com/licences/unknown"
-known_unknown_url = "http://iioa.cottagelabs.com/licences/known-unknown"
+unknown_url = ""
+known_unknown_url = ""
 

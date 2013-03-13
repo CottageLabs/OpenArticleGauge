@@ -1,7 +1,7 @@
 from unittest import TestCase
 import requests
 
-from isitopenaccess.plugins import bmc
+from isitopenaccess.plugins.bmc import BMCPlugin
 from isitopenaccess import config
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
@@ -28,21 +28,25 @@ class TestWorkflow(TestCase):
         pass
     
     def test_01_bmc_supports_success(self):
+        bmc = BMCPlugin()
         test_urls = ["http://www.biomedcentral.com/983242"]
         for url in test_urls:
             assert bmc.supports({"url" : [url]})
         
     def test_02_bmc_supports_fail(self):
+        bmc = BMCPlugin()
         test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not bmc.supports({"url" : [url]})
     
     def test_03_bmc_supports_url_success(self):
+        bmc = BMCPlugin()
         test_urls = ["http://www.biomedcentral.com/983242"]
         for url in test_urls:
             assert bmc.supports_url(url)
     
     def test_04_bmc_supports_url_fail(self):
+        bmc = BMCPlugin()
         test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not bmc.supports_url(url)
@@ -51,12 +55,14 @@ class TestWorkflow(TestCase):
         """
         Take an example supported article and check just the handler fields
         """
+        bmc = BMCPlugin()
+        
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.biomedcentral.com/1471-2164/13/425']
 
-        bmc.page_license(record)
+        bmc.license_detect(record)
 
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
@@ -70,12 +76,14 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['handler_version'] == bmc.__version__
     
     def test_06_bmc_standard_OA_license(self):
+        bmc = BMCPlugin()
+        
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.biomedcentral.com/1471-2164/13/425']
 
-        bmc.page_license(record)
+        bmc.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -111,13 +119,14 @@ class TestWorkflow(TestCase):
     def test_07_unknown(self):
         old_get = requests.get
         requests.get = get_unknown
+        bmc = BMCPlugin()
         
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://unknown']
         
-        bmc.page_license(record)
+        bmc.license_detect(record)
 
         # check if all the important keys were created
         assert "license" not in record['bibjson']

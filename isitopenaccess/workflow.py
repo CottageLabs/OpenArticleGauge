@@ -1,6 +1,5 @@
 from celery import chain
-import models, config, cache, archive, plugloader
-from plugins.common import describe_license_fail
+from isitopenaccess import models, config, cache, archive, plugin, recordmanager
 import logging
 from slavedriver import celery
 
@@ -214,11 +213,18 @@ def _canonicalise_identifier(record):
         raise models.LookupException("bibjson identifier object does not contain a 'type' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
+    p = plugin.PluginFactory.canonicalise(record['identifier']['type'])
+    if p is None:
+        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
+    p.canonicalise(record['identifier'])
+    """
+    PRE-PLUGIN REFACTOR
     plugin_name = config.canonicalisers.get(record['identifier']['type'])
     plugin = plugloader.load(plugin_name)
     if plugin is None:
         raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'] + " (plugin name " + plugin_name + ")")
     plugin(record['identifier'])
+    """
 
 def _detect_verify_type(record):
     """
@@ -233,11 +239,17 @@ def _detect_verify_type(record):
     
     # run through /all/ of the plugins and give each a chance to augment/check
     # the identifier
+    plugins = plugin.PluginFactory.type_detect_verify()
+    for p in plugins:
+        p.type_detect_verify(record['identifier'])
+    """
+    PRE-PLUGIN REFACTOR CODE
     for plugin_name in config.type_detection:
         plugin = plugloader.load(plugin_name)
         if plugin is None:
             raise models.LookupException("unable to load plugin for detecting identifier type: " + plugin_name)
         plugin(record["identifier"])
+    """
     
 def _start_back_end(record):
     """
@@ -266,12 +278,18 @@ def detect_provider(record):
     
     # Step 2: get the provider plugins that are relevant, and
     # apply each one until a provider string is added
+    plugins = plugin.PluginFactory.detect_provider(record['identifier']["type"])
+    for p in plugins:
+        log.debug("applying plugin " + str(p._short_name))
+        p.detect_provider(record)
+    """
+    PRE-PLUGIN REFACTOR
     for plugin_name in config.provider_detection.get(record['identifier']["type"], []):
         # all provider plugins run, until each plugin has had a go at determining provider information
         plugin = plugloader.load(plugin_name)
         log.debug("applying plugin " + str(plugin_name))
         plugin(record)
-    
+    """
     # we have to return the record, so that the next step in the chain
     # can deal with it
     log.debug("yielded result " + str(record))
@@ -285,27 +303,37 @@ def provider_licence(record):
         return record
     
     # Step 2: get the plugin that will run for the given provider
-    plugin, plugin_name, plugin_version = _get_provider_plugin(record["provider"])
-    if plugin is None:
+    p = _get_provider_plugin(record["provider"])
+    if p is None:
         log.debug("No plugin to handle provider: " + str(record['provider']))
         return record
-    log.debug("Plugin " + str(plugin) + " to handle provider " + str(record['provider']))
+    log.debug("Plugin " + str(p) + " to handle provider " + str(record['provider']))
     
     # Step 3: run the plugin on the record
     if "bibjson" not in record:
         # if the record doesn't have a bibjson element, add a blank one
         record['bibjson'] = {}
-    plugin(record)
+    p.license_detect(record)
     
     # was the plugin able to detect a licence?
     # if not, we need to add an unknown licence for this provider
     if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
-        log.debug("No licence detected by plugin " + plugin_name + " so adding unknown licence")
-        describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url, plugin_name, plugin_version)
+        log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
+        recordmanager.add_license(record, 
+            url=config.unknown_url,
+            type="failed-to-obtain-license",
+            open_access=False,
+            error_message="unable to detect licence",
+            category="failure",
+            provenance_description="a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown",
+            handler=p._short_name,
+            handler_version=p.__version__
+        )
+        # describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url, p._short_name, p.__version__)
 
     # we have to return the record so that the next step in the chain can
     # deal with it
-    log.debug("plugin " + str(plugin) + " yielded result " + str(record))
+    log.debug("plugin " + str(p) + " yielded result " + str(record))
     return record
 
 @celery.task(name="isitopenaccess.workflow.store_results")
@@ -319,7 +347,15 @@ def store_results(record):
     if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
         # the bibjson record does not contain a license list OR the license list is of zero length
         log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record['bibjson']))
-        describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url)
+        recordmanager.add_license(record,
+            url=config.unknown_url,
+            type="failed-to-obtain-license",
+            open_access=False,
+            error_message="unable to detect licence",
+            category="failure",
+            provenance_description="no plugin was found that would try to detect a licence.  This entry records that the license is therefore unknown",
+        )
+        # describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url)
         
     # Step 2: unqueue the record
     if record.has_key("queued"):
@@ -341,6 +377,9 @@ def store_results(record):
     return record
 
 def _get_provider_plugin(provider_record):
+    return plugin.PluginFactory.license_detect(provider_record)
+    """
+    PRE-PLUGIN REFACTOR
     for plugin_name in config.licence_detection:
         log.debug("checking " + plugin_name + " for support of provider " + str(provider_record))
         supporter = plugloader.load_sibling(plugin_name, "supports")
@@ -354,6 +393,7 @@ def _get_provider_plugin(provider_record):
             log.debug(plugin_name + " (" + name + " v" + str(version) + ") services provider " + str(provider_record))
             return plugloader.load(plugin_name), name, version
     return None, None, None
+    """
 
 def _add_identifier_to_bibjson(identifier, bibjson):
     # FIXME: this is pretty blunt, could be a lot smarter

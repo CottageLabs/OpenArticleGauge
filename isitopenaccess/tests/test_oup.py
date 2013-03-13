@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isitopenaccess.plugins import oup
+from isitopenaccess.plugins.oup import OUPPlugin
 from isitopenaccess import config
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
@@ -17,12 +17,14 @@ class TestWorkflow(TestCase):
         pass
 
     def test_01_oup_supports_success(self):
+        oup = OUPPlugin()
         test_urls = ["http://www.oxfordjournals.org/983242", "http://chemistry.oxfordjournals.org/2987433",
                         "https://www.biology.oxfordjournals.org/jsafkjsaf"]
         for url in test_urls:
             assert oup.supports({"url" : [url]})
         
     def test_02_oup_supports_fail(self):
+        oup = OUPPlugin()
         test_urls = ["http://www.plosone.org/", "www.biomedcentral.com", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not oup.supports({"url" : [url]})
@@ -36,7 +38,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2898']
 
-        oup.page_license(record)
+        oup = OUPPlugin()
+        oup.license_detect(record)
 
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
@@ -55,7 +58,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2898']
 
-        oup.page_license(record)
+        oup = OUPPlugin()
+        oup.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -95,7 +99,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://nar.oxfordjournals.org/content/40/21/10668']
 
-        oup.page_license(record)
+        oup = OUPPlugin()
+        oup.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -135,7 +140,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://nar.oxfordjournals.org/content/40/21/10832']
 
-        oup.page_license(record)
+        oup = OUPPlugin()
+        oup.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')

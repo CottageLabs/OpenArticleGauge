@@ -7,8 +7,8 @@ from isitopenaccess import config
 # Set these variables/imports and the test case will use them to perform some general
 # tests on your provider code
 
-# import your plugin as "plugin" (here, replace "plos" with your plugin module's name)
-from isitopenaccess.plugins import plos as plugin
+# import your plugin as "MyPlugin" (here, replace "plos" and "PLOSPlugin" with your plugin module's name and class)
+from isitopenaccess.plugins.plos import PLOSPlugin as MyPlugin
 
 # a list of urls which your plugin should be able to support
 # these example values are from the PLOS plugin, they can be replaced with your own urls
@@ -51,8 +51,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,            # ND is False
             "SA": False,            # SA is false
             "provenance": {
-                "handler": plugin._short_name, # name of plugin which processed this record
-                "handler_version": plugin.__version__, # version of plugin which processed this record
+                "handler": MyPlugin._short_name, # name of plugin which processed this record
+                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
                 "category": "page_scrape", # category is page_scrape
                 "description": 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
                 "agent": config.agent, # agent is from configuration
@@ -133,12 +133,14 @@ class TestProvider(TestCase):
         requests.get = self.old_get
 
     def test_01_supports_success(self):
+        p = MyPlugin()
         for url in SUPPORTED_URLS:
-            assert plugin.supports({"url" : [url]})
+            assert p.supports({"url" : [url]})
         
     def test_02_supports_fail(self):
+        p = MyPlugin()
         for url in UNSUPPORTED_URLS:
-            assert not plugin.supports({"url" : [url]})
+            assert not p.supports({"url" : [url]})
     
     def test_03_resource_and_result(self):
         global CURRENT_REQUEST
@@ -155,7 +157,8 @@ class TestProvider(TestCase):
             CURRENT_REQUEST = comparison['provenance']['source']
             
             # run the plugin
-            plugin.page_license(record)
+            p = MyPlugin()
+            p.license_detect(record)
 
             # check if all the top-level keys were created
             assert "bibjson" in record

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isitopenaccess.plugins import cell_reports
+from isitopenaccess.plugins.cell_reports import CellReportsPlugin
 from isitopenaccess import config
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
@@ -20,12 +20,14 @@ class TestWorkflow(TestCase):
         """
         Take an example supported article and check just the handler fields
         """
+        cell_reports = CellReportsPlugin()
+        
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.cell.com/cell-reports/fulltext/S2211-1247%2812%2900426-3']
 
-        cell_reports.page_license(record)
+        cell_reports.license_detect(record)
 
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
@@ -40,12 +42,14 @@ class TestWorkflow(TestCase):
 
 
     def test_02_cell_reports_standard_OA_license(self):
+        cell_reports = CellReportsPlugin()
+        
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.cell.com/cell-reports/fulltext/S2211-1247%2812%2900426-3']
 
-        cell_reports.page_license(record)
+        cell_reports.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')

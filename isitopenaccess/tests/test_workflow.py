@@ -13,7 +13,7 @@ There are other tests for working on specific plugins.
 """
 
 from unittest import TestCase
-from isitopenaccess import config, workflow, models, cache, archive
+from isitopenaccess import config, workflow, models, cache, archive, plugin
 
 __version__ = "1.0"
 
@@ -28,24 +28,28 @@ def mock_store(bibjson):
     global ARCHIVE
     ARCHIVE.append(bibjson)
 
-def mock_doi_type(bibjson_identifier):
-    if bibjson_identifier["id"].startswith("10"):
-        bibjson_identifier["type"] = "doi"
-        return
-    if bibjson_identifier.get("type") == "doi":
-        raise models.LookupException("oi")
+class mock_doi_type(object):
+    def type_detect_verify(self, bibjson_identifier):
+        if bibjson_identifier["id"].startswith("10"):
+            bibjson_identifier["type"] = "doi"
+            return
+        if bibjson_identifier.get("type") == "doi":
+            raise models.LookupException("oi")
 
-def mock_pmid_type(bibjson_identifier):
-    if bibjson_identifier["id"] == "12345678":
-        bibjson_identifier["type"] = "pmid"
+class mock_pmid_type(object):
+    def type_detect_verify(self, bibjson_identifier):
+        if bibjson_identifier["id"] == "12345678":
+            bibjson_identifier["type"] = "pmid"
         
-def mock_doi_canon(bibjson_identifier):
-    if bibjson_identifier['type'] == 'doi':
-        bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
-    
-def mock_pmid_canon(bibjson_identifier):
-    if bibjson_identifier['type'] == 'pmid':
-        bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
+class mock_doi_canon(object):
+    def canonicalise(self, bibjson_identifier):
+        if bibjson_identifier['type'] == 'doi':
+            bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
+        
+class mock_pmid_canon(object):
+    def canonicalise(self, bibjson_identifier):
+        if bibjson_identifier['type'] == 'pmid':
+            bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
 
 def mock_check_cache(key):
     if key == "doi:10.none": return None
@@ -58,7 +62,9 @@ def mock_queue_cache(key):
 
 def mock_success_cache(key):
     return {"identifier" : {"id" : key}, "bibjson": {"title" : "cached"}}
-    
+
+def mock_is_stale_false(*args, **kwargs): return False
+
 def mock_null_cache(key): return None
 
 def mock_check_archive(key):
@@ -68,21 +74,35 @@ def mock_check_archive(key):
 
 def mock_null_archive(key): return None
 
-def mock_detect_provider(record):
-    record['provider'] = {"url" : ["http://provider"]}
+class mock_detect_provider(plugin.Plugin):
+    def detect_provider(self, record):
+        record['provider'] = {"url" : ["http://provider"]}
 
-def mock_no_provider(record): pass
+class mock_no_provider(plugin.Plugin):
+    def detect_provider(self, record): 
+        pass
 
-def mock_other_detect(record):
-    record['provider'] = {"url" : ["http://other"]}
+class mock_other_detect(plugin.Plugin):
+    def detect_provider(self, record):
+        record['provider'] = {"url" : ["http://other"]}
 
-def mock_licence_plugin(record):
-    record['bibjson'] = {}
-    record['bibjson']['license'] = [{}]
-    record['bibjson']['title'] = "mytitle"
+class mock_licence_plugin(plugin.Plugin):
+    sup = True
+    def supports(self, provider):
+        return self.sup
+    def license_detect(self, record):
+        record['bibjson'] = {}
+        record['bibjson']['license'] = [{}]
+        record['bibjson']['title'] = "mytitle"
 
-def mock_unknown_licence_plugin(record):
-    record['bibjson'] = {}
+class mock_unknown_licence_plugin(plugin.Plugin):
+    __version__ = "1.0"
+    _short_name = "test_workflow"
+    sup = True
+    def supports(self, provider):
+        return self.sup
+    def license_detect(self, record):
+        record['bibjson'] = {}
 
 def mock_back_end(record): pass
 
@@ -215,10 +235,14 @@ class TestWorkflow(TestCase):
         
         # now update the cache mock for the appropriate result
         cache.check_cache = mock_success_cache
+        old_is_stale = workflow._is_stale
+        workflow._is_stale = mock_is_stale_false
         
         # now the same lookup on a properly cached version
         ids = [{"id" : "10.cached"}]
         rs = workflow.lookup(ids)
+        workflow._is_stale = old_is_stale
+        
         assert len(rs.results) == 1
         result = rs.results[0]
         assert result['identifier'][0]['id'] == "10.cached"
@@ -234,9 +258,13 @@ class TestWorkflow(TestCase):
         config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_null_cache
         archive.check_archive = mock_check_archive
+        old_is_stale = workflow._is_stale
+        workflow._is_stale = mock_is_stale_false
         
         # do a lookup for an archived version
         rs = workflow.lookup(ids)
+        workflow._is_stale = old_is_stale
+        
         assert len(rs.results) == 1
         result = rs.results[0]
         assert result['identifier'][0]['id'] == "10.archived"
@@ -283,7 +311,9 @@ class TestWorkflow(TestCase):
         assert "provider" in record
         assert "url" in record['provider']
         assert record["provider"]["url"][0] == "http://provider"
-        
+    
+    """
+    NOTE: this test superseded by test_plugin.py
     def test_09_load_provider_plugin(self):
         # FIXME: this test just about works, but is a total mess.  It relies heavily on
         # some tricky monkey patching, which is working, and the code in workflow.py
@@ -319,12 +349,10 @@ class TestWorkflow(TestCase):
         assert onetwo() == "one_two"
         assert otherone() == "one"
         assert onetwothree() == "one_two"
+    """
     
     def test_10_provider_licence(self):
-        global supports
-        global no_support
-        global who_to_support
-        config.licence_detection = ["test_workflow.mock_licence_plugin"]
+        config.license_detection = ["mock_licence_plugin"]
         
         # first check that no provider results in no change
         record = {}
@@ -332,34 +360,27 @@ class TestWorkflow(TestCase):
         assert not record.has_key("bibjson")
         
         # now check there's no change if there's no plugin
-        old_supports = supports
-        supports = no_support
+        mock_licence_plugin.sup = False
         record['provider'] = {"url" : ["provider"]}
         workflow.provider_licence(record)
         assert not record.has_key("bibjson")
         
         # check that it works when it's right
-        supports = does_support
+        mock_licence_plugin.sup = True
         record['provider'] = {"url" : ["testprovider"]}
         workflow.provider_licence(record)
         
-        supports = old_supports
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license") # american spelling
         assert len(record['bibjson']['license']) == 1
         
     def test_11_provider_unknown_licence(self):
-        global supports
-        config.licence_detection = ["test_workflow.mock_unknown_licence_plugin"]
+        config.license_detection = ["mock_unknown_licence_plugin"]
         
         # check that it works when it's right
-        old_supports = supports
-        supports = does_support
         record = {}
         record['provider'] = {"url" : ["testprovider"]}
         workflow.provider_licence(record)
-        
-        supports = old_supports
         
         # mock_unknown_plugin runs but does not provide us with a licence,
         # but nonetheless, we expect an unknown licence to exist
@@ -368,6 +389,7 @@ class TestWorkflow(TestCase):
         assert len(record['bibjson']['license']) == 1
         licence = record['bibjson']['license'][0]
         assert licence['url'] == config.unknown_url, (licence['url'], config.unknown_url)
+        assert licence["type"] == "failed-to-obtain-license"
         assert licence['provenance']['handler'] == "test_workflow", licence['provenance']['handler']
         assert licence['provenance']['handler_version'] == "1.0", licence['provenance']['handler_version']
     
@@ -456,7 +478,10 @@ class TestWorkflow(TestCase):
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
         
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
-        config.licence_detection = ["test_workflow.mock_licence_plugin"]
+        config.license_detection = ["mock_licence_plugin"]
+        
+        cache.cache = mock_cache
+        archive.store = mock_store
         
         # run the chain synchronously
         record = workflow.detect_provider(record)

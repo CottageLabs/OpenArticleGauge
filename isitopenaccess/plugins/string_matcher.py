@@ -1,3 +1,6 @@
+# DEPRECATED, AFTER PLUGIN REFACTOR WILL BE REMOVED
+
+'''
 import requests
 from copy import deepcopy
 from datetime import datetime
@@ -76,3 +79,4 @@ def simple_extract(handler, handler_version, lic_statements, record, url):
 
             record['bibjson'].setdefault('license', [])
             record['bibjson']['license'].append(license)
+'''

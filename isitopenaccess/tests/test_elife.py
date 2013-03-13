@@ -8,7 +8,7 @@ from isitopenaccess import config
 # tests on your provider code
 
 # import your plugin as "plugin" (here, replace "plos" with your plugin module's name)
-from isitopenaccess.plugins import elife as plugin
+from isitopenaccess.plugins.elife import ELifePlugin as MyPlugin
 
 # a list of urls which your plugin should be able to support
 # these example values are from the PLOS plugin, they can be replaced with your own urls
@@ -52,8 +52,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,            # ND is False
             "SA": False,            # SA is false
             "provenance": {
-                "handler": plugin._short_name, # name of plugin which processed this record
-                "handler_version": plugin.__version__, # version of plugin which processed this record
+                "handler": MyPlugin._short_name, # name of plugin which processed this record
+                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
                 "category": "xml_api", # category is xml_api
                 "description": 'License decided by querying the eLife XML API at http://elife.elifesciences.org/elife-source-xml/10.7554/eLife.00160', # description is a long string
                 "agent": config.agent, # agent is from configuration
@@ -134,12 +134,14 @@ class TestProvider(TestCase):
         requests.get = self.old_get
 
     def test_01_supports_success(self):
+        p = MyPlugin()
         for url in SUPPORTED_URLS:
-            assert plugin.supports({"url" : [url]})
+            assert p.supports({"url" : [url]})
         
     def test_02_supports_fail(self):
+        p = MyPlugin()
         for url in UNSUPPORTED_URLS:
-            assert not plugin.supports({"url" : [url]})
+            assert not p.supports({"url" : [url]})
     
     def test_03_resource_and_result(self):
         global CURRENT_REQUEST
@@ -157,7 +159,8 @@ class TestProvider(TestCase):
             CURRENT_REQUEST = comparison['provenance']['source']
             
             # run the plugin
-            plugin.page_license(record)
+            p = MyPlugin()
+            p.license_detect(record)
 
             # check if all the top-level keys were created
             assert "bibjson" in record

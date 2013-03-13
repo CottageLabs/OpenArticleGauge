@@ -46,7 +46,7 @@ class TestWorkflow(TestCase):
         assert res == "patched"
         
         config.module_search_list = old_search_list
-        
+    """
     def test_05_load_sibling(self):
         sib = plugloader.load_sibling("tests.test_plugloader.patch", "sibling")
         assert sib is not None
@@ -77,3 +77,8 @@ class TestWorkflow(TestCase):
         assert version == "1.0", version
         
         config.module_search_list = old_search_list
+    """
+    
+    def test_09_load_class(self):
+        doi_class = plugloader.load("isitopenaccess.plugins.doi.DOIPlugin")
+        doi = doi_class()

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isitopenaccess.plugins import doi
+from isitopenaccess.plugins.doi import DOIPlugin
 from isitopenaccess import models
 import requests
 
@@ -61,6 +61,7 @@ class TestWorkflow(TestCase):
         pass
         
     def test_01_detect_verify_type_real_dois(self):
+        doi = DOIPlugin()
         counter = 0
         for d in DOIS:
             bjid = {'id' : d}
@@ -75,6 +76,7 @@ class TestWorkflow(TestCase):
         #Test the various erroneous DOI possibilities, which will include:
         #- prefixes without dois attached
         #- random strings
+        doi = DOIPlugin()
         
         # try some prefixes
         bjid = {'id' : 'doi:'}
@@ -99,6 +101,8 @@ class TestWorkflow(TestCase):
         assert not bjid.has_key("type")
         
     def test_03_detect_verify_type_ignores(self):
+        doi = DOIPlugin()
+        
         bjid = {"id" : "whatever", "type" : "pmid"}
         doi.type_detect_verify(bjid)
         assert bjid['type'] == "pmid"
@@ -108,12 +112,16 @@ class TestWorkflow(TestCase):
         assert not bjid.has_key("type")
     
     def test_04_detect_verify_type_error(self):
+        doi = DOIPlugin()
+        
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         with self.assertRaises(models.LookupException):
             doi.type_detect_verify(bjid)
     
     def test_05_canonicalise_real(self):
+        doi = DOIPlugin()
+        
         counter = 0
         for d in CANONICAL.keys():
             bjid = {'id' : d, 'type' : 'doi'}
@@ -125,11 +133,15 @@ class TestWorkflow(TestCase):
         assert counter > 0
         
     def test_06_canonicalise_ignore(self):
+        doi = DOIPlugin()
+        
         bjid = {"id" : "whatever", "type" : "pmid"}
         doi.canonicalise(bjid)
         assert not bjid.has_key("canonical")
         
     def test_07_canonicalise_error(self):
+        doi = DOIPlugin()
+        
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         with self.assertRaises(models.LookupException):
@@ -140,6 +152,7 @@ class TestWorkflow(TestCase):
             doi.canonicalise(bjid)
     
     def test_08_dereference_not_relevant(self):
+        doi = DOIPlugin()
         record = {}
         
         doi.provider_dereference(record)
@@ -163,6 +176,7 @@ class TestWorkflow(TestCase):
     def test_09_dereference_no_location(self):
         oldget = requests.get
         requests.get = get_no_location
+        doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
         doi.provider_dereference(record)
@@ -176,9 +190,24 @@ class TestWorkflow(TestCase):
     def test_10_dereference_success(self):
         oldget = requests.get
         requests.get = get_success
+        doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
         doi.provider_dereference(record)
+        assert "provider" in record
+        assert "url" in record["provider"]
+        assert record['provider']['url'][0] == "http://location"
+        assert record["provider"]["doi"] == "doi:123"
+        
+        requests.get = oldget
+        
+    def test_11_dereference_success_via_detect_provider(self):
+        oldget = requests.get
+        requests.get = get_success
+        doi = DOIPlugin()
+        
+        record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        doi.detect_provider(record)
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']['url'][0] == "http://location"

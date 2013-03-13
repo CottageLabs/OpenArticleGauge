@@ -1,3 +1,6 @@
+"""
+PRE-PLUGIN REFACTOR - this will be removed when that work is complete
+
 from datetime import datetime
 
 from isitopenaccess import config
@@ -40,7 +43,9 @@ def describe_license_fail(record, source_url, why, suggested_solution='', licenc
 
 
     record['bibjson']['license'].append(license)
+"""
 
+"""
 def record_provider_url(record, url):
     if not "provider" in record:
         record['provider'] = {}
@@ -57,7 +62,9 @@ def record_provider_doi(record, doi):
     if not "provider" in record:
         record['provider'] = {}
     record["provider"]["doi"] = doi
+"""
 
+"""
 def clean_url(url):
     # strip any leading http:// or https://
     if url.startswith("http://"):
@@ -73,3 +80,4 @@ def clean_urls(urls):
         cleaned_urls.append(clean_url(url))
 
     return cleaned_urls
+"""

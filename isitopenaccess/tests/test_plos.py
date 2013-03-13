@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isitopenaccess.plugins import plos
+from isitopenaccess.plugins.plos import PLOSPlugin
 from isitopenaccess import config
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
@@ -17,12 +17,14 @@ class TestWorkflow(TestCase):
         pass
 
     def test_01_plos_supports_success(self):
+        plos = PLOSPlugin()
         test_urls = ["http://www.plosone.org/1234", "www.plosbiology.org/fakjsskjdaf", "https://www.plosmedicine.org/asdfdsafa",
                         "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org", "www.plosntds.org"]
         for url in test_urls:
             assert plos.supports({"url" : [url]})
         
     def test_02_plos_supports_fail(self):
+        plos = PLOSPlugin()
         test_urls = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]
         for url in test_urls:
             assert not plos.supports({"url" : [url]})
@@ -36,7 +38,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089']
 
-        plos.page_license(record)
+        plos = PLOSPlugin()
+        plos.license_detect(record)
 
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
@@ -55,7 +58,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089']
 
-        plos.page_license(record)
+        plos = PLOSPlugin()
+        plos.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -92,7 +96,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406']
 
-        plos.page_license(record)
+        plos = PLOSPlugin()
+        plos.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -128,8 +133,9 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461']
-
-        plos.page_license(record)
+        
+        plos = PLOSPlugin()
+        plos.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -166,7 +172,8 @@ class TestWorkflow(TestCase):
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743']
 
-        plos.page_license(record)
+        plos = PLOSPlugin()
+        plos.license_detect(record)
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
