@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, render_template
+from flask import Blueprint, request, make_response, render_template, abort
 
 import json
 
@@ -34,6 +34,9 @@ def api_lookup(path='',ids=[]):
                 idlist.append({"id":item})
     elif path and len(path) > 0:
         idlist = [ {"id":i} for i in path.split(',') ]
+
+    if len(idlist) > 1000:
+        abort(400)
 
     if idlist:
         results = workflow.lookup(idlist).json()
