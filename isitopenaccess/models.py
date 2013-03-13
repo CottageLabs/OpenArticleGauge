@@ -1,5 +1,65 @@
 import json
 
+from isitopenaccess.dao import DomainObject
+
+from isitopenaccess.core import app
+
+class Record(DomainObject):
+    __type__ = 'record'
+    
+    @classmethod
+    def check_archive(cls, identifier):
+        """
+        Check the archive layer for an object with the given (canonical) identifier,
+        which can be found in the bibjson['identifier']['canonical'] field
+        
+        Return a bibjson record
+        """
+        
+        result = {}
+        if app.config['BUFFERING']:
+            # before checking remote, check the redis buffer queue if one is enabled
+            result = {} # should update result to the matching record object found on buffer queue if any
+            
+        if not result:
+            # by just making an ID and GETting and POSTing to it, we can do things faster.
+            _id = identifier.replace('/','_')
+            result = cls.pull(_id)
+        
+        return result.data
+
+    @classmethod
+    def store(cls, bibjson):
+        """
+        Store the provided bibjson record in the archive (overwriting any item which
+        has the same canonical identifier)
+        """
+        
+        for idobj in bibjson.get('identifier',[]):
+            if 'canonical' in idobj.keys():
+                bibjson['id'] = idobj['canonical'].replace('/','_')
+        
+        if app.config['BUFFERING']:
+            # append this bibjson record to the buffer somehow
+            buf = 'whatever it was plus this new record'
+            # if buffer size limit reached or buffer timeout reached
+            if False: # change this to proper decision
+                cls.bulk('list of the records in the buffer')
+                # flush the buffer however that is done
+        else:
+            # no buffering, just save this one record
+            r = cls(**bibjson)
+            r.save()
+
+
+class Dispute(DomainObject):
+    __type__ = 'dispute'
+
+
+class Log(DomainObject):
+    __type__ = 'log'
+
+
 class ResultSet(object):
     """
     {

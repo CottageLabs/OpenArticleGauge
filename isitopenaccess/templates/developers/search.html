@@ -3,118 +3,151 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    var record_url = 'http://iioa.cottagelabs.com/query?';
-    var record_datatype = 'JSONP';
+    var record_url = '/query/?';
+    var record_datatype = 'JSON';
     
     var record_resdisplay = [
-            [
-                {
-                    "pre": "IDENTIFIER(S): ",
-                    "field": "identifier.id"
-                }
-            ],
-            [
-                {
-                    "pre": "LICENSE(S): ",
-                    "field": "license.title"
-                },
-                {
-                    "pre": " (",
-                    "field": "license.type",
-                    "post": ")"
-                }
-            ],
-            [
-                {
-                    "field": "license.provenance.description"
-                }
-            ],
-            [
-                {
-                    "pre": "IS IT OPEN ACCESS?: ",
-                    "field": "license.open_access"
-                }
-            ],
-            [
-                {
-                    "pre": "BY: ",
-                    "field": "license.BY"
-                },
-                {
-                    "pre": " NC: ",
-                    "field": "license.NC"
-                },
-                {
-                    "pre": " SA: ",
-                    "field": "license.SA"
-                },
-                {
-                    "pre": " ND: ",
-                    "field": "license.ND"
-                }
-            ],
-            [
-                {
-                    "pre": "OKD compliant? ",
-                    "field": "license.is_okd_compliant"
-                },
-                {
-                    "pre": " OSI compliant? ",
-                    "field": "license.is_osi_compliant"
-                }
-            ],
-            [
-                {
-                    "pre": "Learn more about this license at ",
-                    "field": "license.url"
-                }
-            ],
-            [
-                {
-                    "pre": "We retrieved this information from ",
-                    "field": "license.provenance.source",
-                    "post": ". "
-                },
-                {
-                    "pre": "Last checked on ",
-                    "field":"_last_modified",
-                    "post":"."
-                }
-            ]
-        ];
+        [
+            {
+                "pre": "IDENTIFIER(S): ",
+                "field": "identifier.id"
+            }
+        ],
+        [
+            {
+                "pre": "LICENSE(S): ",
+                "field": "license.title"
+            },
+            {
+                "pre": " (",
+                "field": "license.type",
+                "post": ")"
+            }
+        ],
+        [
+            {
+                "field": "license.provenance.description"
+            }
+        ],
+        [
+            {
+                "pre": "IS IT OPEN ACCESS?: ",
+                "field": "license.open_access"
+            }
+        ],
+        [
+            {
+                "pre": "BY: ",
+                "field": "license.BY"
+            },
+            {
+                "pre": " NC: ",
+                "field": "license.NC"
+            },
+            {
+                "pre": " SA: ",
+                "field": "license.SA"
+            },
+            {
+                "pre": " ND: ",
+                "field": "license.ND"
+            }
+        ],
+        [
+            {
+                "pre": "OKD compliant? ",
+                "field": "license.is_okd_compliant"
+            },
+            {
+                "pre": " OSI compliant? ",
+                "field": "license.is_osi_compliant"
+            }
+        ],
+        [
+            {
+                "pre": "Learn more about this license at ",
+                "field": "license.url"
+            }
+        ],
+        [
+            {
+                "pre": "We retrieved this information from ",
+                "field": "license.provenance.source",
+                "post": ". "
+            },
+            {
+                "pre": "Last checked on ",
+                "field":"_last_modified",
+                "post":"."
+            }
+        ]
+    ];
 
     var record_facets = [
         {'field': 'license.open_access', 'display': 'IIOA?'},
         {'field': 'license.type.exact', 'display': 'License type'},
-        {'field': 'license.title.exact', 'display': 'License title'}
+        {'field': 'license.title.exact', 'display': 'License title'},
+        {'field': 'license.provenance.handler.exact', 'display': 'Handler'}
     ];
 
-    var log_url = 'http://test.cottagelabs.com:9200/iioa/log/_search?';
-    var log_datatype = 'JSONP';
+    var log_url = '/query/log?';
+    var log_datatype = 'JSON';
 
     var log_resdisplay = [
-            [
-                {
-                    "field": "date"
-                },
-                {
-                    "field": "type"
-                },
-                {
-                    "field": "process"
-                }
-            ],
-            [
-                {
-                    "field": "log"
-                }
-            ]
-        ];
+        [
+            {
+                "field": "date"
+            },
+            {
+                "field": "type"
+            },
+            {
+                "field": "process"
+            }
+        ],
+        [
+            {
+                "field": "log"
+            }
+        ]
+    ];
 
     var log_facets = [
         {'field': 'process.exact', 'display': 'Process'},
         {'field': 'logfile.exact', 'display': 'Log file'},
         {'field': 'type.exact', 'display': 'Type'}
+    ];
+
+
+    var dispute_url = '/query/dispute?';
+    var dispute_datatype = 'JSON';
+
+    var dispute_resdisplay = [
+        [
+            {
+                "pre": '<a target="_blank" href="/dispute/',
+                "field": "id",
+                "post": '">'
+            },
+            {
+                "field": "about",
+                "post": '</a>'
+            },
+            {
+                "pre": " submitted by ",
+                "field": "email"
+            }
+        ],
+        [
+            {
+                "field": "dispute"
+            }
+        ]
+    ];
+
+    var dispute_facets = [
+        {'field': 'about.exact', 'display': 'About'},
+        {'field': 'email.exact', 'display': 'Submitted by'}
     ];
 
     var opts = {
@@ -144,6 +177,11 @@ jQuery(document).ready(function($) {
             opts.datatype = log_datatype;
             opts.facets = log_facets;
             opts.result_display = log_resdisplay;
+        } else if (type == 'disputes') {
+            opts.search_url = dispute_url;
+            opts.datatype = dispute_datatype;
+            opts.facets = dispute_facets;
+            opts.result_display = dispute_resdisplay;
         };
         var p = $('#facetview').parent();
         $('#facetview').remove();
@@ -159,7 +197,11 @@ jQuery(document).ready(function($) {
 <div class="row-fluid iioa-unit">
     <div class="hero-unit clearfix">
 <p>You can search the existing database of articles and licenses from here. Note if an article has not previously been run through the system, either from the front page or the API, it will not appear here.</p>
-    <p><a class="btn searchtype" data-type="records" href="#">search records</a> <a class="btn searchtype" data-type="logs" href="#">search logs</a></p>
+    <p>
+        <a class="btn searchtype" data-type="records" href="#">search records</a> 
+        <a class="btn searchtype" data-type="logs" href="#">search logs</a>
+        <a class="btn searchtype" data-type="disputes" href="#">search disputes</a>
+    </p>
     </div>
 </div>
 

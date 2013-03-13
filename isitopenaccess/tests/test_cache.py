@@ -10,9 +10,9 @@ test_db = 3 # we are using 1 and 2 for the celery queue and the actual cache res
 class TestWorkflow(TestCase):
 
     def setUp(self):
-        config.redis_cache_host = test_host
-        config.redis_cache_port = test_port
-        config.redis_cache_db = test_db
+        config.REDIS_CACHE_HOST = test_host
+        config.REDIS_CACHE_PORT = test_port
+        config.REDIS_CACHE_DB = test_db
         
     def tearDown(self):
         # FIXME: should probably set the config values back
@@ -36,7 +36,7 @@ class TestWorkflow(TestCase):
     def test_03_check_cache_exists(self):
         client = redis.StrictRedis(host=test_host, port=test_port, db=test_db)
         obj = {"key" : "value"}
-        client.setex("exists", 2, json.dumps(obj))
+        client.set("exists", json.dumps(obj))
         
         result = cache.check_cache("exists")
         assert result.has_key("key")

@@ -24,7 +24,8 @@ def mock_cache(key, obj):
     global CACHE
     CACHE[key] = obj
 
-def mock_store(bibjson):
+@classmethod
+def mock_store(cls, bibjson):
     global ARCHIVE
     ARCHIVE.append(bibjson)
 
@@ -67,7 +68,8 @@ def mock_is_stale_false(*args, **kwargs): return False
 
 def mock_null_cache(key): return None
 
-def mock_check_archive(key):
+@classmethod
+def mock_check_archive(cls, key):
     if key == "doi:10.none": return None
     if key == "doi:10.bibjson": return {"title" : "whatever"}
     if key == "doi:10.archived": return {"title" : "archived"}
@@ -207,14 +209,19 @@ class TestWorkflow(TestCase):
         assert cache_copy is None
         
     def test_04_check_archive(self):
-        archive.check_archive = mock_check_archive
+        models.Record.check_archive = mock_check_archive
         
         record = {"identifier" : {"id" : "10.none", "type" : "doi", "canonical" : "doi:10.none"}}
         archive_copy = workflow._check_archive(record)
         assert archive_copy is None
         
+        old_is_stale = workflow._is_stale
+        workflow._is_stale = mock_is_stale_false
+        
         record = {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}}
         archive_copy = workflow._check_archive(record)
+        workflow._is_stale = old_is_stale
+        
         assert archive_copy.has_key("title")
     
     def test_05_cache_success(self):
@@ -436,7 +443,7 @@ class TestWorkflow(TestCase):
         global ARCHIVE
         
         cache.cache = mock_cache
-        archive.store = mock_store
+        models.Record.store = mock_store
         
         # first check that we get the right behaviour if no licence is provided
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
@@ -481,7 +488,7 @@ class TestWorkflow(TestCase):
         config.license_detection = ["mock_licence_plugin"]
         
         cache.cache = mock_cache
-        archive.store = mock_store
+        models.Record.store = mock_store
         
         # run the chain synchronously
         record = workflow.detect_provider(record)

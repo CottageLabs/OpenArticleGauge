@@ -8,7 +8,7 @@ def check_cache(key):
     check the cache for an object stored under the given key, and convert it
     from a string into a python object
     """
-    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     s = client.get(key)
     
     if s is None:
@@ -71,7 +71,7 @@ def invalidate(key):
     """
     remove anything identified by the supplied key from the cache
     """
-    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
+    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     client.delete(key)
     
 def cache(key, obj):
@@ -85,8 +85,8 @@ def cache(key, obj):
     except TypeError:
         raise CacheException("can only cache python objects that can be sent through json.dumps")
     
-    client = redis.StrictRedis(host=config.redis_cache_host, port=config.redis_cache_port, db=config.redis_cache_db)
-    client.setex(key, config.redis_cache_timeout, s)
+    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
+    client.setex(key, config.REDIS_CACHE_TIMEOUT, s)
     
 class CacheException(Exception):
     def __init__(self, message):

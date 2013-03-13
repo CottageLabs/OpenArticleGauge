@@ -1,5 +1,5 @@
 from celery import chain
-from isitopenaccess import models, config, cache, archive, plugin, recordmanager
+from isitopenaccess import models, config, cache, plugin, recordmanager
 import logging
 from slavedriver import celery
 
@@ -113,7 +113,7 @@ def _check_archive(record):
         
     # obtain a copy of the archived bibjson
     log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
-    archived_bibjson = archive.check_archive(record['identifier']['canonical'])
+    archived_bibjson = models.Record.check_archive(record['identifier']['canonical'])
     
     # if it's not in the archive, return
     if archived_bibjson is None:
@@ -346,7 +346,7 @@ def store_results(record):
     # Step 3: update the archive
     _add_identifier_to_bibjson(record['identifier'], record['bibjson'])
     log.debug(str(record['identifier']) + ": storing this item in the archive")
-    archive.store(record['bibjson'])
+    models.Record.store(record['bibjson'])
     
     # Step 4: update the cache
     log.debug(str(record['identifier']) + ": storing this item in the cache")
