@@ -84,11 +84,17 @@ class Tutorial(plugin.Plugin):
         # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
         lic_statements = [
             {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
-                {'type': 'cc-by', 'version':'2.0', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False,
+                {'type': 'cc-by', # license type, see the licenses module for available ones
+                 'version':'2.0', # version of the license if specified, can be blank
+                 'open_access': True, # Is the license open access compliant? Up to you!
+                 'BY': True, # Does it require attribution?
+                 'NC': False, # Does it have non-commercial restrictions?
+                 'SA': False, # Does it require distribution of derivative works under the same license?
+                 'ND': False, # Does it forbid the creation of derivative works?
 
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
 
-                    # The list in /isitopenaccess/licenses.py sometimes has more
+                    # The list in the licenses module sometimes has more
                     # general information - for example, it doesn't link to a
                     # specific version of the CC-BY license, just the
                     # opendefinition.org page for it. This plugin knows a better
@@ -108,5 +114,3 @@ class Tutorial(plugin.Plugin):
             # ... run the dumb string matcher if the URL is supported.
             if supports_url(url):
                 self.simple_extract(lic_statements, record, url)
-
-
