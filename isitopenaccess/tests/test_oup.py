@@ -90,8 +90,9 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
-        assert record['bibjson']['license'][-1]['provenance']['description'] == '''License decided by scraping the resource at ''' + record['provider']['url'][0] + ''' and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
-                     which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.".'''
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)," \
+        + "\n" + ' '*21 + 'which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.".'
 
     def test_04_oup_standard_OA_license_example2(self):
         record = {}
@@ -131,8 +132,9 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
-        assert record['bibjson']['license'][-1]['provenance']['description'] == '''License decided by scraping the resource at ''' + record['provider']['url'][0] + ''' and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),
-                     which permits unrestricted, distribution, and reproduction in any medium, provided the original work is properly cited.".'''
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)," \
+        + "\n" + ' '*21 + 'which permits unrestricted, distribution, and reproduction in any medium, provided the original work is properly cited.".'
 
     def test_05_oup_OA_NC_license(self):
         record = {}
@@ -159,7 +161,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['version'] == '3.0'
         assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
         assert not record['bibjson']['license'][-1]['jurisdiction']
-        assert record['bibjson']['license'][-1]['open_access']
+        assert not record['bibjson']['license'][-1]['open_access']
         assert record['bibjson']['license'][-1]['BY']
         assert record['bibjson']['license'][-1]['NC']
         assert not record['bibjson']['license'][-1]['SA']
@@ -172,7 +174,8 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
-        print record['bibjson']['license'][-1]['provenance']['description']
-        assert record['bibjson']['license'][-1]['provenance']['description'] == '''License decided by scraping the resource at ''' + record['provider']['url'][0] + ''' and looking for the following license statement: "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0),
-                     which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is
-                     properly cited.".'''
+
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0)," \
+        + "\n" + ' '*21 + "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is" \
+        + "\n" + ' '*21 + 'properly cited.".'

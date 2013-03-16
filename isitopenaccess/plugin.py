@@ -127,7 +127,13 @@ class Plugin(object):
             # mapping statements to licensing info
             statement = statement_mapping.keys()[0]
 
+            #import logging
+            #logging.debug('Statement "' + statement + '"...')
+
             if statement in r.content:
+                
+                #logging.debug('... matches')
+
                 # okay, statement found on the page -> get license type
                 lic_type = statement_mapping[statement]['type']
 
@@ -161,6 +167,8 @@ class Plugin(object):
 
                 record['bibjson'].setdefault('license', [])
                 record['bibjson']['license'].append(license)
+
+            #logging.debug('... does NOT match')
     
     def gen_provenance_description(self, source_url, statement):
         return 'License decided by scraping the resource at ' + source_url + ' and looking for the following license statement: "' + statement + '".'
