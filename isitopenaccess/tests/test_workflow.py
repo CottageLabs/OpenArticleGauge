@@ -13,7 +13,7 @@ There are other tests for working on specific plugins.
 """
 
 from unittest import TestCase
-from isitopenaccess import config, workflow, models, cache, archive, plugin
+from isitopenaccess import config, workflow, models, model_exceptions, cache, archive, plugin
 
 __version__ = "1.0"
 
@@ -35,7 +35,7 @@ class mock_doi_type(object):
             bibjson_identifier["type"] = "doi"
             return
         if bibjson_identifier.get("type") == "doi":
-            raise models.LookupException("oi")
+            raise model_exceptions.LookupException("oi")
 
 class mock_pmid_type(object):
     def type_detect_verify(self, bibjson_identifier):
@@ -165,7 +165,7 @@ class TestWorkflow(TestCase):
         
         # check that we can deal with a lookup exception
         record = {"identifier" : {"id" : "123456789", "type" : "doi"}}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             workflow._detect_verify_type(record)
         
         # check that we can deal with an unidentifiable identifier

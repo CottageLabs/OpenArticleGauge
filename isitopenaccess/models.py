@@ -129,8 +129,3 @@ class ResultSet(object):
             bibjson['identifier'].append(record['identifier'])
         
         return bibjson
-
-class LookupException(Exception):
-    def __init__(self, message):
-        self.message = message
-        super(LookupException, self).__init__(self, message)

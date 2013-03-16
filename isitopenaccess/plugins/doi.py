@@ -1,5 +1,5 @@
 import re, requests
-from isitopenaccess import models, plugin, recordmanager
+from isitopenaccess import plugin, recordmanager, model_exceptions
 
 class DOIPlugin(plugin.Plugin):
     _short_name = "doi"
@@ -42,7 +42,7 @@ class DOIPlugin(plugin.Plugin):
         if bibjson_identifier.has_key("type") and bibjson_identifier["type"] == "doi" and result is None:
             # the bibjson identifier asserts that it is a doi, but the regex does not
             # support this assertion, so we raise an exception
-            raise models.LookupException("identifier asserts it is a DOI, but cannot validate: " + str(bibjson_identifier["id"]))
+            raise model_exceptions.LookupException("identifier asserts it is a DOI, but cannot validate: " + str(bibjson_identifier["id"]))
         
         if result is None:
             # no assertion that this is a DOI, and no confirmation from the regex
@@ -62,7 +62,7 @@ class DOIPlugin(plugin.Plugin):
         
         # do we have enough information to canonicalise, raise an error
         if not bibjson_identifier.has_key("id"):
-            raise models.LookupException("can't canonicalise an identifier without an 'id' property")
+            raise model_exceptions.LookupException("can't canonicalise an identifier without an 'id' property")
         
         canonical = self.canonical_form(bibjson_identifier["id"])
         bibjson_identifier['canonical'] = canonical
@@ -84,7 +84,7 @@ class DOIPlugin(plugin.Plugin):
         result = re.match(rx, doi)
         
         if result is None:
-            raise models.LookupException("identifier does not parse as a DOI: " + str(doi))
+            raise model_exceptions.LookupException("identifier does not parse as a DOI: " + str(doi))
         
         # the last capture group is the 10.xxxx bit of the DOI
         tendot = result.groups()[-1:][0]
