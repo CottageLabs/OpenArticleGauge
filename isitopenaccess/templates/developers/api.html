@@ -26,30 +26,30 @@
 
 <p>For GET, conneg for HTML or JSON. HTML shows a simple web page to accept query params to build a query.</p>
 
-<code><pre>
+<pre>
     GET /lookup/12345,67890 HTTP/1.1
     Accept: application/json
-</pre></code>
+</pre>
 
 <p>For POST, expected data is either a JSON list of BibJSON (http://bibjson.org) identifier objects, or a simple list of identifiers if no more is known about them:</p>
 
-<code><pre>
+<pre>
     [
         10.1234/1389849..., 
         14754839, 10.....
     ]
-</pre></code>
+</pre>
 
 <p>or</p>
 
-<code><pre>
+<pre>
     [
 	    {
             "id":".......",
 		    "type":"......if known"
 	    }
     ]
-</pre></code>
+</pre>
 
 <p>The "type" parameter MUST be either "doi" or "pmid" or the identifier will not be recognised.</p>
 
@@ -59,7 +59,7 @@
 
 <p>Both POST and GET, when asked for JSON, respond with an object as follows:</p>
 
-<code><pre>
+<pre>
     {
 	    "requested": NUMBER_REQUESTED,
 	    "results": [
@@ -79,7 +79,7 @@
 		    ...
 	    ]
     }
-</pre></code>
+</pre>
 
 <ul style="list-style-type:none;">
     <li>requested - The number of ids requested by the client</li>
@@ -113,7 +113,7 @@
 
 <p>An IIOA formatted <a target="_blank" href="http://bibjson.org">BibJSON</a> record will have some or all of the fields laid out in the example below.</p>
 
-<code><pre>
+<pre>
     {
         "title": "Open Bibliography for Science, Technology and Medicine",
         "author":[
@@ -164,7 +164,7 @@
             }
         ]
     }
-</pre></code>
+</pre>
 
 <p>Note that the IIOA BibJSON records will often have sparse to non-existant bibliographic metadata.  If you want bibliographic metadata you should look to a service such as CrossRef.</p>
 
