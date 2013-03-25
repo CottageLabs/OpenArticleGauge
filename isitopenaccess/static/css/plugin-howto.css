@@ -1,0 +1,55 @@
+/* element re-definitions */
+h1,h2,h3,h4,h5,h6 {
+    margin-top: 1em;
+}
+
+pre {
+    margin-top: 0.75em;
+}
+
+/* spacing things out a little, only apply to guide's content */
+#plugdev-howto div {
+    margin-top: 0.5em;
+}
+
+/* lists */
+ol li {
+    margin-top: 0.75em;
+}
+	/* nested - for the sub-steps in the guide */
+ol.nested
+{
+    counter-reset: item
+}
+ol.nested li
+{
+    display: block
+}
+ol.nested li:before
+{
+    content: counters(item, ".") ". ";
+    counter-increment: item
+}
+
+/* some cosmetics to make "optional" paragraphs visually distinct from the meat of the how-to */
+.extrahelp {
+    color: #666;
+    font-family: Arial, sans-serif;
+    font-size: 90%;
+}
+
+/* mimic bootstrap 2.0.0 styles for the <pre> element, although there are minor
+ * changes, e.g. less padding - this is for *inline* text after all */
+.inlinecode {
+    color: #333;
+    font-family: Menlo,Monaco,"Courier New",monospace;
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px 4px 4px 4px;
+    line-height: 18px;
+    margin: 0 0 9px;
+    padding: 1px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+}
