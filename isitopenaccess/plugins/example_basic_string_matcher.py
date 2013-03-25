@@ -56,7 +56,7 @@ class Tutorial(plugin.Plugin):
     # 1. The docstring at the top, stating which provider (publisher) it supports.
     # 2. The licensing statements: how can the plugin know if a certain license
     # is in force? You need to define at least one such statement.
-    def license_detect(record):
+    def license_detect(self, record):
         # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
         """
         To respond to the provider identifier: http://www.biomedcentral.com
