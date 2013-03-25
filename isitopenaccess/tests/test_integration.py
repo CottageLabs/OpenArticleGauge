@@ -209,8 +209,9 @@ class TestIntegration(TestCase):
         This particular test ensures that failure info from the Cell Reports
         plugin is present when a Cell Reports DOI is looked up.
         """
-        from isitopenaccess.plugins.cell_reports import fail_why as expected_error_message
-        from isitopenaccess.plugins.cell_reports import fail_suggested_solution as expected_suggested_solution
+        from isitopenaccess.plugins.cell_reports import CellReportsPlugin
+        expected_error_message = CellReportsPlugin.fail_why
+        expected_suggested_solution = CellReportsPlugin.fail_suggested_solution
 
         resp = requests.get(lookup_url + "10.1016/j.celrep.2012.11.027" + '.json')
         time.sleep(10) # wait for the app to process the request

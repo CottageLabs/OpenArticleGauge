@@ -1,5 +1,5 @@
 import re, logging, requests
-from isitopenaccess import models, plugin, recordmanager
+from isitopenaccess import plugin, recordmanager, model_exceptions
 from lxml import etree
 from isitopenaccess.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
@@ -37,7 +37,7 @@ class PMIDPlugin(plugin.Plugin):
         if bibjson_identifier.has_key("type") and bibjson_identifier["type"] == "pmid" and result is None:
             # the bibjson identifier asserts that it is a pmid, but the regex does not
             # support this assertion, so we raise an exception
-            raise models.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(bibjson_identifier["id"]))
+            raise model_exceptions.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(bibjson_identifier["id"]))
         
         if result is None:
             # no assertion that this is a PMID, and no confirmation from the regex
@@ -57,12 +57,12 @@ class PMIDPlugin(plugin.Plugin):
         
         # do we have enough information to canonicalise, raise an error
         if not bibjson_identifier.has_key("id"):
-            raise models.LookupException("can't canonicalise an identifier without an 'id' property")
+            raise model_exceptions.LookupException("can't canonicalise an identifier without an 'id' property")
         
         # 1 to 8 digits long
         result = re.match(self._rx, bibjson_identifier["id"])
         if result is None:
-            raise models.LookupException("identifier does not parse as a PMID: " + str(bibjson_identifier["id"]))
+            raise model_exceptions.LookupException("identifier does not parse as a PMID: " + str(bibjson_identifier["id"]))
         
         # no need to validate the ID - we just prefix "pmid:" since there is an id, and the
         # type is indicated as "pmid"

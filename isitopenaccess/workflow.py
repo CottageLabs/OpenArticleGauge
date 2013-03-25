@@ -1,5 +1,5 @@
 from celery import chain
-from isitopenaccess import models, config, cache, plugin, recordmanager
+from isitopenaccess import models, model_exceptions, config, cache, plugin, recordmanager
 import logging
 from slavedriver import celery
 
@@ -36,7 +36,7 @@ def lookup(bibjson_ids):
             
             # Step 1a: if we don't find a type for the identifier, there's no point in us continuing
             if record.get("identifier", {}).get("type") is None:
-                raise models.LookupException("unable to determine the type of the identifier")
+                raise model_exceptions.LookupException("unable to determine the type of the identifier")
             
             # Step 2: create a canonical version of the identifier for cache keying
             _canonicalise_identifier(record)
@@ -92,7 +92,7 @@ def lookup(bibjson_ids):
             # it into the asynchronous lookup workflow
             _start_back_end(record)
             
-        except models.LookupException as e:
+        except model_exceptions.LookupException as e:
             record['error'] = e.message
         
         # write the resulting record into the result set
@@ -106,10 +106,10 @@ def _check_archive(record):
     check the record archive for a copy of the bibjson record
     """
     if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
         
     if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't look anything up in the archive without a canonical id")
+        raise model_exceptions.LookupException("can't look anything up in the archive without a canonical id")
         
     # obtain a copy of the archived bibjson
     log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
@@ -135,10 +135,10 @@ def _update_cache(record):
     update the cache, and reset the timeout on the cached item
     """
     if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't create/update anything in the cache without a canonical id")
+        raise model_exceptions.LookupException("can't create/update anything in the cache without a canonical id")
     
     # update or create the cache
     cache.cache(record['identifier']['canonical'], record)
@@ -148,10 +148,10 @@ def _invalidate_cache(record):
     invalidate any cache object associated with the passed record
     """
     if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't invalidate anything in the cache without a canonical id")
+        raise model_exceptions.LookupException("can't invalidate anything in the cache without a canonical id")
     
     cache.invalidate(record['identifier']['canonical'])
 
@@ -167,10 +167,10 @@ def _check_cache(record):
     return it (a record of a queued item, a full item, or None)
     """
     if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
         
     if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't look anything up in the cache without a canonical id")
+        raise model_exceptions.LookupException("can't look anything up in the cache without a canonical id")
     
     log.debug("checking cache for key: " + record['identifier']['canonical'])
     cached_copy = cache.check_cache(record['identifier']['canonical'])
@@ -208,18 +208,18 @@ def _canonicalise_identifier(record):
     """
     # verify that we have everything required for this step
     if not record.has_key("identifier"):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key("id"):
-        raise models.LookupException("bibjson identifier object does not contain an 'id' field")
+        raise model_exceptions.LookupException("bibjson identifier object does not contain an 'id' field")
         
     if not record['identifier'].has_key("type"):
-        raise models.LookupException("bibjson identifier object does not contain a 'type' field")
+        raise model_exceptions.LookupException("bibjson identifier object does not contain a 'type' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
     p = plugin.PluginFactory.canonicalise(record['identifier']['type'])
     if p is None:
-        raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
+        raise model_exceptions.LookupException("no plugin for canonicalising " + record['identifier']['type'])
     p.canonicalise(record['identifier'])
 
 def _detect_verify_type(record):
@@ -228,10 +228,10 @@ def _detect_verify_type(record):
     """
     # verify that the record has an identifier key, which is required for this operation
     if not record.has_key("identifier"):
-        raise models.LookupException("no identifier in record object")
+        raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key("id"):
-        raise models.LookupException("bibjson identifier object does not contain an 'id' field")
+        raise model_exceptions.LookupException("bibjson identifier object does not contain an 'id' field")
     
     # run through /all/ of the plugins and give each a chance to augment/check
     # the identifier

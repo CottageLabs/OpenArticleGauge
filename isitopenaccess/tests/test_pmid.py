@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from isitopenaccess.plugins.pmid import PMIDPlugin
-from isitopenaccess import models
+from isitopenaccess import model_exceptions
 
 import os, requests
 
@@ -140,7 +140,7 @@ class TestPmid(TestCase):
         # create an invalid pmid and assert it is a pmid
         pmid = PMIDPlugin()
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             pmid.type_detect_verify(bjid)
             
     def test_05_canonicalise_real(self):
@@ -165,11 +165,11 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         # create an invalid pmid and assert it is a pmid
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             pmid.canonicalise(bjid)
             
         bjid = {"key" : "value"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             pmid.canonicalise(bjid)
     
     def test_08_provider_resolve_not_relevant(self):

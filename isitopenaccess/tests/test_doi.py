@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from isitopenaccess.plugins.doi import DOIPlugin
-from isitopenaccess import models
+from isitopenaccess import model_exceptions
 import requests
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
@@ -116,7 +116,7 @@ class TestWorkflow(TestCase):
         
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             doi.type_detect_verify(bjid)
     
     def test_05_canonicalise_real(self):
@@ -144,11 +144,11 @@ class TestWorkflow(TestCase):
         
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             doi.canonicalise(bjid)
             
         bjid = {"key" : "value"}
-        with self.assertRaises(models.LookupException):
+        with self.assertRaises(model_exceptions.LookupException):
             doi.canonicalise(bjid)
     
     def test_08_dereference_not_relevant(self):
