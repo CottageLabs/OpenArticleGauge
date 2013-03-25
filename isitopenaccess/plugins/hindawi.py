@@ -1,8 +1,7 @@
-# ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
 """
-This plugin handles BioMedCentral articles.
-This is an example plugin that should not actually run without modification as
-there is a proper BMC plugin as well, which may be more up-to-date.
+This plugin handles Hindawi articles.
+Hindawi publish from a single domain and use a consistent format for licenses
+so this one should be relatively straightforward.
 """
 
 # We import the plugin module from the isitopenaccess module, as this contains
@@ -11,16 +10,15 @@ from isitopenaccess import plugin
 
 # Create a new class which extends the plugin.Plugin class.  The rest of this
 # file shows how to extend and override the methods it provides signatures for
-class Tutorial(plugin.Plugin):
-    _short_name = "tutorial"
+class HindawiPlugin(plugin.Plugin):
+    _short_name = "hindawi"
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
 
     # The domains that this plugin will say it can support.
     # Specified without the schema (protocol - e.g. "http://") part.
-    # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-    base_urls = ["www.biomedcentral.com"]
-    # so if the http://www.biomedcentral.com/1471-2164/13/425 URL comes in,
+    base_urls = ["www.hindawi.com"]
+    # so if the http://www.hindawi.com/journals/ecam/2013/429706/ URL comes in,
     # it should be supported.
     
     # You can keep the supports() function as it is if your publisher only has
@@ -57,35 +55,18 @@ class Tutorial(plugin.Plugin):
     # 2. The licensing statements: how can the plugin know if a certain license
     # is in force? You need to define at least one such statement.
     def license_detect(self, record):
-        # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-        """
-        To respond to the provider identifier: http://www.biomedcentral.com
         
-        This should determine the licence conditions of the BMC article and populate
+        """
+        To respond to the provider identifier: http://www.hindawi.com
+        
+        This should determine the licence conditions of the Hindawi article and populate
         the record['bibjson']['license'] (note the US spelling) field.
         """
-
-        # licensing statements to look for on this publisher's pages
-        # take the form of {statement: meaning}
-        # where meaning['type'] identifies the license (see licenses.py)
-        # and meaning['version'] identifies the license version (if available).
-        # meaning['open_access'] identifies whether we consider the license to be OA
-        # The 4 two-letter keys correspond to the creativecommons.org definitions
-        # of rights: BY for Attribution required, NC for NonCommercial restriction,
-        # SA for ShareAlike restriction and ND for NoDerivatives restriction.
-
-        # The one thing to be careful about is identifying your license with "type"
-        # This MUST correspond to one of the objects in the /isitopenaccess/licenses.py
-        # file. That is based on opendefinition.org . If your license is not present,
-        # modify the licenses.py file and include it as a new record at the bottom,
-        # preferably by copying the record of another license and filling in as many
-        # fields as you can.
         
-        # ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
         lic_statements = [
-            {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
+            {'This is an open access article distributed under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.':
                 {'type': 'cc-by', # license type, see the licenses module for available ones
-                 'version':'2.0', # version of the license if specified, can be blank
+                 'version':'3.0', # version of the license if specified, can be blank
                  'open_access': True, # Is the license open access compliant? Up to you!
                  'BY': True, # Does it require attribution?
                  'NC': False, # Does it have non-commercial restrictions?
@@ -99,7 +80,7 @@ class Tutorial(plugin.Plugin):
                     # specific version of the CC-BY license, just the
                     # opendefinition.org page for it. This plugin knows a better
                     # URL though, since it's present in the license statement above.
-                    'url': 'http://creativecommons.org/licenses/by/2.0'}
+                    'url': 'http://creativecommons.org/licenses/by/3.0'}
             }
         ]
         
