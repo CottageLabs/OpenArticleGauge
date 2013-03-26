@@ -1,6 +1,6 @@
-#IsItOpenAccess
+#OpenArticleGauge
 
-IsItOpenAccess is a service for determining the licence status of journal publications, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.
+OpenArticleGauge (OAG) is a service for determining the licence status of journal publications, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems.
 
 ##Installation
 
@@ -48,4 +48,25 @@ if you start the daemon, you can stop it with
 Start the web application with:
 
     python isitopenaccess/app.py
+
+##Invalidating Licences
+
+You may wish to remove from the archive particular licence statements associated with identifiers.  For example, if a plugin has been added or updated which changes the way that licences for a given provider are detected, you may wish to remove any previous licence statements applied by that plugin, or only particular licence statements (such as those where a licence was not detected).  To do this, use the invalidate.py script.
+
+    python invalidate.py --help
+
+Some commonly useful options would be
+
+###Remove all unknown licenses:
+
+    python invalidate.py -a -u
+
+###Remove all unknown licenses from a specific handler
+
+    python invalidate.py -h handler_name -v handler_version -u
+
+###Remove all licenses of a specific type from a specific handler
+
+    python invalidate.py -h handler_name -v handler_version -t license_type
+    
 
