@@ -169,7 +169,9 @@
                     "description": "how the content was acquired ...",
                     "agent": "IsItOpenAccess Service/0.1 alpha",
                     "source": "http://www.plosbiology.org/article/info%3Adoi%2F10...",
-                    "date": "2013-02-16T21:51:54.669040"
+                    "date": "2013-02-16T21:51:54.669040",
+                    "handler" : "myplugin",
+                    "handler_version" : "1.0"
                 }
 
             }
@@ -206,6 +208,10 @@
     </li>
 
     <li><code>license/provenance/date</code> - the date that this licence was acquired.  This is the field that developers should use to determine the most recent licence record, which is considered by OAG to be the current licence conditions of the item.</li>
+    
+    <li><code>license/provenance/handler</code> - the name of the plugin which handled this license acquisition</li>
+    
+    <li><code>license/provenance/handler_version</code> - the version of the plugin which handled this license acquisition</li>
     
 </ul>
 
