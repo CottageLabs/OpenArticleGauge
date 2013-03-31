@@ -1,0 +1,307 @@
+{% extends "developers/devbase.html" %}
+{% block content %}
+
+<div class="row-fluid">
+    <div class="span12">
+
+<div class="hero-unit">
+    <h1>OpenArticleGauge Back-End Technical Documentation</h1>
+</div>
+
+<p>The OAG Back-End provides a lookup service for sets of identifiers provided through the API.</p>
+
+<h2>Batch Processing High-Level Workflow</h2>
+
+<p>When a set of identifiers is provided, the workflow as defined in Figure 1 is carried out.  Each ID is passed into the processing pipeline (documented below), which will either return a full BibJSON record result, containing the licence information, or place the identifier on a queue to have the licence obtained and return to the batch processor an indicator that this has happened.</p>
+
+<img src="/static/images/batch-processing-high-level-workflow.png"/><br>
+<em>Figure 1: batch processing high-level workflow</em>
+
+<h3>Inputs</h3>
+
+<p>The batch processor expects to receive between 1 and 1000 BibJSON identifier objects.  The input is therefore of the form:</p>
+
+<pre>
+    [
+        {
+            "id" : "RAW_IDENTIFIER_STRING",
+            "type" : "OPTIONAL_TYPE_PARAMETER"
+        },
+        ...
+    ]
+</pre>
+
+<p>Each identifier object MUST contain an "id" parameter, and MAY contain a "type" parameter.</p>
+
+<h3>Outputs</h3>
+
+<p>The batch processor will respond with an object which can be JSON serialised to the correct output format for the API.</p>
+
+<pre>
+    {
+        "requested": NUMBER_REQUESTED,
+        "results": [
+            {BIBJSON_RECORD}, ...
+        ],
+        "errors":[
+            {
+                "identifer" : BIBJSON_IDENTIFIER_OBJECT, 
+                "error" : "...description..."
+            },
+            ...
+        ],
+        "processing":[
+            {
+                "identifier" : BIBJSON_IDENTIFIER_OBJECT
+            },
+            ...
+        ]
+    }
+</pre>
+
+<ul style="list-style-type:none;">
+    <li><code>requested</code> - The number of ids requested by the client</li>
+    <li><code>results</code> - a list of BibJSON records for all items that OAG knows the licensing conditions for already</li>
+    <li><code>errors</code> - a list of the identifier records that represent the original identifiers provided by the client which OAG was unable to process for any one of a variety of reasons.  The “error” key in the resulting object contains a text description of the reason for failure.</li>
+    <li><code>processing</code> - a list of the identifier records that represent the original identifiers provided by the client which OAG is currently processing.</li>
+</ul>
+
+
+<h2>Processing Pipeline</h2>
+
+<p>The processing pipeline takes an individual BibJSON identifier object, and attempts to either retrieve information about the item from its local cache or archive, or to add the identifier to a processing queue which will asynchronously acquire the licence and place it in the cache or the archive for later lookup by a client.</p>
+
+<p>Figure 2 shows the full workflow, including the asynchronous components.</p>
+
+<img src="/static/images/pipeline-processor.png"><br>
+<em>Figure 2: pipeline processor for obtaining licence information</em>
+
+<p>The process begins by validating and/or identifying the id's type, and then forming a canonical version of the identifier which will be used throughout OAG to uniquely recognise the item.</p>
+
+<p>The next step is to check the cache for the canonical identifier.  If a record is found, and it is marked as being on the asynchronous processing queue, the pipeline will return this record to the batch processor immediately.  If a record is found that is not queued, then the last lookup date for the licence will be checked, and if it is newer than the configured time (e.g. 6 months), the record will be returned to the batch processor immediately (in this case, the cache update is skipped, as it is unnecessary).  If either a record is not found or a record is found that is not queued, but whose last licence check date is older than the configured time, then we move on to the next step.</p>
+
+<p>Now we check the archive/long-term storage for the canonical identifier.  If a record is found then the last lookup date for the licence will be checked, and if it is newer than the configured time the record will be returned to the batch processor and the cache also updated to contain the item.  If either a record is not found or a record is found whose last licence check date is older than the configured time, then we move on to the next step.</p>
+
+<p>We stop briefly to verify that we are not dealing with an item which is already queued (which should not happen, except in unusual circumstances), then we update the cache to indicate that the item is queued, before injecting it into the asynchronous process.  Once the asynchronous process is started, the processing pipeline returns and is available for use by the batch processor to process the next id.</p>
+
+<p>The asynchronous portion of the lookup begins by attempting to detect information about the content provider for the identifier.  This is done by the use of plugins which will add information to the item being processed about where it can be found.  Plugins are free to add whatever information is useful to them, so see the individual plugins documentation for details.</p>
+
+<p>Once a provider has been detected (or not), then the plugins which detect the licence conditions are loaded.  Each plugin is given the opportunity to determine if it can detect a licence from the content provider (as identified by the previous stage), and the first plugin which indicates it can will be run.  This plugin should add a BibJSON record to the item (or a new licence record to the existing BibJSON record), and then send the item on to the next stage.  It is possible that no plugin will be able to detect a licence for the content provider, in which case the item moves on to the next stage unaffected.</p>
+
+<p>Finally, the item is stored/updated in both the archive and the cache.  If a licence could not be detected an "unknown" licence is added to the item.</p>
+
+<h3>Message Format</h3>
+
+<p>The processing pipeline uses a python data structure as its message format to be passed through each stage and added to/transformed as it goes along.  This message format is:</p>
+
+<pre>
+    {
+        "identifier" : {
+            "id" : "RAW_IDENTIFIER_PROVIDED_BY_CLIENT",
+            "type" : "doi_OR_pmid",
+            "canonical" : "CANONICAL_FORM_OF_IDENTIFIER"
+        },
+        "queued" : True/False,
+        "provider" : {
+            "url" : ["PROVIDER_URL_E.G_DEREFERENCED_DOI", "..."]
+        },
+        "bibjson" : {BIBJSON_OBJECT}
+    }
+</pre>
+
+<ul style="list-style-type:none;">
+    <li><code>identifier</code> - the original identifier provided to the pipeline, and its provided/detected type and its calculated canonical representation</li>
+    <li><code>queued</code> - boolean indicating whether the record is on the queue or not.  Omission of this field MUST be taken to mean False.</li>
+    <li><code>provider</code> - an object representing information extracted by the provider detection plugins.  Currently only permits plugins to add one or more URLs where the content can be retrieved</li>
+    <li><code>bibjson</code> - the OAG BibJSON format record for the item, as documented below.</li>
+</ul>
+
+<p>See below for documentation as to how each stage in the process can modify this message.</p>
+
+
+<h2>OAG BibJSON record</h2>
+
+
+<p>An OAG formatted <a href="http://bibjson.org">BibJSON</a> record will have some or all of the fields laid out in the example below.</p>
+
+<pre>
+    {
+        "title": "Open Bibliography for Science, Technology and Medicine",
+        "author":[
+            {"name": "Richard Jones"},
+            {"name": "Mark MacGillivray"},
+            ...
+        ],
+        "year": "2011",
+        "journal": {"name": "Journal of Cheminformatics"},
+        "link": [{"url":"http://www.jcheminf.com/content/3/1/47"}],
+        "identifier": [
+            {
+                "type":"doi",
+                "id":"10.1186/1758-2946-3-47"
+                "canonical":"doi:10.1186/1758-2946-3-47"
+            }
+        ],
+        "license": [
+            {
+                "status": "active",
+                "maintainer": "",
+                "description": "",
+                "family": ""
+                "title": "Creative Commons Attribution",
+                "domain_data": true/false,
+                "url": "http://www.opendefinition.org/licenses/cc-by",                
+                "version": "", 
+                "domain_content": true/false,
+                "is_okd_compliant": true/false,
+                "is_osi_compliant": true/false,
+                "domain_software": true/false,
+                "type": "cc-by",
+                "jurisdiction": "",
+                "open_access": true/false,
+                "BY": true/false,
+                "NC": true/false,
+                "ND": true/false,
+                "SA": true/false,
+
+                "provenance": {
+                    "category": "page_scrape",
+                    "description": "how the content was acquired ...",
+                    "agent": "IsItOpenAccess Service/0.1 alpha",
+                    "source": "http://www.plosbiology.org/article/info%3Adoi%2F10...",
+                    "date": "2013-02-16T21:51:54.669040",
+                    "handler" : "myplugin",
+                    "handler_version" : "1.0"
+                }
+
+            }
+        ]
+    }
+</pre>
+
+<p>Note that the OAG BibJSON records will often have sparse to non-existant bibliographic metadata.  If you want bibliographic metadata you should look to a service such as CrossRef.</p>
+
+<p>Some useful definitions of elements used here are:</p>
+
+<ul style="list-style-type:none;">
+    <li><code>identifier</code> - the list of identifiers in the BibJSON record will contain at least one which has your originally requested ID.</li>
+
+    <li><code>license</code> - (note the US spelling) the list of licenses seen for this item.  A record may contain an arbitrary number of licence records, but the client should only present to an end user the most recent licence statement as being the definitive one.  Licence statements are expressions of the <a href="http://opendefinition.org/licenses/">Open Definition</a> of the known licence.</li>
+
+    <li><code>license/open_access</code> - boolean indicating whether the OAG service considers this licence to be "Open Access".</li>
+
+    <li><code>license/BY</code> - boolean indicating whether the licensing conditions for this item require Attribution (e.g. CC-BY)</li>
+
+    <li><code>license/NC</code> - boolean indicating whether the licensing conditions for this item stipulate a Non Commercial clause (e.g. CC-NC)</li>
+
+    <li><code>license/ND</code> - boolean indicating whether the licensing conditions for this item indicate that No Derivatives are allowed (e.g. CC-ND)</li>
+
+    <li><code>license/SA</code> - boolean indicating whether the licensing conditions for this item require that any derivative works are Share Alike (e.g. CC-SA)</li>
+     
+    <li><code>license/provenance</code> - Contains information about how this particular license statement was obtained.</li>
+
+    <li><code>license/provenance/category</code> - the type of acquisition process that was used to acquire the license information. Should be one of:
+        <ul>
+            <li><code>page_scrape</code> - the content was scraped from an HTML page</li>
+            <li><code>xml_api</code> - the content was acquired by interrogating an XML-based API provided by the provider</li>
+        </ul>
+    </li>
+
+    <li><code>license/provenance/date</code> - the date that this licence was acquired.  This is the field that developers should use to determine the most recent licence record, which is considered by OAG to be the current licence conditions of the item.</li>
+    
+    <li><code>license/provenance/handler</code> - the name of the plugin which handled this license acquisition</li>
+    
+    <li><code>license/provenance/handler_version</code> - the version of the plugin which handled this license acquisition</li>
+    
+</ul>
+
+<h2>Input/Output from Stages</h2>
+
+<p>This section details all of the stages in the processing pipeline, their mode of operation, what their input requirements are of the message format (see above), and what their message format output would be.</p>
+
+</p>Elements of the message format which are optional are in square brackets and italics.  For example:</p>
+
+<p><strong>input</strong>: <code>{ identifier : {id : "ID", [type : "TYPE"] }}</code></p>
+
+<p>indicates that <code>"id"</code> is required by this stage, but that "type" is optional.  If a possible message format element is omitted, it indicates that the stage will not look at our touch that field.</p>
+
+<h3>Detect/Validate ID Type</h3>
+
+<p>Takes a BibJSON identifier object with optional "type" parameter and attempts to detect the "type" of the identifier.  If the "type" is provided, then it compares its attempt at detecting the type with the provided type, to validate.</p>
+
+<strong>mode of operation</strong>: runs all plugins from a list in configuration<br>
+<strong>message input</strong>: <code>{ identifier : {id : "ID", [type : "TYPE"] }}</code><br>
+<strong>message output</strong>: <code>{ identifier : {id : "ID", type : "TYPE" }}</code><br>
+
+<h3>Canonicalise ID</h3>
+
+<p>Takes a BibJSON identifier object with a "type" parameter and attempts to provide a "canonical" form for that identifier.  For example, given an id of "10.1371/journal.pone.0035089" and a type of "doi", this should return something like "doi:10.1371/journal.pone.0035089"</p>
+
+<strong>mode of operation</strong>: a single plugin is loaded from configuration based on the "type" parameter and run.  Each identifier type therefore requires its own plugin.<br>
+<strong>message input</strong>: <code>{ identifier : {id : "ID", type : "TYPE" }}</code><br>
+<strong>message output</strong>: <code>{ identifier : {id : "ID", type : "TYPE", canonical : "CANONICAL_FORM" }}</code><br>
+
+<h3>Cached?</h3>
+
+<p>Take the canonical identifier and check the cache to see if a record is stored under it.</p>
+
+<strong>mode of operation</strong>: there is only one cache implementation provided, not loaded as a plugin<br>
+<strong>message input</strong>: <code>{ identifier : {canonical : "CANONICAL_FORM" }}</code><br>
+<strong>message output</strong>: one of:<br>
+    <code>{ identifier : {IDENTIFIER_OBJECT} }</code><br>
+    <code>{ identifier : {IDENTIFIER_OBJECT}, queued : True }</code><br>
+    <code>{ identifier : {IDENTIFIER_OBJECT}, bibjson : {BIBJSON_OBJECT} }</code><br>
+
+<h3>Stale?</h3>
+
+<p>Take a message object and determine whether the latest licence record (if it exists) is stale (i.e. older than some configured time).</p>
+
+<strong>mode of operation</strong>: there is only one stale-check implementation provided, not loaded as a plugin.  Makes no modifications to the item, only used to control the processing pipeline.<br>
+<strong>message input</strong>: <code>{bibjson : {license : [{ provenance : {date : "LAST_CHECKED_DATE"}}]}}</code><br>
+<strong>output</strong>: <code>{ANY_MESSAGE}</code><br>
+
+<h3>Update Cache/Update Archive + Cache</h3>
+
+<p>Take a message object and update the cache (and the archive) to reflect the current state of the item.</p>
+
+<strong>mode of operation</strong>: there is only one cache and one archive implementation, not loaded as a plugin.  Makes no modifications to the item.<br>
+<strong>message input</strong>: <code>{ANY_MESSAGE}</code><br>
+<strong>message output</strong>: <code>{ANY_MESSAGE}</code><br>
+
+<h3>In Archive?</h3>
+
+<p>Take a canonical form of the identifier and determine if a copy of the item exists in the archive</p>
+
+<strong>mode of operation</strong>: there is only one archive implementation, not loaded as a plugin<br>
+<strong>message input</strong>: <code>{ identifier : {canonical : "CANONICAL_FORM" }}</code><br>
+<strong>message output</strong>: one of<br>
+    <code>{identifier : {IDENTIFIER_OBJECT}}</code><br>
+    <code>{identifier : {IDENTIFIER_OBJECT}, bibjson : {BIBJSON_OBJECT}}</code><br>
+
+<h3>Already Queued?</h3>
+
+<p>Check to see if an item is queued</p>
+
+<strong>mode of operation</strong>: used for processing pipeline control flow; does not affect the message<br>
+<strong>message input</strong>: <code>{[queued : True/False]}</code><br>
+<strong>message output</strong>: <code>{ANY_MESSAGE}</code><br>
+
+<h3>Detect Provider</h3>
+
+<p>Take an identifier object and attempt to determine the provider of the content.</p>
+
+<strong>mode of operation</strong>: a chain of plugins are loaded for the identifier type, and all plugins are run over the identifier to determine the list of possible content providers<br>
+<strong>message input</strong>: <code>{identifier : {type : "TYPE", canonical : "CANONICAL_FORM", [provider : {PROVIDER_OBJECT}]}</code><br>
+<strong>message output</strong>: <code>{provider : {url : ["URL", ...]}}</code><br>
+
+<h3>Apply Provider Page Plugins</h3>
+
+<p>Take a provider object and attempt to determine the licence for the content</p>
+
+<strong>mode of operation</strong>: Every provider plugin is asked if it supports the provider, and the first provider plugin to offer support is run<br>
+<strong>message input</strong>: <code>{provider : {url : ["URL", ...]}}</code><br>
+<strong>message output</strong>: <code>{[bibjson : {BIBJSON_OBJECT}]}</code><br>
+
+    </div>
+</div>
+{% endblock %}
