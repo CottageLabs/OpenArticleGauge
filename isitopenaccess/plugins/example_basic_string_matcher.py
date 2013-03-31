@@ -112,5 +112,5 @@ class Tutorial(plugin.Plugin):
         # For all URL-s associated with this resource...
         for url in record['provider']['url']:
             # ... run the dumb string matcher if the URL is supported.
-            if supports_url(url):
+            if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url)
