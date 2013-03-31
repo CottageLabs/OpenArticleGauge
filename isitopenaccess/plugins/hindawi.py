@@ -4,12 +4,8 @@ Hindawi publish from a single domain and use a consistent format for licenses
 so this one should be relatively straightforward.
 """
 
-# We import the plugin module from the isitopenaccess module, as this contains
-# essential bits of infrastructure for us to build our plugin on.
 from isitopenaccess import plugin
 
-# Create a new class which extends the plugin.Plugin class.  The rest of this
-# file shows how to extend and override the methods it provides signatures for
 class HindawiPlugin(plugin.Plugin):
     _short_name = "hindawi"
     __version__='0.1' # consider incrementing or at least adding a minor version
@@ -21,9 +17,6 @@ class HindawiPlugin(plugin.Plugin):
     # so if the http://www.hindawi.com/journals/ecam/2013/429706/ URL comes in,
     # it should be supported.
     
-    # You can keep the supports() function as it is if your publisher only has
-    # a few domain names and doesn't need anything more special than
-    # "Does this URL start with this domain name?"
     def supports(self, provider):
         """
         Does this plugin support this provider
@@ -37,9 +30,6 @@ class HindawiPlugin(plugin.Plugin):
 
         return False
 
-    # This is what actually does the analysis on an incoming URL.
-    # You can keep it as-is unless your publisher has many websites, in which case
-    # you might want to match a regex like "^*.mypublisher.com" .
     def supports_url(self, url):
         """
         Same as the supports() function but answers the question for a single URL.
@@ -49,11 +39,6 @@ class HindawiPlugin(plugin.Plugin):
                 return True
         return False
 
-    # The function that does the license extraction itself.
-    # You should modify this:
-    # 1. The docstring at the top, stating which provider (publisher) it supports.
-    # 2. The licensing statements: how can the plugin know if a certain license
-    # is in force? You need to define at least one such statement.
     def license_detect(self, record):
         
         """
@@ -75,11 +60,6 @@ class HindawiPlugin(plugin.Plugin):
 
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
 
-                    # The list in the licenses module sometimes has more
-                    # general information - for example, it doesn't link to a
-                    # specific version of the CC-BY license, just the
-                    # opendefinition.org page for it. This plugin knows a better
-                    # URL though, since it's present in the license statement above.
                     'url': 'http://creativecommons.org/licenses/by/3.0'}
             }
         ]
