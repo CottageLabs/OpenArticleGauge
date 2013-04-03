@@ -116,16 +116,17 @@ jQuery(document).ready(function () {
     <a name="lookup"></a>
     <div class="hero-unit clearfix">
         <div class="span6">
-            <h1>HowOpenIsIt?</h1>
-            <h3>OpenArticleGauge</h3>
-            <p>The OpenArticleGauge is a service for determining the licence status of journal publications, providing an end-user interface for looking up lists of identifiers, and an API for inclusion into third-party software systems. Cut and paste a DOI or Pubmed ID (or a list) into the box to search for licensing information.</p>
+            <h1>HowOpenIsIt? Open Article Gauge</h1>
+            <h3>A service to determine the license for journal articles</h3>
+            <p>Researchers and funders often spend inordinate amounts of time trying to figure out what license terms apply to scholarly articles. The Open Article Gauge (OAG) is a service designed to search for, locate, and present the license information for an article – the terms under which it can be accessed and/or reused.</p>
+            <p>Simply cut and paste a DOI or Pubmed ID (or a list) in the box on the right, click “find”, and the OAG will display the available license information for you.</p>
         </div>
         <div class="span1">
         </div>
         <div class="span5">
             <form action="/lookup/" method="POST">
                 <p><textarea id="idlist" style="font-size:18px;width:100%;height:125px;margin-top:10px;" name="query" placeholder="list some DOIs or Pubmed IDs, separated by commas">{% if triggered %}{% for item in triggered %}{% if item['id'] != triggered[0]['id'] %},{% endif %}{{ item['id'] }}{% endfor %}{% endif %}</textarea></p>
-                <p><input id="iioa" class="btn" type="submit" value="How Open Is It?" style="height:55px;width:102%;"></p>
+                <p><input id="iioa" class="btn" type="submit" value="HowOpenIsIt?" style="height:55px;width:102%;"></p>
             </form>
         </div>
     </div>
