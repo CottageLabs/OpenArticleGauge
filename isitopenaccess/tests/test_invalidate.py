@@ -1,3 +1,10 @@
+# NOTE: this is an integration test - it requires elastic search to be up and configured
+#
+# NOTE: this test uses time.sleep to try to give elastic search enough time to action the requests
+# sent to it.  Sometimes these requests may fail to be ready in time, and the test will
+# erroneously return as failed - you need to check that this isn't the case before getting
+# too concerned with whether your test is working or not
+
 from unittest import TestCase
 
 from isitopenaccess import models, invalidate
@@ -25,13 +32,18 @@ bibjson_records = [
     },
     {
         "id" : "222",
-        "license" : [{
-            "type" : "failed-to-obtain-license",
-            "provenance" : {
-                "handler" : "plugin_b",
-                "handler_version" :  "1.0"
+        "license" : [
+            {
+                "type" : "failed-to-obtain-license",
+                "provenance" : {
+                    "handler" : "plugin_b",
+                    "handler_version" :  "1.0"
+                }
+            },
+            {
+                "type" : "failed-to-obtain-license"
             }
-        }]
+        ]
     },
     {
         "id" : "333",
@@ -159,7 +171,7 @@ class TestInvalidate(TestCase):
         eight = models.Record.pull("888")
         
         assert len(one.data['license']) == 0
-        assert len(two.data['license']) == 1
+        assert len(two.data['license']) == 2
         assert len(three.data['license']) == 1
         assert len(four.data['license']) == 1
         assert len(five.data['license']) == 1
@@ -181,7 +193,7 @@ class TestInvalidate(TestCase):
         eight = models.Record.pull("888")
         
         assert len(one.data['license']) == 0
-        assert len(two.data['license']) == 1
+        assert len(two.data['license']) == 2
         assert len(three.data['license']) == 2
         assert len(four.data['license']) == 1
         assert len(five.data['license']) == 1
@@ -203,7 +215,7 @@ class TestInvalidate(TestCase):
         eight = models.Record.pull("888")
         
         assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 1
+        assert len(two.data['license']) == 2
         assert len(three.data['license']) == 1
         assert len(four.data['license']) == 1
         assert len(five.data['license']) == 0
@@ -225,7 +237,7 @@ class TestInvalidate(TestCase):
         eight = models.Record.pull("888")
         
         assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 1
+        assert len(two.data['license']) == 2
         assert len(three.data['license']) == 2
         assert len(four.data['license']) == 1
         assert len(five.data['license']) == 1
@@ -247,10 +259,32 @@ class TestInvalidate(TestCase):
         eight = models.Record.pull("888")
         
         assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 1
+        assert len(two.data['license']) == 2
         assert len(three.data['license']) == 2
         assert len(four.data['license']) == 1
         assert len(five.data['license']) == 1
         assert len(six.data['license']) == 1
         assert len(seven.data['license']) == 1
         assert len(eight.data['license']) == 0
+        
+    def test_07_unknown_no_plugins(self):
+        # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
+        invalidate.invalidate_license("failed-to-obtain-license", treat_none_as_missing=True, reporter=invalidate.stdout_reporter)
+        
+        one = models.Record.pull("111")
+        two = models.Record.pull("222")
+        three = models.Record.pull("333")
+        four = models.Record.pull("444")
+        five = models.Record.pull("555")
+        six = models.Record.pull("666")
+        seven = models.Record.pull("777")
+        eight = models.Record.pull("888")
+        
+        assert len(one.data['license']) == 2
+        assert len(two.data['license']) == 1
+        assert len(three.data['license']) == 2
+        assert len(four.data['license']) == 1
+        assert len(five.data['license']) == 1
+        assert len(six.data['license']) == 1
+        assert len(seven.data['license']) == 1
+        assert len(eight.data['license']) == 1
