@@ -34,7 +34,7 @@ RESOURCE_AND_RESULT = {
                 "handler": MyPlugin._short_name, # name of plugin which processed this record
                 "handler_version": MyPlugin.__version__, # version of plugin which processed this record
                 "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at http://www.hindawi.com/journals/ecam/2013/429706/ and looking for the following license statement: "This is an open access article distributed under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited."', # description is a long string
+                "description": 'License decided by scraping the resource at http://www.hindawi.com/journals/ecam/2013/429706/ and looking for the following license statement: "This is an open access article distributed under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".', # description is a long string
                 "agent": config.agent, # agent is from configuration
                 "source": "http://www.hindawi.com/journals/ecam/2013/429706/", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
