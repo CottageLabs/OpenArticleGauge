@@ -2,7 +2,8 @@
 # Workers should run as an unprivileged user.
 # CELERYD_USER = 'celery'
 # CELERYD_GROUP = 'celery'
-import os
+import os, config
+from datetime import timedelta
 
 # CELERYD_NODES = 'w1'
 
@@ -24,7 +25,7 @@ CELERY_CONFIG_MODULE = 'isitopenaccess.celeryconfig'
 
 BROKER_URL = 'redis://localhost'
 CELERY_RESULT_BACKEND = "redis://localhost"
-CELERY_IMPORTS = ('isitopenaccess.workflow',)
+CELERY_IMPORTS = ('isitopenaccess.workflow', 'isitopenaccess.models')
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -34,3 +35,12 @@ CELERY_ROUTES = {
     'isitopenaccess.workflow.provider_licence' : {"queue" : "provider_licence"},
     'isitopenaccess.workflow.store_results' : {"queue" : "store_results"}
 }
+
+CELERYBEAT_SCHEDULE = {
+    'flush_archive_buffer': {
+        'task': 'isitopenaccess.models.flush_buffer',
+        'schedule': timedelta(seconds=config.BUFFER_FLUSH_PERIOD)
+    }
+}
+
+CELERY_TIMEZONE = 'UTC'

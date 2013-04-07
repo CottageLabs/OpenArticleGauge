@@ -1,25 +1,47 @@
 from unittest import TestCase
 
-from isitopenaccess.models import ResultSet
-import json
+from isitopenaccess import models
+from isitopenaccess import config
+import json, redis
+
+ARCHIVE = []
+@classmethod
+def mock_bulk(cls, bibjson_list):
+    global ARCHIVE
+    ARCHIVE += bibjson_list
+    
+@classmethod
+def mock_pull(cls, identifier):
+    return None
 
 class TestWorkflow(TestCase):
 
     def setUp(self):
-        pass
+        global ARCHIVE
+        ARCHIVE = []
+        self.buffering = config.BUFFERING
+        self.bulk = models.Record.bulk
+        self.pull = models.Record.pull
         
     def tearDown(self):
-        pass
+        global ARCHIVE
+        ARCHIVE = []
+        config.BUFFERING = self.buffering
+        models.Record.bulk = self.bulk
+        models.Record.pull = self.pull
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        client.delete("id_doi:123")
+        client.delete("id_doi:456")
         
     def test_01_resultset_init(self):
-        rs = ResultSet()
+        rs = models.ResultSet()
         assert rs.requested == 0
         assert len(rs.results) == 0
         assert len(rs.errors) == 0
         assert len(rs.processing) == 0
         
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         assert rs.requested == 3
         assert len(rs.results) == 0
         assert len(rs.errors) == 0
@@ -27,7 +49,7 @@ class TestWorkflow(TestCase):
     
     def test_02_resultset_results(self):
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
@@ -52,7 +74,7 @@ class TestWorkflow(TestCase):
         
     def test_03_resultset_errors(self):
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
@@ -74,7 +96,7 @@ class TestWorkflow(TestCase):
         
     def test_04_resultset_processing(self):
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         
         result = {
                     "identifier" : {"id" : "1", "type" : "doi", "canonical" : "doi:1"},
@@ -94,7 +116,7 @@ class TestWorkflow(TestCase):
     
     def test_05_resultset_mixed(self):
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}, {"id" : "4"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         
         results = []
         results.append({
@@ -134,7 +156,7 @@ class TestWorkflow(TestCase):
     
     def test_06_resultset_json(self):
         ids = [{"id" : "1"}, {"id" : "2"}, {"id" : "3"}, {"id" : "4"}]
-        rs = ResultSet(ids)
+        rs = models.ResultSet(ids)
         
         results = []
         results.append({
@@ -171,5 +193,74 @@ class TestWorkflow(TestCase):
         assert len(obj['results']) == 2
         assert len(obj['errors']) == 1
         assert len(obj['processing']) == 1
+    
+    def test_07_store_with_buffering(self):
+        config.BUFFERING = True
         
+        record = {"identifier" : [{"canonical" : "doi:123"}]}
+        models.Record.store(record)
+        
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        s = client.get("id_doi:123")
+        assert s is not None
+        
+        obj = json.loads(s)
+        assert obj["identifier"][0]["canonical"] == "doi:123"
+    
+    def test_08_check_archive_with_buffering(self):
+        config.BUFFERING = True
+        
+        record = {"identifier" : [{"canonical" : "doi:123"}]}
+        models.Record.store(record)
+        
+        obj = models.Record.check_archive("doi:123")
+        assert obj["identifier"][0]["canonical"] == "doi:123"
+    
+    def test_09_record_flush_buffer(self):
+        config.BUFFERING = True
+        models.Record.bulk = mock_bulk
+        models.Record.pull = mock_pull
+        global ARCHIVE
+        
+        # first check that it returns False if there's nothing to process
+        result = models.Record.flush_buffer()
+        assert not result
+        
+        # load some records into the buffer
+        records = [
+            {"identifier" : [{"canonical" : "doi:123"}]},
+            {"identifier" : [{"canonical" : "doi:456"}]}
+        ]
+        for record in records:
+            models.Record.store(record)
+        
+        # run the flush buffer and check that it executes successfully
+        result = models.Record.flush_buffer()
+        assert result
+        
+        # check that the 2 items in the buffer are now in the archive
+        assert len(ARCHIVE) == 2, ARCHIVE
+        for record in ARCHIVE:
+            assert record['identifier'][0]['canonical'] in ["doi:123", "doi:456"]
+        
+        # check that the buffer is empty
+        obj1 = models.Record.check_archive("doi:123")
+        obj2 = models.Record.check_archive("doi:456")
+        assert obj1 is None, obj1
+        assert obj2 is None, obj2
+    
+    def test_09_record_flush_buffer_timeouts(self):
+        pass
+    
+    def test_10_record_flush_buffer_block_sizes(self):
+        pass
+        
+    def test_11_celery_flush_buffer_no_buffering(self):
+        pass
+    
+    def test_12_celery_flush_buffer_locked(self):
+        pass
+    
+    def test_13_celery_flush_buffer_success(self):
+        pass
         

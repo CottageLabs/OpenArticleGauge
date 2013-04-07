@@ -1,5 +1,4 @@
 import os, json, UserDict, requests, uuid, logging
-
 from datetime import datetime
 
 from isitopenaccess.core import app #, current_user
@@ -8,8 +7,6 @@ from isitopenaccess.core import app #, current_user
 All models in models.py should inherit this DomainObject to know how to save themselves in the index and so on.
 You can overwrite and add to the DomainObject functions as required. See models.py for some examples.
 '''
-    
-
 class DomainObject(UserDict.IterableUserDict):
     __type__ = None # set the type on the model that inherits this
 
@@ -154,5 +151,4 @@ class DomainObject(UserDict.IterableUserDict):
 
     def delete(self):        
         r = requests.delete(self.target() + self.id)
-
 

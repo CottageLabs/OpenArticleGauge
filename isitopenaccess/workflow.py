@@ -1,7 +1,7 @@
 from celery import chain
 from isitopenaccess import models, model_exceptions, config, cache, plugin, recordmanager
 import logging
-from slavedriver import celery
+from isitopenaccess.slavedriver import celery
 
 #logging.basicConfig(filename='iioa.log',level=logging.DEBUG)
 log = logging.getLogger(__name__)

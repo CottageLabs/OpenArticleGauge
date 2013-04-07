@@ -41,13 +41,7 @@ provider_detection = {
     "pmid" : ["isitopenaccess.plugins.pmid.PMIDPlugin"]
 }
 
-# dictionary of single plugins that can be used to determine the licence 
-# conditions of a given identifier.  Key is a string representing the provider,
-# value is a singple plugin to be run.  Plugins are selected based on selecting
-# the MOST GRANULAR or MOST SPECIFIC plugin
-#
-# NOTE: URLs should be presented without leading http or https protocol specifiers
-# (so https://www.plosone.org should be www.plosone.org)
+# plugins which may support publisher pages
 license_detection = [
     "isitopenaccess.plugins.plos.PLOSPlugin",
     "isitopenaccess.plugins.bmc.BMCPlugin",
@@ -67,6 +61,29 @@ licence_stale_time = 15552000 # approximately 6 months
 
 # whether or not we are buffering posts to the index
 BUFFERING = False
+
+# period of time in which to aim to flush the buffer to the archive.
+# The actual time period may vary for a number of reasons, including overrun
+# of a previous buffering job.  For example, if the buffer flush period is set to 10
+# seconds and the time taken to do the buffering is 15 seconds, then the 
+# buffer flush period will practically work out to be every 20 seconds
+BUFFER_FLUSH_PERIOD = 30
+
+# period of time after sending the buffer to Elastic Search to wait before
+# removing buffered items from the buffer.  This allows ES to process and refresh
+# itself and be ready to be queried before the buffered versions of the
+# records get removed.  This number should be a lot less than the BUFFER_FLUSH_PERIOD
+# as otherwise they'll keep tripping over eachother
+BUFFER_GRACE_PERIOD = 10
+
+# Redis buffer configuration
+REDIS_BUFFER_HOST = "localhost"
+REDIS_BUFFER_PORT = 6379
+REDIS_BUFFER_DB = 3
+
+# elastic search buffer bulk loading block size - the maximum number of items
+# permitted in a single elastic search bulk request
+BUFFER_BLOCK_SIZE = 1000
 
 # elasticsearch configs
 ELASTIC_SEARCH_HOST = 'http://localhost:9200'

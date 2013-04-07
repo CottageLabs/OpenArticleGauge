@@ -1,8 +1,21 @@
-import json
+import json, redis, logging
 
+from isitopenaccess import config
 from isitopenaccess.dao import DomainObject
-
 from isitopenaccess.core import app
+from isitopenaccess.slavedriver import celery
+
+log = logging.getLogger(__name__)
+
+class LookupException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super(LookupException, self).__init__(self, message)
+
+class BufferException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super(BufferException, self).__init__(self, message)
 
 class Record(DomainObject):
     __type__ = 'record'
@@ -17,9 +30,9 @@ class Record(DomainObject):
         """
         
         result = {}
-        if app.config['BUFFERING']:
-            # before checking remote, check the redis buffer queue if one is enabled
-            result = {} # should update result to the matching record object found on buffer queue if any
+        if config.BUFFERING:
+            # before checking remote, check the buffer queue if one is enabled
+            result = cls._check_buffer(identifier)
             
         if not result:
             # by just making an ID and GETting and POSTing to it, we can do things faster.
@@ -37,23 +50,90 @@ class Record(DomainObject):
         Store the provided bibjson record in the archive (overwriting any item which
         has the same canonical identifier)
         """
-        
+        # normalise the canonical identifier for elastic search
+        identifier = None # record this for logging
         for idobj in bibjson.get('identifier',[]):
             if 'canonical' in idobj.keys():
                 bibjson['id'] = idobj['canonical'].replace('/','_')
+                identifier = idobj['canonical']
         
-        if app.config['BUFFERING']:
-            # append this bibjson record to the buffer somehow
-            buf = 'whatever it was plus this new record'
-            # if buffer size limit reached or buffer timeout reached
-            if False: # change this to proper decision
-                cls.bulk('list of the records in the buffer')
-                # flush the buffer however that is done
+        if config.BUFFERING:
+            log.info("placing item " + identifier + " in the storage buffer")
+            
+            # just add to the buffer, no need to actually save anything
+            cls._add_to_buffer(bibjson)
+            return
         else:
+            log.info("placing item " + identifier + " directly into storage")
+            
             # no buffering, just save this one record
             r = cls(**bibjson)
             r.save()
-
+    
+    @classmethod
+    def _add_to_buffer(cls, bibjson):
+        canonical = None
+        for identifier in bibjson.get("identifier", []):
+            if "canonical" in identifier:
+                canonical = identifier['canonical']
+                break
+        
+        if canonical is None:
+            raise BufferException("cannot buffer an item without a canonical form of the identifier")
+        
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        s = json.dumps(bibjson)
+        client.set("id_" + canonical, s)
+    
+    @classmethod
+    def _check_buffer(cls, canonical):
+        # query the redis cache for the bibjson record and return it
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        record = client.get("id_" + canonical)
+        if record is None or record == "":
+            return None
+        return json.loads(record)
+    
+    @classmethod
+    def flush_buffer(cls, key_timeout=0, block_size=1000):
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        
+        # get all of the id keys
+        ids = client.keys("id_*")
+        if len(ids) == 0:
+            return False
+        log.info("flushing storage buffer of " + str(len(ids)) + " objects")
+        
+        # retrieve all of the bibjson records associated with those keys
+        
+        bibjson_records = []
+        i = 0
+        for identifier in ids:
+            # obtain, decode and register the bibjson record to be archived
+            s = client.get(identifier)
+            obj = json.loads(s)
+            bibjson_records.append(obj)
+            
+            # if we've reached the block size, do a bulk write
+            i += 1
+            if i >= block_size:
+                # bulk load the records
+                cls.bulk(bibjson_records)
+                
+                # reset the registers
+                i = 0
+                bibjson_records = []
+        
+        if len(bibjson_records) > 0:
+            # bulk load the remaining records
+            cls.bulk(bibjson_records)
+        
+        # set a timeout on the identifiers affected, if desired.  If the key_timeout is 0, this is effectively
+        # the same as deleting those keys
+        for identifier in ids:
+            client.expire(identifier, key_timeout)
+        
+        return True
 
 class Dispute(DomainObject):
     __type__ = 'dispute'
@@ -129,3 +209,32 @@ class ResultSet(object):
             bibjson['identifier'].append(record['identifier'])
         
         return bibjson
+        
+@celery.task
+def flush_buffer():
+    # if we are not buffering, don't do anything
+    if not config.BUFFERING:
+        return False
+    
+    # check to see if we are already running a buffering process    
+    client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+    lock = client.get("flush_buffer_lock")
+    if lock is not None:
+        log.warn("flush_buffer ran before previous iteration had completed - consider increasing the gaps between the run times for this scheduled task")
+        return False
+    
+    # if we are not already running the buffering process, then carry on...
+    
+    # set a lock on this process, so that it doesn't run twice at the same time (see checks above)
+    client.set("flush_buffer_lock", "lock")
+    
+    # call flush on the record objects that are buffered
+    Record.flush_buffer(key_timeout=config.BUFFER_GRACE_PERIOD)
+    
+    # set an expiry time on the lock, which is consistent with the expiry time applied to the 
+    # buffered items.  This means this method will only run again once all the previously buffered
+    # items have been removed from the buffer zone.
+    client.expire("flush_buffer_lock", config.BUFFER_GRACE_PERIOD)
+    
+    # return true to indicate that the function ran
+    return True
