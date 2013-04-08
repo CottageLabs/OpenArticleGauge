@@ -9,8 +9,9 @@ jQuery(document).ready(function($) {
     var record_resdisplay = [
         [
             {
-                "pre": "IDENTIFIER(S): ",
-                "field": "identifier.id"
+                "pre": 'IDENTIFIER(S): <span class="identifier">',
+                "field": "identifier.id",
+                "post": "</span>"
             }
         ],
         [
@@ -150,6 +151,18 @@ jQuery(document).ready(function($) {
         {'field': 'email.exact', 'display': 'Submitted by'}
     ];
 
+    var link_ids = function() {
+        $('.identifier').each(function() {
+            var content = $(this).html();
+            if ( content.substring(0,3) == '10.' ) {
+                content = '<a target="_blank" href="http://dx.doi.org/' + content + '">' + content + '</a>';
+            } else {
+                content = '<a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/' + content + '">' + content + '</a>';
+            };
+            $(this).html(content);
+        });
+    };
+
     var opts = {
         search_url: record_url,
         datatype: record_datatype,
@@ -159,7 +172,8 @@ jQuery(document).ready(function($) {
         sharesave_link: false,
         paging: {
             size: 10
-        }
+        },
+        post_search_callback: link_ids
     };
 
     $('#facetview').facetview(opts);
