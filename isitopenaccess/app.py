@@ -4,14 +4,14 @@ from functools import wraps
 
 from isitopenaccess.view.contact import blueprint as contact
 from isitopenaccess.view.query import blueprint as query
-from isitopenaccess.view.dispute import blueprint as dispute
+from isitopenaccess.view.issue import blueprint as issue
 from isitopenaccess.view.lookup import blueprint as lookup
 
 from isitopenaccess.core import app
 
 app.register_blueprint(contact, url_prefix='/contact')
 app.register_blueprint(query, url_prefix='/query')
-app.register_blueprint(dispute, url_prefix='/dispute')
+app.register_blueprint(issue, url_prefix='/issue')
 app.register_blueprint(lookup, url_prefix='/lookup')
 
 

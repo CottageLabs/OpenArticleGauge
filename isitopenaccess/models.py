@@ -135,8 +135,8 @@ class Record(DomainObject):
         
         return True
 
-class Dispute(DomainObject):
-    __type__ = 'dispute'
+class Issue(DomainObject):
+    __type__ = 'issue'
 
 
 class Log(DomainObject):
