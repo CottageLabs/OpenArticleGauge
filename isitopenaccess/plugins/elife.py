@@ -1,5 +1,6 @@
 from isitopenaccess import plugin, config
 from isitopenaccess.licenses import LICENSES
+from isitopenaccess import license_rights
 import requests, logging
 from lxml import etree
 from copy import deepcopy
@@ -49,7 +50,7 @@ class ELifePlugin(plugin.Plugin):
         elife_license_mappings = [
             {'//license[@xlink:href="http://creativecommons.org/licenses/by/3.0/" and @license-type="open-access"]': 
                 {
-                    'type': 'cc-by', 'version':'3.0', 'open_access': True, 'BY': True, 'NC': False, 'SA': False, 'ND': False,
+                    'type': 'cc-by', 'version':'3.0',
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by/3.0/'
                 }
@@ -83,6 +84,8 @@ class ELifePlugin(plugin.Plugin):
         
                     # license identified, now use that to construct the license object
                     license = deepcopy(LICENSES[lic_type])
+                    license.update(license_rights.LICENSES_RIGHTS[lic_type])
+                    license['open_access'] = license_rights.oa_for_license(lic_type)
                     # set some defaults which have to be there, even if empty
                     license.setdefault('version','')
                     license.setdefault('description','')

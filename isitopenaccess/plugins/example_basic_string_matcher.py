@@ -85,13 +85,6 @@ class Tutorial(plugin.Plugin):
             {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
                 {'type': 'cc-by', # license type, see the licenses module for available ones
                  'version':'2.0', # version of the license if specified, can be blank
-                 'open_access': True, # Is the license open access compliant? Up to you!
-                 
-                 # CreativeCommons-style rights
-                 'BY': True, # Does it require attribution?
-                 'NC': False, # Does it have non-commercial restrictions?
-                 'SA': False, # Does it require distribution of derivative works under the same license?
-                 'ND': False, # Does it forbid the creation of derivative works?
 
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
 

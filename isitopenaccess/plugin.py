@@ -1,5 +1,6 @@
 from isitopenaccess import config, plugloader, recordmanager
 from isitopenaccess.licenses import LICENSES
+from isitopenaccess import license_rights
 import logging, requests
 from copy import deepcopy
 from datetime import datetime
@@ -139,6 +140,10 @@ class Plugin(object):
 
                 # license identified, now use that to construct the license object
                 license = deepcopy(LICENSES[lic_type])
+                
+                # what does this license grant/deny? e.g. BY, NC, SA, ND
+                license.update(license_rights.LICENSES_RIGHTS[lic_type])
+                license['open_access'] = license_rights.oa_for_license(lic_type)
                 # set some defaults which have to be there, even if empty
                 license.setdefault('version','')
                 license.setdefault('description','')
