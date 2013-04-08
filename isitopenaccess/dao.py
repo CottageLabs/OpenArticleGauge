@@ -64,12 +64,20 @@ class DomainObject(UserDict.IterableUserDict):
 
 
     @classmethod
-    def bulk(cls, bibjson_list):
+    def bulk(cls, bibjson_list, refresh=False):
         data = ''
         for r in bibjson_list:
             data += json.dumps( {'index':{'_id':r['id']}} ) + '\n'
             data += json.dumps( r ) + '\n'
         r = requests.post(cls.target() + '_bulk', data=data)
+        if refresh:
+            cls.refresh()
+        return r.json()
+
+
+    @classmethod
+    def refresh(cls):
+        r = requests.post(cls.target() + '_refresh')
         return r.json()
 
 
