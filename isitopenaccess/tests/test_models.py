@@ -2,14 +2,19 @@ from unittest import TestCase
 
 from isitopenaccess import models
 from isitopenaccess import config
-import json, redis
+import json, redis, time
 
 ARCHIVE = []
 @classmethod
 def mock_bulk(cls, bibjson_list):
     global ARCHIVE
     ARCHIVE += bibjson_list
-    
+
+@classmethod
+def mock_bulk_blocked(cls, bibjson_list):
+    global ARCHIVE
+    ARCHIVE.append(bibjson_list)
+
 @classmethod
 def mock_pull(cls, identifier):
     return None
@@ -32,6 +37,8 @@ class TestWorkflow(TestCase):
         client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
         client.delete("id_doi:123")
         client.delete("id_doi:456")
+        client.delete("id_doi:789")
+        client.delete("flush_buffer_lock")
         
     def test_01_resultset_init(self):
         rs = models.ResultSet()
@@ -249,18 +256,150 @@ class TestWorkflow(TestCase):
         assert obj1 is None, obj1
         assert obj2 is None, obj2
     
-    def test_09_record_flush_buffer_timeouts(self):
-        pass
-    
-    def test_10_record_flush_buffer_block_sizes(self):
-        pass
+    def test_10_record_flush_buffer_timeouts(self):
+        config.BUFFERING = True
+        models.Record.bulk = mock_bulk
+        models.Record.pull = mock_pull
+        global ARCHIVE
         
-    def test_11_celery_flush_buffer_no_buffering(self):
-        pass
+        # load some records into the buffer
+        records = [
+            {"identifier" : [{"canonical" : "doi:123"}]},
+            {"identifier" : [{"canonical" : "doi:456"}]}
+        ]
+        for record in records:
+            models.Record.store(record)
+        
+        # run the flush buffer and check that it executes successfully with a 30 second timeout
+        result = models.Record.flush_buffer(key_timeout=30)
+        assert result
+        
+        # check that the 2 items in the buffer are now in the archive
+        assert len(ARCHIVE) == 2, ARCHIVE
+        for record in ARCHIVE:
+            assert record['identifier'][0]['canonical'] in ["doi:123", "doi:456"]
+        
+        # check that the items are also still in the buffer
+        obj1 = models.Record.check_archive("doi:123")
+        obj2 = models.Record.check_archive("doi:456")
+        assert obj1['identifier'][0]['canonical'] in ["doi:123", "doi:456"]
+        assert obj2['identifier'][0]['canonical'] in ["doi:123", "doi:456"]
     
-    def test_12_celery_flush_buffer_locked(self):
-        pass
+    def test_11_record_flush_buffer_block_sizes(self):
+        config.BUFFERING = True
+        models.Record.bulk = mock_bulk_blocked
+        models.Record.pull = mock_pull
+        global ARCHIVE
+        
+        # load some records into the buffer
+        records = [
+            {"identifier" : [{"canonical" : "doi:123"}]},
+            {"identifier" : [{"canonical" : "doi:456"}]},
+            {"identifier" : [{"canonical" : "doi:789"}]}
+        ]
+        for record in records:
+            models.Record.store(record)
+            
+        # run the flush buffer and check that it executes successfully with a block size of 2
+        result = models.Record.flush_buffer(block_size=2)
+        assert result
+        
+        assert len(ARCHIVE) == 2, ARCHIVE # the archive in this case is a list of lists, and there should be 2 lists
+        assert len(ARCHIVE[0]) == 2 # the first block should have been 2 long
+        assert len(ARCHIVE[1]) == 1 # the second block should have been 1 long
+        
+        # slightly convuluted way of checking that each identifier is in the archive exactly once
+        canonicals = []
+        for record in ARCHIVE[0]:
+            assert record['identifier'][0]['canonical'] in ["doi:123", "doi:456", "doi:789"]
+            canonicals.append(record['identifier'][0]['canonical'])
+        assert ARCHIVE[1][0]['identifier'][0]['canonical'] in ["doi:123", "doi:456", "doi:789"]
+        canonicals.append(ARCHIVE[1][0]['identifier'][0]['canonical'])
+        
+        assert "doi:123" in canonicals
+        assert "doi:456" in canonicals
+        assert "doi:789" in canonicals
+        
+    def test_12_celery_flush_buffer_no_buffering(self):
+        config.BUFFERING = False
+        result = models.flush_buffer()
+        assert not result
     
-    def test_13_celery_flush_buffer_success(self):
-        pass
+    def test_13_celery_flush_buffer_prelocked(self):
+        config.BUFFERING = True
+        
+        # manually set a lock on the process
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        client.set("flush_buffer_lock", "lock")
+        
+        result = models.flush_buffer()
+        assert not result
+        
+    def test_14_celery_flush_buffer_success(self):
+        config.BUFFERING = True
+        config.BUFFER_GRACE_PERIOD = 30
+        config.BUFFER_BLOCK_SIZE = 2
+        models.Record.bulk = mock_bulk_blocked
+        models.Record.pull = mock_pull
+        global ARCHIVE
+        
+        # load some records into the buffer
+        records = [
+            {"identifier" : [{"canonical" : "doi:123"}]},
+            {"identifier" : [{"canonical" : "doi:456"}]},
+            {"identifier" : [{"canonical" : "doi:789"}]}
+        ]
+        for record in records:
+            models.Record.store(record)
+        
+        result = models.flush_buffer()
+        assert result
+        
+        # check that everything got archived
+        assert len(ARCHIVE) == 2, ARCHIVE # the archive in this case is a list of lists, and there should be 2 lists
+        assert len(ARCHIVE[0]) == 2 # the first block should have been 2 long
+        assert len(ARCHIVE[1]) == 1 # the second block should have been 1 long
+        
+        # check that the things are still in the buffer
+        obj1 = models.Record.check_archive("doi:123")
+        obj2 = models.Record.check_archive("doi:456")
+        obj3 = models.Record.check_archive("doi:789")
+        assert obj1['identifier'][0]['canonical'] in ["doi:123", "doi:456", "doi:789"]
+        assert obj2['identifier'][0]['canonical'] in ["doi:123", "doi:456", "doi:789"]
+        assert obj3['identifier'][0]['canonical'] in ["doi:123", "doi:456", "doi:789"]
+        
+        # check that the lock is still set
+        client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
+        lock = client.get("flush_buffer_lock")
+        assert lock is not None
+        
+    def test_15_celery_flush_buffer_trip_lock(self):
+        config.BUFFERING = True
+        config.BUFFER_GRACE_PERIOD = 2
+        config.BUFFER_BLOCK_SIZE = 2
+        models.Record.bulk = mock_bulk_blocked
+        models.Record.pull = mock_pull
+        global ARCHIVE
+        
+        # load some records into the buffer
+        records = [
+            {"identifier" : [{"canonical" : "doi:123"}]},
+            {"identifier" : [{"canonical" : "doi:456"}]},
+            {"identifier" : [{"canonical" : "doi:789"}]}
+        ]
+        for record in records:
+            models.Record.store(record)
+        
+        # run the thing the first time
+        result = models.flush_buffer()
+        assert result
+        
+        # now straight away run it a second time, which should trip the lock
+        result2 = models.flush_buffer()
+        assert not result2
+        
+        # now wait until the lock should be released and try again
+        time.sleep(2.1)
+        result3 = models.flush_buffer()
+        assert result3
         

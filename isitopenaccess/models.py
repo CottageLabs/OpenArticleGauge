@@ -229,7 +229,7 @@ def flush_buffer():
     client.set("flush_buffer_lock", "lock")
     
     # call flush on the record objects that are buffered
-    Record.flush_buffer(key_timeout=config.BUFFER_GRACE_PERIOD)
+    Record.flush_buffer(key_timeout=config.BUFFER_GRACE_PERIOD, block_size=config.BUFFER_BLOCK_SIZE)
     
     # set an expiry time on the lock, which is consistent with the expiry time applied to the 
     # buffered items.  This means this method will only run again once all the previously buffered
