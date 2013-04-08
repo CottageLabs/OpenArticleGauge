@@ -60,7 +60,7 @@ REDIS_CACHE_TIMEOUT = 7776000 # approximately 3 months
 licence_stale_time = 15552000 # approximately 6 months
 
 # whether or not we are buffering posts to the index
-BUFFERING = False
+BUFFERING = True
 
 # period of time in which to aim to flush the buffer to the archive.
 # The actual time period may vary for a number of reasons, including overrun
