@@ -210,7 +210,7 @@ class ResultSet(object):
         
         return bibjson
         
-@celery.task
+@celery.task(name="isitopenaccess.models.flush_buffer")
 def flush_buffer():
     # if we are not buffering, don't do anything
     if not config.BUFFERING:
