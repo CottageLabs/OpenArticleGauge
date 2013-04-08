@@ -8,36 +8,38 @@
 <div class="row-fluid">
     <div class="span12" id="plugdev-howto">
 
-<h1>Quick-start Open Article Gauge plugin development guide</h1>
+<h1>Quick-start OpenArticleGauge plugin development guide</h1>
 
 <h2 id="aim">Aim:</h2>
-<div>Get a working plugin which understands the article page of a particular publisher and gets licensing information - hopefully for all articles by that publisher.</div>
+<div>Create a working plugin which can read the article page of a specific publisher and get licensing information - ideally for all articles by that publisher.</div>
 
-<div>The target publisher has to:</div>
+<div>The target publisher must:</div>
 <ol type="A">
 
 <li>provide licensing statements in the HTML (no Javascript/AJAX).</li>
-<div>This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. License has to be on the page you get after following a DOI.</div>
+<div>This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. The license must be on the page you reach after following a DOI.</div>
 
-<li>serve their articles from no more than a few domains. You will be copy/pasting the domains that a publisher supports into your plugin, so this list has to be easy to get.</li>
-<div>You can actually use regular expressions to detect supported domains, but this quick-start will not go there. See the <span class="inlinecode">oup</span> plugin for an example.</div>
+<li>serve their articles from a small number of domains. You will be copy/pasting the list of domains that a publisher supports into your plugin, so this list needs to be easy to get.</li>
+<div>You can use regular expressions to detect supported domains, but this quick-start will not provide a guide to this. See the <span class="inlinecode">oup</span> plugin for an example.</div>
 
 </ol>
 
 <h2 id="prerequisites">Prerequisites</h2>
-<div>You need:</div>
+<div>You will need:</div>
 <ol>
-    <li>Python. IIOA is mostly tested on Python 2.7. Older 2.x or newer 3.x may or may not work.</li>
+    <li>Python. OAG is primarily tested on Python 2.7. We cannot guarantee that oder 2.x or newer 3.x will work.</li>
     <li>nosetests to make sure your plugin works: pip install nosetests</li>
+    <li>git: To clone the repository</li>
 </ol>
 
-<div>You don't need to actually run the application in order to develop a plugin. So this guide is not going to talk about setting IIOA up.</div>
-<div>If you want to run IIOA itself, follow instructions at: <a href="https://github.com/CottageLabs/IsItOpenAccess">https://github.com/CottageLabs/IsItOpenAccess</a></div>
+<div>You don't need to run the full application in order to develop and test a plugin, so this guide does not cover setting the OAG service up.</div>
+<div>If you want to run OAG itself, follow instructions at: <a href="https://github.com/CottageLabs/IsItOpenAccess">https://github.com/CottageLabs/IsItOpenAccess</a></div>
 
 <h2 id="writeplugin">Writing the plugin</h2>
-<div>OK, now do in terminal:</div>
+<div>To get the repository, in your terminal type:</div>
 <pre class="shell">git clone git@github.com:CottageLabs/IsItOpenAccess.git</pre>
 
+<div>Now copy the template plugin to start working</div>
 <pre class="shell">
 cd IsItOpenAccess/isitopenaccess/plugins
 cp example_basic_string_matcher.py new_plugin.py
@@ -60,7 +62,7 @@ This marker is above each line or section that you will have to edit.
 <li>Modify the docstring of this function to point out which publisher your plugin supports.</li>
 <pre class="python">def license_detect(record)</pre>
 
-<li>This is the actual meat of the plugin - the licensing statements to look for on your chosen publisher's pages.</li>
+<li>Now look for the license statements. This is the actual meat of the plugin - the exact text to look for on your chosen publisher's pages.</li>
 
 <pre class="python">lic_statements</pre>
 
@@ -86,12 +88,11 @@ with the one you found.
 <div>If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).</div>
 <pre class="python">'type': 'cc-by',</pre>
 
-<div>The licenses module usually contains more general descriptions of licenses, not particular versions, so use the version attribute to denote something like Creative Commons Attribution v.2.0.</div>
+<div>The licenses module contains general descriptions of licenses, not specific versions, so use the version attribute if the publisher provides specific version information.</div>
 <div class="extrahelp">It's just a string. You can leave it blank if not applicable.</div>
 <pre class="python">'version':'2.0',</pre>
 
-<div>Is the license open access? This is your judgement call.</div>
-<div class="extrahelp">See if the license terms conform to the opendefinition.org of "Openness". If you really aren't sure, ask on the okfn-discuss mailing list of the Open Knowledge Foundation. We do usually set this to True even if there are non-commercial or other restrictions which wouldn't fit into the Open Definition since the articles can at least. Perhaps we should not be doing this, however!</div>
+<div>Is the license Open-Access? See the documentation on the <a href="/about.html#policy">About page</a> on what qualifies as Open-Access.</div>
 <pre class="python">'open_access': True,</pre>
 
 <div>Does the license require attribution?</div>
@@ -107,7 +108,7 @@ with the one you found.
 <pre class="python">'ND': False,</pre>
 
 <div>If you wish to override the URL provided by the licenses module for this license, do so here.</div>
-<div class="extrahelp">You should probably do this if the license statement on the page points to a particular URL which is supposed to contain the license terms.</div>
+<div class="extrahelp">You should do this if the license statement on the article page includes a URL which points to the license terms. This is often the case where the article page links to a specific version of a Creative Commons license.</div>
 <div class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</div>
 <pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'
 }</pre>
@@ -117,13 +118,13 @@ with the one you found.
 <div>That's it, you're done with the plugin.</div>
 
 <h2>Something that is untested is broken.</h2>
-<div>Now, you need a test.</div>
+<div>Before creating a pull request for the service, you need to write and run some tests to ensure everything is working.</div>
 
 <pre class="shell">
 cd IsItOpenAccess/isitopenaccess/tests
 cp test_provider_skeleton.py test_new_plugin.py
-# change new_plugin to your plugin's name
-vim test_new_plugin.py # or your favourite editor
+# change new_plugin to your the name for your plugin
+vim test_new_plugin.py # or your favourite text editor
 </pre>
 
 <ol class="nested">
@@ -132,19 +133,19 @@ vim test_new_plugin.py # or your favourite editor
 <div class="extrahelp">The example line below has the name that you need to change <strong>in bold</strong>.</div>
 <pre class="python">from isitopenaccess.plugins import <strong>plos</strong> as plugin</pre>
 
-<li>Next, URL-s your plugin should say it can support.</li>
+<li>Next, provide some example URLs your plugin should say it can support.</li>
 <pre class="python">SUPPORTED_URLS = ["http://www.plosone.org/1234", "www.plosbiology.org/fakjsskjdaf"]</pre>
 <div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
-<div>(This is just a URL format test, they don't have to really exist. IIOA users might not always give us correct URL-s!)</div>
+<div>(This is just a URL format test, they don't have to really exist. OAG users might not always give us correct URLs!)</div>
 
-<li>Moving on to URL-s your plugin should say it CANNOT support. You can leave those as they are, except if you're writing a test for the BioMedCentral plugin, which already exists...</li>
+<li>Give some examples of URLs your plugin should say it CANNOT support. You can leave those as they are, unless you're writing a test for the BioMedCentral plugin, which already exists...</li>
 <pre class="python">UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]</pre>
 <div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
 
-<li>Download the publisher's article page that you're trying to process to <span class="inlinecode">IsItOpenAccess/isitopenaccess/tests/resources/&lt;local_filename&gt;</span></li>
-<div class="extrahelp">You can convert its DOI into a filename, e.g. pbio.1001406.html</div>
+<li>Download an example publisher's article page that you're trying to process to <span class="inlinecode">IsItOpenAccess/isitopenaccess/tests/resources/&lt;local_filename&gt;</span></li>
+<div class="extrahelp">We suggest you use the DOI as a filename, e.g. pbio.1001406.html</div>
 
-<li>Now you need to tell the test what you expect the license object produced by your plugin to look like.</li>
+<li>Now you need to tell the test what the license object produced by your plugin should look like.</li>
 <div>The <span class="inlinecode">RESOURCE_AND_RESULT</span> dictionary is the last bit you need to edit. It maps filenames on the local filesystem (e.g. the article page from the previous step) to expected license objects.</div>
 <div>We'll look at both of these in turn.</div>
 
@@ -167,8 +168,8 @@ vim test_new_plugin.py # or your favourite editor
 
 </ol><!-- close ordered list of steps for the test writing section -->
 
-<div>And that's it. Now just:</div>
-<pre class="shell">nosetests test_new_plugin.py # change filename to the one you gave it above</pre>
+<div>And that's it. Now just run your tests:</div>
+<pre class="shell">nosetests test_new_plugin.py # change the filename to the one you gave it above</pre>
 
 <div>You should see a message telling you 3 tests have run, and ending in a simple "OK". </div>
 
