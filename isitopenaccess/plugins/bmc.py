@@ -39,11 +39,6 @@ class BMCPlugin(plugin.Plugin):
                 {
                     'type': 'cc-by', 
                     'version':'2.0', 
-                    'open_access': True, 
-                    'BY': True, 
-                    'NC': False, 
-                    'SA': False, 
-                    'ND': False,
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by/2.0'
                 }
