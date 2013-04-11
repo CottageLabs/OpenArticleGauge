@@ -1,0 +1,195 @@
+{% extends "developers/devbase.html" %}
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+
+<div class="hero-unit">
+    <h1>OpenArticleGauge API Documentation</h1>
+</div>
+
+<p>This document contains the specification discussions for the OAG API</p>
+
+
+<h2>Lookup Endpoint</h2>
+
+
+<p>Use this endpoint to find the licensing conditions of articles identified by either DOI or PMID.</p>
+
+<ul style="list-style-type:none;">
+    <li>POST /lookup</li>
+    <li>GET / lookup</li>
+    <li>GET /lookup/ID1</li>
+    <li>GET /lookup/ID1,IDn where IDx are strings</li>
+</ul>
+
+<p>Maximum number of allowed IDs is 1000. Frontend will abort with HTTP 400 if a set longer than 1000 is given.</p>
+
+<p>For GET, conneg for HTML or JSON. HTML shows a simple web page to accept query params to build a query.</p>
+
+<pre>
+    GET /lookup/12345,67890 HTTP/1.1
+    Accept: application/json
+</pre>
+
+<p>For POST, expected data is either a JSON list of <a href="http://bibjson.org">BibJSON</a> identifier objects, or a simple list of identifiers if no more is known about them:</p>
+
+<pre>
+    [
+        10.1234/1389849..., 
+        14754839, 10.....
+    ]
+</pre>
+
+<p>or</p>
+
+<pre>
+    [
+        {
+            "id":".......",
+            "type":"......if known"
+        }
+    ]
+</pre>
+
+<p>The <code>type</code> parameter MUST be either "doi" or "pmid" or the identifier will not be recognised.</p>
+
+<p>Both GET and POST respond properly to JSONP requests.</p>
+
+<p>If a simple list of identifiers is provided (without a <code>type</code> parameter, OAG will attempt to determine if they are DOIs or PMIDs, and interpret them accordingly.  If it cannot identify the type it will not be able to determine their status.</p>
+
+<p>Both POST and GET, when asked for JSON, respond with an object as follows:</p>
+
+<pre>
+    {
+        "requested": NUMBER_REQUESTED,
+        "results": [
+            {BIBJSON_RECORD}, ...
+        ],
+        "errors":[
+            {
+                "identifer" : BIBJSON_IDENTIFIER_OBJECT, 
+                "error" : "...description..."
+            },
+            ...
+        ],
+        "processing":[
+            {
+                "identifier" : BIBJSON_IDENTIFIER_OBJECT
+            },
+            ...
+        ]
+    }
+</pre>
+
+<p>Some useful definitions of elements used here are:</p>
+
+<ul style="list-style-type:none;">
+    <li><code>requested</code> - The number of ids requested by the client</li>
+    <li><code>results</code> - a list of BibJSON records for all items that OAG knows the licensing conditions for already</li>
+    <li><code>errors</code> - a list of the identifier records that represent the original identifiers provided by the client which OAG was unable to process for any one of a variety of reasons.  The "error" key in the resulting object contains a text description of the reason for failure.</li>
+    <li><code>processing</code> - a list of the identifier records that represent the original identifiers provided by the client which OAG is currently processing.</li>
+</ul>
+
+<p>When the client receives its first response from OAG it is likely that many items will be in the "processing" queue.  OAG will lookup the licence conditions for these items as quickly as possible and have them ready to make available, but it will not notify the client.  The recommended mode of usage is for the client to poll either its original request URL, or the URLs of all of the items in the "processing" queue, in order to retrieve updates.  OAG does not guarantee a particular timescale upon which licence information will be available.</p>
+
+
+<h2>OAG BibJSON record</h2>
+
+
+<p>An OAG formatted <a href="http://bibjson.org">BibJSON</a> record will have some or all of the fields laid out in the example below.</p>
+
+<pre>
+    {
+        "title": "Open Bibliography for Science, Technology and Medicine",
+        "author":[
+            {"name": "Richard Jones"},
+            {"name": "Mark MacGillivray"},
+            ...
+        ],
+        "year": "2011",
+        "journal": {"name": "Journal of Cheminformatics"},
+        "link": [{"url":"http://www.jcheminf.com/content/3/1/47"}],
+        "identifier": [
+            {
+                "type":"doi",
+                "id":"10.1186/1758-2946-3-47"
+                "canonical":"doi:10.1186/1758-2946-3-47"
+            }
+        ],
+        "license": [
+            {
+                "status": "active",
+                "maintainer": "",
+                "description": "",
+                "family": ""
+                "title": "Creative Commons Attribution",
+                "domain_data": true/false,
+                "url": "http://www.opendefinition.org/licenses/cc-by",                
+                "version": "", 
+                "domain_content": true/false,
+                "is_okd_compliant": true/false,
+                "is_osi_compliant": true/false,
+                "domain_software": true/false,
+                "type": "cc-by",
+                "jurisdiction": "",
+                "open_access": true/false,
+                "BY": true/false,
+                "NC": true/false,
+                "ND": true/false,
+                "SA": true/false,
+
+                "provenance": {
+                    "category": "page_scrape",
+                    "description": "how the content was acquired ...",
+                    "agent": "OpenArticleGauge Service/0.1 alpha",
+                    "source": "http://www.plosbiology.org/article/info%3Adoi%2F10...",
+                    "date": "2013-02-16T21:51:54.669040",
+                    "handler" : "myplugin",
+                    "handler_version" : "1.0"
+                }
+
+            }
+        ]
+    }
+</pre>
+
+<p>Note that the OAG BibJSON records will often have sparse to non-existant bibliographic metadata.  If you want bibliographic metadata you should look to a service such as CrossRef.</p>
+
+<p>Some useful definitions of elements used here are:</p>
+
+<ul style="list-style-type:none;">
+    <li><code>identifier</code> - the list of identifiers in the BibJSON record will contain at least one which has your originally requested ID.</li>
+
+    <li><code>license</code> - (note the US spelling) the list of licenses seen for this item.  A record may contain an arbitrary number of licence records, but the client should only present to an end user the most recent licence statement as being the definitive one.  Licence statements are expressions of the <a href="http://opendefinition.org/licenses/">Open Definition</a> of the known licence.</li>
+
+    <li><code>license/open_access</code> - boolean indicating whether the OAG service considers this licence to be "Open Access".</li>
+
+    <li><code>license/BY</code> - boolean indicating whether the licensing conditions for this item require Attribution (e.g. CC-BY)</li>
+
+    <li><code>license/NC</code> - boolean indicating whether the licensing conditions for this item stipulate a Non Commercial clause (e.g. CC-NC)</li>
+
+    <li><code>license/ND</code> - boolean indicating whether the licensing conditions for this item indicate that No Derivatives are allowed (e.g. CC-ND)</li>
+
+    <li><code>license/SA</code> - boolean indicating whether the licensing conditions for this item require that any derivative works are Share Alike (e.g. CC-SA)</li>
+     
+    <li><code>license/provenance</code> - Contains information about how this particular license statement was obtained.</li>
+
+    <li><code>license/provenance/category</code> - the type of acquisition process that was used to acquire the license information. Should be one of:
+        <ul>
+            <li><code>page_scrape</code> - the content was scraped from an HTML page</li>
+            <li><code>xml_api</code> - the content was acquired by interrogating an XML-based API provided by the provider</li>
+        </ul>
+    </li>
+
+    <li><code>license/provenance/date</code> - the date that this licence was acquired.  This is the field that developers should use to determine the most recent licence record, which is considered by OAG to be the current licence conditions of the item.</li>
+    
+    <li><code>license/provenance/handler</code> - the name of the plugin which handled this license acquisition</li>
+    
+    <li><code>license/provenance/handler_version</code> - the version of the plugin which handled this license acquisition</li>
+    
+</ul>
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+
+        var deletethis = function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'DELETE',
+                url: $(this).attr('data-id')
+            });
+            window.location = '/issue';
+        }
+        $('.deletethis').bind('click',deletethis);
+    })
+</script>
+
+<div class="row-fluid oag-unit">
+    <div class="span7">
+        <div class="hero-unit clearfix" style="min-height:430px;">
+
+            <h3>Issues</h3>
+
+            <p>License information for each article is determined by following the DOI or Pubmed link to the article page and obtaining license information from the page itself. Each publisher site has an individual plugin to deal with the specifics of how license information is made available. Many publishers either do not provide specific license information or do so in a way that is inconsistent or not machine readable. If this is the case then the service will say that a license cannot be determined.</p>             
+            
+            <p>OAG results are cached for performance reasons. It is therefore possible that a publisher may have changed the license since it was determined. The date when the license was determined is given in the returned data.</p>
+
+            <p>If you do not obtain a license where you believe you should have, or if the license details are wrong, please provide the information here. If you are obtaining licenses via the API you can also raise an issue <a href="/developers/api">programmatically</a>.</p>
+
+        </div>
+    </div>
+    
+    <div class="span5">
+        <div class="hero-unit" style="min-height:430px;">
+            <h3>Submit an issue</h3>
+            <p>NOT OPERATIONAL YET!</p>
+            <form method="POST" action="/issue/">
+                <input style="width:100%;" type="text" name="about" placeholder="Provide the ID you wish to raise an issue for" {% if issue %}value="{{ issue.data['about'] }}"{% endif %}>
+                <br><br>
+                <textarea style="width:100%;height:200px;" name="issue" placeholder="Please describe the nature of your issue">{% if issue %}{{ issue.data['issue'] }}{% endif %}</textarea>
+                <input style="width:100%;" type="text" placeholder="Provide a contact email address" name="email" {% if issue %}value="{{ issue.data['email'] }}"{% endif %}>
+                <br><input class="btn" type="submit" name="submit" value="submit your issue">
+                {% if issue %}
+                 <a class="btn btn-danger deletethis" href="#" data-id="{{ issue.data['id'] }}">delete this issue</a>
+                {% endif %}
+            </form> 
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

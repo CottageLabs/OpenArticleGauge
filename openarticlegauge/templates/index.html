@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+jQuery(document).ready(function () {
+
+    var showmore = function(event) {
+        event ? event.preventDefault() : false;
+        $(this).parent().siblings('.oagmore').toggle();
+    }
+
+    var success = function(data) {
+        var top = $('#result_status').offset().top - 70;
+        $('html, body').animate({scrollTop: top});
+
+        if ( $('#result_status').html().length == 0 ) {
+            var s = '<div class="span6">progress bar here</div>';
+            s += '<div class="span6"><p>Requested: <span id="requested">' + data.requested + '</span>';
+            s += '. Found: <span id="found">' + data.results.length;
+            s += '</span>. Errors: <span id="errors">' + data.errors.length + '</span>. Processing: <span id="processing">';
+            s += data.processing.length + '</span>. <span id="checked"></span> <span id="done"></span></p></div>';
+            $('#result_status').html(s);
+        } else {
+            $('#errors').html(parseInt($('#errors').html()) + data.errors.length);
+            $('#found').html(parseInt($('#found').html()) + data.results.length);
+            $('#processing').html(data.processing.length);
+        }
+        data.processing.length == 0 ? $('#done').html( 'Done.' ) : false;
+        for ( var i in data.results ) {
+            var record = data.results[i];
+            var resobj = '<div class="resultitem span6';
+            record.license[0].open_access ? resobj += ' alert alert-success' : resobj += ' alert alert-danger';
+            resobj += '">';
+            resobj += '<h3>' + record.identifier[0].id + '</h3>';
+            resobj += '<h4>';
+            resobj += '<a class="oagshowmore" href="#" alt="view more details" title="view more details"> ++ </a>';
+            resobj += record.license[0].title + ' (' + record.license[0].type + ')</h4>';
+            resobj += '<div class="oagmore">';
+            resobj += '<p>' + record.license[0].provenance.description + '</p>';
+            resobj += '<p>' + 'BY: ' + record.license[0].BY;
+            resobj += '. NC: ' + record.license[0].NC + '. SA: ' + record.license[0].SA + '. ND: ' + record.license[0].ND + '. ';
+            resobj += 'OKD compliant? ' + record.license[0].is_okd_compliant + '. OSI compliant? ' + record.license[0].is_osi_compliant + '</p>';
+            resobj += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>';
+            resobj += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
+            resobj += '<p>Last checked on ' + record._last_modified + '.</p>';
+            resobj += '</div>';
+            resobj += '</div>';
+            $('#results').append(resobj);
+        }
+        $('#results .resultitem:nth-child(2n+1)').css("margin-left",0);
+        $('.oagshowmore').unbind('click',showmore);
+        $('.oagshowmore').bind('click',showmore);
+        idlist = [];
+        for ( var obj in data.processing ) {
+            idlist.push(data.processing[obj].identifier.id);
+        };
+        idlist.length != 0 ? setTimeout(refresh,5000) : false;
+    };
+    
+    var error = function(xhr, message, error) {
+        alert("Error... " + error)
+    };
+    
+    var idlist = [];
+    
+    var refresh = function() {
+        var al = '<div class="alert"><p>Checking for updates</p></div>';
+        $('#refresh_info').html(al);
+        var checker = $('#checked').html().replace('Checked ','').replace(' times.','').replace(' time.','');
+        var checked = 0;
+        checker.length != 0 ? checked = parseInt(checker) : checked = 0;
+        checked += 1; // increment the note of how many times it has been checked
+        if ( checked > 20 ) {
+            $('#done').html('Given up...');
+        } else {
+            var checknote = 'Checked ' + checked;
+            checked == 1 ? checknote += ' time.' : checknote += ' times.';
+            $('#checked').html(checknote);
+            getoag();
+        }
+        setTimeout(function() { $('#refresh_info').html("") },1000);
+    };
+    
+    var getoag = function() {
+        $.ajax({
+            'type':'POST',
+            'url': '/lookup/',
+            'data': JSON.stringify(idlist),
+            'contentType': "application/json; charset=utf-8", 
+            'processData': false,
+            'success': success,
+            'error': error
+        });
+    };
+    
+    var oag = function(event) {
+        event ? event.preventDefault() : false;
+        $('#result_status').html("");
+        $('#results').html("");
+        idlist = $('#idlist').val().replace('\n',',').split(',');
+        getoag();
+    };
+    $('#oag').bind('click',oag);
+    
+    {% if triggered %}
+    oag();
+    {% endif %}
+});
+</script>
+
+<div class="row-fluid oag-unit">
+    <a name="lookup"></a>
+    <div class="hero-unit clearfix">
+        <div class="span6">
+            <h1>HowOpenIsIt? Open Article Gauge</h1>
+            <h3>A service to determine the license for journal articles</h3>
+            <p>Researchers and funders often spend inordinate amounts of time trying to figure out what license terms apply to scholarly articles. The Open Article Gauge (OAG) is a service designed to search for, locate, and present the license information for an article – the terms under which it can be accessed and/or reused.</p>
+            <p>Simply cut and paste a DOI or Pubmed ID (or a list) in the box on the right, click “find”, and the OAG will display the available license information for you.</p>
+        </div>
+        <div class="span1">
+        </div>
+        <div class="span5">
+            <form action="/lookup/" method="POST">
+                <p><textarea id="idlist" style="font-size:18px;width:100%;height:125px;margin-top:10px;" name="query" placeholder="list some DOIs or Pubmed IDs, separated by commas">{% if triggered %}{% for item in triggered %}{% if item['id'] != triggered[0]['id'] %},{% endif %}{{ item['id'] }}{% endfor %}{% endif %}</textarea></p>
+                <p><input id="oag" class="btn" type="submit" value="HowOpenIsIt?" style="height:55px;width:102%;"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div id="result_status"></div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div id="refresh_info" class="clearfix" style="height:40px; margin-bottom:10px;"></div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div id="results"></div>
+    </div>
+</div>
+
+{% endblock %}

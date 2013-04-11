@@ -1,0 +1,181 @@
+{% extends "developers/devbase.html" %}
+{% block head %}
+  {{ super() }}
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/plugin-howto.css" />
+{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span12" id="plugdev-howto">
+
+<div class="hero-unit"><h1>Quick-start OpenArticleGauge plugin development guide</h1></div>
+
+<h2 id="aim">Aim:</h2>
+<div>Create a working plugin which can read the article page of a specific publisher and get licensing information - ideally for all articles by that publisher.</div>
+
+<div>The target publisher must:</div>
+<ol type="A">
+
+<li>provide licensing statements in the HTML (no Javascript/AJAX).</li>
+<div>This *must* be on the article's page, i.e. we won't be dealing with site-wide policies. The license must be on the page you reach after following a DOI.</div>
+
+<li>serve their articles from a small number of domains. You will be copy/pasting the list of domains that a publisher supports into your plugin, so this list needs to be easy to get.</li>
+<div>You can use regular expressions to detect supported domains, but this quick-start will not provide a guide to this. See the <span class="inlinecode">oup</span> plugin for an example.</div>
+
+</ol>
+
+<h2 id="prerequisites">Prerequisites</h2>
+<div>You will need:</div>
+<ol>
+    <li>Python. OAG is primarily tested on Python 2.7. We cannot guarantee that oder 2.x or newer 3.x will work.</li>
+    <li>nosetests to make sure your plugin works: pip install nosetests</li>
+    <li>git: To clone the repository</li>
+</ol>
+
+<div>You don't need to run the full application in order to develop and test a plugin, so this guide does not cover setting the OAG service up.</div>
+<div>If you want to run OAG itself, follow instructions at: <a href="https://github.com/CottageLabs/OpenArticleGauge">https://github.com/CottageLabs/OpenArticleGauge</a></div>
+
+<h2 id="writeplugin">Writing the plugin</h2>
+<div>To get the repository, in your terminal type:</div>
+<pre class="shell">git clone git@github.com:CottageLabs/OpenArticleGauge.git</pre>
+
+<div>Now copy the template plugin to start working</div>
+<pre class="shell">
+cd OpenArticleGauge/openarticlegauge/plugins
+cp example_basic_string_matcher.py new_plugin.py
+# change new_plugin.py to a suitable filename
+vim new_plugin.py # or your favourite editor
+</pre>
+
+<div>
+Now look for <pre>~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~ in the file.</pre>
+This marker is above each line or section that you will have to edit.
+</div>
+
+<ol>
+<li>Change the docstring at the very start of the file to reflect the aims of your plugin:</li>
+<pre class="python">"""This plugin handles BioMedCentral articles. [...]"""</pre>
+
+<li>Put your publisher's supported domains in this list of quoted strings separated by commas.</li>
+<pre class="python">base_urls = ["www.biomedcentral.com"]</pre>
+
+<li>Modify the docstring of this function to point out which publisher your plugin supports.</li>
+<pre class="python">def license_detect(record)</pre>
+
+<li>Now look for the license statements. This is the actual meat of the plugin - the exact text to look for on your chosen publisher's pages.</li>
+
+<pre class="python">lic_statements</pre>
+
+<div>It is a list of mappings. Each maps a statement string to a meaning object.</div>
+
+<div>Modify the example mapping provided. <strong>It is discussed line-by-line here.</strong></div>
+
+<pre class="python">{</pre>
+
+<div>Find and get a license statement from one of the article pages. Make sure this is the page that you get after following a DOI!</div>
+
+<div id="extrahelp">(In order to be sure, find the DOI of the article on the page you've opened, and type <span class="inlinecode">http://dx.doi.org/&lt;put DOI here&gt;</span> in your browser.)</div>
+
+<div>Replace the statement inside the quotes</div>
+<pre>"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited."<strong>:</strong></pre>
+with the one you found.
+
+<div>Now modify the meaning object</div>
+<pre class="python">{</pre>
+
+<div>The type field is a short unique identifier for the license. The example is Creative Commons Attribution.</div>
+<div>If yours is different, open <span class="inlinecode">openarticlegauge/licenses.py</span> and try to look for the title of your license (e.g. Open Government, PLoS WHO) and get its type.</div>
+<div>If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).</div>
+<pre class="python">'type': 'cc-by',</pre>
+
+<div>The licenses module contains general descriptions of licenses, not specific versions, so use the version attribute if the publisher provides specific version information.</div>
+<div class="extrahelp">It's just a string. You can leave it blank if not applicable.</div>
+<pre class="python">'version':'2.0',</pre>
+
+<div>Is the license Open-Access? See the documentation on the <a href="/about.html#policy">About page</a> on what qualifies as Open-Access.</div>
+<pre class="python">'open_access': True,</pre>
+
+<div>Does the license require attribution?</div>
+<pre class="python">'BY': True,</pre>
+
+<div>Does the license have non-commercial restrictions?</div>
+<pre class="python">'NC': False,</pre>
+
+<div>Does the license require that derivative works be licensed under the same or similar license?</div>
+<pre class="python">'SA': False,</pre>
+
+<div>Does the license forbid derivative works?</div>
+<pre class="python">'ND': False,</pre>
+
+<div>If you wish to override the URL provided by the licenses module for this license, do so here.</div>
+<div class="extrahelp">You should do this if the license statement on the article page includes a URL which points to the license terms. This is often the case where the article page links to a specific version of a Creative Commons license.</div>
+<div class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</div>
+<pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'
+}</pre>
+
+<li>When you're done writing the plugin code, you can remove all comments which start with two hash signs (##), leaving the code cleaner and more readable. It can easily be done manually, or using regular expression such as <span class="inlinecode">^\s*##.*</span> (select everything starting with ##, regardless of indentation).</li>
+
+</ol><!-- close ordered list of steps for the plugin dev section -->
+
+<div>That's it, you're done with the plugin.</div>
+
+<h2>Something that is untested is broken.</h2>
+<div>Before creating a pull request for the service, you need to write and run some tests to ensure everything is working.</div>
+
+<pre class="shell">
+cd OpenArticleGauge/openarticlegauge/tests
+cp test_provider_skeleton.py test_new_plugin.py
+# change new_plugin to your the name for your plugin
+vim test_new_plugin.py # or your favourite text editor
+</pre>
+
+<ol class="nested">
+
+<li>We'll start with pointing the test to your plugin. Change the <span class="inlinecode">plos</span> plugin name to the name of your plugin (without the .py extension).</li>
+<div class="extrahelp">The example line below has the name that you need to change <strong>in bold</strong>.</div>
+<pre class="python">from openarticlegauge.plugins import <strong>plos</strong> as plugin</pre>
+
+<li>Next, provide some example URLs your plugin should say it can support.</li>
+<pre class="python">SUPPORTED_URLS = ["http://www.plosone.org/1234", "www.plosbiology.org/fakjsskjdaf"]</pre>
+<div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
+<div>(This is just a URL format test, they don't have to really exist. OAG users might not always give us correct URLs!)</div>
+
+<li>Give some examples of URLs your plugin should say it CANNOT support. You can leave those as they are, unless you're writing a test for the BioMedCentral plugin, which already exists...</li>
+<pre class="python">UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]</pre>
+<div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
+
+<li>Download an example publisher's article page that you're trying to process to <span class="inlinecode">OpenArticleGauge/openarticlegauge/tests/resources/&lt;local_filename&gt;</span></li>
+<div class="extrahelp">We suggest you use the DOI as a filename, e.g. pbio.1001406.html</div>
+
+<li>Now you need to tell the test what the license object produced by your plugin should look like.</li>
+<div>The <span class="inlinecode">RESOURCE_AND_RESULT</span> dictionary is the last bit you need to edit. It maps filenames on the local filesystem (e.g. the article page from the previous step) to expected license objects.</div>
+<div>We'll look at both of these in turn.</div>
+
+    <ol class="nested">
+    <li>The key: change the filename (<strong>in bold</strong>) to the filename you gave to the downloaded article page in step 4.</li>
+    <pre class="python">os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "<strong>pbio.1001406.html</strong>") :</pre>
+
+    <li>The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.</li>
+    <div>For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.</div>
+    
+    <li>You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.</li>
+    
+    <div>Change the URL inside the quotes (<strong>in bold</strong>) to the original URL of the article you downloaded in step 4.</div>
+    <pre class="python">"source": "<strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong>", # source is the url where we look this record up</pre>
+    
+    <div>The <span class="inlinecode">description</span> field inside the <span class="inlinecode">provenance</span> dictionary is a short human-readable description of your plugin's logic - where and how did it retrieve the license?</div>
+    <div>You need to change two things inside the <span class="inlinecode">description</span>: the original URL of the article (<strong>in bold</strong>) and the license statement that your plugin is looking for (the key in <span class="inlinecode">lic_statements</span> dictionary in your plugin code). The license statement bit is <u>underlined</u>.</div>
+    <pre>"description": 'License decided by scraping the resource at <strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong> and looking for the following license statement: "<u>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</u>".', # description is a long string</pre>
+    </ol> <!-- close ordered list of sub-steps looking at RESOURCE_AND_RESULT dictionary -->
+
+</ol><!-- close ordered list of steps for the test writing section -->
+
+<div>And that's it. Now just run your tests:</div>
+<pre class="shell">nosetests test_new_plugin.py # change the filename to the one you gave it above</pre>
+
+<div>You should see a message telling you 3 tests have run, and ending in a simple "OK". </div>
+
+
+    </div><!-- close container divs -->
+</div><!-- close container divs -->
+{% endblock %}

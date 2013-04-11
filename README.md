@@ -12,12 +12,12 @@ You need to install [Redis](http://redis.io), and start it as per the Redis docu
 
 You need to install [Elasticsearch](http://www.elasticsearch.org/), and start it as per the documentation
 
-###IsItOpenAccess Application
+###OpenArticleGauge Application
 
 Configure the application, if necessary:
 
-    isitopenaccess/config.py
-    isitopenaccess/celeryconfig.py
+    openarticlegauge/config.py
+    openarticlegauge/celeryconfig.py
 
 Then install the project requirements using pip (recommended to also use a virtualenv):
 
@@ -47,7 +47,7 @@ if you start the daemon, you can stop it with
 
 Start the web application with:
 
-    python isitopenaccess/app.py
+    python openarticlegauge/app.py
 
 ##Invalidating Licences
 

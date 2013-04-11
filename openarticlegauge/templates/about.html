@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+<a name="about"></a>
+<div class="row-fluid oag-unit">
+    <div class="hero-unit clearfix">
+
+		<h3>About the Open Article Gauge (OAG) and HowOpenIsIt?</h3>
+			<p>The HowOpenIsIt? program is a family of resources and services to make informed decisions and get standardized information about Open Access publications and articles. The first resource, the  HowOpenIsIt? Open Access Spectrum (OAS) was developed by <a href="http://plos.org">PLOS</a>, <a href="http://www.arl.org/sparc/">SPARC</a>, and <a href="http://oaspa.org">OASPA</a> to make it easier to determine how open journals and journal articles are.  The guide identifies the core components of Open Access and how they are implemented across the spectrum between “Open Access” and “Closed Access”. The Open Article Gauge service is the latest addition to the HowOpenIsIt? program.</p>
+			<p>The Open Article Gauge reviews articles (identified by their DOIs or PubMed IDs) and identifies the licensing information associated with these publications.  Where a license can be determined the results page gives the name of the license, a link and details of the associated re-use rights. The service is available as a website, an API, and as source code. For more details on the software architecture and design see the <a href="/developers">developers section</a>.</p>
+    </div>
+</div>
+
+<a name="howto"></a>
+<a name="policy"></a>
+<div class="row-fluid oag-unit">
+    <div class="span6">
+        <div class="hero-unit clearfix">
+            <h3>How to use the service</h3>
+            <p>The Open Article Gauge provides two pathways to determine an article's license status:</p>
+            <ul>
+				<li>A web interface for looking up a single article or lists of articles. Simply cut and paste DOIs or PubMed IDs into the box on the <a href="/lookup">lookup page</a> to look up licensing status.</li>
+				<li>An API for inclusion into third-party software systems. See the <a href="/developers">developers page</a> for more information.</li>
+			</ul>
+			<p>The web interface returns information on each article in a box. A green box shows a license was found that is consistent with the BOAI definition of Open Access and will give them name of the license. Click on the "+" for more detailed information. If a license cannot be determined, or if the license found is not BOAI compliant then the box will be red. If a license could be found this will still be given and the "+" button will give more details on specific restrictions on re-use.</p>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="hero-unit clearfix">
+            <h3>Our policy on Open Access</h3>
+            <p>The HowOpenIsIt suite follows the <a href="http://www.opensocietyfoundations.org/openaccess">Budapest Open Access Initiative</a> definition of Open Access found in the original <a href="http://www.opensocietyfoundations.org/openaccess/read">BOAI declaration</a>. That is that the only restriction on re-use should be a requirement for attribution. This is consistent with the <a href="http://pantonprinciples.org/">Panton Principles</a> for Open Data in Science and with a subset of the <a href="http://opendefinition.org/">Open Knowledge Definition</a>. Therefore only licenses or license statements that allow any form of re-use and require no more than attribution will be marked as Open Access by this service.</p>
+            <p>Licenses that pass this definition currently include</p>
+            	<ul>
+            		<li>The Creative Commons Attribution License (CC BY)</li>
+            		<li>The Creative Commons Zero Public Domain Dedication (<a href="http://creativecommons.org/publicdomain/zero/1.0/">cc0</a>)</li>
+            		<li>The Open Data Commons Attribution License (<a href="http://opendatacommons.org/licenses/by/">ODbL BY</a>provided database contents are under an allowed license)</li>
+            		<li>The Open Data Commons Public Domain Dedication and License (<a href="http://opendatacommons.org/licenses/pddl/">PDDL</a>)</li>
+            		<li>The UK Open Government License (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/">UK-OGL</a></li>
+            		<li>Specific license statements specifying any re-use is allowed and requiring at most attribution, on a case by case basis</a></li>
+            	</ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<a name="support"></a>
+<div class="row-fluid oag-unit">
+    <div class="span12">
+        <div class="hero-unit clearfix">
+            <h3>Support &amp; Credits</h3>
+            <p>The initial development and hosting of the OAG was funded by <a href="http://www.plos.org/">PLOS</a>. If you would like get involved and support the further development of OAG then <a href="/contact">get in touch</a>.</p>
+            <p>If you identify an issue with the service or the software or have a feature request, log a new issue on the github <a href="http://github.com/cottagelabs/openarticlegauge">code repository</a>. If you are concerned about a statement regarding the license of a particular article, please register an <a href="/issue">issue</a>.</p>
+            <p>Open Article Gauge was built by <a href="http://cottagelabs.com">Cottage Labs</a>.</p>
+        </div>
+    </div>
+</div>
+
+<a name="rationale"></a>
+<div class="row-fluid oag-unit">
+    <div class="span12">
+        <div class="hero-unit clearfix">
+        	<h3>Why we built this service</h3>
+        	<p>Open Access is an increasingly-popular model for the dissemination of scholarly research.  However, there are <a href="http://www.plos.org/about/open-access/howopenisit/">varying degrees of Open Access</a> that provide differing degrees to which the content of an article can be reused.  This can be confusing to many, including:</p>
+        	<ul>
+        		<li>Authors attempting to make informed decisions about where to submit their manuscripts</li>
+        		<li>Scientists hoping to reuse parts or the whole of an article for their own further research</li>
+        		<li>Funding agencies seeking to promote the unfettered dissemination of the research they underwrite</li>
+        	</ul>
+        	<p>The Open Article Gauge makes it easier for these and any other interested party to determine for any article just HowOpenIsIt?</p>
+        </div>
+    </div>
+</div>
+        	
+
+
+<a name="legal"></a>
+<div class="row-fluid oag-unit">    
+    <div class="span12">
+        <div class="hero-unit clearfix">
+            <h3>Legal</h3>
+            <p>This website and the codebase are &copy; PLOS 2012-13. Website content and underlying source code are available under a <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0 License</a> and <a href="https://github.com/CottageLabs/OpenArticleGauge/blob/master/LICENCE">BSD licence</a>.</p>
+            <p>License information for each article is determined by following the DOI or Pubmed link to the article page and obtaining license information from the page itself. Each publisher site has an individual plugin to deal with the specifics of how license information is made available. Many publishers either do not provide specific license information or do so in a way that is inconsistent or not machine readable. If this is the case then the service will say that a license cannot be determined. Results are cached for performance reasons. It is therefore possible that a publisher may have changed the license since it was determined. The date when the license was determined is given in the returned data. </p>           
+            <p>The majority of plugins search the article page for the full text of a known license statement for that publisher. In some cases the license is obtained from a specified tag within an XML record or HTML tag. The response will provide both the means by which the license was determined (page scraping, an XML record) and the precise text that was obtained from the article page.</p>
+            <p>This information is provided without warranty. Neither PLOS nor CottageLabs can (a) guarantee or represent that the license information retrieved is full and complete or legally applicable to the subject content, or (b) tell you what the license means or what rights the license gives you. Consult an attorney if you advice as to your legal rights under a license.</p>
+            <p>If you identify an incorrect or incomplete license statement then please raise an <a href="/issue">issue</a> for further investigation.</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
