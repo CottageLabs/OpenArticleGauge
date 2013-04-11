@@ -8,7 +8,7 @@
 <div class="row-fluid">
     <div class="span12" id="plugdev-howto">
 
-<h1>Quick-start OpenArticleGauge plugin development guide</h1>
+<div class="hero-unit"><h1>Quick-start OpenArticleGauge plugin development guide</h1></div>
 
 <h2 id="aim">Aim:</h2>
 <div>Create a working plugin which can read the article page of a specific publisher and get licensing information - ideally for all articles by that publisher.</div>
@@ -112,6 +112,8 @@ with the one you found.
 <div class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</div>
 <pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'
 }</pre>
+
+<li>When you're done writing the plugin code, you can remove all comments which start with two hash signs (##), leaving the code cleaner and more readable. It can easily be done manually, or using regular expression such as <span class="inlinecode">^\s*##.*</span> (select everything starting with ##, regardless of indentation).</li>
 
 </ol><!-- close ordered list of steps for the plugin dev section -->
 
