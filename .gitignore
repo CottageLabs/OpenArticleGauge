@@ -9,3 +9,4 @@ app.cfg
 *.py~
 *.log
 tests/usage_tests/errors
+celerybeat-schedule

@@ -32,12 +32,20 @@ class Record(DomainObject):
         result = {}
         if config.BUFFERING:
             # before checking remote, check the buffer queue if one is enabled
+            log.debug("checking buffer for " + str(identifier))
             result = cls._check_buffer(identifier)
+            if result:
+                log.debug(str(identifier) + " found in buffer")
             
         if not result:
             # by just making an ID and GETting and POSTing to it, we can do things faster.
+            log.debug("checking remote archive for " + str(identifier))
             _id = identifier.replace('/','_')
             result = cls.pull(_id)
+            if result:
+                log.debug(str(identifier) + " found in remote archive")
+            else:
+                log.debug(str(identifier) + " did not yield a result in the archive")
 
         try:
             return result.data
@@ -65,6 +73,7 @@ class Record(DomainObject):
             return
         else:
             log.info("placing item " + identifier + " directly into storage")
+            log.debug("saving bibjson: "+ str(bibjson))
             
             # no buffering, just save this one record
             r = cls(**bibjson)

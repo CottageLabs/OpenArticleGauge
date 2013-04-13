@@ -3,7 +3,7 @@ from openarticlegauge import models, model_exceptions, config, cache, plugin, re
 import logging
 from openarticlegauge.slavedriver import celery
 
-#logging.basicConfig(filename='oag.log',level=logging.DEBUG)
+logging.basicConfig(filename='oag.log',level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 def lookup(bibjson_ids):
@@ -245,6 +245,7 @@ def _start_back_end(record):
     anything, although a handle on the asynchronous is provided for convenience of
     testing
     """
+    log.debug("injecting record into asynchronous processing chain: " + str(record))
     ch = chain(detect_provider.s(record), provider_licence.s(), store_results.s())
     r = ch.apply_async()
     return r
