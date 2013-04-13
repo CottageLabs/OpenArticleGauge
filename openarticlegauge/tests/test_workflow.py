@@ -13,7 +13,7 @@ There are other tests for working on specific plugins.
 """
 
 from unittest import TestCase
-from openarticlegauge import config, workflow, models, model_exceptions, cache, archive, plugin
+from openarticlegauge import config, workflow, models, model_exceptions, cache, plugin
 
 __version__ = "1.0"
 
@@ -74,7 +74,8 @@ def mock_check_archive(cls, key):
     if key == "doi:10.bibjson": return {"title" : "whatever"}
     if key == "doi:10.archived": return {"title" : "archived"}
 
-def mock_null_archive(key): return None
+@classmethod
+def mock_null_archive(cls, key): return None
 
 class mock_detect_provider(plugin.Plugin):
     def detect_provider(self, record):
@@ -264,7 +265,7 @@ class TestWorkflow(TestCase):
         config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_null_cache
-        archive.check_archive = mock_check_archive
+        models.Record.check_archive = mock_check_archive
         old_is_stale = workflow._is_stale
         workflow._is_stale = mock_is_stale_false
         
@@ -409,7 +410,7 @@ class TestWorkflow(TestCase):
         config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         cache.check_cache = mock_null_cache
-        archive.check_archive = mock_null_archive
+        models.Record.check_archive = mock_null_archive
         
         # mock out the cache method to allow us to record
         # calls to it

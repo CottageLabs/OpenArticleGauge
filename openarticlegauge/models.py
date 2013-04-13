@@ -58,7 +58,7 @@ class Record(DomainObject):
                 identifier = idobj['canonical']
         
         if config.BUFFERING:
-            log.info("placing item " + identifier + " in the storage buffer")
+            log.info("placing item " + identifier + " into the storage buffer")
             
             # just add to the buffer, no need to actually save anything
             cls._add_to_buffer(bibjson)

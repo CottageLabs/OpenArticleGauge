@@ -7,12 +7,13 @@
 
 from unittest import TestCase
 
-from openarticlegauge import models, invalidate
+from openarticlegauge import models, invalidate, config
 import time
 
 bibjson_records = [
     {
         "id" : "111",
+        "identifier" : [{"id" : "111", "canonical" : "111"}],
         "license" : [
             {
                 "type" : "failed-to-obtain-license",
@@ -32,6 +33,7 @@ bibjson_records = [
     },
     {
         "id" : "222",
+        "identifier" : [{"id" : "222", "canonical" : "222"}],
         "license" : [
             {
                 "type" : "failed-to-obtain-license",
@@ -47,6 +49,7 @@ bibjson_records = [
     },
     {
         "id" : "333",
+        "identifier" : [{"id" : "333", "canonical" : "333"}],
         "license" : [
             {
                 "type" : "failed-to-obtain-license",
@@ -66,6 +69,7 @@ bibjson_records = [
     },
     {
         "id" : "444",
+        "identifier" : [{"id" : "444", "canonical" : "444"}],
         "license" : [{
             "type" : "failed-to-obtain-license",
             "provenance" : {
@@ -76,6 +80,7 @@ bibjson_records = [
     },
     {
         "id" : "555",
+        "identifier" : [{"id" : "555", "canonical" : "555"}],
         "license" : [{
             "type" : "cc0",
             "provenance" : {
@@ -86,6 +91,7 @@ bibjson_records = [
     },
     {
         "id" : "666",
+        "identifier" : [{"id" : "666", "canonical" : "666"}],
         "license" : [{
             "type" : "cc0",
             "provenance" : {
@@ -96,6 +102,7 @@ bibjson_records = [
     },
     {
         "id" : "777",
+        "identifier" : [{"id" : "777", "canonical" : "777"}],
         "license" : [{
             "type" : "cc0",
             "provenance" : {
@@ -106,6 +113,7 @@ bibjson_records = [
     },
     {
         "id" : "888",
+        "identifier" : [{"id" : "888", "canonical" : "888"}],
         "license" : [{
             "type" : "cc0",
             "provenance" : {
@@ -119,6 +127,8 @@ bibjson_records = [
 class TestInvalidate(TestCase):
 
     def setUp(self):
+        self.buffer = config.BUFFERING
+        config.BUFFERING = False
         # load all of the bibjson objects into the index
         for bj in bibjson_records:
             models.Record.store(bj)
@@ -129,6 +139,8 @@ class TestInvalidate(TestCase):
         time.sleep(2) # need to wait to give ES a chance to index the data
         
     def tearDown(self):
+        config.BUFFERING = self.buffer
+        
         # remove all of the bibjson objects we loaded into the index
         for bj in bibjson_records:
             r = models.Record(**bj)

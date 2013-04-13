@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from openarticlegauge import workflow, config, archive, cache
+from openarticlegauge import workflow, config, models, cache
 import redis, json, datetime, requests, uuid, time
 
 test_host = "localhost"
@@ -11,7 +11,11 @@ lookup_url = "http://localhost:5000/lookup/"
 
 class TestIntegration(TestCase):
 
+    # should add a test to include buffering ...
+
     def setUp(self):
+        self.buffer = config.BUFFERING
+        config.BUFFERING = False
         config.redis_cache_host = test_host
         config.redis_cache_port = test_port
         config.redis_cache_db = test_db
@@ -24,9 +28,10 @@ class TestIntegration(TestCase):
         client.delete("doi:10.stale/1")
         client.delete("doi:10.archived/1")
         client.delete("doi:10.1371/journal.pone.0035089")
-        archive.delete("doi:10.stale/1")
-        archive.delete("doi:10.archived/1")
-        archive.delete("doi:10.1371/journal.pone.0035089")
+        models.Record.delete("doi:10.stale/1")
+        models.Record.delete("doi:10.archived/1")
+        models.Record.delete("doi:10.1371/journal.pone.0035089")
+        config.BUFFERING = self.buffer
         
     def test_01_http_lookup_cache_only(self):
         # The various vectors we want to test
@@ -118,8 +123,8 @@ class TestIntegration(TestCase):
         client.set("doi:10.stale/1", json.dumps(stale))
         
         # set up the test archive
-        archive.store(updated)
-        archive.store(archived)
+        models.Record.store(updated)
+        models.Record.store(archived)
         
         resp = requests.post(lookup_url + "10.cached/1,10.queued/1,10.stale/1,10.archived/1")
         obj = json.loads(resp.text)
@@ -147,7 +152,7 @@ class TestIntegration(TestCase):
         assert async_result["bibjson"]["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert async_result["bibjson"]["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
-        archive_result = archive.check_archive("doi:10.1371/journal.pone.0035089")
+        archive_result = models.Record.check_archive("doi:10.1371/journal.pone.0035089")
         assert archive_result["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert archive_result["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
@@ -181,7 +186,7 @@ class TestIntegration(TestCase):
             queued = cached_result.get("queued", False)
             assert waited < 10 # only give it 10 seconds, max, that should be easily enough
         
-        archive_result = archive.check_archive("doi:10.1371/journal.pone.0035089")
+        archive_result = models.Record.check_archive("doi:10.1371/journal.pone.0035089")
         assert archive_result["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert archive_result["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
