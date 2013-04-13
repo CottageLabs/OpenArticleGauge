@@ -47,6 +47,11 @@ def search():
 def plugins():
     return render_template('developers/plugins.html')
 
+# dev explanation of the backend
+@app.route("/developers/backend")
+def backend():
+    return render_template('developers/backend.html')
+
 
 @app.errorhandler(400)
 def bad_request(error):

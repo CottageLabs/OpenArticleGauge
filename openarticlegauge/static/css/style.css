@@ -44,6 +44,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .oag-unit .hero-unit{padding:60px;margin:30px 0 30px 0;font-size:18px;color:#ece9d7;background-color:#45515f;}
 .oag-unit .hero-unit h1{margin:0 0 5px 0;font-size:50px;color:#e36b23;letter-spacing:-1px;}
+.oag-unit .hero-unit h2{margin:0 0 5px 0;font-size:40px;color:#e36b23;letter-spacing:-1px;}
 .oag-unit .hero-unit h3{margin:0 0 10px 0;font-size:30px;color:#e36b23;letter-spacing:-1px;}
 .oag-unit a{color:#e36b23;text-decoration:none;}
 .oag-unit a:hover{color:#e36b23;text-decoration:underline;}
