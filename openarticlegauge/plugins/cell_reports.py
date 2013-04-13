@@ -44,7 +44,7 @@ For any of these solutions to be effective, the multiple copyright statements vi
         Does the page_license plugin support this provider
         """
         
-        work_on = cpl.clean_urls(provider.get("url", []))
+        work_on = self.clean_urls(provider.get("url", []))
         
         for url in work_on:
             if self.supports_url(url):
