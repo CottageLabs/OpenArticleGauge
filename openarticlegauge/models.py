@@ -224,7 +224,7 @@ class ResultSet(object):
 def flush_buffer():
     # if we are not buffering, don't do anything
     if not config.BUFFERING:
-        log.info("BUFFERING = False ; flush_buffer is superflous, aborting")
+        log.info("BUFFERING = False ; flush_buffer is superfluous, aborting")
         return False
     
     # check to see if we are already running a buffering process    
