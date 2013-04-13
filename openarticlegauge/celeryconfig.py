@@ -33,7 +33,8 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ROUTES = {
     'openarticlegauge.workflow.detect_provider' : {"queue": "detect_provider"},
     'openarticlegauge.workflow.provider_licence' : {"queue" : "provider_licence"},
-    'openarticlegauge.workflow.store_results' : {"queue" : "store_results"}
+    'openarticlegauge.workflow.store_results' : {"queue" : "store_results"},
+    'openarticlegauge.models.flush_buffer' : {'queue' : 'flush_buffer'}
 }
 
 CELERYBEAT_SCHEDULE = {

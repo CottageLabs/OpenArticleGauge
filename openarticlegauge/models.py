@@ -110,6 +110,7 @@ class Record(DomainObject):
         # get all of the id keys
         ids = client.keys("id_*")
         if len(ids) == 0:
+            log.info("storage buffer contains 0 items to be flushed ... returning")
             return False
         log.info("flushing storage buffer of " + str(len(ids)) + " objects")
         
@@ -223,6 +224,7 @@ class ResultSet(object):
 def flush_buffer():
     # if we are not buffering, don't do anything
     if not config.BUFFERING:
+        log.info("BUFFERING = False ; flush_buffer is superflous, aborting")
         return False
     
     # check to see if we are already running a buffering process    
