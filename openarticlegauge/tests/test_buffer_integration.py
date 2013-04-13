@@ -197,7 +197,7 @@ class TestIntegration(TestCase):
         assert len(obj["processing"]) == 1, json.dumps(obj, indent=2) # expect: queued
         
         # now we need to wait for the buffer to flush before making our next corroborating request
-        time.sleep(7)
+        time.sleep(31)
         
         # now do the same request again, and expect the same results
         resp = requests.post(lookup_url + "10.cached/1,10.queued/1,10.stale/1,10.archived/1")

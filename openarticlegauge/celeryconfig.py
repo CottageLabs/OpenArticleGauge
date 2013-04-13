@@ -40,7 +40,10 @@ CELERY_ROUTES = {
 CELERYBEAT_SCHEDULE = {
     'flush_archive_buffer': {
         'task': 'openarticlegauge.models.flush_buffer',
-        'schedule': timedelta(seconds=config.BUFFER_FLUSH_PERIOD)
+        'schedule': timedelta(seconds=config.BUFFER_FLUSH_PERIOD),
+        'options' : {
+            'queue' : 'flush_buffer'
+        }
     }
 }
 
