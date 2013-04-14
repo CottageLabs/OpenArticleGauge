@@ -12,6 +12,10 @@ license_rights_info = {
 'ND': 'NoDerivatives restriction'
 }
 
+# No license can be considered "supported" until it has:
+# a) a record below
+# b) NC, SA and ND keys defined in that record
+
 LICENSES = {
   "afl-3.0": {
     "domain_content": False, 

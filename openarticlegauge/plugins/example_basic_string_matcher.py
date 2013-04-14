@@ -73,17 +73,17 @@ class Tutorial(plugin.Plugin):
         # licensing statements to look for on this publisher's pages
         # take the form of {statement: meaning}
 
-        ## The one thing to be careful about is identifying your license with "type"
-        ## This MUST correspond to one of the objects in the /openarticlegauge/licenses.py
-        ## file. That is based on opendefinition.org . If your license is not present,
-        ## modify the licenses.py file and include it as a new record at the bottom,
-        ## preferably by copying the record of another license and filling in as many
-        ## fields as you can.
-        
         ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
         lic_statements = [
             {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
                 {'type': 'cc-by', # license type, see the licenses module for available ones
+                    ## The one thing to be careful about is identifying your license with "type"
+                    ## This MUST correspond to one of the objects in the /openarticlegauge/licenses.py
+                    ## file. That is based on opendefinition.org . If your license is not present,
+                    ## modify the licenses.py file and include it as a new record at the bottom,
+                    ## preferably by copying the record of another license and filling in as many
+                    ## fields as you can.
+
                  'version':'2.0', # version of the license if specified, can be blank
 
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
@@ -94,6 +94,14 @@ class Tutorial(plugin.Plugin):
                     ## opendefinition.org page for it. This plugin knows a better
                     ## URL though, since it's present in the license statement above.
                     'url': 'http://creativecommons.org/licenses/by/2.0'}
+
+                    ## The license rights / requirements are defined centrally in the
+                    ## licenses module, not in plugins.
+                    ## So the NC, SA and ND fields *must* be defined for this license in
+                    ## the licenses module for it to be correctly recognised as open
+                    ## access (or not). It's recommended to define BY as well. See the
+                    ## licenses module for more information if you do not know what these
+                    ## field names mean.
             }
         ]
         

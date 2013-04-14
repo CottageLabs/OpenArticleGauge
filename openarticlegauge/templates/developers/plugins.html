@@ -52,6 +52,8 @@ Now look for <pre>~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~ in the file.</pre>
 This marker is above each line or section that you will have to edit.
 </div>
 
+<div>All comments which start with two hash signs (<span class="inlinecode">##</span>) are explanations related to the tutorial and should be deleted after you are done with the plugin.</div>
+
 <ol>
 <li>Change the docstring at the very start of the file to reflect the aims of your plugin:</li>
 <pre class="python">"""This plugin handles BioMedCentral articles. [...]"""</pre>
@@ -66,7 +68,7 @@ This marker is above each line or section that you will have to edit.
 
 <pre class="python">lic_statements</pre>
 
-<div>It is a list of mappings. Each maps a statement string to a meaning object.</div>
+<div>This is a list of mappings. Each one maps the legal statement of what license applies to the work to a machine-friendly form.</div>
 
 <div>Modify the example mapping provided. <strong>It is discussed line-by-line here.</strong></div>
 
@@ -74,7 +76,7 @@ This marker is above each line or section that you will have to edit.
 
 <div>Find and get a license statement from one of the article pages. Make sure this is the page that you get after following a DOI!</div>
 
-<div id="extrahelp">(In order to be sure, find the DOI of the article on the page you've opened, and type <span class="inlinecode">http://dx.doi.org/&lt;put DOI here&gt;</span> in your browser.)</div>
+<div class="extrahelp">(In order to be sure, find the DOI of the article on the page you've opened, and type <span class="inlinecode">http://dx.doi.org/&lt;put DOI here&gt;</span> in your browser.)</div>
 
 <div>Replace the statement inside the quotes</div>
 <pre>"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited."<strong>:</strong></pre>
@@ -83,35 +85,36 @@ with the one you found.
 <div>Now modify the meaning object</div>
 <pre class="python">{</pre>
 
-<div>The type field is a short unique identifier for the license. The example is Creative Commons Attribution.</div>
-<div>If yours is different, open <span class="inlinecode">openarticlegauge/licenses.py</span> and try to look for the title of your license (e.g. Open Government, PLoS WHO) and get its type.</div>
-<div>If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).</div>
 <pre class="python">'type': 'cc-by',</pre>
+<div>The type field is a short unique identifier for the license. The example is Creative Commons Attribution.</div>
 
+<div>If yours is different, open <span class="inlinecode">OpenArticleGauge/openarticlegauge/licenses.py</span> and try to look for the title of your license (e.g. Open Government, PLoS WHO) and get its type.</div>
+
+<div>If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).</div>
+<div>Please note that your license <strong>will not be identified correctly as Open Access-compatible</strong> unless you define the <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields here. It is also recommended that you define the <span class="inlinecode">BY</span> field, if you know what it's value should be.</div>
+
+<div>Here are the meanings of these fields:<div>
+
+<div><span class="inlinecode">NC</span> - Does the license have non-commercial restrictions?</div>
+
+<div><span class="inlinecode">SA</span> - Does the license require that derivative works be licensed under the same or similar license?</div>
+
+<div><span class="inlinecode">ND</span> - Does the license forbid derivative works?</div>
+
+<div><span class="inlinecode">BY</span> - Does the license require attribution?</div>
+
+
+<div>Back to editing your plugin now.</div>
+
+<pre class="python">'version':'2.0',</pre>
 <div>The licenses module contains general descriptions of licenses, not specific versions, so use the version attribute if the publisher provides specific version information.</div>
 <div class="extrahelp">It's just a string. You can leave it blank if not applicable.</div>
-<pre class="python">'version':'2.0',</pre>
 
-<div>Is the license Open-Access? See the documentation on the <a href="/about.html#policy">About page</a> on what qualifies as Open-Access.</div>
-<pre class="python">'open_access': True,</pre>
-
-<div>Does the license require attribution?</div>
-<pre class="python">'BY': True,</pre>
-
-<div>Does the license have non-commercial restrictions?</div>
-<pre class="python">'NC': False,</pre>
-
-<div>Does the license require that derivative works be licensed under the same or similar license?</div>
-<pre class="python">'SA': False,</pre>
-
-<div>Does the license forbid derivative works?</div>
-<pre class="python">'ND': False,</pre>
-
+<pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'</pre>
 <div>If you wish to override the URL provided by the licenses module for this license, do so here.</div>
 <div class="extrahelp">You should do this if the license statement on the article page includes a URL which points to the license terms. This is often the case where the article page links to a specific version of a Creative Commons license.</div>
 <div class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</div>
-<pre class="python">'url': 'http://creativecommons.org/licenses/by/2.0'
-}</pre>
+<pre>}</pre>
 
 <li>When you're done writing the plugin code, you can remove all comments which start with two hash signs (##), leaving the code cleaner and more readable. It can easily be done manually, or using regular expression such as <span class="inlinecode">^\s*##.*</span> (select everything starting with ##, regardless of indentation).</li>
 
@@ -120,7 +123,7 @@ with the one you found.
 <div>That's it, you're done with the plugin.</div>
 
 <h2>Something that is untested is broken.</h2>
-<div>Before creating a pull request for the service, you need to write and run some tests to ensure everything is working.</div>
+<div>Before creating a pull request to contribute your plugin to the Open Access hive mind, you need to write and run some tests to ensure everything is working.</div>
 
 <pre class="shell">
 cd OpenArticleGauge/openarticlegauge/tests
@@ -140,9 +143,8 @@ vim test_new_plugin.py # or your favourite text editor
 <div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
 <div>(This is just a URL format test, they don't have to really exist. OAG users might not always give us correct URLs!)</div>
 
-<li>Give some examples of URLs your plugin should say it CANNOT support. You can leave those as they are, unless you're writing a test for the BioMedCentral plugin, which already exists...</li>
+<li>Give some examples of URLs your plugin should say it CANNOT support. You can leave those as they are.</li>
 <pre class="python">UNSUPPORTED_URLS = ["http://www.biomedcentral.com/", "askjdfsakjdhfsa"]</pre>
-<div class="extrahelp">This is a comma-delimited list of quoted strings.</div>
 
 <li>Download an example publisher's article page that you're trying to process to <span class="inlinecode">OpenArticleGauge/openarticlegauge/tests/resources/&lt;local_filename&gt;</span></li>
 <div class="extrahelp">We suggest you use the DOI as a filename, e.g. pbio.1001406.html</div>
@@ -156,7 +158,8 @@ vim test_new_plugin.py # or your favourite text editor
     <pre class="python">os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "<strong>pbio.1001406.html</strong>") :</pre>
 
     <li>The value: update the license comparison object to reflect the values you're expecting your plugin to write into the license object.</li>
-    <div>For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are the same as in your plugin's <span class="inlinecode">lic_statements</span>.</div>
+    <div>For this quickstart guide, make sure the values of the <span class="inlinecode">version</span>, <span class="inlinecode">type</span>, <span class="inlinecode">open_access</span>, <span class="inlinecode">BY</span>, <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields are what you expect them to be.</div>
+<div class="extrahelp">They should be the same as the ones defined in the <span class="inlinecode">licenses.py</span> file for the license you used, and as defined in your plugin's <span class="inlinecode">lic_statements</span>.</div>
     
     <li>You will also need to edit the <span class="inlinecode">provenance</span> dictionary inside the license comparison object. The only two fields you care about in this quickstart are <span class="inlinecode">source</span> and <span class="inlinecode">description</span>.</li>
     
@@ -173,7 +176,7 @@ vim test_new_plugin.py # or your favourite text editor
 <div>And that's it. Now just run your tests:</div>
 <pre class="shell">nosetests test_new_plugin.py # change the filename to the one you gave it above</pre>
 
-<div>You should see a message telling you 3 tests have run, and ending in a simple "OK". </div>
+<div>You should see a message telling you 3 tests have run, and ending in a simple "OK".</div>
 
 
     </div><!-- close container divs -->
