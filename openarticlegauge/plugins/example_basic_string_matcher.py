@@ -102,7 +102,23 @@ class Tutorial(plugin.Plugin):
                     ## access (or not). It's recommended to define BY as well. See the
                     ## licenses module for more information if you do not know what these
                     ## field names mean.
-            }
+
+            ## You can have as many license statements as you like! In order to add another license, just add a comma ... 
+            }, ## <-- ... right after the closing bracket for the previous license statement ...
+            ## ... copy the previous license statement after the comma and edit it!
+
+            ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
+            ## If you don't want more than one license statement for now, just
+            ## delete this second statement entirely. It's OK to leave the
+            ## comma before it.
+            {"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
+                {'type': 'cc-by', # license type, see the licenses module for available ones
+                 'version':'2.0', # version of the license if specified, can be blank
+
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by/2.0'}
+            } ## Just add a comma here and copy the record again to add a
+              ## *third* license statement.
         ]
         
         # some basic protection against missing fields in the incoming record

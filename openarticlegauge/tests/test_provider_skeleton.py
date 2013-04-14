@@ -43,13 +43,13 @@ RESOURCE_AND_RESULT = {
         {
             "id" : None,            # there should be no id field
             "version": "",          # version should be the empty string
-            "type": "cc-by",        # type is cc-by
+            "type": "cc-by",
             "jurisdiction": "",     # jurisdiction should be the empty string
-            "open_access": True,    # open_access is True
-            "BY": True,             # BY is True
-            "NC": False,            # NC is False
-            "ND": False,            # ND is False
-            "SA": False,            # SA is false
+            "open_access": True,
+            "BY": True,
+            "NC": False,
+            "ND": False,
+            "SA": False,
             "provenance": {
                 "handler": MyPlugin._short_name, # name of plugin which processed this record
                 "handler_version": MyPlugin.__version__, # version of plugin which processed this record
@@ -59,7 +59,35 @@ RESOURCE_AND_RESULT = {
                 "source": "http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
-       }
+       }, ## Just add a comma and copy the whole record to add a test for a 
+          ## second license statement
+
+       ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
+       ## If you don't want more than one license statement for now, just
+       ## delete this second statement test entirely. It's OK to leave the
+       ## comma before it.
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "an_example_of_your_second_license.html") : 
+        {
+            "id" : None,            # there should be no id field
+            "version": "",          # version should be the empty string
+            "type": "uk-ogl",
+            "jurisdiction": "",     # jurisdiction should be the empty string
+            "open_access": True,
+            "BY": True,
+            "NC": False,
+            "ND": False,
+            "SA": False,
+            "provenance": {
+                "handler": MyPlugin._short_name, # name of plugin which processed this record
+                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
+                "category": "page_scrape", # category is page_scrape
+                "description": 'License decided by scraping the resource at <insert the URL of the work demonstrating use of your second license here> and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
+                "agent": config.agent, # agent is from configuration
+                "source": "<insert the URL of the work demonstrating use of your second license here>", # source is the url where we look this record up
+                "date": -1 # date is not null (but we don't know the exact value)
+            }
+       }, ## Just add a comma and copy the whole record to add a test for a 
+          ## *third* license statement test
 }
 
 """

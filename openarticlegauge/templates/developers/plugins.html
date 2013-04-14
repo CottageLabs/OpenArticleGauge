@@ -114,7 +114,19 @@ with the one you found.
 <div>If you wish to override the URL provided by the licenses module for this license, do so here.</div>
 <div class="extrahelp">You should do this if the license statement on the article page includes a URL which points to the license terms. This is often the case where the article page links to a specific version of a Creative Commons license.</div>
 <div class="extrahelp">Note you can override any value defined in the licenses module, even the title of the license. For such drastic changes, just create a new record in the licenses module instead of overriding important attributes - it's there for convenience.</div>
-<pre>}</pre>
+
+<pre>},</pre>
+<div>You can have more than one license statement to detect different licenses for the same publisher. The example plugin has a second license statement already defined to make this easier.</div>
+
+<pre>{"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
+    {'type': 'cc-by', # license type, see the licenses module for available ones
+     'version':'2.0', # version of the license if specified, can be blank
+
+        # also declare some properties which override info about this license in the licenses list (see licenses module)
+     'url': 'http://creativecommons.org/licenses/by/2.0'}
+} ## Just add a comma here and copy the record again to add a
+  ## *third* license statement.
+</pre>
 
 <li>When you're done writing the plugin code, you can remove all comments which start with two hash signs (##), leaving the code cleaner and more readable. It can easily be done manually, or using regular expression such as <span class="inlinecode">^\s*##.*</span> (select everything starting with ##, regardless of indentation).</li>
 
@@ -171,6 +183,9 @@ vim test_new_plugin.py # or your favourite text editor
     <pre>"description": 'License decided by scraping the resource at <strong>http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406</strong> and looking for the following license statement: "<u>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</u>".', # description is a long string</pre>
     </ol> <!-- close ordered list of sub-steps looking at RESOURCE_AND_RESULT dictionary -->
 
+<li>If you have defined more than once license for this publisher, you should test all your license statements. There is an example provided.</li>
+<div>Just do the same as you did for the first license statement, or delete the example if your plugin can only detect one license for now.</div>
+<div class="extrahelp">In the example of a second statement test provided, make sure to edit <span class="inlinecode">an_example_of_your_second_license.html</span>, just like in step 5.1 above. Also make sure to replace <span class="inlinecode">&lt;insert the URL of the work demonstrating use of your second license here&gt;</span> when repeating step 5.3.</div>
 </ol><!-- close ordered list of steps for the test writing section -->
 
 <div>And that's it. Now just run your tests:</div>
