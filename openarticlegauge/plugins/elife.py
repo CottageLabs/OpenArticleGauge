@@ -1,6 +1,6 @@
 from openarticlegauge import plugin, config
 from openarticlegauge.licenses import LICENSES
-from openarticlegauge import license_rights
+from openarticlegauge import oa_policy
 import requests, logging
 from lxml import etree
 from copy import deepcopy
@@ -84,8 +84,7 @@ class ELifePlugin(plugin.Plugin):
         
                     # license identified, now use that to construct the license object
                     license = deepcopy(LICENSES[lic_type])
-                    license.update(license_rights.LICENSES_RIGHTS[lic_type])
-                    license['open_access'] = license_rights.oa_for_license(lic_type)
+                    license['open_access'] = oa_policy.oa_for_license(lic_type)
                     # set some defaults which have to be there, even if empty
                     license.setdefault('version','')
                     license.setdefault('description','')

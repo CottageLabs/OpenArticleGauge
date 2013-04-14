@@ -1,3 +1,17 @@
+"""
+A list of licenses based on the http://www.opendefinition.org/ list.
+Defines license attributes such as name, url and rights granted.
+"""
+
+# Not all licenses may have rights / requirements declared, but for those that
+# do, this is what the keys mean
+license_rights_info = {
+'BY': 'Attribution required',
+'NC': 'NonCommercial restriction',
+'SA': 'ShareAlike requirement',
+'ND': 'NoDerivatives restriction'
+}
+
 LICENSES = {
   "afl-3.0": {
     "domain_content": False, 
@@ -179,7 +193,12 @@ LICENSES = {
     "maintainer": "", 
     "status": "active", 
     "title": "Creative Commons Attribution", 
-    "url": "http://www.opendefinition.org/licenses/cc-by"
+    "url": "http://www.opendefinition.org/licenses/cc-by",
+    # Rights and requirements
+    'BY': True,
+    'NC': False,
+    'SA': False,
+    'ND': False
   }, 
   "cc-by-sa": {
     "domain_content": True, 
@@ -192,7 +211,12 @@ LICENSES = {
     "maintainer": "", 
     "status": "active", 
     "title": "Creative Commons Attribution Share-Alike", 
-    "url": "http://www.opendefinition.org/licenses/cc-by-sa"
+    "url": "http://www.opendefinition.org/licenses/cc-by-sa",
+    # Rights and requirements
+    'BY': True,
+    'NC': False,
+    'SA': True,
+    'ND': False
   }, 
   "cc-nc": {
     "domain_content": False, 
@@ -205,7 +229,12 @@ LICENSES = {
     "maintainer": "", 
     "status": "active", 
     "title": "Creative Commons Non-Commercial (Any)", 
-    "url": "http://creativecommons.org/licenses/by-nc/2.0/"
+    "url": "http://creativecommons.org/licenses/by-nc/2.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': True,
+    'SA': False,
+    'ND': False
   }, 
   "cc-zero": {
     "domain_content": True, 
@@ -218,7 +247,12 @@ LICENSES = {
     "maintainer": "", 
     "status": "active", 
     "title": "Creative Commons CCZero", 
-    "url": "http://www.opendefinition.org/licenses/cc-zero"
+    "url": "http://www.opendefinition.org/licenses/cc-zero",
+    # Rights and requirements
+    'BY': False,
+    'NC': False,
+    'SA': False,
+    'ND': False
   }, 
   "cddl1": {
     "domain_content": False, 
@@ -1173,7 +1207,12 @@ LICENSES = {
     "maintainer": "", 
     "status": "active", 
     "title": "UK Open Government Licence (OGL)", 
-    "url": "http://reference.data.gov.uk/id/open-government-licence"
+    "url": "http://reference.data.gov.uk/id/open-government-licence",
+    # Rights and requirements
+    'BY': True,
+    'NC': False,
+    'SA': False,
+    'ND': False
   }, 
   "ukclickusepsi": {
     "domain_content": True, 
@@ -1335,6 +1374,11 @@ LICENSES = {
 # Licenses added by OpenArticleGauge committers due to having to deal with them :)
   "plos-who": {
     "type": "plos-who",
-    "title": "World Health Organisation (PLoS) License"
+    "title": "World Health Organisation (PLoS) License",
+    # Rights and requirements
+    'BY': True,
+    'NC': None, # unknown - we can't decide
+    'SA': False,
+    'ND': False
   }
 }
