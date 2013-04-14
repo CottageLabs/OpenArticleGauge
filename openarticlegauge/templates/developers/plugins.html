@@ -33,12 +33,25 @@
 </ol>
 
 <div>You don't need to run the full application in order to develop and test a plugin, so this guide does not cover setting the OAG service up.</div>
-<div>If you want to run OAG itself, follow instructions at: <a href="https://github.com/CottageLabs/OpenArticleGauge">https://github.com/CottageLabs/OpenArticleGauge</a></div>
+<div>If you want to run OAG itself, follow instructions at: <a href="https://github.com/CottageLabs/OpenArticleGauge" target="_blank">https://github.com/CottageLabs/OpenArticleGauge</a></div>
+
+<h2 id="quickstart">Quickstart</h2>
+<div>... for those familiar with git and GitHub</div>
+<ol>
+<li><a href="https://github.com/CottageLabs/OpenArticleGauge/fork_select" target="_blank">Fork the OAG repo on GitHub</a>.</li>
+<li>Write your plugin. See the section below, <a href="#write-plugin-start">skipping the GitHub fork part</a>.</li>
+<li>Make a pull request on GitHub using CottageLabs/OpenArticleGauge as the base repo.</li>
+</ol>
+<div>More detailed instructions are available below.</div>
 
 <h2 id="writeplugin">Writing the plugin</h2>
-<div>To get the repository, in your terminal type:</div>
-<pre class="shell">git clone git@github.com:CottageLabs/OpenArticleGauge.git</pre>
+<div>You will need to fork the OpenArticleGauge repository on GitHub, so you can easily contribute your new plugin when it's completed.</div>
+<div>To do so, just go to <a href="http://github.com" target="_blank">GitHub's front page</a> and create a free account using the provided sign-up form.</div>
+<div>Then follow <a href="https://help.github.com/articles/fork-a-repo" target="_blank">GitHub's tutorial on forking repositories</a>. Use the <a href="https://github.com/CottageLabs/OpenArticleGauge" target="_blank">OpenArticleGauge repository</a> instead of the example "Spoon-Knife" repository.</div>
+<div class="extrahelp">You should end up with a copy of the OAG repository on your GitHub account and on your local hard drive. The URL should look something like</div>
+<pre>https://github.com/YOUR_USERNAME/OpenArticleGauge</pre>
 
+<div>Open a terminal and go to the root of your OAG fork. ("Step 3: Configure remotes" from the GitHub guide would have left you in the right place.)</div>
 <div>Now copy the template plugin to start working</div>
 <pre class="shell">
 cd OpenArticleGauge/openarticlegauge/plugins
@@ -47,7 +60,7 @@ cp example_basic_string_matcher.py new_plugin.py
 vim new_plugin.py # or your favourite editor
 </pre>
 
-<div>
+<div id="write-plugin-start">
 Now look for <pre>~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~ in the file.</pre>
 This marker is above each line or section that you will have to edit.
 </div>
@@ -93,7 +106,7 @@ with the one you found.
 <div>If your license isn't present, add it to the bottom of the licenses.py file and fill in as many fields as you can (canonical URL of license, title, etc.).</div>
 <div>Please note that your license <strong>will not be identified correctly as Open Access-compatible</strong> unless you define the <span class="inlinecode">NC</span>, <span class="inlinecode">SA</span> and <span class="inlinecode">ND</span> fields here. It is also recommended that you define the <span class="inlinecode">BY</span> field, if you know what it's value should be.</div>
 
-<div>Here are the meanings of these fields:<div>
+<div>Here are the meanings of these fields:</div>
 
 <div><span class="inlinecode">NC</span> - Does the license have non-commercial restrictions?</div>
 
@@ -193,6 +206,20 @@ vim test_new_plugin.py # or your favourite text editor
 
 <div>You should see a message telling you 3 tests have run, and ending in a simple "OK".</div>
 
+<h2 id="contribute-the-plugin">Contributing your new plugin to OAG</h2>
+<div>In short - make a pull request. That is all.</div>
+
+<div>Longer version: commit your changes. At the root of your repository,
+<pre>git add -A .</pre>
+to add all your changes. Then
+<pre>git commit -m 'ENTER A SENSIBLE COMMIT MESSAGE'</pre>
+(edit the commit message to state what your plugin does, e.g. what publisher it handles). And finally,
+<pre>git push</pre>
+</div>
+<div>Now, simply create a pull request on GitHub. <a href="https://help.github.com/articles/creating-a-pull-request">GitHub's tutorial is quite helpful.</a></div>
+<div class="extrahelp">The "the repo you pushed to" is your own fork of OAG, e.g. YOUR_USERNAME/OpenArticleGauge.</div>
+<div class="extrahelp">The "target repo" is CottageLabs/OpenArticleGauge.</div>
+<div class="extrahelp">Both "branch you wish to have merged" and "target branch" should be "master" unless you created your own branch, in which case you do not need to read this bit of the guide.</div>
 
     </div><!-- close container divs -->
 </div><!-- close container divs -->
