@@ -38,7 +38,7 @@ def initialise_index(app):
             print key, r.status_code
     # put the currently available licences into the licence index
     for l in licenses.LICENSES:
-        r = requests.post(i + '/license', json.dumps(licenses.LICENSES[l]))
+        r = requests.post(i + '/license/' + l, json.dumps(licenses.LICENSES[l]))
 
 def setup_error_email(app):
     ADMINS = app.config.get('ADMINS', '')
