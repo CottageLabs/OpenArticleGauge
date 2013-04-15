@@ -1,43 +1,9 @@
 """
-Lists what licenses grant what rights:
-BY - Attribution required
-NC - NonCommercial restriction
-SA - ShareAlike requirement
-ND - NoDerivatives restriction
+Contains the open access policy functions, which define what "open_access" is
+based on the rights / requirements of an individual license.
 """
 
-LICENSES_RIGHTS = {
-    'cc-by': {
-        'BY': True,
-        'NC': False,
-        'SA': False,
-        'ND': False
-    },
-    'cc-nc': {
-        'BY': True,
-        'NC': True,
-        'SA': False,
-        'ND': False
-    },
-    'plos-who': {
-        'BY': True,
-        'NC': None, # unknown - we can't decide
-        'SA': False,
-        'ND': False
-    },
-    'cc-zero': {
-        'BY': False,
-        'NC': False,
-        'SA': False,
-        'ND': False
-    },
-    'uk-ogl': {
-        'BY': True,
-        'NC': False,
-        'SA': False,
-        'ND': False
-    },
-}
+from openarticlegauge.licenses import LICENSES
 
 def oa_from_rights(NC, SA, ND, **kwargs):
     """
@@ -51,6 +17,11 @@ def oa_from_rights(NC, SA, ND, **kwargs):
     the caller's convenience - because the definition of NC, SA and ND usually
     comes with other information, such as the definition of BY (the Attribution
     requirement).
+
+    Example usage:
+    license_info = {'BY': True, 'NC': True, 'SA': False, 'ND': False,
+                        'type': 'cc-nc', 'name': 'Creative Commons NonComm.'}
+    is_it_oa = oa_from_rights(**license_info)
     """
     if NC is None or SA is None or ND is None:
     # just can't make a decision without knowing all of these, assume not OA
@@ -64,7 +35,7 @@ def oa_for_license(lic_type):
     known rights it grants / restricts.
 
     This function is essentially a convenience wrapper around
-    oa_from_rights which just selects the appropriate license from the
-    LICENSES_RIGHTS dictionary.
+    oa_from_rights. It just selects the appropriate license from the
+    licenses module.
     """
-    return oa_from_rights(**LICENSES_RIGHTS[lic_type])
+    return oa_from_rights(**LICENSES[lic_type])

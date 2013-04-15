@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from openarticlegauge import license_rights
+from openarticlegauge import oa_policy
 
 class TestWorkflow(TestCase):
 
@@ -13,7 +13,7 @@ class TestWorkflow(TestCase):
     def test_oa_policy_function_basics(self):
         # considered Open Access
         test_rights = {'NC': False, 'SA': False, 'ND': False}
-        assert license_rights.oa_from_rights(**test_rights)
+        assert oa_policy.oa_from_rights(**test_rights)
 
         # NOT considered Open Access
 
@@ -35,28 +35,28 @@ class TestWorkflow(TestCase):
             # function returns False as expected, and then reset that right,
             # ready for testing the next right.
                 test_rights[right] = tv
-                assert not license_rights.oa_from_rights(**test_rights)
+                assert not oa_policy.oa_from_rights(**test_rights)
                 test_rights[right] = False
-                assert license_rights.oa_from_rights(**test_rights)
+                assert oa_policy.oa_from_rights(**test_rights)
 
     def test_oa_policy_function_additional_args(self):
         # considered Open Access
         test_rights = {'NC': False, 'SA': False, 'ND': False,
             'BY': True
         }
-        assert license_rights.oa_from_rights(**test_rights)
+        assert oa_policy.oa_from_rights(**test_rights)
 
-    def test_license_rights_select_function(self):
+    def test_oa_policy_select_function(self):
         # oa_for_license is essentially a convenience wrapper around
         # oa_from_rights which just selects the appropriate license from the
-        # license_rights.LICENSES_RIGHTS dictionary.
-        # We are not going to test the *contents* of the dictionary, that is
-        # up to plugin content tests. We are just going to see if the wrapper
-        # works as expected.
+        # licenses module.
+        # We are not going to test the correctness of the rights definitions,
+        # that is up to plugin content tests. We are just going to see if the
+        # wrapper works as expected.
 
         # try a license which should exist and should be OA
         # We don't care what value it returns, we just care about accessing
         # dict. All we're checking is that no exceptions are raised.
-        dummy_open_access_value = license_rights.oa_for_license('cc-by')
+        dummy_open_access_value = oa_policy.oa_for_license('cc-by')
 
-        self.assertRaises(KeyError, license_rights.oa_for_license, 'should_not_exist')
+        self.assertRaises(KeyError, oa_policy.oa_for_license, 'should_not_exist')
