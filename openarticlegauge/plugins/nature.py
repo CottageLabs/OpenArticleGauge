@@ -65,11 +65,6 @@ class NaturePlugin(plugin.Plugin):
                 {'type': 'cc-by', # license type, see the licenses module for available ones
                          'version':'3.0', # version of the license if specified, can be blank
                          'url': 'http://creativecommons.org/licenses/by/3.0/'}
-            },              
-            {'<div class="subscribe-prompt" id="access">':
-                {'type': 'NPG-copyright-transfer', # license type, see the licenses module for available ones
-                 'version': '', # version of the license if specified, can be blank
-                 }
             } 
         ]
         

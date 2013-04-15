@@ -48,7 +48,8 @@ license_detection = [
     "openarticlegauge.plugins.cell_reports.CellReportsPlugin",
     "openarticlegauge.plugins.oup.OUPPlugin",
     "openarticlegauge.plugins.elife.ELifePlugin",
-    "openarticlegauge.plugins.nature.NaturePlugin"
+    "openarticlegauge.plugins.nature.NaturePlugin",
+    "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
 ]
 
 # Cache configuration

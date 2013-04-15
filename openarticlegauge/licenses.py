@@ -240,6 +240,44 @@ LICENSES = {
     'SA': False,
     'ND': False
   }, 
+  "cc-nc-sa": {
+    "domain_content": False, 
+    "domain_data": False, 
+    "domain_software": False, 
+    "family": "", 
+    "type": "cc-nc-sa", 
+    "is_okd_compliant": False, 
+    "is_osi_compliant": False, 
+    "maintainer": "", 
+    "status": "active", 
+    "title": "Creative Commons Non-Commercial Share-Alike (Any)", 
+    "url": "http://creativecommons.org/licenses/by-nc-sa/3.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': True,
+    'SA': True,
+    'ND': False
+  },
+    "cc-nc-nd": {
+    "domain_content": False, 
+    "domain_data": False, 
+    "domain_software": False, 
+    "family": "", 
+    "type": "cc-nc-sa", 
+    "is_okd_compliant": False, 
+    "is_osi_compliant": False, 
+    "maintainer": "", 
+    "status": "active", 
+    "title": "Creative Commons Non-Commercial No-Derivatives (Any)", 
+    "url": "http://creativecommons.org/licenses/by-nc-nd/3.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': True,
+    'SA': False,
+    'ND': True
+  }, 
+ 
+
   "cc-zero": {
     "domain_content": True, 
     "domain_data": True, 
@@ -1384,5 +1422,16 @@ LICENSES = {
     'NC': None, # unknown - we can't decide
     'SA': False,
     'ND': False
-  }
+  },
+  "publisher-asserted-accessible": {
+    "title": "Publisher Asserts this is Accessible",
+    # Rights and requirements
+    'BY': None, # unknown - we can't decide
+    'NC': None, 
+    'SA': None,
+    'ND': None,
+    "comment" : "The publisher asserts using a badge or statement that this article is accessible. We cannot determine any specific re-use or use rights as there is no explicit statement or link to a license." 
+   }
 }
+
+
