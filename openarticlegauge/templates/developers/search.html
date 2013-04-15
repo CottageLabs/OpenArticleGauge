@@ -151,6 +151,50 @@ jQuery(document).ready(function($) {
         {'field': 'email.exact', 'display': 'Submitted by'}
     ];
 
+    var license_url = '/query/license?';
+    var license_datatype = 'JSON';
+
+    var license_resdisplay = [
+        [
+            {
+                "field": "title"
+            }
+        ],
+        [
+            {
+                "field": "type"
+            },
+            {
+                "pre": ' <a target="_blank" href="',
+                "field": "url",
+                "post": '">'
+            },
+            {
+                "field": "url",
+                "post": "</a>"
+            }
+        ],
+        [
+            {
+                "field": 'comment'
+            }
+        ]
+    ];
+
+    var license_facets = [
+        {'field': 'domain_content.exact', 'display': 'Domain content'},
+        {'field': 'domain_data.exact', 'display': 'Domain data'},
+        {'field': 'domain_software.exact', 'display': 'Domain software'},
+        {'field': 'family.exact', 'display': 'Family'},
+        {'field': 'type.exact', 'display': 'Type'},
+        {'field': 'is_okd_compliant.exact', 'display': 'OKD compliant'},
+        {'field': 'is_osi_compliant.exact', 'display': 'OSI compliant'},
+        {'field': 'maintainer.exact', 'display': 'Maintainer'},
+        {'field': 'status.exact', 'display': 'Status'},
+        {'field': 'title.exact', 'display': 'Title'},
+        {'field': 'url.exact', 'display': 'URL'},
+    ];
+
     var link_ids = function() {
         $('.identifier').each(function() {
             var content = $(this).html();
@@ -196,6 +240,11 @@ jQuery(document).ready(function($) {
             opts.datatype = issue_datatype;
             opts.facets = issue_facets;
             opts.result_display = issue_resdisplay;
+        } else if (type == 'licenses') {
+            opts.search_url = license_url;
+            opts.datatype = license_datatype;
+            opts.facets = license_facets;
+            opts.result_display = license_resdisplay;
         };
         var p = $('#facetview').parent();
         $('#facetview').remove();
@@ -213,8 +262,9 @@ jQuery(document).ready(function($) {
 <p>You can search the existing database of articles and licenses from here. Note if an article has not previously been run through the system, either from the front page or the API, it will not appear here.</p>
     <p>
         <a class="btn searchtype" data-type="records" href="#">search records</a> 
-        <a class="btn searchtype" data-type="logs" href="#">search logs</a>
-        <a class="btn searchtype" data-type="issues" href="#">search issues</a>
+        <a class="btn searchtype" data-type="logs" href="#">search logs (if uploaded)</a>
+        <a class="btn searchtype" data-type="issues" href="#">search issues (if any)</a>
+        <a class="btn searchtype" data-type="licenses" href="#">licenses we know</a>
     </p>
     </div>
 </div>
