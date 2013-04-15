@@ -153,6 +153,10 @@ class Log(DomainObject):
     __type__ = 'log'
 
 
+class License(DomainObject):
+    __type__ = 'license'
+
+
 class ResultSet(object):
     """
     {
