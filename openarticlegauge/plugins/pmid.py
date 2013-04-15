@@ -69,7 +69,7 @@ class PMIDPlugin(plugin.Plugin):
         canonical = "pmid:" + bibjson_identifier['id']
         bibjson_identifier['canonical'] = canonical
         
-    def provider_resolver(self, record):
+    def detect_provider(self, record):
         """
         Take a pubmed id (if that is the type) and obtain a reference to the base
         URL of the resource that it links to and append it to the record['provider']['url'] list
