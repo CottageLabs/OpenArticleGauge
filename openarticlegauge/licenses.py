@@ -1422,5 +1422,16 @@ LICENSES = {
     'NC': None, # unknown - we can't decide
     'SA': False,
     'ND': False
-  }
+  },
+  "publisher-asserted-accessible": {
+    "title": "Publisher Asserts this is Accessible",
+    # Rights and requirements
+    'BY': None, # unknown - we can't decide
+    'NC': None, 
+    'SA': None,
+    'ND': None,
+    "comment" : "The publisher asserts using a badge or statement that this article is accessible. We cannot determine any specific re-use or use rights as there is no explicit statement or link to a license." 
+   }
 }
+
+
