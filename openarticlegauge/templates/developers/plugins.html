@@ -28,7 +28,7 @@
 <div>You will need:</div>
 <ol>
     <li>Python. OAG is primarily tested on Python 2.7. We cannot guarantee that older 2.x or newer 3.x will work.</li>
-    <li>nose and requests Python packages to make sure your plugin works: <span class="inlinecode">pip install nose requests</span></li>
+    <li><span class="inlinecode">nose</span> and <span class="inlinecode">requests</span> are Python packages to make sure your plugin works: <span class="inlinecode">pip install nose requests</span></li>
     <li>git: To clone your fork of the repository and contribute your plugin</li>
     <li>A <a href="http://github.com" target="_blank">GitHub account</a>. You should be signed in.</li>
 </ol>
@@ -41,6 +41,7 @@
 <ol>
 <li><a href="https://github.com/CottageLabs/OpenArticleGauge/fork_select" target="_blank">Fork the OAG repo on GitHub</a>.</li>
 <li>Write your plugin. See the section below, <a href="#write-plugin-start">skipping the GitHub fork part</a>.</li>
+<li>Write and run the tests for your plugin, <a href="#tests">described below</a>.</li>
 <li>Make a pull request on GitHub using CottageLabs/OpenArticleGauge as the base repo.</li>
 </ol>
 <div>More detailed instructions are available below.</div>
@@ -150,7 +151,7 @@ with the one you found.
 
 <div>That's it, you're done with the plugin.</div>
 
-<h2>Something that is untested is broken.</h2>
+<h2 id="tests">Something that is untested is broken.</h2>
 <div>Before creating a pull request to contribute your plugin to the Open Access hive mind, you need to write and run some tests to ensure everything is working.</div>
 
 <pre class="shell">
