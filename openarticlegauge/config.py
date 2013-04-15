@@ -47,7 +47,8 @@ license_detection = [
     "openarticlegauge.plugins.bmc.BMCPlugin",
     "openarticlegauge.plugins.cell_reports.CellReportsPlugin",
     "openarticlegauge.plugins.oup.OUPPlugin",
-    "openarticlegauge.plugins.elife.ELifePlugin"
+    "openarticlegauge.plugins.elife.ELifePlugin",
+    "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
 ]
 
 # Cache configuration
