@@ -4,7 +4,7 @@ from time import sleep
 
 def batchtest():
     # get some records from the OCC corpus (this is a test server, address may change)
-    r = requests.get('http://129.67.24.26:9200/test/record/_search?q=journal.name:plos* OR journal.name:bmc*&size=100')
+    r = requests.get('http://92.235.188.179:9200/occ/record/_search?q=journal.name:plos* OR journal.name:bmc*&size=100')
 
     # get a list of IDs from the records pulled
     # this may be longer than the amount of records, cos records can have more than one ID type
