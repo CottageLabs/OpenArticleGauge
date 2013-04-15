@@ -240,6 +240,44 @@ LICENSES = {
     'SA': False,
     'ND': False
   }, 
+  "cc-nc-sa": {
+    "domain_content": False, 
+    "domain_data": False, 
+    "domain_software": False, 
+    "family": "", 
+    "type": "cc-nc-sa", 
+    "is_okd_compliant": False, 
+    "is_osi_compliant": False, 
+    "maintainer": "", 
+    "status": "active", 
+    "title": "Creative Commons Non-Commercial Share-Alike (Any)", 
+    "url": "http://creativecommons.org/licenses/by-nc-sa/3.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': True,
+    'SA': True,
+    'ND': False
+  },
+    "cc-nc-nd": {
+    "domain_content": False, 
+    "domain_data": False, 
+    "domain_software": False, 
+    "family": "", 
+    "type": "cc-nc-sa", 
+    "is_okd_compliant": False, 
+    "is_osi_compliant": False, 
+    "maintainer": "", 
+    "status": "active", 
+    "title": "Creative Commons Non-Commercial No-Derivatives (Any)", 
+    "url": "http://creativecommons.org/licenses/by-nc-nd/3.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': True,
+    'SA': False,
+    'ND': True
+  }, 
+ 
+
   "cc-zero": {
     "domain_content": True, 
     "domain_data": True, 
