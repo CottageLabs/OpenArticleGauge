@@ -10,3 +10,4 @@ app.cfg
 *.log
 tests/usage_tests/errors
 celerybeat-schedule
+*.pid
