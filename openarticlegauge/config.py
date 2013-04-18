@@ -48,7 +48,8 @@ license_detection = [
     "openarticlegauge.plugins.cell_reports.CellReportsPlugin",
     "openarticlegauge.plugins.oup.OUPPlugin",
     "openarticlegauge.plugins.elife.ELifePlugin",
-    "openarticlegauge.plugins.nature.NaturePlugin"
+    "openarticlegauge.plugins.nature.NaturePlugin",
+    "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
 ]
 
 # Cache configuration
@@ -117,6 +118,7 @@ MAPPINGS = {
 }
 MAPPINGS['dispute'] = {'dispute':MAPPINGS['record']['record']}
 MAPPINGS['log'] = {'log':MAPPINGS['record']['record']}
+MAPPINGS['license'] = {'license':MAPPINGS['record']['record']}
 
 # OAG version and user agent string
 version = '0.1 alpha'

@@ -101,7 +101,7 @@ jQuery(document).ready(function () {
         event ? event.preventDefault() : false;
         $('#result_status').html("");
         $('#results').html("");
-        idlist = $('#idlist').val().replace('\n',',').split(',');
+        idlist = $('#idlist').val().replace('\n',',').replace(' ','').split(',');
         getoag();
     };
     $('#oag').bind('click',oag);

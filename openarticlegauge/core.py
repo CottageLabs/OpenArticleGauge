@@ -1,9 +1,7 @@
 import os, requests, json, redis
 from flask import Flask
 
-from openarticlegauge import config
-#from flask.ext.login import LoginManager, current_user
-#login_manager = LoginManager()
+from openarticlegauge import config, licenses
 
 def create_app():
     app = Flask(__name__)
@@ -29,7 +27,7 @@ def prep_redis(app):
 
 def initialise_index(app):
     mappings = app.config["MAPPINGS"]
-    i = 'http://' + str(app.config['ELASTIC_SEARCH_HOST']).lstrip('http://').rstrip('/')
+    i = str(app.config['ELASTIC_SEARCH_HOST']).rstrip('/')
     i += '/' + app.config['ELASTIC_SEARCH_DB']
     for key, mapping in mappings.iteritems():
         im = i + '/' + key + '/_mapping'
@@ -38,6 +36,9 @@ def initialise_index(app):
             ri = requests.post(i)
             r = requests.put(im, json.dumps(mapping))
             print key, r.status_code
+    # put the currently available licences into the licence index
+    for l in licenses.LICENSES:
+        r = requests.post(i + '/license/' + l, json.dumps(licenses.LICENSES[l]))
 
 def setup_error_email(app):
     ADMINS = app.config.get('ADMINS', '')

@@ -1424,6 +1424,7 @@ LICENSES = {
     'ND': False
   },
   "publisher-asserted-accessible": {
+    "type": "publisher-asserted-accessible",
     "title": "Publisher Asserts this is Accessible",
     # Rights and requirements
     'BY': None, # unknown - we can't decide
