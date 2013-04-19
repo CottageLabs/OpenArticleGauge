@@ -1,3 +1,8 @@
+"""
+Application configuration file.  Read the comments by each key for details
+
+"""
+
 # how to run the oag app
 SECRET_KEY = 'reallysecret...'
 HOST = '0.0.0.0'

@@ -176,22 +176,22 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         record = {}
         
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert len(record.keys()) == 0
         
         record['identifier'] = {}
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert len(record['identifier'].keys()) == 0
         
         record['identifier']['id'] = "123"
         record['identifier']['type'] = "doi"
         record['identifier']['canonical'] = "doi:123"
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert not "provider" in record
         
         record['identifier']['type'] = "pmid"
         del record['identifier']['canonical']
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert not "provider" in record
         
     def test_09_provider_resolve_doi(self):
@@ -201,7 +201,7 @@ class TestPmid(TestCase):
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
         
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502", record['provider']['url']
@@ -216,7 +216,7 @@ class TestPmid(TestCase):
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
         
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/cgi/pmidlookup?view=long&pmid=23175652", record['provider']["url"][0]
@@ -230,7 +230,7 @@ class TestPmid(TestCase):
         
         record = {"identifier" : {"id" : "1234567", "type" : "pmid", "canonical" : "pmid:1234567"}}
         
-        pmid.provider_resolver(record)
+        pmid.detect_provider(record)
         assert "provider" in record
         assert "url" in record["provider"]
         assert "http://www.nlm.nih.gov/medlineplus/menopause.html" in record["provider"]["url"], record["provider"]["url"]

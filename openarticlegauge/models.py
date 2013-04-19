@@ -1,3 +1,8 @@
+"""
+Data model objects, some of which extend the DAO for storage purposes
+
+"""
+
 import json, redis, logging
 
 from openarticlegauge import config
@@ -8,11 +13,19 @@ from openarticlegauge.slavedriver import celery
 log = logging.getLogger(__name__)
 
 class LookupException(Exception):
+    """
+    Exception to be thrown when there is a problem looking up a record
+    
+    """
     def __init__(self, message):
         self.message = message
         super(LookupException, self).__init__(self, message)
 
 class BufferException(Exception):
+    """
+    Exception to be thrown when there is a problem with the storage buffer
+    
+    """
     def __init__(self, message):
         self.message = message
         super(BufferException, self).__init__(self, message)
@@ -26,7 +39,11 @@ class Record(DomainObject):
         Check the archive layer for an object with the given (canonical) identifier,
         which can be found in the bibjson['identifier']['canonical'] field
         
-        Return a bibjson record
+        arguments:
+        identifier -- the identifier of the record to look up.  This should be the canonical identifier of the record
+        
+        Return a bibjson record or None if none is found
+        
         """
         
         result = {}
@@ -56,7 +73,13 @@ class Record(DomainObject):
     def store(cls, bibjson):
         """
         Store the provided bibjson record in the archive (overwriting any item which
-        has the same canonical identifier)
+        has the same canonical identifier).  Depending on the configuration, this method
+        may put the item into a buffer to be written out to storage at some later time
+        in the future.
+        
+        arguments:
+        bibjson -- the bibjson record to be stored.  The record must contain a canonical identifier in ['identifier'][n]['canonical']
+        
         """
         # normalise the canonical identifier for elastic search
         identifier = None # record this for logging
@@ -81,6 +104,13 @@ class Record(DomainObject):
     
     @classmethod
     def _add_to_buffer(cls, bibjson):
+        """
+        add the given bibjson record to the storage buffer
+        
+        arguments:
+        bibjson -- the bibjson record to be stored.  The record must contain a canonical identifier in ['identifier'][n]['canonical']
+        
+        """
         canonical = None
         for identifier in bibjson.get("identifier", []):
             if "canonical" in identifier:
@@ -96,6 +126,15 @@ class Record(DomainObject):
     
     @classmethod
     def _check_buffer(cls, canonical):
+        """
+        Check the storage buffer for an item identified by the supplied canonical identifier
+        
+        arguments:
+        identifier -- the identifier of the record to look up.  This should be the canonical identifier of the record
+        
+        Return a bibjson record or None if none is found
+        
+        """
         # query the redis cache for the bibjson record and return it
         client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
         record = client.get("id_" + canonical)
@@ -105,6 +144,25 @@ class Record(DomainObject):
     
     @classmethod
     def flush_buffer(cls, key_timeout=0, block_size=1000):
+        """
+        Flush the current storage buffer out to the long-term storage (Elasticsearch).  This method
+        will return after all of the records have been flushed successfully to storage, and will
+        not wait until the key_timeout period has passed (this will happen asynchronously)
+        
+        keyword arguments:
+        key_timeout -- the length of time to live (in seconds) to allocate to each record in the storage buffer.  This is to 
+            allow Elasticsearch time to receive and index the records and make them available - while it is
+            doing that, the records will remain available in the storage buffer
+            
+        block_size -- maximum size of the list of records to send to the long-term storage in one HTTP request.
+            if there are more records than the block size, multiple HTTP requests will be made, none of which
+            will be larger than the block_size.
+        
+        returns:
+        False if there is nothing in the buffer to flush
+        True if there are items in the buffer to flush and they are successfully flushed
+        
+        """
         client = redis.StrictRedis(host=config.REDIS_BUFFER_HOST, port=config.REDIS_BUFFER_PORT, db=config.REDIS_BUFFER_DB)
         
         # get all of the id keys
@@ -159,6 +217,8 @@ class License(DomainObject):
 
 class ResultSet(object):
     """
+    Model object to represent the return object from the API.  It represents the following data structure:
+    
     {
 	    "requested" : number_requested_in_batch,
 	    "results" : [
@@ -171,10 +231,17 @@ class ResultSet(object):
 		    a list of bibjson identifier objects that are on the queue
 	    ]
     }
+    
     """
+    
     def __init__(self, bibjson_ids=[]):
-        # FIXME: this is probably not the right way to initialise the object, or store
-        # the internal state, but we can fix that later.  Important, first, just to make it work
+        """
+        Construct a new ResultSet object around the list of bibjson_ids supplied to the API
+        
+        arguments
+        bibjson_ids -- list of bibjson identifier objects
+        
+        """
         self.requested = len(bibjson_ids)
         self.results = []
         self.errors = []
@@ -182,6 +249,15 @@ class ResultSet(object):
         self.bibjson_ids = bibjson_ids
     
     def add_result_record(self, record):
+        """
+        Add the given record to the result set.  This will inspect the content of the record and
+        add it to the appropriate part of the response
+        
+        arguments
+        record -- OAG record object.  See the high level documentation for details on its structure
+        
+        """
+        
         # get the bibjson if it exists
         bibjson = self._get_bibjson(record)
         
@@ -195,6 +271,13 @@ class ResultSet(object):
             self.results.append(bibjson)
     
     def json(self):
+        """
+        Get a JSON representation of this object
+        
+        returns a JSON serialisation of the object
+        
+        """
+        
         obj = {
             "requested" : self.requested,
             "results" :  self.results,
@@ -204,6 +287,16 @@ class ResultSet(object):
         return json.dumps(obj)
     
     def _get_bibjson(self, record):
+        """
+        Get the bibjson from the supplied record.  This involves finding the bibjson
+        record in record['bibjson'] and reconciling this with any identifiers in record['identifier']
+        to ensure that all relevant identifiers are represented.
+        
+        arguments:
+        record -- OAG record object.  See the high level documentation for details on its structure
+        
+        """
+        
         # first get the bibjson record
         bibjson = record.get('bibjson')
         
@@ -226,6 +319,17 @@ class ResultSet(object):
         
 @celery.task(name="openarticlegauge.models.flush_buffer")
 def flush_buffer():
+    """
+    Celery task for flushing the storage buffer.  This should be promoted onto a
+    processing queue by Celery Beat (see the celeryconfig).  This will process will
+    lock the buffer so that parallel execution is not possible.
+    
+    returns
+    False if no buffering is necessary (configuration) or possible (locked)
+    True if buffering has been handled
+    
+    """
+    
     # if we are not buffering, don't do anything
     if not config.BUFFERING:
         log.info("BUFFERING = False ; flush_buffer is superfluous, aborting")

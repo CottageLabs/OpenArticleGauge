@@ -35,6 +35,22 @@ import json
 ES_PAGE_SIZE = 100
 
 def invalidate_license(license_type, handler=None, handler_version=None, treat_none_as_missing=False, reporter=None):
+    """
+    Invalidate all licences with the specified licence type.  The handler and handler_version may
+    be left unset, or set to a specific value.  If left unset then treat_none_as_missing may be used
+    to expressly indicate whether a None value for the handler is a wildcard or implies that there
+    is no handler specified
+    
+    arguments
+    license_type -- the type of the licence as would appear in the bibjson record in bibjson['license'][n]['type']
+        common values include failed-to-obtain-licence, cc-by, cc0, etc, but there are a long list of possible options
+    handler -- the name of the handler which assigned the licence
+    handler_version -- the version of the named handler which assigned the licence (should be a string, e.g. "1.0.2")
+    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
+                             if False, then if handler=None then this will look for any value (other than None) in the handler field
+    reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
+    
+    """
     # the reporter is a callback which handles messages of the progress of this operation.  If none
     # is specified we operate silently
     if reporter is None:
@@ -94,6 +110,20 @@ def invalidate_license(license_type, handler=None, handler_version=None, treat_n
             break
 
 def _process_response(response, license_type, handler, handler_version, treat_none_as_missing, reporter):
+    """
+    Process the Elasticsearch response object by taking all the records therein and deleting
+    the licences consistent with the arguments.
+    
+    arguments:
+    response -- Elastic search response object containing bibjson records as the individual results
+    license_type -- the type of licence to remove
+    handler -- the handler to remove (can be None)
+    handler_version -- the handler_version to remove (can be None)
+    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
+                             if False, then if handler=None then this will look for any value (other than None) in the handler field
+    reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
+    
+    """
     # extract the records
     records = [hit.get("_source") for hit in response.get("hits", {}).get("hits", [])]
     
@@ -115,6 +145,21 @@ def _process_response(response, license_type, handler, handler_version, treat_no
     models.Record.bulk(records)
 
 def _handler_match(license, handler, treat_none_as_missing):
+    """
+    Determine if the supplied license matches the handler and the treat_none_as_missing treatment
+    
+    arguments:
+    license -- the license extracted from the bibjson record
+    handler -- the name of the handler to match (can be None)
+    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
+                             if False, then if handler=None then this will look for any value (other than None) in the handler field
+    
+    returns:
+    True if the handler matches the licence or if it is None and treat_none_as_missing is True and there is no handler in the licence
+    False otherwise
+    
+    """
+    
     # This method is a bit painful.  Here is the truth table:
     #
     # license handler   handler             treat_none_as_missing   match?      reason

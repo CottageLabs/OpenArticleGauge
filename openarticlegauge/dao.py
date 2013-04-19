@@ -1,13 +1,23 @@
+"""
+Generic Data Access Object for mediating between the OAG application and the
+storage back end.
+
+This implementation provides storage in an Elasticsearch index.
+
+"""
+
 import os, json, UserDict, requests, uuid, logging
 from datetime import datetime
 
 from openarticlegauge.core import app #, current_user
 
-'''
-All models in models.py should inherit this DomainObject to know how to save themselves in the index and so on.
-You can overwrite and add to the DomainObject functions as required. See models.py for some examples.
-'''
 class DomainObject(UserDict.IterableUserDict):
+    """
+    All models in models.py should inherit this DomainObject to know how to save themselves in the index and so on.
+    You can overwrite and add to the DomainObject functions as required. See models.py for some examples.
+    
+    """
+
     __type__ = None # set the type on the model that inherits this
 
     def __init__(self, **kwargs):

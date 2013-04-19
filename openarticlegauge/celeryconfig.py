@@ -1,3 +1,8 @@
+"""
+Standard Celery configuration file, for use in initialising the Celery system for OAG
+
+"""
+
 # IMPORTANT! This user should exist if you use this in deployment!
 # Workers should run as an unprivileged user.
 # CELERYD_USER = 'celery'

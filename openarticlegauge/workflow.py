@@ -1,3 +1,28 @@
+"""
+Main processing business logic for the OAG application.  This is where the back-end processing
+of requested identifiers actually happens, and where the asynchronous Celery tasks are defined
+and triggered by requests.
+
+Throughout this module we use the OAG record object as the message format that is passed around
+the various functions.  Through the processing pipeline it is slowly fleshed out until it
+reaches either completion or causes an error.  The record object in full is:
+
+{
+    "identifier" : {
+        "id" : "<raw id provided by the client>",
+        "type" : "<type of identifier, e.g doi or pmid>",
+        "canonical" : "<canonical form of the identifier>"
+    },
+    "queued" : True/False,
+    "provider" : {
+        "url" : ["<provider url, e.g. dereferenced doi>", "..."],
+        "doi" : "<provider doi>"
+    },
+    "bibjson" : {<bibjson object - see http://bibjson.org>}
+}
+
+"""
+
 from celery import chain
 from openarticlegauge import models, model_exceptions, config, cache, plugin, recordmanager
 import logging
@@ -14,6 +39,13 @@ def lookup(bibjson_ids):
         "type" : "<type>"
     }
     and process them, returning a models.ResultSet object of completed or incomplete results
+    
+    arguments:
+    bibjson_ids -- a list of bibjson id objects with optional type parameter
+    
+    returns:
+    a models.ResultSet object with results, errors and a list of identifiers waiting to be processed
+    
     """
     # FIXME: should we sanitise the inputs?
     
@@ -104,6 +136,14 @@ def lookup(bibjson_ids):
 def _check_archive(record):
     """
     check the record archive for a copy of the bibjson record
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    - None if there is nothing for this record in the archive
+    - a bibjson record if one is found
+    
     """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
@@ -133,6 +173,10 @@ def _check_archive(record):
 def _update_cache(record):
     """
     update the cache, and reset the timeout on the cached item
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
     """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
@@ -146,6 +190,10 @@ def _update_cache(record):
 def _invalidate_cache(record):
     """
     invalidate any cache object associated with the passed record
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
     """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
@@ -158,6 +206,10 @@ def _invalidate_cache(record):
 def _is_stale(bibjson):
     """
     Do a stale check on the bibjson object.
+    
+    arguments:
+    bibjson -- the bibjson record to carry out the stale check on
+    
     """
     return cache.is_stale(bibjson)
 
@@ -165,6 +217,14 @@ def _check_cache(record):
     """
     check the live local cache for a copy of the object.  Whatever we find,
     return it (a record of a queued item, a full item, or None)
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    - None if nothing in the cache or the cached record is found to be stale
+    - OAG record object if one is found
+    
     """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
@@ -205,6 +265,10 @@ def _canonicalise_identifier(record):
     load the appropriate plugin to canonicalise the identifier.  This will add a "canonical" field
     to the "identifier" record with the canonical form of the identifier to be used in cache control and bibserver
     lookups
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
     """
     # verify that we have everything required for this step
     if not record.has_key("identifier"):
@@ -225,6 +289,10 @@ def _canonicalise_identifier(record):
 def _detect_verify_type(record):
     """
     run through a set of plugins which will detect the type of id, and verify that it meets requirements
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
     """
     # verify that the record has an identifier key, which is required for this operation
     if not record.has_key("identifier"):
@@ -242,8 +310,15 @@ def _detect_verify_type(record):
 def _start_back_end(record):
     """
     kick off the asynchronous licence lookup process.  There is no need for this to return
-    anything, although a handle on the asynchronous is provided for convenience of
+    anything, although a handle on the asynchronous request object is provided for convenience of
     testing
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    AsyncRequest object from the Celery framework
+    
     """
     log.debug("injecting record into asynchronous processing chain: " + str(record))
     ch = chain(detect_provider.s(record), provider_licence.s(), store_results.s())
@@ -256,6 +331,18 @@ def _start_back_end(record):
 
 @celery.task(name="openarticlegauge.workflow.detect_provider")
 def detect_provider(record):
+    """
+    Attempt to detect the provider of the identifier supplied in the record.  This
+    will - if successful - add the record['provider'] object to the OAG record
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    the passed in record with the 'provider' field added if possible
+    
+    """
+    
     # Step 1: see if we can actually detect a provider at all?
     # as usual, this should never happen, but we should have a way to 
     # handle it
@@ -279,6 +366,23 @@ def detect_provider(record):
     
 @celery.task(name="openarticlegauge.workflow.provider_licence")
 def provider_licence(record):
+    """
+    Attempt to determine the licence of the record based on the provider information
+    contained in record['provider'].  Whether this is successful or not a record['bibjson']['license']
+    record will be added.  If the operation was successful this will contain a licence
+    statement about the item conforming to the OAG record specification.  If the operation was
+    not successful it will contain a "failed-to-obtain-license" record, indicating the
+    terms of the failure.
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    the passed in record object with the record['bibjson']['license'] field added or appended to with
+        a new licence
+    
+    """
+    
     # Step 1: check that we have a provider indicator to work from
     if not record.has_key("provider"):
         log.debug("record has no provider, so unable to look for licence: " + str(record))
@@ -320,6 +424,25 @@ def provider_licence(record):
 
 @celery.task(name="openarticlegauge.workflow.store_results")
 def store_results(record):
+    """
+    Store the OAG record object in all the appropriate locations:
+    - in the cache
+    - in the archive
+    
+    In order to achieve this, this method will also ensure that the object
+    has at least one licence (indicating that we "failed-to-obtain-license"), and
+    that the bibjson identifiers are all in the appropriate locations.  
+    
+    It will then remove the item from the processing queue prior to storage
+    
+    arguments:
+    record -- an OAG record object, see the module documentation for details
+    
+    returns:
+    passed in record object, with the queued status removed and any other internal changes
+        necessary to prepare it for storage
+    
+    """
     # Step 1: ensure that a licence was applied, and if not apply one
     if "bibjson" not in record:
         # no bibjson record, so add a blank one
@@ -359,6 +482,17 @@ def store_results(record):
     return record
 
 def _add_identifier_to_bibjson(identifier, bibjson):
+    """
+    Take the supplied bibjson identifier object and ensure that it has been added
+    to the supplied bibjson object.  The bibjson object may already contain the
+    identifier object, in which case this method will not make any changes.
+    
+    arguments:
+    identifier -- bibjson identifier object
+    bibjson -- full bibjson record to have the identifier object added
+    
+    """
+    
     # FIXME: this is pretty blunt, could be a lot smarter
     if not bibjson.has_key("identifier"):
         bibjson["identifier"] = []

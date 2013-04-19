@@ -1,3 +1,14 @@
+"""
+Implementation of all functions which allow the OAG application to interface with
+the cache.
+
+This cache implementation uses Redis as a key/value store in which to place json
+serialised copies of python data structures passed in.  Keys used are up to the
+implementing code, but should be the canonical representations of the record being cached
+identifier.
+
+"""
+
 import redis, json, datetime, logging
 import config
 
@@ -7,6 +18,14 @@ def check_cache(key):
     """
     check the cache for an object stored under the given key, and convert it
     from a string into a python object
+    
+    arguments:
+    key -- the key to look up in the cache.  This should be the canonical identifier of the item being looked up
+    
+    returns
+    - None if the object couldn't be found in the cache, or there is an error with the cached object
+    - A python data structure if one can be found, which will hopefully be a bibjson record if you stored it right
+    
     """
     client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     s = client.get(key)
@@ -29,6 +48,16 @@ def is_stale(bibjson):
     in bibjson['license'][n]['provenance']['date'] for all n.  If the newest date
     is older than the stale time, then the record is stale.  If the record does
     not have a licence, it is stale.
+    
+    arguments:
+    bibjson -- a bibjson record in a python datastructure.  It may contain zero or more
+        licence statements which meet the OAG specification for licence records (see the
+        top level documentation for details)
+    
+    returns:
+    - True if there is no licence in the object or the most recently applied licence is older than the configured stale timeout (see config)
+    - False if there is a licence in the object and it is newer than the configured stale timeout (see config)
+    
     """
     # check that the record has a licence at all
     if not "license" in bibjson:
@@ -70,6 +99,10 @@ def is_stale(bibjson):
 def invalidate(key):
     """
     remove anything identified by the supplied key from the cache
+    
+    arguments:
+    key -- the key to be removed from the cache.  This should be the canonical identifier of the record concerned
+    
     """
     client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     client.delete(key)
@@ -79,6 +112,11 @@ def cache(key, obj):
     take the provided python data structure, serialise it via json to a string, and
     store it at the provided key with the appropriate timeout.  This may be
     required to create a new cache entry or update an existing one
+    
+    arguments:
+    key -- the key under which to store the item in the cache.  This shold be the canonical identifier of the record concerned
+    obj -- a python data structure which is serialisable to json
+    
     """
     try:
         s = json.dumps(obj)
@@ -89,6 +127,10 @@ def cache(key, obj):
     client.setex(key, config.REDIS_CACHE_TIMEOUT, s)
     
 class CacheException(Exception):
+    """
+    Exception class to handle any problems arising in the cache
+    
+    """
     def __init__(self, message):
         self.message = message
         super(CacheException, self).__init__(self, message)

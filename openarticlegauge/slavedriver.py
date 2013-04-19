@@ -1,3 +1,10 @@
+"""
+Initialise the Celery instance to be used by the application
+
+This is largely just boiler plate, and we could probably look at coming back to it and cleaning it
+up a bit in the future.
+
+"""
 from __future__ import absolute_import
 
 from celery import Celery

@@ -1,3 +1,8 @@
+"""
+Common infrastructure for the plugin framework
+
+"""
+
 from openarticlegauge import config, plugloader, recordmanager
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
@@ -8,6 +13,10 @@ from datetime import datetime
 log = logging.getLogger(__name__)
 
 class Plugin(object):
+    """
+    Abstract plugin superclass providing interface and some default implementations
+    
+    """
     
     ## Capabilities that must be implemented by the sub-class ##
     __version__ = "0.0"
@@ -26,6 +35,7 @@ class Plugin(object):
         
         Omit any key for any feature that the plugin does not support, or set the
         value of the key to False
+        
         """
         return {}
     
@@ -36,6 +46,10 @@ class Plugin(object):
         of the id.  If it is tagged as a DOI, then verify that it is a valid one. 
         
         Add "type" parameter to the bibjson_identifier object if successful.
+        
+        arguments:
+        bibjson_identifier -- a bibjson identifier object containing a minimum of an "id" parameter
+        
         """
         raise NotImplementedError("type_detect_verify has not been implemented")
     
@@ -43,6 +57,10 @@ class Plugin(object):
         """
         create a canonical form of the identifier
         and insert it into the bibjson_identifier['canonical'].
+        
+        arguments:
+        bibjson_identifier -- a bibjson identifier object containing a minimum of an "id" parameter and a "type" parameter
+        
         """
         raise NotImplementedError("canonicalise has not been implemented")
         
@@ -55,12 +73,20 @@ class Plugin(object):
         This function should - if successful - populate the record["provider"] field
         (create if necessary), with any information relevant to downstream plugins
         (see back-end documentation for more information)
+        
+        arguments:
+        record -- OAG record object.  See high-level documentation for details on its structure
+        
         """
         raise NotImplementedError("detect_provider has not been implemented")
         
     def supports(self, provider):
         """
         Does the page_license method in this plugin support this provider
+        
+        arguments:
+        provider -- provider object, see top-level documentation for details on its structure
+        
         """
         raise NotImplementedError("supports has not been implemented")
     
@@ -72,12 +98,23 @@ class Plugin(object):
         
         Plugins should populate (create if necessary) record['bibjson'] and populate with
         a record containing a "license" as per the back-end and API documentation
+        
+        arguments:
+        record -- OAG record object.  See high-level documentation for details on its structure
+        
         """
         raise NotImplementedError("license_detect has not been implemented")
     
     ## utilities that the sub-class can take advantage of ##
     
     def clean_url(self, url):
+        """
+        Cleanup the supplied url so it is suitable for comparison inside plugins
+        
+        arguments
+        url -- the url to be cleaned
+        
+        """
         # strip any leading http:// or https://
         if url.startswith("http://"):
             url = url[len("http://"):]
@@ -87,6 +124,14 @@ class Plugin(object):
         return url
 
     def clean_urls(self, urls):
+        """
+        Cleanup the supplied urls so they are suitable for comparison inside plugins.
+        Just runs clean_url(url) on each url.
+        
+        arguments:
+        urls -- array of urls to be cleaned
+        
+        """
         cleaned_urls = []
         for url in urls:
             cleaned_urls.append(self.clean_url(url))
@@ -197,6 +242,13 @@ class PluginFactory(object):
     
     @classmethod
     def type_detect_verify(cls):
+        """
+        Load the list of plugins responsible for detecting and verifying the types of identifiers
+        
+        returns a list of plugin objects (instances, not classes), which all implement the
+            plugin.type_detect_verify method
+        
+        """
         # FIXME: this should be updated to utilise the "capabilities" aspect of the plugin
         plugins = []
         for plugin_class in config.type_detection:
@@ -209,12 +261,32 @@ class PluginFactory(object):
     
     @classmethod
     def canonicalise(cls, identifier_type):
+        """
+        Load the plugin which is capable of producing canonical versions of the supplied identifier_type
+        
+        arguments:
+        identifier_type -- string representation of the identifier type (e.g. "doi" or "pmid")
+        
+        returns a plugin object (instance, not class), which implements the plugin.canonicalise method
+        
+        """
         plugin_class = config.canonicalisers.get(identifier_type)
         klazz = plugloader.load(plugin_class)
         return klazz() # return an instance of the class
     
     @classmethod
     def detect_provider(cls, identifier_type):
+        """
+        Load the list of plugins which may be responsible for determining the provider for the given
+        identifier_type
+        
+        arguments:
+        identifier_type -- string representation of the identifier type (e.g. "doi" or "pmid")
+        
+        returns a list of plugin objects (instances, not classes), which all implement the
+            plugin.detect_provider method
+        
+        """
         plugins = []
         for plugin_class in config.provider_detection.get(identifier_type, []):
             # all provider plugins run, until each plugin has had a go at determining provider information
@@ -224,6 +296,17 @@ class PluginFactory(object):
     
     @classmethod
     def license_detect(cls, provider_record):
+        """
+        Return a plugin which asserts that it is capable of determining the licence type for a
+        resource held by the supplied provider
+        
+        arguments
+        provider_record -- an OAG provider record data structure.  See the top-level documentation
+            for details on its structure
+        
+        returns a plugin object (instance, not class) which implements the plugin.license_detect method
+        
+        """
         for plugin_class in config.license_detection:
             log.debug("checking " + plugin_class + " for support of provider " + str(provider_record))
             klazz = plugloader.load(plugin_class)
