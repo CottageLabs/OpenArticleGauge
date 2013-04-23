@@ -6,9 +6,11 @@ def batchtest():
 
     idtypes = ["doi"]
     size = 1000
+    wait = False
 
-    # get some records from the OCC corpus (this is a test server, address may change)
-    addr = 'http://92.235.188.179:9200/occ/record/_search?q=identifier.id:*10.1186*%20AND%20identifier.type.exact:doi%20AND%20*biomed*&size=' + str(size) + '&from='
+    # get some records from the OCC corpus
+    # http://test.cottagelabs.com:9200
+    addr = 'http://localhost:9200/occ/record/_search?q=identifier.id:*10.1186*%20AND%20identifier.type.exact:doi%20AND%20*biomed*&size=' + str(size) + '&from='
 
     _from = 0
 
@@ -23,29 +25,36 @@ def batchtest():
         _from += size
         ids = []
         for rs in r.json().get('hits',{}).get('hits',[]):
-            if len(ids) != 1000:
-                rec = rs['_source']
-                for i in rec.get('identifier',[]):
-                    if 'type' in i and 'id' in i:
-                        if i['type'].lower() in idtypes:
-                            ids.append(i['id'])
+            rec = rs['_source']
+            for i in rec.get('identifier',[]):
+                if 'type' in i and 'id' in i:
+                    if i['type'].lower() in idtypes:
+                        ids.append(i['id'])
 
-        # send the list to the OAG service
+        # send the ID list to the OAG service 1000 at a time
         # loop it until informed they have all been processed
-        while len(ids):
-            print len(ids)
-            headers = {'content-type': 'application/json'}
-            rr = requests.post('http://oag.cottagelabs.com/lookup/',data=json.dumps(ids), headers=headers)
-            rs = rr.json()
-            print json.dumps(rs,indent=4)
-            if len(rs['processing']) == 0:
-                return
-            else:
-                # strip found from ids and wait then try again
+        while len(ids) >= 1000:
+            if len(ids) < 1000:
+                idbatch = ids[0:len(ids)-1]
                 ids = []
-                for p in rs['processing']:
-                    ids.append(p['identifier']['id']);
-                sleep(2)
+            else:
+                idbatch = ids[0:999]
+                ids = ids[1000:]
+            while len(idbatch):
+                headers = {'content-type': 'application/json'}
+                rr = requests.post('http://oag.cottagelabs.com/lookup/',data=json.dumps(idbatch), headers=headers)
+                rs = rr.json()
+                print json.dumps(rs,indent=4)
+                if len(rs['processing']) == 0:
+                    return
+                else:
+                    idbatch = []
+                    # if waiting for confirmation they are all processed, add the processing ones back to the ID list
+                    # otherwise the empty list sends the loop onto the next batch
+                    if wait:
+                        for p in rs['processing']:
+                            idbatch.append(p['identifier']['id'])
+                        sleep(2)
     
     
 # run and time it
