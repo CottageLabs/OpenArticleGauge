@@ -53,7 +53,7 @@ if __name__ == "__main__":
     from datetime import datetime
     started = datetime.now()
     print started
-    batchtest()
+    plostest()
     ended = datetime.now()
     print ended
     print ended - started

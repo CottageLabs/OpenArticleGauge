@@ -2,7 +2,7 @@ import requests, json
 from time import sleep
 
 
-def batchtest():
+def bmctest():
 
     idtypes = ["doi"]
     size = 1000
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     from datetime import datetime
     started = datetime.now()
     print started
-    batchtest()
+    bmctest()
     ended = datetime.now()
     print ended
     print ended - started

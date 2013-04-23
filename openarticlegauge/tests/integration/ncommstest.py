@@ -45,7 +45,7 @@ if __name__ == "__main__":
     from datetime import datetime
     started = datetime.now()
     print started
-    batchtest()
+    ncommstest()
     ended = datetime.now()
     print ended
     print ended - started
