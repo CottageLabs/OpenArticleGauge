@@ -27,7 +27,6 @@ def ncommstest():
             headers = {'content-type': 'application/json'}
             rr = requests.post('http://oag.cottagelabs.com/lookup/',data=json.dumps(idbatch), headers=headers)
             rs = rr.json()
-            print json.dumps(rs,indent=4)
             if len(rs['processing']) == 0:
                 return
             else:
