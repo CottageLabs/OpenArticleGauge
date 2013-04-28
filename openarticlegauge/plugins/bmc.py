@@ -1,11 +1,11 @@
 from openarticlegauge import plugin
+from openarticlegauge.plugins.resources.bmc_base_urls import BASE_URLS
 
 class BMCPlugin(plugin.Plugin):
     _short_name = "bmc"
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
     
-    base_urls = ["www.biomedcentral.com"]
     
     ## Plugin parent class overrides ##
     
@@ -57,7 +57,7 @@ class BMCPlugin(plugin.Plugin):
     ## public utility/action methods ##
     
     def supports_url(self, url):
-        for bu in self.base_urls:
+        for bu in BASE_URLS:
             if self.clean_url(url).startswith(bu):
                 return True
         return False
