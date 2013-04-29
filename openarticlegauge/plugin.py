@@ -148,10 +148,6 @@ class Plugin(object):
         contains (allows re-use) the logic that any "dumb string matching" plugin 
         would use.
 
-        :param handler: The name of the plugin which called this function to
-        handle the record.
-        :param handler_version: The __version__ of the plugin which called this
-        function to handle the record.
         :param lic_statements: licensing statements to look for on this publisher's 
         pages. Take the form of {statement: meaning}
         where meaning['type'] identifies the license (see licenses.py)
