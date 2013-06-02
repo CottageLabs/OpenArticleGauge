@@ -6,11 +6,18 @@ Common infrastructure for the plugin framework
 from openarticlegauge import config, plugloader, recordmanager
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
-import logging, requests
+
+import logging
 from copy import deepcopy
 from datetime import datetime
 
+import requests
+import string
+import re
+
 log = logging.getLogger(__name__)
+whitespace_re = re.compile('\s+')
+html_tag_re = re.compile('<.*?>')
 
 class Plugin(object):
     """
@@ -161,6 +168,7 @@ class Plugin(object):
 
         # get content
         r = requests.get(url)
+        content = self.normalise_string(r.content)
         
         # see if one of the licensing statements is in content 
         # and populate record with appropriate license info
@@ -169,10 +177,13 @@ class Plugin(object):
             # mapping statements to licensing info
             statement = statement_mapping.keys()[0]
 
-            #import logging
-            #logging.debug('Statement "' + statement + '"...')
+            # use a modified version of the license statement for
+            # comparison - one which has been subjected to the same
+            # normalisation as the incoming content (stripping html,
+            # special characters etc.)
+            cmp_statement = self.normalise_string(statement)
 
-            if statement in r.content:
+            if cmp_statement in content:
                 
                 #logging.debug('... matches')
 
@@ -212,6 +223,45 @@ class Plugin(object):
                 record['bibjson']['license'].append(license)
 
             #logging.debug('... does NOT match')
+
+    def strip_html(self, html_str):
+        return html_tag_re.sub('', html_str)
+
+    def strip_special_chars(self, s):
+        '''
+        Only allow ASCII lower- and uppercase letters + arabic digits.
+        As well as the ' ', 1 blank space / interval, ASCII 0x20.
+        Note that as a side effect, all other whitespace characters will
+        be deleted as well, e.g. newlines \n and \r.
+        '''
+        if not s:
+            return s
+
+        allowed = string.ascii_letters + string.digits + ' '
+
+        return ''.join( c for c in s if  c in allowed ) 
+                
+
+    def normalise_whitespace(self, s):
+        """
+        Reduce 1 or more occurences of whitespace to 1 ' ' blank space,
+        ASCII 0x20.
+        """
+        return whitespace_re.sub(' ', s)
+
+    def normalise_string(self, s):
+        """
+        Strip HTML tags, special characters incl. Unicode, make
+        lowercase and normalise whitespace in 1 go.
+        """
+        if not s:
+            return s
+
+        new_s = self.strip_html(s)
+        new_s = self.strip_special_chars(new_s)
+        new_s = self.normalise_whitespace(new_s)
+        new_s = new_s.lower()
+        return new_s
     
     def gen_provenance_description(self, source_url, statement):
         return 'License decided by scraping the resource at ' + source_url + ' and looking for the following license statement: "' + statement + '".'
