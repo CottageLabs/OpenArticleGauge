@@ -168,6 +168,7 @@ class Plugin(object):
 
         # get content
         r = requests.get(url)
+        # logging.debug('got content')
         content = self.normalise_string(r.content)
         
         # see if one of the licensing statements is in content 
@@ -183,9 +184,11 @@ class Plugin(object):
             # special characters etc.)
             cmp_statement = self.normalise_string(statement)
 
+            # logging.debug(cmp_statement)
+
             if cmp_statement in content:
                 
-                #logging.debug('... matches')
+                # logging.debug('... matches')
 
                 # okay, statement found on the page -> get license type
                 lic_type = statement_mapping[statement]['type']
@@ -222,7 +225,7 @@ class Plugin(object):
                 record['bibjson'].setdefault('license', [])
                 record['bibjson']['license'].append(license)
 
-            #logging.debug('... does NOT match')
+            # logging.debug('... does NOT match')
 
     def strip_html(self, html_str):
         return html_tag_re.sub('', html_str)
