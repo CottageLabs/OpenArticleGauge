@@ -112,11 +112,7 @@ class Tutorial(plugin.Plugin):
             ## delete this second statement entirely. It's OK to leave the
             ## comma before it.
             {"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
-                {'type': 'cc-by', # license type, see the licenses module for available ones
-                 'version':'2.0', # version of the license if specified, can be blank
-
-                    # also declare some properties which override info about this license in the licenses list (see licenses module)
-                    'url': 'http://creativecommons.org/licenses/by/2.0'}
+                {'type': 'uk-ogl'} # license type, see the licenses module for available ones
             } ## Just add a comma here and copy the record again to add a
               ## *third* license statement.
         ]
