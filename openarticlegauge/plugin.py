@@ -16,8 +16,9 @@ import string
 import re
 
 log = logging.getLogger(__name__)
-whitespace_re = re.compile('\s+')
-html_tag_re = re.compile('<.*?>')
+whitespace_re = re.compile(r'\s+')
+html_tag_re = re.compile(r'<.*?>')
+url_re = re.compile(r'https?://\S+')
 
 class Plugin(object):
     """
@@ -169,7 +170,6 @@ class Plugin(object):
         # get content
         r = requests.get(url)
         # logging.debug('got content')
-        content = self.normalise_string(r.content)
         
         # see if one of the licensing statements is in content 
         # and populate record with appropriate license info
@@ -178,16 +178,32 @@ class Plugin(object):
             # mapping statements to licensing info
             statement = statement_mapping.keys()[0]
 
-            # use a modified version of the license statement for
-            # comparison - one which has been subjected to the same
-            # normalisation as the incoming content (stripping html,
-            # special characters etc.)
-            cmp_statement = self.normalise_string(statement)
+            match = False
+            # if the license statement contains 1 or more URL-s, then try
+            # searching for them first
+            needle_urls = url_re.findall(statement)
+            if len(needle_urls) > 0:
+                cmp_statement = self.normalise_string(statement,
+                        preserve_urls=True)
+                cmp_content = self.normalise_string(r.content,
+                        preserve_urls=True)
 
-            # logging.debug(cmp_statement)
+                # all URL-s found in the license statement have to be found
+                # in the text as well (logical AND), otherwise no match
+                for needle_url in needle_urls:
+                    if needle_url in cmp_content:
+                        match = True
+                    else:
+                        match = False
+            else:
+            # license statement did not contain URL-s
+                cmp_statement = self.normalise_string(statement)
+                cmp_content = self.normalise_string(r.content)
 
-            if cmp_statement in content:
-                
+                if cmp_statement in cmp_content:
+                    match=True
+
+            if match: 
                 # logging.debug('... matches')
 
                 # okay, statement found on the page -> get license type
@@ -252,19 +268,25 @@ class Plugin(object):
         """
         return whitespace_re.sub(' ', s)
 
-    def normalise_string(self, s):
+    def normalise_string(self, s, preserve_urls=False):
         """
         Strip HTML tags, special characters incl. Unicode, make
         lowercase and normalise whitespace in 1 go.
+
+        :param preserve_urls: If this is True, only lowercasing and
+        whitespace normalisation will be performed.
         """
         if not s:
             return s
+        
+        if not preserve_urls:
+            s = self.strip_html(s)
+            s = self.strip_special_chars(s)
 
-        new_s = self.strip_html(s)
-        new_s = self.strip_special_chars(new_s)
-        new_s = self.normalise_whitespace(new_s)
-        new_s = new_s.lower()
-        return new_s
+        s = self.normalise_whitespace(s)
+        s = s.lower()
+
+        return s
     
     def gen_provenance_description(self, source_url, statement):
         return 'License decided by scraping the resource at ' + source_url + ' and looking for the following license statement: "' + statement + '".'
