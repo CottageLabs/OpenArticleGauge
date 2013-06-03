@@ -66,24 +66,24 @@ RESOURCE_AND_RESULT = {
        ## If you don't want more than one license statement for now, just
        ## delete this second statement test entirely. It's OK to leave the
        ## comma before it.
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "an_example_of_your_second_license.html") : 
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pmed.1001008.html") : 
         {
             "id" : None,            # there should be no id field
             "version": "",          # version should be the empty string
-            "type": "uk-ogl",
+            "type": "plos-who",
             "jurisdiction": "",     # jurisdiction should be the empty string
-            "open_access": True,
+            "open_access": False,
             "BY": True,
-            "NC": False,
-            "ND": False,
+            # "NC": None, # can't test for None values atm, limitation of the way tests are defined/run atm
             "SA": False,
+            "ND": False,
             "provenance": {
                 "handler": MyPlugin._short_name, # name of plugin which processed this record
                 "handler_version": MyPlugin.__version__, # version of plugin which processed this record
                 "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at <insert the URL of the work demonstrating use of your second license here> and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
+                "description": '''License decided by scraping the resource at http://www.plosmedicine.org/article/info:doi/10.1371/journal.pmed.1001008 and looking for the following license statement: "This is an Open Access article in the spirit of the Public Library of Science (PLoS) principles for Open Access http://www.plos.org/oa/, without any waiver of WHO's privileges and immunities under international law, convention, or agreement. This article should not be reproduced for use in association with the promotion of commercial products, services, or any legal entity. There should be no suggestion that WHO endorses any specific organization or products. The use of the WHO logo is not permitted. This notice should be preserved along with the article's original URL.".''', # description is a long string
                 "agent": config.agent, # agent is from configuration
-                "source": "<insert the URL of the work demonstrating use of your second license here>", # source is the url where we look this record up
+                "source": "http://www.plosmedicine.org/article/info:doi/10.1371/journal.pmed.1001008", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
        }, ## Just add a comma and copy the whole record to add a test for a 
