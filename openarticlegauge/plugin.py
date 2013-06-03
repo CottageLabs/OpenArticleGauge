@@ -16,8 +16,8 @@ import string
 import re
 
 log = logging.getLogger(__name__)
-whitespace_re = re.compile('\s+')
-html_tag_re = re.compile('<.*?>')
+whitespace_re = re.compile(r'\s+')
+html_tag_re = re.compile(r'<.*?>')
 
 class Plugin(object):
     """
@@ -180,8 +180,8 @@ class Plugin(object):
 
             # use a modified version of the license statement for
             # comparison - one which has been subjected to the same
-            # normalisation as the incoming content (stripping html,
-            # special characters etc.)
+            # normalisation as the incoming content (whitespace,
+            # lowercasing etc.)
             cmp_statement = self.normalise_string(statement)
 
             # logging.debug(cmp_statement)
@@ -252,19 +252,24 @@ class Plugin(object):
         """
         return whitespace_re.sub(' ', s)
 
-    def normalise_string(self, s):
+    def normalise_string(self, s, strip=False):
         """
-        Strip HTML tags, special characters incl. Unicode, make
-        lowercase and normalise whitespace in 1 go.
+        Normalises whitespace and makes the string lowercase in 1 go.
+
+        :param strip: If True, also strips HTML tags and special
+        characters incl. Unicode.
         """
         if not s:
             return s
 
-        new_s = self.strip_html(s)
-        new_s = self.strip_special_chars(new_s)
-        new_s = self.normalise_whitespace(new_s)
-        new_s = new_s.lower()
-        return new_s
+        if strip:
+            s = self.strip_html(s)
+            s = self.strip_special_chars(s)
+
+        s = self.normalise_whitespace(s)
+        s = s.lower()
+
+        return s
     
     def gen_provenance_description(self, source_url, statement):
         return 'License decided by scraping the resource at ' + source_url + ' and looking for the following license statement: "' + statement + '".'
