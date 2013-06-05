@@ -41,13 +41,16 @@ if you start the daemon, you can stop it with
 
     sh bin/stop_celery_daemon.sh
 
-**Note** you may want to modify the shell scripts with paths to the log files you want it to use
+**Note**: you may want to modify the shell scripts with paths to the log files you want it to use
 
 ###Web Application
 
 Start the web application with:
 
     python openarticlegauge/app.py
+
+**Note**: You may not get any feedback on the standard output. Check
+oag.log at the root of the repository (where this readme is).
 
 ##Invalidating Licences
 
