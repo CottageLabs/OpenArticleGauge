@@ -55,6 +55,7 @@ license_detection = [
     "openarticlegauge.plugins.elife.ELifePlugin",
     "openarticlegauge.plugins.nature.NaturePlugin",
     "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
+    "openarticlegauge.plugins.ubiquitous.UbiquitousPlugin",
 ]
 
 # Cache configuration
