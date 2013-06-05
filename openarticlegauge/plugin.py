@@ -144,26 +144,36 @@ class Plugin(object):
             cleaned_urls.append(self.clean_url(url))
         return cleaned_urls
 
-    def simple_extract(self, lic_statements, record, url):
+    def simple_extract(self, lic_statements, record, url,
+            first_match=False):
         """
-        Generic code which looks for a particular string in a given web page (URL),
-        determines the licence conditions of the article and populates
-        the record['bibjson']['license'] (note the US spelling) field.
+        Generic code which looks for a particular string in a given web
+        page (URL), determines the licence conditions of the article and
+        populates the record['bibjson']['license'] (note the US
+        spelling) field.
 
-        The URL it analyses, the statements it looks for and the resulting licenses
-        are passed in. This is not a plugin for a particular publisher - it just
-        contains (allows re-use) the logic that any "dumb string matching" plugin 
-        would use.
+        The URL it analyses, the statements it looks for and the
+        resulting licenses are passed in. This is not a plugin for a
+        particular publisher - it just contains (allows re-use) the
+        logic that any "dumb string matching" plugin would use.
 
-        :param lic_statements: licensing statements to look for on this publisher's 
-        pages. Take the form of {statement: meaning}
-        where meaning['type'] identifies the license (see licenses.py)
-        and meaning['version'] identifies the license version (if available)
+        :param lic_statements: licensing statements to look for on this
+        publisher's pages. Take the form of {statement: meaning} where
+        meaning['type'] identifies the license (see licenses.py) and
+        meaning['version'] identifies the license version (if available)
         See a publisher plugin for an example, e.g. bmc.py
-        :param record: a request for the OAG status of an article, see OAG docs for
-        more info.
-        :param url: source url of the item to be fetched. This is where the HTML
-        page that's going to be scraped is expected to reside.
+
+        :param record: a request for the OAG status of an article, see
+        OAG docs for more info.
+
+        :param url: source url of the item to be fetched. This is where
+        the HTML page that's going to be scraped is expected to reside.
+
+        :param first_match: stop trying license statements if one of
+        them is found at the target url. By default, this code will try
+        out all supplied license statements and simply add multiple
+        'license' objects to the record it's been passed. If you want
+        "first successfuly match only" behaviour, set this to True.
         """
 
         # get content
@@ -224,6 +234,9 @@ class Plugin(object):
 
                 record['bibjson'].setdefault('license', [])
                 record['bibjson']['license'].append(license)
+
+                if first_match:
+                    break
 
             # logging.debug('... does NOT match')
 

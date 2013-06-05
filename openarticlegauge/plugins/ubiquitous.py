@@ -104,4 +104,5 @@ class UbiquitousPlugin(plugin.Plugin):
         for url in record['provider']['url']:
             
             if self.supports_url(url):
-                self.simple_extract(lic_statements, record, url)
+                self.simple_extract(lic_statements, record, url,
+                        first_match=True)
