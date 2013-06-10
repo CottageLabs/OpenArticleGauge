@@ -19,6 +19,22 @@ Configure the application, if necessary:
     openarticlegauge/config.py
     openarticlegauge/celeryconfig.py
 
+####Non-Python requirements
+
+OpenArticleGauge requires lxml, a Python library which is written in C.
+You need to install lxml's dependencies.  Just make sure you install
+libxml2 development and header files and libxslt development and header
+files using your Linux distribution's package manager.
+
+If you are on Windows, try http://lxml.de/installation.html#ms-windows .
+
+Here is an example on a Debian-based system:
+
+    sudo apt-get update
+    sudo apt-get install libxml2-dev libxslt-dev
+
+####Installing the application
+
 Then install the project requirements using pip (recommended to also use a virtualenv):
 
     pip install -e .
