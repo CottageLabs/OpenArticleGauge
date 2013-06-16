@@ -10,7 +10,7 @@ def bmctest():
 
     # get some records from the OCC corpus
     # http://test.cottagelabs.com:9200
-    addr = 'http://localhost:9200/occ/record/_search?q=identifier.id:*10.1186*%20AND%20identifier.type.exact:doi%20AND%20*biomed*&size=' + str(size) + '&from='
+    addr = 'http://test.cottagelabs.com:9200/occ/record/_search?q=identifier.id:*10.1186*%20AND%20identifier.type.exact:doi%20AND%20*biomed*&size=' + str(size) + '&from='
 
     _from = 0
 
