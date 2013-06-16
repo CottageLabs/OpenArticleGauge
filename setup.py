@@ -20,6 +20,7 @@ setup(
         "requests==1.1.0",
         "redis",
         "lxml",
+        "beautifulsoup4"
 		]
 )
 
