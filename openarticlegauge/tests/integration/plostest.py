@@ -14,7 +14,7 @@ def plostest():
         for line in f:
             n.append(json.loads(line))
         f.close()
-    except:
+    except IOError:
         print 'no plos.json found - note it is too long to be in the repo, you need to get a copy manually and put it in this directory'
     ids = []
     for o in n:
@@ -34,7 +34,12 @@ def plostest():
         while len(idbatch):
             headers = {'content-type': 'application/json'}
             rr = requests.post('http://localhost:5000/lookup/',data=json.dumps(idbatch), headers=headers)
-            rs = rr.json()
+            try:
+                rs = rr.json()
+            except ValueError as e:
+                print rr.status_code
+                print
+                print rr.text
             if len(rs['processing']) == 0:
                 return
             else:
