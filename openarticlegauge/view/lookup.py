@@ -2,9 +2,8 @@ from flask import Blueprint, request, make_response, render_template, abort
 
 import json
 
-import workflow
-
-import openarticlegauge.util as util
+from openarticlegauge import workflow
+from openarticlegauge import util
 
 blueprint = Blueprint('lookup', __name__)
 
