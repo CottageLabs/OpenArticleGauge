@@ -28,7 +28,7 @@ from openarticlegauge import models, model_exceptions, config, cache, plugin, re
 import logging
 from openarticlegauge.slavedriver import celery
 
-logging.basicConfig(filename='oag.log',level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 def lookup(bibjson_ids):
