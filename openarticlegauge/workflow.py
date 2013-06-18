@@ -28,7 +28,7 @@ from openarticlegauge import models, model_exceptions, config, cache, plugin, re
 import logging
 from openarticlegauge.slavedriver import celery
 
-LOG_FORMAT = '%(asctime)-15s %(clientip)s %(message)s'
+LOG_FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 log = logging.getLogger(__name__)
 
