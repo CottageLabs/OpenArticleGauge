@@ -1,7 +1,7 @@
 from openarticlegauge import plugin
 
 class CellReportsPlugin(plugin.Plugin):
-    _short_name = "cell_reports"
+    _short_name = __name__.split('.')[-1]
     __version__ = "0.1"   
     
     base_urls = ['www.cell.com']

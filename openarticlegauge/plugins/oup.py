@@ -2,7 +2,7 @@ from openarticlegauge import plugin
 import re
 
 class OUPPlugin(plugin.Plugin):
-    _short_name = "oup"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
 

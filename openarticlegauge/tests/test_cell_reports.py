@@ -37,8 +37,8 @@ class TestWorkflow(TestCase):
         assert 'provenance' in record['bibjson']['license'][-1]
 
         assert 'handler' in record['bibjson']['license'][-1]['provenance']
-        assert record['bibjson']['license'][-1]['provenance']['handler'] == cell_reports._short_name
-        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == cell_reports.__version__
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == 'cell_reports'
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == '0.1'
 
 
     def test_02_cell_reports_standard_OA_license(self):

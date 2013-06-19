@@ -62,8 +62,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,
             "SA": False,
             "provenance": {
-                "handler": MyPlugin._short_name, # name of plugin which processed this record
-                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
+                "handler": 'ubiquitous', # name of plugin which processed this record
+                "handler_version": '0.1', # version of plugin which processed this record
                 "category": "page_scrape", # category is page_scrape
                 "description": 'License decided by scraping the resource at http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406 and looking for the following license statement: "under the terms of the Creative Commons Attribution License".', # description is a long string
                 "agent": config.agent, # agent is from configuration

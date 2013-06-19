@@ -2,7 +2,7 @@ from openarticlegauge import plugin
 from openarticlegauge.plugins.resources.bmc_base_urls import BASE_URLS
 
 class BMCPlugin(plugin.Plugin):
-    _short_name = "bmc"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
     

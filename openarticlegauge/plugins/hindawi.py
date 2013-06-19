@@ -7,7 +7,7 @@ so this one should be relatively straightforward.
 from openarticlegauge import plugin
 
 class HindawiPlugin(plugin.Plugin):
-    _short_name = "hindawi"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
 

@@ -2,7 +2,7 @@ import re, requests
 from openarticlegauge import plugin, recordmanager, model_exceptions
 
 class DOIPlugin(plugin.Plugin):
-    _short_name = "doi"
+    _short_name = __name__.split('.')[-1]
     __version__ = "0.1"
     
     ## Plugin Overrides ##

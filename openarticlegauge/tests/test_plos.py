@@ -49,8 +49,8 @@ class TestWorkflow(TestCase):
         assert 'provenance' in record['bibjson']['license'][-1]
 
         assert 'handler' in record['bibjson']['license'][-1]['provenance']
-        assert record['bibjson']['license'][-1]['provenance']['handler'] == plos._short_name
-        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == plos.__version__
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == 'plos', 'was actually: ' + record['bibjson']['license'][-1]['provenance']['handler']
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == '0.1'
     
     def test_04_plos_OGL_OA_example1(self):
         record = {}

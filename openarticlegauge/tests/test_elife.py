@@ -52,8 +52,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,            # ND is False
             "SA": False,            # SA is false
             "provenance": {
-                "handler": MyPlugin._short_name, # name of plugin which processed this record
-                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
+                "handler": 'elife', # name of plugin which processed this record
+                "handler_version": '0.1', # version of plugin which processed this record
                 "category": "xml_api", # category is xml_api
                 "description": 'License decided by querying the eLife XML API at http://elife.elifesciences.org/elife-source-xml/10.7554/eLife.00160', # description is a long string
                 "agent": config.agent, # agent is from configuration

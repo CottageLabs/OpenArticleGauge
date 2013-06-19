@@ -7,7 +7,7 @@ from openarticlegauge import plugin
 import requests
 
 class UbiquitousPlugin(plugin.Plugin):
-    _short_name = "ubiquitous"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' 
     
     def supports(self, provider):

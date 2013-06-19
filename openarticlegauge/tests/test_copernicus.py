@@ -51,8 +51,8 @@ RESOURCE_AND_RESULT = {
             "ND": False,
             "SA": False,
             "provenance": {
-                "handler": MyPlugin._short_name, # name of plugin which processed this record
-                "handler_version": MyPlugin.__version__, # version of plugin which processed this record
+                "handler": 'copernicus', # name of plugin which processed this record
+                "handler_version": '0.1', # version of plugin which processed this record
                 "category": "page_scrape", # category is page_scrape
                 "description": 'License decided by scraping the resource at http://www.atmos-chem-phys.net/13/1689/2013/acp-13-1689-2013.html and looking for the following license statement: "under the Creative Commons Attribution 3.0 License".', # description is a long string
                 "agent": config.agent, # agent is from configuration

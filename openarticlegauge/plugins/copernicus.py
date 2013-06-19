@@ -15,7 +15,7 @@ from openarticlegauge import plugin
 
 
 class COPERNICUSPlugin(plugin.Plugin):
-    _short_name = "copernicus"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' 
                     
 

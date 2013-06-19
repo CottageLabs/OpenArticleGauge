@@ -5,7 +5,7 @@ This plugin handles Nature articles, including Scientific Reports and Nature Com
 from openarticlegauge import plugin
 
 class NaturePlugin(plugin.Plugin):
-    _short_name = "nature"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
 

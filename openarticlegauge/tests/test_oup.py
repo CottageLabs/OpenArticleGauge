@@ -49,8 +49,8 @@ class TestWorkflow(TestCase):
         assert 'provenance' in record['bibjson']['license'][-1]
 
         assert 'handler' in record['bibjson']['license'][-1]['provenance']
-        assert record['bibjson']['license'][-1]['provenance']['handler'] == oup._short_name
-        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == oup.__version__
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == 'oup' 
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == '0.1'
     
     def test_04_oup_standard_OA_license_example1(self):
         record = {}

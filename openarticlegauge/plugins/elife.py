@@ -9,7 +9,7 @@ from datetime import datetime
 log = logging.getLogger(__name__)
 
 class ELifePlugin(plugin.Plugin):
-    _short_name = "elife"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
     

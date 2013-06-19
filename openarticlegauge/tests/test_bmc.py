@@ -72,8 +72,8 @@ class TestWorkflow(TestCase):
         assert 'provenance' in record['bibjson']['license'][-1]
 
         assert 'handler' in record['bibjson']['license'][-1]['provenance']
-        assert record['bibjson']['license'][-1]['provenance']['handler'] == bmc._short_name
-        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == bmc.__version__
+        assert record['bibjson']['license'][-1]['provenance']['handler'] == 'bmc'
+        assert record['bibjson']['license'][-1]['provenance']['handler_version'] == '0.1'
     
     def test_06_bmc_standard_OA_license(self):
         bmc = BMCPlugin()

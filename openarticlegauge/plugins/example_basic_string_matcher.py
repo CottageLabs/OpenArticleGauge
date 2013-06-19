@@ -17,7 +17,7 @@ from openarticlegauge import plugin
 ## Create a new class which extends the plugin.Plugin class.  The rest of this
 ## file shows how to extend and override the methods it provides signatures for
 class Tutorial(plugin.Plugin):
-    _short_name = "tutorial"
+    _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
 
