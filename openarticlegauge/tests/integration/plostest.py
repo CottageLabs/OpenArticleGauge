@@ -33,7 +33,7 @@ def plostest():
             ids = ids[1000:]
         while len(idbatch):
             headers = {'content-type': 'application/json'}
-            rr = requests.post('http://localhost:5000/lookup/',data=json.dumps(idbatch), headers=headers)
+            rr = requests.post('http://localhost:5051/lookup/',data=json.dumps(idbatch), headers=headers)
             try:
                 rs = rr.json()
             except ValueError as e:
