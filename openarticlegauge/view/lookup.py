@@ -17,6 +17,29 @@ def api_lookup(path='',ids=[]):
     path = path.replace('.json','')
 
     idlist = []
+
+    # look for JSON in the incoming request data
+    if request.json:
+        # the MIME type of the request is set properly - this is how it
+        # should be
+        request_json = request.json
+    else:
+        request_json = None
+
+        # check if somebody just POST-ed without bothering to request
+        # the right MIME type
+        try:
+            request_json = json.loads(request.data)
+        except ValueError:
+            pass
+
+        # now check if the client mislabeled the request really badly,
+        # i.e. saying it's HTML form data when it's actually JSON
+        try:
+            request_json = json.loads(str(request.form))
+        except ValueError:
+            pass
+
     if ids and isinstance(ids,basestring):
         idlist = [ {"id":i} for i in ids.split(',') ]
     elif ids:
@@ -25,8 +48,8 @@ def api_lookup(path='',ids=[]):
                 idlist.append({"id":i})
             else:
                 idlist.append(i)
-    elif request.json:
-        for item in request.json:
+    elif request_json:
+        for item in request_json:
             if isinstance(item,dict):
                 idlist.append(item)
             else:
