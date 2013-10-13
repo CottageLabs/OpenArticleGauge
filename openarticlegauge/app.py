@@ -7,13 +7,23 @@ from openarticlegauge.view.query import blueprint as query
 from openarticlegauge.view.issue import blueprint as issue
 from openarticlegauge.view.lookup import blueprint as lookup
 
+# breaks the blueprint abstraction but needed to allow /lookup route
+# without trailing slash
+from openarticlegauge.view.lookup import api_lookup
+
 from openarticlegauge.core import app
 
 app.register_blueprint(contact, url_prefix='/contact')
 app.register_blueprint(query, url_prefix='/query')
 app.register_blueprint(issue, url_prefix='/issue')
-app.register_blueprint(lookup, url_prefix='/lookup')
 
+# allow POST-ing to /lookup without the trailing slash
+# this definition has to come before the lookup blueprint is registered
+@app.route('/lookup', methods=['POST'])
+def lookup_without_trailing_slash():
+    return api_lookup()
+
+app.register_blueprint(lookup, url_prefix='/lookup')
 
 # static front page
 @app.route('/')
