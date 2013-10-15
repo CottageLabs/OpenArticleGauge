@@ -12,19 +12,28 @@ def plostest():
     try:
         f = open('plos.json','r')
         for line in f:
-            n.append(json.loads(line))
+            try:
+                n.append(json.loads(line))
+            except:
+                pass
         f.close()
+        print len(n)
     except IOError:
         print 'no plos.json found - note it is too long to be in the repo, you need to get a copy manually and put it in this directory'
     ids = []
     for o in n:
-        ids.append(o['doi'])
+        if 'doi' in o:
+            ids.append(o['doi'])
 
     total = len(ids)
+    print total
 
     # send the ID list to the OAG service 1000 at a time
     # loop it until informed they have all been processed
+    count = 0
     while len(ids) >= 1000:
+        count += 1
+        print count
         if len(ids) < 1000:
             idbatch = ids[0:len(ids)-1]
             ids = []
@@ -50,7 +59,6 @@ def plostest():
                     for p in rs['processing']:
                         idbatch.append(p['identifier']['id'])
                     sleep(2)
-    
     
 # run and time it
 if __name__ == "__main__":
