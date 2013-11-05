@@ -55,9 +55,8 @@ def plostest():
                 print
                 print rr.text
             if len(rs['processing']) == 0:
-                return
+                idbatch = []  # next batch
             else:
-                idbatch = []
                 # if waiting for confirmation they are all processed, add the processing ones back to the ID list
                 # otherwise the empty list sends the loop onto the next batch
                 if wait:
