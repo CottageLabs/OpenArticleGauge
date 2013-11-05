@@ -1,10 +1,13 @@
-import requests, json
+import requests, json, sys
 from time import sleep
 
 
 def plostest():
-
     wait = False
+
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'wait':
+            wait = True
 
     # read in the plos list
     # NOTE: the plos list is 78mb so it is not in the repo - pull it manually and place it next to this one
@@ -59,7 +62,7 @@ def plostest():
                     for p in rs['processing']:
                         idbatch.append(p['identifier']['id'])
                     sleep(2)
-    
+
 # run and time it
 if __name__ == "__main__":
     from datetime import datetime
