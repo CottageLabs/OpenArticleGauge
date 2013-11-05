@@ -8,6 +8,8 @@ def plostest():
     if len(sys.argv) > 1:
         if sys.argv[1] == 'wait':
             wait = True
+            'Going to wait until each ID batch has finished processing before sending in next one.'
+            sleep(2)
 
     # read in the plos list
     # NOTE: the plos list is 78mb so it is not in the repo - pull it manually and place it next to this one
