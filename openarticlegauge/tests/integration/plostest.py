@@ -47,7 +47,13 @@ def plostest():
             ids = ids[1000:]
         while len(idbatch):
             headers = {'content-type': 'application/json'}
-            rr = requests.post('http://localhost:5051/lookup/',data=json.dumps(idbatch), headers=headers)
+            try:
+                rr = requests.post('http://localhost:5051/lookup/',data=json.dumps(idbatch), headers=headers)
+            except Exception:
+                print 'Exception while trying to send a batch of ID-s to OAG'
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                print ''.join(line for line in lines)
             try:
                 rs = rr.json()
             except ValueError as e:
