@@ -59,7 +59,7 @@ def plostest():
             except ValueError as e:
                 print rr.status_code
                 print
-                print rr.text
+                print rr.text.encode('utf-8')
             if len(rs['processing']) == 0:
                 idbatch = []  # next batch
             else:
