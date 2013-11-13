@@ -13,6 +13,22 @@ def plostest():
 
     # read in the plos list
     # NOTE: the plos list is 78mb so it is not in the repo - pull it manually and place it next to this one
+
+    # This (or equivalent) is the format that this script is looking for:
+    # { "doi" : "10.1371/05-PLME-Q-0128.1" }
+    # { "doi" : "10.1371/198d344bc40a75f927c9bc5024279815" }
+    # { "doi" : "10.1371/4f6cf3e8df15a" }
+    # { "doi" : "10.1371/4f7b4bab0d1a3" }
+    # { "doi" : "10.1371/4f7c7cf783354" }
+    # { "doi" : "10.1371/4f7f57285b804" }
+    # { "doi" : "10.1371/4f7f6dc013d4e" }
+    # { "doi" : "10.1371/4f83ebf72317d" }
+    # { "doi" : "10.1371/4f84a944d8930" }
+    # { "doi" : "10.1371/4f8606b742ef3" }
+    # ^ JSON objects, one per line. The objects can include other information as well, e.g.
+    # { "doi" : "10.1371/4f8606b742ef3" , "title": "A Title"}
+    # is perfectly fine.
+
     n = []
     try:
         f = open('plos.json','r')
