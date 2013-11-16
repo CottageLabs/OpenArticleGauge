@@ -76,15 +76,13 @@ def plostest():
                 print rr.status_code
                 print
                 print rr.text.encode('utf-8')
-            if len(rs['processing']) == 0:
-                idbatch = []  # next batch
-            else:
+            idbatch = []
+            if len(rs['processing']) != 0 and wait:
                 # if waiting for confirmation they are all processed, add the processing ones back to the ID list
                 # otherwise the empty list sends the loop onto the next batch
-                if wait:
-                    for p in rs['processing']:
-                        idbatch.append(p['identifier']['id'])
-                    sleep(2)
+                for p in rs['processing']:
+                    idbatch.append(p['identifier']['id'])
+                sleep(2)
 
 # run and time it
 if __name__ == "__main__":
