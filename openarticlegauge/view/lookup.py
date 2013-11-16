@@ -1,9 +1,13 @@
 from flask import Blueprint, request, make_response, render_template, abort
 
-import json
+import json, logging
 
 from openarticlegauge import workflow
 from openarticlegauge import util
+
+LOG_FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
+log = logging.getLogger(__name__)
 
 blueprint = Blueprint('lookup', __name__)
 
@@ -56,6 +60,7 @@ def api_lookup(path='',ids=[]):
     elif path and len(path) > 0:
         idlist = [ {"id":i} for i in path.split(',') ]
 
+    log.debug('LOOKUP: About to do a request size test. Len of idlist: ' + str(len(idlist)))
     if len(idlist) > 1000:
         abort(400)
 
