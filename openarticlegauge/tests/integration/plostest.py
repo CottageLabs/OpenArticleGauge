@@ -53,6 +53,15 @@ def plostest():
     # loop it until informed they have all been processed
     count = 0
     while len(ids) >= 1000:
+
+        # If we are not waiting for each batch of a 1000 to be fully
+        # processed before submitting the next one, sleep 10 seconds
+        # between requests - it might work without this, just making
+        # sure the various OAG server bits have time to do their work.
+        # No ID-s should be dropped regardless of this 10s sleep.
+        if not wait and count > 0:
+            sleep(10)
+
         count += 1
         print count
         if len(ids) < 1000:
