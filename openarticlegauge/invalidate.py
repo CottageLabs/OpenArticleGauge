@@ -9,11 +9,11 @@ invalidate.py -a -u
 
 2/ Remove all unknown licenses from a specific handler
 
-invalidate.py -h handler_name -v handler_version -u
+invalidate.py -p handler_name -v handler_version -u
 
 3/ Remove all licenses of a specific type from a specific handler
 
-invalidate.py -h handler_name -v handler_version -t license_type
+invalidate.py -p handler_name -v handler_version -t license_type
 
 4/ Remove all licenses which were not applied by a handler, but because no handler was able to identify a licence for that item
 
@@ -24,7 +24,7 @@ Definition of options:
 -e - license has /no/ handlers (required if -a or -p is not specified)
 -a - all handlers of all versions AND those which have no handlers (required if -e or -p is not specified)
 -p - the name of the handler (required if -a or -e is not specified)
--v - the version of the handler (optional).  If omitted, all versions of the handler will be dealt with.  Must only be present if -h is specified
+-v - the version of the handler (optional).  If omitted, all versions of the handler will be dealt with.  Must only be present if -p is specified
 -t - the type of license to be removed (required if -u is not specified)
 -u - the unknown license (required if -t is not specified)
 
@@ -194,16 +194,16 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-e", "--empty", help="specify that the invalidation option should look for cases where no handler or handler version is available.  Must be present if -h or -p is not specified", action="store_true")
-    parser.add_argument("-a", "--all", help="speficy that all handlers should be dealt with by this invalidation operation.  Must be present if -h or -e is not specified", action="store_true")
+    parser.add_argument("-e", "--empty", help="specify that the invalidation option should look for cases where no handler or handler version is available.  Must be present if -p is not specified", action="store_true")
+    parser.add_argument("-a", "--all", help="speficy that all handlers should be dealt with by this invalidation operation.  Must be present if -p or -e is not specified", action="store_true")
     parser.add_argument("-p", "--plugin", help="the handler whose license to invalidate. Must be present if -a or -e is not specified")
-    parser.add_argument("-v", "--version", help="the version of the handler whose license to invalidate (must only be present if -h is specified")
+    parser.add_argument("-v", "--version", help="the version of the handler whose license to invalidate (must only be present if -p is specified")
     parser.add_argument("-u", "--unknown", help="short cut for specifying the unknonw license as the target license to remove.  Must be present if -t is not specified", action="store_true")
     parser.add_argument("-t", "--type", help="explicitly specify the type of the license to be removed (use with caution).  Must be present if -u is not specified")
 
     args = parser.parse_args()
 
-    # -a, -h and -e are mutually exclusive
+    # -a, -p and -e are mutually exclusive
     if args.all and args.plugin is not None:
         print "Cannot specify -a and -p  in the same command"
         exit()
