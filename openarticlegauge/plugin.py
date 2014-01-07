@@ -173,7 +173,7 @@ class Plugin(object):
         them is found at the target url. By default, this code will try
         out all supplied license statements and simply add multiple
         'license' objects to the record it's been passed. If you want
-        "first successfuly match only" behaviour, set this to True.
+        "first successful match only" behaviour, set this to True.
         """
 
         # get content
