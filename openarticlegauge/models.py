@@ -10,6 +10,9 @@ from openarticlegauge.dao import DomainObject
 from openarticlegauge.core import app
 from openarticlegauge.slavedriver import celery
 
+from werkzeug import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin
+
 log = logging.getLogger(__name__)
 
 class LookupException(Exception):
@@ -29,6 +32,32 @@ class BufferException(Exception):
     def __init__(self, message):
         self.message = message
         super(BufferException, self).__init__(self, message)
+
+class Account(DomainObject, UserMixin):
+    __type__ = 'account'
+
+    @classmethod
+    def pull_by_email(cls, email):
+        res = cls.query(q='email:"' + email + '"')
+        if res.get('hits',{}).get('total',0) == 1:
+            return cls(**res['hits']['hits'][0]['_source'])
+        else:
+            return None
+
+    def set_password(self, password):
+        self.data['password'] = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.data['password'], password)
+
+    @property
+    def email(self):
+        return self.data.get("email")
+
+    @property
+    def is_super(self):
+        #return not self.is_anonymous() and self.id in app.config.get('SUPER_USER', [])
+        return False
 
 class Record(DomainObject):
     __type__ = 'record'

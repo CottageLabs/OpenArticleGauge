@@ -2,6 +2,8 @@ import os, requests, json, redis
 from flask import Flask
 
 from openarticlegauge import config, licenses
+from flask.ext.login import LoginManager, current_user
+login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
@@ -9,7 +11,7 @@ def create_app():
     if app.config['INITIALISE_INDEX']: initialise_index(app)
     prep_redis(app)
     setup_error_email(app)
-    #login_manager.setup_app(app)
+    login_manager.setup_app(app)
     return app
 
 def configure_app(app):
