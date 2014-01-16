@@ -40,8 +40,8 @@ URL to a list of license statements. Each of those statements will
 correspond to a license recognised by OAG. Optionally a "version" can be
 provided.
 
-This needs to integrate well with the rest of the system, possibly not a
-trivial thing.
+    This needs to integrate well with the rest of the system, possibly not a
+    trivial thing.
 
 3. An administrative interface. Opening up the service in this way means
 that mistakes or even abuse can happen, so there should be a way of
@@ -51,10 +51,10 @@ in the service, perhaps a search through them (to find URL-s when
 asked). It can probably reuse the form that users would see for editing
 the records.
 
-Also, we don't necessarily do application support to that level -
-administering license statements properly may turn out to require a
-(semi-)dedicated person, so this should be usable by people who are not
-Cottage Labs developers.
+    Also, we don't necessarily do application support to that level -
+    administering license statements properly may turn out to require a
+    (semi-)dedicated person, so this should be usable by people who are not
+    Cottage Labs developers.
 
 4. Display the configurations in a list on the public user interface.
 One of the things we wanted to do with the service was display a list of
