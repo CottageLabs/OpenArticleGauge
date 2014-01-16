@@ -22,17 +22,22 @@ the publisher who publishes the journals given by the URL-s.
         "www.plosntds.org"
     ],
     "licenses": [
+        {
         "This article is available under CC-BY.":
             {
                 "license_type": "cc-by",
                 "version": ""
-            },
+            }
+        },
+        {
         "This article is available under CC-BY-NC v.3.0.":
             {
                 "license_type": "cc-by-nc",
                 "version": "3.0"
             }
+        }
     ]
+}
 ```
 
 ##Public user-facing form to manage license statements
