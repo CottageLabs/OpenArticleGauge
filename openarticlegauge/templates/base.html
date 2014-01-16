@@ -64,6 +64,15 @@
                     {% block subnav %}{% endblock %}
                 </ul>
             </div>
+            <div class="nav pull-right">
+                <ul id="mainnavlist" class="nav">
+            {% if not current_user.is_anonymous() %}
+                <li><a href="/account/{{current_user.id}}">{{current_user.email}}</a></li>
+                <li><a href="/account/logout">log out</a></li>
+                <li><a href="/admin">admin</a></li>
+            {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

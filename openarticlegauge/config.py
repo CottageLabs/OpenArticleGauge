@@ -9,9 +9,12 @@ HOST = '0.0.0.0'
 PORT = '5000'
 DEBUG = True
 MAX_CONTENT_LENGTH = 1024 * 1024 * 3
-NO_QUERY_VIA_API = []
+NO_QUERY_VIA_API = ["account"]
 ANONYMOUS_SEARCH_FILTER = False
 SEARCH_SORT = False
+
+# Auth configuration
+PUBLIC_REGISTER = False
 
 # provide an email address for receiving errors or dispute warning
 CONTACT_EMAIL = ''
@@ -125,6 +128,7 @@ MAPPINGS = {
 MAPPINGS['dispute'] = {'dispute':MAPPINGS['record']['record']}
 MAPPINGS['log'] = {'log':MAPPINGS['record']['record']}
 MAPPINGS['license'] = {'license':MAPPINGS['record']['record']}
+MAPPINGS['account'] = {'account':MAPPINGS['record']['record']}
 
 # OAG version and user agent string
 version = '0.1 alpha'

@@ -1,8 +1,11 @@
 from urllib import urlopen, urlencode
 import md5
-import os, re
+import os, re, string
 from functools import wraps
 from flask import request, current_app
+from random import choice
+
+from urlparse import urlparse, urljoin
 
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
@@ -11,6 +14,14 @@ from email.MIMEText import MIMEText
 from email.Utils import COMMASPACE, formatdate
 from email import Encoders
          
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    if ( test_url.scheme in ('http', 'https') and 
+            ref_url.netloc == test_url.netloc ):
+        return target
+    else:
+        return '/'
 
 def send_mail(to, fro, subject, text, files=[],server="localhost"):
     assert type(to)==list
@@ -61,5 +72,8 @@ def request_wants_json():
         best = True
     return best
         
-
+def generate_password(length=8):
+    chars = string.letters + string.digits
+    pw = ''.join(choice(chars) for _ in range(length))
+    return pw
 

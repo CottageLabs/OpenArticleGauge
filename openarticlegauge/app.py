@@ -1,21 +1,26 @@
 import os, json, urllib2
 from flask import Flask, render_template, request, make_response
 from functools import wraps
+from flask.ext.login import login_user, current_user
+from openarticlegauge.core import app, login_manager
+from openarticlegauge import models
 
 from openarticlegauge.view.contact import blueprint as contact
 from openarticlegauge.view.query import blueprint as query
 from openarticlegauge.view.issue import blueprint as issue
 from openarticlegauge.view.lookup import blueprint as lookup
-
-# breaks the blueprint abstraction but needed to allow /lookup route
-# without trailing slash
-from openarticlegauge.view.lookup import api_lookup
-
-from openarticlegauge.core import app
+from openarticlegauge.view.account import blueprint as account
+from openarticlegauge.view.admin import blueprint as admin
 
 app.register_blueprint(contact, url_prefix='/contact')
 app.register_blueprint(query, url_prefix='/query')
 app.register_blueprint(issue, url_prefix='/issue')
+app.register_blueprint(account, url_prefix="/account")
+app.register_blueprint(admin, url_prefix="/admin")
+
+# breaks the blueprint abstraction but needed to allow /lookup route
+# without trailing slash
+from openarticlegauge.view.lookup import api_lookup
 
 # allow POST-ing to /lookup without the trailing slash
 # this definition has to come before the lookup blueprint is registered
@@ -24,6 +29,40 @@ def lookup_without_trailing_slash():
     return api_lookup()
 
 app.register_blueprint(lookup, url_prefix='/lookup')
+
+############################################################
+## Auth stuff
+############################################################
+
+@login_manager.user_loader
+def load_account_for_login_manager(userid):
+    out = models.Account.pull(userid)
+    return out
+
+@app.context_processor
+def set_current_context():
+    """ Set some template context globals. """
+    return dict(current_user=current_user, app=app)
+
+'''
+@app.before_request
+def standard_authentication():
+    """Check remote_user on a per-request basis."""
+    remote_user = request.headers.get('REMOTE_USER', '')
+    if remote_user:
+        user = models.Account.pull(remote_user)
+        if user:
+            login_user(user, remember=False)
+    # add a check for provision of api key
+    elif 'api_key' in request.values:
+        res = models.Account.query(q='api_key:"' + request.values['api_key'] + '"')['hits']['hits']
+        if len(res) == 1:
+            user = models.Account.pull(res[0]['_source']['id'])
+            if user:
+                login_user(user, remember=False)
+'''
+
+##############################################################
 
 # static front page
 @app.route('/')
