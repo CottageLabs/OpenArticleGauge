@@ -91,17 +91,19 @@ overall interface so that it's easily discoverable. Maybe have a
 Publishers menu on the top?
 
 ##The plugin
-This is a bit more complex.
 
+###Datastore choice
 The dynamic persistent datastore for the plugin should be Elasticsearch
 as we're already using it, this info won't take much resources to hold
 in there, and it gives us cool searching abilities which we will utilise
 both in the UI and in the plugin itself.
 
+###Read the configuration
 To start, the plugin will read the user-submitted configurations every
 single time it runs (we may change this if it causes performance
 trouble).
 
+###Match the configurations to the URL of the article
 When it runs, it will have the URL of the article available. So
 when retrieving configurations, it should ask  elasticsearch for those
 which have URL-s which match the incoming article URL. Alternatively, it
@@ -119,6 +121,7 @@ so, the plugin will need to pick the order in which they run - current
 proposition is to run the more specific match first (longer URL in the
 config).
 
+###The generic plugin should reuse the OAG workflow, not make its own
 But, if a config results in a match, does the chain stop or not? (It
 does for the current Ubiquitous plugin, not for publisher-specific
 ones.)
@@ -129,6 +132,7 @@ we already wrote this logic in the OAG workflow module. So we should
 reuse it, not duplicate it, since maintainance will be terrible if we
 duplicate this complex bit of logic.
 
+###This is how we can achieve the reuse of workflow logic
 So, Generic should create plugins on-the-fly out of matching
 configurations and hand them to the OAG workflow. They will all be
 version 1.0, and will take (e.g.) the slugified name of the publisher as
@@ -139,11 +143,8 @@ for all configs, to prevent hairy problems at this step if somebody
 Note: slugify means turning "Oxford Journals" into "oxford-journals",
 basically.
 
+###Other notes on workflow logic reuse and its impact
 This reuse of workflow logic will also allow us to use all current
 license management tools like the invalidation of licenses in a much
 better way. Instead of invalidating all licenses done by "generic" we
 will be able to invalidate all done by "plos" instead.
-
-
-
-
