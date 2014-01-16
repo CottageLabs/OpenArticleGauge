@@ -42,6 +42,8 @@ the publisher who publishes the journals given by the URL-s.
 
 ##Public user-facing form to manage license statements
 "Let OpenArticleGauge recognise new license statements"
+
+```
     -----------------
     Publisher name
     -----------------
@@ -55,6 +57,7 @@ the publisher who publishes the journals given by the URL-s.
     v                   down]
 
                         Submit
+```
 
 The + button on the URL field would add up to 10 new fields, after which
 it would continue adding them, but also append a message to the page
