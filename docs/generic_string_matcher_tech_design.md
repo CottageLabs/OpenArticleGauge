@@ -26,14 +26,16 @@ the publisher who publishes the journals given by the URL-s.
         "This article is available under CC-BY.":
             {
                 "license_type": "cc-by",
-                "version": ""
+                "version": "",
+                "example_article_url": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314"
             }
         },
         {
         "This article is available under CC-BY-NC v.3.0.":
             {
                 "license_type": "cc-by-nc",
-                "version": "3.0"
+                "version": "3.0",
+                "example_article_url": "http://a_url"
             }
         }
     ]
@@ -51,13 +53,15 @@ the publisher who publishes the journals given by the URL-s.
     (http://aprendeenlinea.udea.edu.co/revistas/index.php/red) as long
     as all articles in the journal can be found under that folder.)
     -----------------
-    License statement  License  Version (optional)
+    License statement   License   Version (optional)      Example article URL
     v
-    v   [textarea]      [drop   [free text input box]
+    v   [textarea]      [drop     [version text input]    [URL text input]
     v                   down]
 
                         Submit
 ```
+
+All fields are mandatory unless noted otherwise above.
 
 The + button on the URL field would add up to 10 new fields, after which
 it would continue adding them, but also append a message to the page
@@ -67,9 +71,11 @@ licenses for lots of URL-s.
 When editing records, add an additional tickbox before the License
 statement column called "Active?".
 
-We have to consider how to let users edit records (you need a list in
-order to find your record). It's not quite clear what the difference
-would be between users and administrators in that case.
+When entering URL-s, users should be informed if a configuration
+matching those URL-s already exists, like on Stackoverflow where you get
+similar questions while typing in your own. Will need to clarify what to
+do if only 1 out of multiple entered URL-s is matched by another
+configuration.
 
 ##Administrative interface
 The requirements seem to be "list all configurations", "allow sorting",
@@ -89,6 +95,10 @@ tabular). + we'd have no search then.
 We should think a bit about where to integrate this list on the OAG
 overall interface so that it's easily discoverable. Maybe have a
 Publishers menu on the top?
+
+This will need to let users search by publisher name and URL in some
+obvious way, so that publishing staff can check their journals are
+supported by OAG.
 
 ##The plugin
 
