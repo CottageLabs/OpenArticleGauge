@@ -49,13 +49,13 @@ the publisher who publishes the journals given by the URL-s.
     -----------------
     Publisher name
     -----------------
-    Start of URL (+) (e.g.: www.plosone.org. Folders work too
+    Journal URL (+) (e.g.: www.plosone.org. Folders work too
     (http://aprendeenlinea.udea.edu.co/revistas/index.php/red) as long
     as all articles in the journal can be found under that folder.)
     -----------------
     License statement   License   Version (optional)      Example article URL
     v
-    v   [textarea]      [drop     [version text input]    [URL text input]
+    v   [textarea]      [drop     [version text input]    [URL text input]          (+)
     v                   down]
 
                         Submit
@@ -67,6 +67,8 @@ The + button on the URL field would add up to 10 new fields, after which
 it would continue adding them, but also append a message to the page
 telling the user to raise an issue on github if they need to add
 licenses for lots of URL-s.
+
+Same for the + button on the license statement row of inputs.
 
 When editing records, add an additional tickbox before the License
 statement column called "Active?".
