@@ -39,10 +39,6 @@ Then install the project requirements using pip (recommended to also use a virtu
 
     pip install -e .
     
-or with setuptools:
-
-    python setup.py install
-
 ###Celery
 
 Start the celery backend
