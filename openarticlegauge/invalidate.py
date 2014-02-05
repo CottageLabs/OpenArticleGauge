@@ -34,7 +34,7 @@ import json
 
 ES_PAGE_SIZE = 100
 
-def invalidate_license(license_type, handler=None, handler_version=None, treat_none_as_missing=False, reporter=None):
+def invalidate_license(license_type=None, handler=None, handler_version=None, treat_none_as_missing=False, reporter=None):
     """
     Invalidate all licences with the specified licence type.  The handler and handler_version may
     be left unset, or set to a specific value.  If left unset then treat_none_as_missing may be used
@@ -51,10 +51,16 @@ def invalidate_license(license_type, handler=None, handler_version=None, treat_n
     reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
     
     """
+    
     # the reporter is a callback which handles messages of the progress of this operation.  If none
     # is specified we operate silently
     if reporter is None:
         reporter = lambda x: None
+    
+    if license_type is None and handler is None:
+        msg = "can't execute without at least license type or handler"
+        reporter(msg)
+        return None
     
     # report on the operation we are going to carry out
     msg = "invalidating license type '" + license_type + "' for "
@@ -74,9 +80,7 @@ def invalidate_license(license_type, handler=None, handler_version=None, treat_n
             "and" : [
                 {"term" : {"license.type.exact" : license_type}}
             ]
-        },
-        "size" : ES_PAGE_SIZE,
-        "from" : 0
+        }
     }
     if handler is not None:
         query['filter']['and'].append({"term" : {"license.provenance.handler.exact" : handler}})
@@ -86,6 +90,24 @@ def invalidate_license(license_type, handler=None, handler_version=None, treat_n
     # report on the query
     reporter("using initial search query: " + json.dumps(query))
     
+    # now delegate to invalidate_license_by_query
+    invalidate_license_by_query(query, treat_none_as_missing=treat_none_as_missing, reporter=reporter)
+
+def invalidate_license_by_query(query, license_type=None, handler=None, handler_version=None, treat_none_as_missing=None, reporter=None):
+    """
+    The query is used to select the records which are affected, the license_type, hander and handler_version are used to 
+    determine which license(s) to remove from the selected record
+    """
+    # the reporter is a callback which handles messages of the progress of this operation.  If none
+    # is specified we operate silently
+    if reporter is None:
+        reporter = lambda x: None
+    
+    # set us up for paging
+    query["size"] = ES_PAGE_SIZE
+    query["from"] = 0
+    
+    # page through the results and do the invalidation
     first = True
     while True:
         # do the query
@@ -102,6 +124,7 @@ def invalidate_license(license_type, handler=None, handler_version=None, treat_n
         reporter("processing records " + str(query["from"]) + " - " + str(end_of_current_page))
         
         # process the response from the query
+        # FIXME: we still need the parameters for license_type, handler, handler_version
         _process_response(response, license_type, handler, handler_version, treat_none_as_missing, reporter)
         
         if total > end_of_current_page:
