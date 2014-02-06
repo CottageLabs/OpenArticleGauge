@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> Submit License Statement </h1>
+<form action="" method="post" name="license">
+    <div class="row-fluid">
+        <div class="span12">
+            Publisher name
+            {% if form.publisher_name.flags.required %}*{% endif %}
+            <br>
+            {{form.publisher_name(placeholder="PLOS")}}
+            <br>
+            <hr>
+            <div id="journal_url_row" class="form-horizontal">
+            <div>
+                Journal URL
+                {% if form.journal_url.flags.required %}*{% endif %}
+            </div>
+                <div class="repeat_journal row-fluid" style="display:inline;">
+                    <div class="span12">
+                        {{form.journal_url(placeholder="http://www.plosone.org/")}}
+                    </div>
+                </div>
+                <button class="btn journal_link">+</button>
+                
+                
+            </div>
+        </div>
+            
+    </div>
+        
+    <hr>
+        
+    <div id="license_fields">
+        <div class="row-fluid all_license_fields">
+            <div class="span3">
+                License statement
+                {% if form.license_statement.flags.required %}*{% endif %}
+                <br>
+                {{form.license_statement(placeholder="This is an open-access article distributed under the terms of the Creative Commons Attribution License")}}
+                    
+            </div>
+            
+                <div class="span3">
+                    License
+                    {% if form.license.flags.required %}*{% endif %}
+                    <br>
+                    {{form.license}}
+                    
+                </div>
+                <div class="span3">
+                    Version
+                    {% if form.version.flags.required %}*{% endif %}
+                    <br>
+                    {{form.version(placeholder="3.0")}}
+                    
+                </div>
+                <div class="span3">
+                    <div class="form-horizontal">
+                        Example URL
+                        {% if form.example_url.flags.required %}*{% endif %}
+                        <br>
+                        {{form.example_url(placeholder="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314")}}
+                        
+                      
+                    </div>
+                </div> 
+                
+        </div>             
+    <button class="btn addmore">+</button>                
+        
+             
+    </div>
+    <hr>
+    
+    <div class="btn-group">
+        <button class="btn, pull-right">Submit</button>
+    </div>
+</form>
+{% endblock %}
+
+
+
+
