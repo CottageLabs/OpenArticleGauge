@@ -1,7 +1,7 @@
 from unittest import TestCase
 import requests, os
 
-from openarticlegauge import config
+from openarticlegauge import config, models
 
 ######################################################################################
 # Set these variables/imports and the test case will use them to perform some general
@@ -154,6 +154,7 @@ class TestProvider(TestCase):
             record['provider'] = {}
             record['provider']['url'] = [comparison['provenance']['source']]
             record['provider']['doi'] = '10.7554/eLife.00160'
+            record = models.MessageObject(record=record)
             
             # set the current request so that the monkey patch knows how to respond
             CURRENT_REQUEST = comparison['provenance']['source']
@@ -161,7 +162,9 @@ class TestProvider(TestCase):
             # run the plugin
             p = MyPlugin()
             p.license_detect(record)
-
+            
+            record = record.record
+            
             # check if all the top-level keys were created
             assert "bibjson" in record
             assert "license" in record['bibjson']

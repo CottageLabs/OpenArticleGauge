@@ -45,12 +45,15 @@ class BMCPlugin(plugin.Plugin):
             }
         ]
         
+        """
         if "provider" not in record:
             return
         if "url" not in record["provider"]:
             return
+        """
         
-        for url in record['provider']['url']:
+        # for url in record['provider']['url']:
+        for url in record.provider_urls:
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url)
     

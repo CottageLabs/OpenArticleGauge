@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.plos import PLOSPlugin
-from openarticlegauge import config
+from openarticlegauge import config, models
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
     'jurisdiction', 'open_access', 'BY', 'NC', 'SA', 'ND']
@@ -37,10 +37,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089']
+        record = models.MessageObject(record=record)
 
         plos = PLOSPlugin()
         plos.license_detect(record)
 
+        record = record.record
+        
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
         assert record['bibjson'].has_key('license')
@@ -57,10 +60,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0035089']
+        record = models.MessageObject(record=record)
 
         plos = PLOSPlugin()
         plos.license_detect(record)
 
+        record = record.record
+        
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
         assert record['bibjson']['license']
@@ -95,9 +101,12 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001406']
-
+        record = models.MessageObject(record=record)
+        
         plos = PLOSPlugin()
         plos.license_detect(record)
+
+        record = record.record
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -133,9 +142,12 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001461']
+        record = models.MessageObject(record=record)
         
         plos = PLOSPlugin()
         plos.license_detect(record)
+
+        record = record.record
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -171,10 +183,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosbiology.org/article/info:doi/10.1371/journal.pbio.0020237']
+        record = models.MessageObject(record=record)
         
         plos = PLOSPlugin()
         plos.license_detect(record)
-
+        
+        record = record.record
+        
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
         assert record['bibjson']['license']
@@ -209,10 +224,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743']
-
+        record = models.MessageObject(record=record)
+        
         plos = PLOSPlugin()
         plos.license_detect(record)
-
+        
+        record = record.record
+        
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
         assert record['bibjson']['license']

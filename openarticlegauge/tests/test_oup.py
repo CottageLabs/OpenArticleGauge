@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.oup import OUPPlugin
-from openarticlegauge import config
+from openarticlegauge import config, models
 
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
     'jurisdiction', 'open_access', 'BY', 'NC', 'SA', 'ND']
@@ -37,10 +37,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2898']
+        record = models.MessageObject(record=record)
 
         oup = OUPPlugin()
         oup.license_detect(record)
 
+        record = record.record
+        
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
         assert record['bibjson'].has_key('license')
@@ -57,9 +60,12 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2898']
+        record = models.MessageObject(record=record)
 
         oup = OUPPlugin()
         oup.license_detect(record)
+
+        record = record.record
 
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
@@ -99,10 +105,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://nar.oxfordjournals.org/content/40/21/10668']
-
+        record = models.MessageObject(record=record)
+        
         oup = OUPPlugin()
         oup.license_detect(record)
-
+        
+        record = record.record
+        
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
         assert record['bibjson']['license']
@@ -141,10 +150,13 @@ class TestWorkflow(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://nar.oxfordjournals.org/content/40/21/10832']
-
+        record = models.MessageObject(record=record)
+        
         oup = OUPPlugin()
         oup.license_detect(record)
 
+        record = record.record
+        
         # check if all the important keys were created
         assert record['bibjson'].has_key('license')
         assert record['bibjson']['license']

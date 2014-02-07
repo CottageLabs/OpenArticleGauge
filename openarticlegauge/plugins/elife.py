@@ -58,7 +58,8 @@ class ELifePlugin(plugin.Plugin):
         ]
 
         # 1. get DOI from record object
-        doi = record['provider'].get('doi')
+        # doi = record['provider'].get('doi')
+        doi = record.provider_doi
 
         if doi:
         # 2. query elife XML api
@@ -110,7 +111,8 @@ class ELifePlugin(plugin.Plugin):
                     }
         
                     license['provenance'] = provenance
-        
+                    """
                     record['bibjson'].setdefault('license', [])
                     record['bibjson']['license'].append(license)
-
+                    """
+                    record.add_license_object(license)

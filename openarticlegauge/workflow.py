@@ -21,6 +21,9 @@ reaches either completion or causes an error.  The record object in full is:
     "bibjson" : {<bibjson object - see http://bibjson.org>}
 }
 
+The message object is represented by the models.MessageObject class, and all interactions
+with this model should be via that class instance.
+
 """
 
 from celery import chain
@@ -58,7 +61,8 @@ def lookup(bibjson_ids):
     # inject it into the asynchronous back-end
     for bid in bibjson_ids:
         # first, create the basic record object
-        record = { "identifier" : bid }
+        # record = { "identifier" : bid }
+        record = models.MessageObject(bid=bid)
         log.debug("initial record " + str(record))
         
         # trap any lookup errors
@@ -68,7 +72,8 @@ def lookup(bibjson_ids):
             log.debug("type detected record " + str(record))
             
             # Step 1a: if we don't find a type for the identifier, there's no point in us continuing
-            if record.get("identifier", {}).get("type") is None:
+            # if record.get("identifier", {}).get("type") is None:
+            if record.identifier_type is None:
                 raise model_exceptions.LookupException("unable to determine the type of the identifier")
             
             # Step 2: create a canonical version of the identifier for cache keying
@@ -82,10 +87,14 @@ def lookup(bibjson_ids):
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not cached or is stale
             if cached_copy is not None:
-                if cached_copy.get('queued', False):
-                    record['queued'] = True
-                elif cached_copy.has_key('bibjson'):
-                    record['bibjson'] = cached_copy['bibjson']
+                #if cached_copy.get('queued', False):
+                if cached_copy.queued:
+                    # record['queued'] = True
+                    record.queued = True
+                # elif cached_copy.has_key('bibjson'):
+                elif cached_copy.has_bibjson():
+                    # record['bibjson'] = cached_copy['bibjson']
+                    record.bibjson = cached_copy.bibjson
                 log.debug("loaded from cache " + str(record))
                 rs.add_result_record(record)
                 log.debug(str(bid) + " added to result, continuing ...")
@@ -98,7 +107,8 @@ def lookup(bibjson_ids):
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not archived, or is stale
             if archived_bibjson is not None:
-                record['bibjson'] = archived_bibjson
+                # record['bibjson'] = archived_bibjson
+                record.bibjson = archived_bibjson
                 log.debug("loaded from archive " + str(archived_bibjson))
                 rs.add_result_record(record)
                 continue
@@ -107,7 +117,8 @@ def lookup(bibjson_ids):
             # been queued.  In theory, this step is pointless, but we add it
             # in for completeness, and just in case any of the above checks change
             # in future
-            if record.get("queued", False):
+            # if record.get("queued", False):
+            if record.queued:
                 # if the item is already queued, we just need to update the 
                 # cache (which may be a null operation anyway), and then carry on
                 # to the next record
@@ -117,7 +128,8 @@ def lookup(bibjson_ids):
                         
             # Step 6: if we get to here, we need to set the state of the record
             # queued, and then cache it.
-            record['queued'] = True
+            #record['queued'] = True
+            record.queued = True
             _update_cache(record)
             log.debug("caching record " + str(record))
             
@@ -126,7 +138,8 @@ def lookup(bibjson_ids):
             _start_back_end(record)
             
         except model_exceptions.LookupException as e:
-            record['error'] = e.message
+            # record['error'] = e.message
+            record.error = e.message
         
         # write the resulting record into the result set
         rs.add_result_record(record)
@@ -146,29 +159,39 @@ def _check_archive(record):
     - a bibjson record if one is found
     
     """
+    """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
         
     if not record['identifier'].has_key('canonical'):
         raise model_exceptions.LookupException("can't look anything up in the archive without a canonical id")
-        
+    """
+    
+    if record.canonical is None:
+        raise model_exceptions.LookupException("can't look anything up in the archive without a canonical id")
+    
     # obtain a copy of the archived bibjson
-    log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
-    archived_bibjson = models.Record.check_archive(record['identifier']['canonical'])
+    #log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
+    log.debug("checking archive for canonical identifier: " + record.canonical)
+    # archived_bibjson = models.Record.check_archive(record['identifier']['canonical'])
+    archived_bibjson = models.Record.check_archive(record.canonical)
     
     # if it's not in the archive, return
     if archived_bibjson is None:
-        log.debug(record['identifier']['canonical'] + " is not in the archive")
+        # log.debug(record['identifier']['canonical'] + " is not in the archive")
+        log.debug(record.canonical + " is not in the archive")
         return None
     
     # if there is archived bibjson, then we need to check whether it is stale
     # or not
-    if _is_stale(archived_bibjson):
-        log.debug(record['identifier']['canonical'] + " is in the archive, but is stale")
+    if _is_stale(models.MessageObject(bibjson=archived_bibjson)):
+        # log.debug(record['identifier']['canonical'] + " is in the archive, but is stale")
+        log.debug(record.canonical + " is in the archive, but is stale")
         return None
         
     # otherwise, just return the archived copy
-    log.debug(record['identifier']['canonical'] + " is in the archive")
+    # log.debug(record['identifier']['canonical'] + " is in the archive")
+    log.debug(record.canonical + " is in the archive")
     return archived_bibjson
 
 def _update_cache(record):
@@ -179,14 +202,19 @@ def _update_cache(record):
     record -- an OAG record object, see the module documentation for details
     
     """
+    """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key('canonical'):
         raise model_exceptions.LookupException("can't create/update anything in the cache without a canonical id")
+    """
+    if record.canonical is None:
+        raise model_exceptions.LookupException("can't create/update anything in the cache without a canonical id")
     
     # update or create the cache
-    cache.cache(record['identifier']['canonical'], record)
+    # cache.cache(record['identifier']['canonical'], record)
+    cache.cache(record.canonical, record)
     
 def _invalidate_cache(record):
     """
@@ -196,23 +224,29 @@ def _invalidate_cache(record):
     record -- an OAG record object, see the module documentation for details
     
     """
+    """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
     
     if not record['identifier'].has_key('canonical'):
         raise model_exceptions.LookupException("can't invalidate anything in the cache without a canonical id")
+    """
+    if record.canonical is None:
+        raise model_exceptions.LookupException("can't invalidate anything in the cache without a canonical id")
     
-    cache.invalidate(record['identifier']['canonical'])
+    # cache.invalidate(record['identifier']['canonical'])
+    cache.invalidate(record.canonical)
 
-def _is_stale(bibjson):
+def _is_stale(record):
     """
     Do a stale check on the bibjson object.
     
     arguments:
-    bibjson -- the bibjson record to carry out the stale check on
+    record -- the bibjson record to carry out the stale check on
     
     """
-    return cache.is_stale(bibjson)
+    # return cache.is_stale(bibjson)
+    return cache.is_stale(record)
 
 def _check_cache(record):
     """
@@ -227,38 +261,51 @@ def _check_cache(record):
     - OAG record object if one is found
     
     """
+    """
     if not record.has_key('identifier'):
         raise model_exceptions.LookupException("no identifier in record object")
         
     if not record['identifier'].has_key('canonical'):
         raise model_exceptions.LookupException("can't look anything up in the cache without a canonical id")
+    """
+    if record.canonical is None:
+        raise model_exceptions.LookupException("can't look anything up in the cache without a canonical id")
     
-    log.debug("checking cache for key: " + record['identifier']['canonical'])
-    cached_copy = cache.check_cache(record['identifier']['canonical'])
+    # log.debug("checking cache for key: " + record['identifier']['canonical'])
+    log.debug("checking cache for key: " + record.canonical)
+    # cached_copy = cache.check_cache(record['identifier']['canonical'])
+    cached_copy = cache.check_cache(record.canonical)
     
     # if it's not in the cache, then return
     if cached_copy is None:
-        log.debug(record['identifier']['canonical'] + " not found in cache")
+        # log.debug(record['identifier']['canonical'] + " not found in cache")
+        log.debug(record.canonical + " not found in cache")
         return None
         
     # if the cached copy exists ...
         
     # first check to see if the cached copy is already on the queue
-    if cached_copy.get('queued', False):
-        log.debug(record['identifier']['canonical'] + " is in the cache and is queued for processing")
+    # if cached_copy.get('queued', False):
+    if cached_copy.queued:
+        # log.debug(record['identifier']['canonical'] + " is in the cache and is queued for processing")
+        log.debug(record.canonical + " is in the cache and is queued for processing")
         return cached_copy
     
     # next check to see if the cached copy has a bibjson record in it
-    if cached_copy.has_key('bibjson'):
+    # if cached_copy.has_key('bibjson'):
+    if cached_copy.has_bibjson():
         # if it does, we need to see if the record is stale.  If so, we remember that fact,
         # and we'll deal with updating stale items later (once we've checked bibserver)
-        if _is_stale(cached_copy['bibjson']):
-            log.debug(record['identifier']['canonical'] + " is in the cache but is a stale record")
+        # if _is_stale(cached_copy['bibjson']):
+        if _is_stale(cached_copy):
+            # log.debug(record['identifier']['canonical'] + " is in the cache but is a stale record")
+            log.debug(record.canonical + " is in the cache but is a stale record")
             _invalidate_cache(record)
             return None
     
     # otherwise, just return the cached copy
-    log.debug(record['identifier']['canonical'] + " is in the cache")
+    # log.debug(record['identifier']['canonical'] + " is in the cache")
+    log.debug(record.canonical + " is in the cache")
     return cached_copy
 
 def _canonicalise_identifier(record):
@@ -272,6 +319,7 @@ def _canonicalise_identifier(record):
     
     """
     # verify that we have everything required for this step
+    """
     if not record.has_key("identifier"):
         raise model_exceptions.LookupException("no identifier in record object")
     
@@ -280,12 +328,18 @@ def _canonicalise_identifier(record):
         
     if not record['identifier'].has_key("type"):
         raise model_exceptions.LookupException("bibjson identifier object does not contain a 'type' field")
+    """
+    if not record.has_id() or not record.has_type():
+        raise model_exceptions.LookupException("bibjson identifier object does not contain a 'type' and/or 'id' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
-    p = plugin.PluginFactory.canonicalise(record['identifier']['type'])
+    # p = plugin.PluginFactory.canonicalise(record['identifier']['type'])
+    p = plugin.PluginFactory.canonicalise(record.identifier_type)
     if p is None:
-        raise model_exceptions.LookupException("no plugin for canonicalising " + record['identifier']['type'])
-    p.canonicalise(record['identifier'])
+        # raise model_exceptions.LookupException("no plugin for canonicalising " + record['identifier']['type'])
+        raise model_exceptions.LookupException("no plugin for canonicalising " + record.identifier_type)
+    # p.canonicalise(record['identifier'])
+    p.canonicalise(record)
 
 def _detect_verify_type(record):
     """
@@ -296,17 +350,19 @@ def _detect_verify_type(record):
     
     """
     # verify that the record has an identifier key, which is required for this operation
-    if not record.has_key("identifier"):
-        raise model_exceptions.LookupException("no identifier in record object")
+    #if not record.has_key("identifier"):
+    #    raise model_exceptions.LookupException("no identifier in record object")
     
-    if not record['identifier'].has_key("id"):
+    #if not record['identifier'].has_key("id"):
+    if not record.has_id():
         raise model_exceptions.LookupException("bibjson identifier object does not contain an 'id' field")
     
     # run through /all/ of the plugins and give each a chance to augment/check
     # the identifier
     plugins = plugin.PluginFactory.type_detect_verify()
     for p in plugins:
-        p.type_detect_verify(record['identifier'])
+        # p.type_detect_verify(record['identifier'])
+        p.type_detect_verify(record)
     
 def _start_back_end(record):
     """
@@ -322,7 +378,7 @@ def _start_back_end(record):
     
     """
     log.debug("injecting record into asynchronous processing chain: " + str(record))
-    ch = chain(detect_provider.s(record), provider_licence.s(), store_results.s())
+    ch = chain(detect_provider.s(record.record), provider_licence.s(), store_results.s())
     r = ch.apply_async()
     return r
 
@@ -331,7 +387,7 @@ def _start_back_end(record):
 ############################################################################    
 
 @celery.task(name="openarticlegauge.workflow.detect_provider")
-def detect_provider(record):
+def detect_provider(record_json):
     """
     Attempt to detect the provider of the identifier supplied in the record.  This
     will - if successful - add the record['provider'] object to the OAG record
@@ -343,19 +399,25 @@ def detect_provider(record):
     the passed in record with the 'provider' field added if possible
     
     """
+    record = models.MessageObject(record=record_json)
     
     # Step 1: see if we can actually detect a provider at all?
     # as usual, this should never happen, but we should have a way to 
     # handle it
+    """
     if not record.has_key("identifier"):
         return record
     
     if not record['identifier'].has_key("type"):
         return record
+    """
+    if record.identifier_type is None:
+        return record
     
     # Step 2: get the provider plugins that are relevant, and
     # apply each one until a provider string is added
-    plugins = plugin.PluginFactory.detect_provider(record['identifier']["type"])
+    # plugins = plugin.PluginFactory.detect_provider(record['identifier']["type"])
+    plugins = plugin.PluginFactory.detect_provider(record.identifier_type)
     for p in plugins:
         log.debug("applying plugin " + str(p._short_name))
         p.detect_provider(record)
@@ -363,10 +425,10 @@ def detect_provider(record):
     # we have to return the record, so that the next step in the chain
     # can deal with it
     log.debug("yielded result " + str(record))
-    return record
+    return record.record
     
 @celery.task(name="openarticlegauge.workflow.provider_licence")
-def provider_licence(record):
+def provider_licence(record_json):
     """
     Attempt to determine the licence of the record based on the provider information
     contained in record['provider'].  Whether this is successful or not a record['bibjson']['license']
@@ -383,30 +445,37 @@ def provider_licence(record):
         a new licence
     
     """
+    record = models.MessageObject(record=record_json)
     
     # Step 1: check that we have a provider indicator to work from
-    if not record.has_key("provider"):
+    # if not record.has_key("provider"):
+    if not record.has_provider():
         log.debug("record has no provider, so unable to look for licence: " + str(record))
         return record
     
     # Step 2: get the plugin that will run for the given provider
-    p = plugin.PluginFactory.license_detect(record["provider"])
+    # p = plugin.PluginFactory.license_detect(record["provider"])
+    p = plugin.PluginFactory.license_detect(record.provider)
     if p is None:
-        log.debug("No plugin to handle provider: " + str(record['provider']))
+        # log.debug("No plugin to handle provider: " + str(record['provider']))
+        log.debug("No plugin to handle provider: " + str(record.provider))
         return record
-    log.debug("Plugin " + str(p) + " to handle provider " + str(record['provider']))
+    # log.debug("Plugin " + str(p) + " to handle provider " + str(record['provider']))
+    log.debug("Plugin " + str(p) + " to handle provider " + str(record.provider))
     
     # Step 3: run the plugin on the record
-    if "bibjson" not in record:
+    #if "bibjson" not in record:
         # if the record doesn't have a bibjson element, add a blank one
-        record['bibjson'] = {}
+    #    record['bibjson'] = {}
     p.license_detect(record)
     
     # was the plugin able to detect a licence?
     # if not, we need to add an unknown licence for this provider
-    if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+    # if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+    if not record.has_license():
         log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
-        recordmanager.add_license(record, 
+        # recordmanager.add_license(record, 
+        record.add_license(
             url=config.unknown_url,
             type="failed-to-obtain-license",
             open_access=False,
@@ -421,10 +490,10 @@ def provider_licence(record):
     # we have to return the record so that the next step in the chain can
     # deal with it
     log.debug("plugin " + str(p) + " yielded result " + str(record))
-    return record
+    return record.record
 
 @celery.task(name="openarticlegauge.workflow.store_results")
-def store_results(record):
+def store_results(record_json):
     """
     Store the OAG record object in all the appropriate locations:
     - in the cache
@@ -444,16 +513,21 @@ def store_results(record):
         necessary to prepare it for storage
     
     """
+    record = models.MessageObject(record=record_json)
+    
     # Step 1: ensure that a licence was applied, and if not apply one
-    if "bibjson" not in record:
+    #if "bibjson" not in record:
+    if not record.has_bibjson():
         # no bibjson record, so add a blank one
         log.debug("record does not have a bibjson record.")
-        record['bibjson'] = {}
+        # record['bibjson'] = {}
         
-    if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+    # if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
+    if not record.has_license():
         # the bibjson record does not contain a license list OR the license list is of zero length
-        log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record['bibjson']))
-        recordmanager.add_license(record,
+        log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record.bibjson))
+        # recordmanager.add_license(record,
+        record.add_license(
             url=config.unknown_url,
             type="failed-to-obtain-license",
             open_access=False,
@@ -464,25 +538,32 @@ def store_results(record):
         # describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url)
         
     # Step 2: unqueue the record
-    if record.has_key("queued"):
-        log.debug(str(record['identifier']) + ": removing this item from the queue")
-        del record["queued"]
+    # if record.has_key("queued"):
+    if record.queued:
+        # log.debug(str(record['identifier']) + ": removing this item from the queue")
+        log.debug(str(record.identifier) + ": removing this item from the queue")
+        # del record["queued"]
+        record.queued = False
     
     # Step 3: update the archive
-    _add_identifier_to_bibjson(record['identifier'], record['bibjson'])
-    log.debug(str(record['identifier']) + ": storing this item in the archive")
-    models.Record.store(record['bibjson'])
+    # _add_identifier_to_bibjson(record['identifier'], record['bibjson'])
+    record.add_identifier_to_bibjson()
+    log.debug(str(record.identifier) + ": storing this item in the archive")
+    # models.Record.store(record['bibjson'])
+    models.Record.store(record.bibjson)
     
     # Step 4: update the cache
-    log.debug(str(record['identifier']) + ": storing this item in the cache")
+    log.debug(str(record.identifier) + ": storing this item in the cache")
     _update_cache(record)
     
     # we have to return the record so that the next step in the chain can
     # deal with it (if such a step exists)
     log.debug("yielded result " + str(record))
-    return record
+    return record.record
 
-def _add_identifier_to_bibjson(identifier, bibjson):
+#def _add_identifier_to_bibjson(identifier, bibjson):
+def _add_identifier_to_bibjson(record):
+    # NOTE: superseded by operation on model object
     """
     Take the supplied bibjson identifier object and ensure that it has been added
     to the supplied bibjson object.  The bibjson object may already contain the
@@ -494,6 +575,7 @@ def _add_identifier_to_bibjson(identifier, bibjson):
     
     """
     
+    """
     # FIXME: this is pretty blunt, could be a lot smarter
     if not bibjson.has_key("identifier"):
         bibjson["identifier"] = []
@@ -504,6 +586,10 @@ def _add_identifier_to_bibjson(identifier, bibjson):
             break
     if not found:
         bibjson['identifier'].append(identifier)
+    """
+    pass
+    
+    
     
     
     

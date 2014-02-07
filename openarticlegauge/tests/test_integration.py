@@ -143,6 +143,7 @@ class TestIntegration(TestCase):
     def test_03_back_end(self):
         # kick off a known good doi lookup
         record = {"identifier" : {"id" : "http://dx.doi.org/10.1371/journal.pone.0035089", "type" : "doi", "canonical" : "doi:10.1371/journal.pone.0035089"}, "queued" : True}
+        record = models.MessageObject(record=record)
         a = workflow._start_back_end(record)
         
         # wait for the process to finish
@@ -173,8 +174,10 @@ class TestIntegration(TestCase):
         # make the request, and then immediately look up the id in the cache
         resp = requests.post(lookup_url + "10.1371/journal.pone.0035089")
         cached_result = cache.check_cache("doi:10.1371/journal.pone.0035089")
+        cached_result = cached_result.record
         
         # make some assertions about the response and then the cached record (that it is queued)
+        
         obj = json.loads(resp.text)
         assert len(obj["processing"]) == 1
         assert cached_result['identifier']['canonical'] == "doi:10.1371/journal.pone.0035089"
@@ -190,6 +193,7 @@ class TestIntegration(TestCase):
             time.sleep(0.2)
             waited += 0.2
             cached_result = cache.check_cache("doi:10.1371/journal.pone.0035089")
+            cached_result = cached_result.record
             queued = cached_result.get("queued", False)
             assert waited < 10 # only give it 10 seconds, max, that should be easily enough
         

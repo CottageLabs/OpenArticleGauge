@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import redis, json, datetime
-from openarticlegauge import config, cache
+from openarticlegauge import config, cache, models
 
 test_host = "localhost"
 test_port = 6379
@@ -39,6 +39,7 @@ class TestWorkflow(TestCase):
         client.set("exists", json.dumps(obj))
         
         result = cache.check_cache("exists")
+        result = result.record # unpack message object
         assert result.has_key("key")
         assert result["key"] == "value"
         
@@ -55,23 +56,28 @@ class TestWorkflow(TestCase):
         assert corrupt is None
         
     def test_05_is_stale_unlicenced(self):
-        bibjson = {}
-        assert cache.is_stale(bibjson)
+        # bibjson = {}
+        record = models.MessageObject(record={"bibjson" : {}})
+        assert cache.is_stale(record)
         
     def test_06_is_stale_no_dates(self):
         bibjson = {'license' : []}
-        assert cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert cache.is_stale(record)
         
         bibjson['license'].append({})
         bibjson['license'][0]['provenance'] = {}
-        assert cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert cache.is_stale(record)
         
         bibjson['license'][0]['provenance']['date'] = None
-        assert cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert cache.is_stale(record)
         
     def test_07_is_stale_invalid_dates(self):
         bibjson = {'license' : [{ 'provenance' : {'date' : "wibble"} }, {'provenance' : {'date' : "whatever"}}]}
-        assert cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert cache.is_stale(record)
     
     def test_08_is_stale_not_stale(self):
         config.licence_stale_time = 15552000 # 6 months
@@ -80,7 +86,8 @@ class TestWorkflow(TestCase):
         n = datetime.datetime.now() # now
         threemonths = datetime.timedelta(days=90) # 3 months
         bibjson = {'license' : [{ 'provenance' : {'date' : datetime.datetime.strftime(n - threemonths, "%Y-%m-%dT%H:%M:%SZ")}}]}
-        assert not cache.is_stale(bibjson), bibjson
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert not cache.is_stale(record), bibjson
         
         # a record with multiple dates, neither of which is stale
         fourmonths = datetime.timedelta(days=120)
@@ -88,7 +95,8 @@ class TestWorkflow(TestCase):
                         {'provenance' : {'date' : datetime.datetime.strftime(n - threemonths, "%Y-%m-%dT%H:%M:%SZ")}},
                         {'provenance' : {'date' : datetime.datetime.strftime(n - fourmonths, "%Y-%m-%dT%H:%M:%SZ")}}
                   ]}
-        assert not cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert not cache.is_stale(record)
         
         # a record with multiple dates, only one of which is not stale
         oneyear = datetime.timedelta(days=365)
@@ -96,7 +104,8 @@ class TestWorkflow(TestCase):
                         {'provenance' : {'date' : datetime.datetime.strftime(n - threemonths, "%Y-%m-%dT%H:%M:%SZ")}},
                         {'provenance' : {'date' : datetime.datetime.strftime(n - oneyear, "%Y-%m-%dT%H:%M:%SZ")}}
                   ]}
-        assert not cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert not cache.is_stale(record)
         
     def test_09_is_stale_stale(self):
         config.licence_stale_time = 15552000 # 6 months
@@ -109,14 +118,16 @@ class TestWorkflow(TestCase):
                         {'provenance' : {'date' : datetime.datetime.strftime(n - sevenmonths, "%Y-%m-%dT%H:%M:%SZ")}},
                         {'provenance' : {'date' : datetime.datetime.strftime(n - oneyear, "%Y-%m-%dT%H:%M:%SZ")}}
                   ]}
-        assert cache.is_stale(bibjson)
+        record = models.MessageObject(record={"bibjson" : bibjson})
+        assert cache.is_stale(record)
         
     def test_10_cache_not_json(self):
         with self.assertRaises(cache.CacheException):
             cache.cache("exists", self) # pass in something that won't json serialise
     
     def test_11_cache(self):
-        cache.cache("exists", {"key" : "value"})
+        mo = models.MessageObject(record={"key" : "value"})
+        cache.cache("exists", mo)
         
         client = redis.StrictRedis(host=test_host, port=test_port, db=test_db)
         s = client.get("exists")

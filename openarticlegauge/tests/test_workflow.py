@@ -14,15 +14,16 @@ There are other tests for working on specific plugins.
 
 from unittest import TestCase
 from openarticlegauge import config, workflow, models, model_exceptions, cache, plugin
+import json
 
 __version__ = "1.0"
 
 CACHE = {}
 ARCHIVE = []
 
-def mock_cache(key, obj):
+def mock_cache(key, record):
     global CACHE
-    CACHE[key] = obj
+    CACHE[key] = json.loads(record.json())
 
 @classmethod
 def mock_store(cls, bibjson):
@@ -30,39 +31,61 @@ def mock_store(cls, bibjson):
     ARCHIVE.append(bibjson)
 
 class mock_doi_type(object):
-    def type_detect_verify(self, bibjson_identifier):
+    def type_detect_verify(self, record):
+        """
         if bibjson_identifier["id"].startswith("10"):
             bibjson_identifier["type"] = "doi"
             return
         if bibjson_identifier.get("type") == "doi":
             raise model_exceptions.LookupException("oi")
-
+        """
+        if record.id.startswith("10"):
+            record.identifier_type = "doi"
+            return
+        if record.identifier_type == "doi":
+            raise model_exceptions.LookupException("oi")
+        
 class mock_pmid_type(object):
-    def type_detect_verify(self, bibjson_identifier):
+    def type_detect_verify(self, record):
+        """
         if bibjson_identifier["id"] == "12345678":
             bibjson_identifier["type"] = "pmid"
-        
+        """
+        if record.id == "12345678":
+            record.identifier_type = "pmid"
+            
 class mock_doi_canon(object):
-    def canonicalise(self, bibjson_identifier):
+    def canonicalise(self, record):
+        """
         if bibjson_identifier['type'] == 'doi':
             bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
+        """
+        if record.identifier_type == "doi":
+            record.canonical = record.identifier_type + ":" + record.id
         
 class mock_pmid_canon(object):
-    def canonicalise(self, bibjson_identifier):
+    def canonicalise(self, record):
+        """
         if bibjson_identifier['type'] == 'pmid':
             bibjson_identifier['canonical'] = bibjson_identifier['type'] + ":" + bibjson_identifier['id']
+        """
+        if record.identifier_type == "pmid":
+            record.canonical = record.identifier_type + ":" + record.id
 
 def mock_check_cache(key):
     if key == "doi:10.none": return None
-    if key == "doi:10.queued": return {"identifier" : {"id" : "10.queued", "type" : "doi", "canonical": "doi:10.queued"}, "queued" : True}
-    if key == "doi:10.bibjson": return {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}, "bibjson" : {"title" : "fresh"}}
-    if key == "doi:10.stale": return {"identifier" : {"id" : "10.stale", "type" : "doi", "canonical" : "doi:10.stale"}, "bibjson" : {"title" : "stale"}}
+    if key == "doi:10.queued": 
+        return models.MessageObject(record={"identifier" : {"id" : "10.queued", "type" : "doi", "canonical": "doi:10.queued"}, "queued" : True})
+    if key == "doi:10.bibjson": 
+        return models.MessageObject(record={"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}, "bibjson" : {"title" : "fresh"}})
+    if key == "doi:10.stale": 
+        return models.MessageObject(record={"identifier" : {"id" : "10.stale", "type" : "doi", "canonical" : "doi:10.stale"}, "bibjson" : {"title" : "stale"}})
 
 def mock_queue_cache(key):
-    return {"identifier" : {"id" : key}, "queued": True}
+    return models.MessageObject(record={"identifier" : {"id" : key}, "queued": True})
 
 def mock_success_cache(key):
-    return {"identifier" : {"id" : key}, "bibjson": {"title" : "cached"}}
+    return models.MessageObject(record={"identifier" : {"id" : key}, "bibjson": {"title" : "cached"}})
 
 def mock_is_stale_false(*args, **kwargs): return False
 
@@ -79,7 +102,8 @@ def mock_null_archive(cls, key): return None
 
 class mock_detect_provider(plugin.Plugin):
     def detect_provider(self, record):
-        record['provider'] = {"url" : ["http://provider"]}
+        # record['provider'] = {"url" : ["http://provider"]}
+        record.add_provider_url("http://provider")
 
 class mock_no_provider(plugin.Plugin):
     def detect_provider(self, record): 
@@ -87,16 +111,17 @@ class mock_no_provider(plugin.Plugin):
 
 class mock_other_detect(plugin.Plugin):
     def detect_provider(self, record):
-        record['provider'] = {"url" : ["http://other"]}
+        #record['provider'] = {"url" : ["http://other"]}
+        record.add_provider_url("http://other")
 
 class mock_licence_plugin(plugin.Plugin):
     sup = True
     def supports(self, provider):
         return self.sup
     def license_detect(self, record):
-        record['bibjson'] = {}
-        record['bibjson']['license'] = [{}]
-        record['bibjson']['title'] = "mytitle"
+        record.record['bibjson'] = {}
+        record.record['bibjson']['license'] = [{}]
+        record.record['bibjson']['title'] = "mytitle"
 
 class mock_unknown_licence_plugin(plugin.Plugin):
     __version__ = "1.0"
@@ -105,12 +130,12 @@ class mock_unknown_licence_plugin(plugin.Plugin):
     def supports(self, provider):
         return self.sup
     def license_detect(self, record):
-        record['bibjson'] = {}
+        record.record['bibjson'] = {}
 
 def mock_back_end(record): pass
 
-def mock_is_stale(bibjson):
-    return bibjson["title"] == "stale"
+def mock_is_stale(record):
+    return record.record['bibjson']["title"] == "stale"
     
 def mock_invalidate(key): pass
 
@@ -141,6 +166,7 @@ class TestWorkflow(TestCase):
         current_support_request = 0
         
     def tearDown(self):
+        global ARCHIVE
         for i in range(len(config.module_search_list)):
             if config.module_search_list[i] == "tests.test_workflow":
                 del config.module_search_list[i]
@@ -150,28 +176,37 @@ class TestWorkflow(TestCase):
                 del config.module_search_list[i]
                 break
         current_support_request = 0
+        for i in range(len(ARCHIVE)):
+            del ARCHIVE[i]
         
     def test_01_detect_verify_type(self):
         config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         
         # check that we can identify a doi
         record = {"identifier" : {"id" : "10.blah"}}
+        record = models.MessageObject(record=record)
         workflow._detect_verify_type(record)
+        record = record.record
         assert record["identifier"]["type"] == "doi"
         
         # check we can identify a pmid
         record = {"identifier" : {"id" : "12345678"}}
+        record = models.MessageObject(record=record)
         workflow._detect_verify_type(record)
+        record = record.record
         assert record["identifier"]["type"] == "pmid"
         
         # check that we can deal with a lookup exception
         record = {"identifier" : {"id" : "123456789", "type" : "doi"}}
+        record = models.MessageObject(record=record)
         with self.assertRaises(model_exceptions.LookupException):
             workflow._detect_verify_type(record)
         
         # check that we can deal with an unidentifiable identifier
         record = {"identifier" : {"id" : "abcd"}}
+        record = models.MessageObject(record=record)
         workflow._detect_verify_type(record)
+        record = record.record
         assert not record["identifier"].has_key("type")
 
     def test_02_canonicalise(self):
@@ -179,12 +214,16 @@ class TestWorkflow(TestCase):
         
         # check that we can canonicalise a doi
         record = {"identifier" : {"id" : "10.123456789", "type" : "doi"}}
+        record = models.MessageObject(record=record)
         workflow._canonicalise_identifier(record)
+        record = record.record
         assert record['identifier']['canonical'] == "doi:10.123456789"
         
         # check that we can canonicalise a pmid
         record = {"identifier" : {"id" : "12345678", "type" : "pmid"}}
+        record = models.MessageObject(record=record)
         workflow._canonicalise_identifier(record)
+        record = record.record
         assert record['identifier']['canonical'] == "pmid:12345678", record['identifier']['canonical']
         
     def test_03_check_cache(self):
@@ -193,19 +232,23 @@ class TestWorkflow(TestCase):
         cache.invalidate = mock_invalidate
         
         record = {"identifier" : {"id" : "10.none", "type" : "doi", "canonical" : "doi:10.none"}}
+        record = models.MessageObject(record=record)
         cache_copy = workflow._check_cache(record)
         assert cache_copy is None
         
         record = {"identifier" : {"id" : "10.queued", "type" : "doi", "canonical" : "doi:10.queued"}}
+        record = models.MessageObject(record=record)
         cache_copy = workflow._check_cache(record)
-        assert cache_copy['queued']
+        assert cache_copy.record['queued']
         
         record = {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}}
+        record = models.MessageObject(record=record)
         cache_copy = workflow._check_cache(record)
-        assert cache_copy.has_key("bibjson")
-        assert cache_copy["bibjson"]["title"] == "fresh"
+        assert cache_copy.record.has_key("bibjson")
+        assert cache_copy.record["bibjson"]["title"] == "fresh"
         
         record = {"identifier" : {"id" : "10.stale", "type" : "doi", "canonical" : "doi:10.stale"}}
+        record = models.MessageObject(record=record)
         cache_copy = workflow._check_cache(record)
         assert cache_copy is None
         
@@ -213,6 +256,7 @@ class TestWorkflow(TestCase):
         models.Record.check_archive = mock_check_archive
         
         record = {"identifier" : {"id" : "10.none", "type" : "doi", "canonical" : "doi:10.none"}}
+        record = models.MessageObject(record=record)
         archive_copy = workflow._check_archive(record)
         assert archive_copy is None
         
@@ -220,6 +264,7 @@ class TestWorkflow(TestCase):
         workflow._is_stale = mock_is_stale_false
         
         record = {"identifier" : {"id" : "10.bibjson", "type" : "doi", "canonical" : "doi:10.bibjson"}}
+        record = models.MessageObject(record=record)
         archive_copy = workflow._check_archive(record)
         workflow._is_stale = old_is_stale
         
@@ -293,13 +338,17 @@ class TestWorkflow(TestCase):
     
     def test_08_detect_provider(self):
         record = {"identifier" : {"id" : "12345"}}
+        #record = models.MessageObject(record=record)
         workflow.detect_provider(record)
+        #record = record.record
         
         # the record should not have changed
         assert not record.has_key('provider')
         
         record['identifier']['type'] = "unknown"
+        #record = models.MessageObject(record=record)
         workflow.detect_provider(record)
+        #record = record.record
         
         # the record should not have changed
         assert not "provider" in record
@@ -307,7 +356,9 @@ class TestWorkflow(TestCase):
         # check that a plugin is applied
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
         record['identifier']['type'] = "doi"
+        #record = models.MessageObject(record=record)
         workflow.detect_provider(record)
+        #record = record.record
         assert "provider" in record, record
         assert "url" in record['provider']
         assert record["provider"]["url"][0] == "http://provider"
@@ -315,10 +366,12 @@ class TestWorkflow(TestCase):
         # now check that the chain continues all the way to the end
         config.provider_detection = {"doi" : ["mock_no_provider", "mock_other_detect", "mock_detect_provider"]}
         del record['provider']
+        #record = models.MessageObject(record=record)
         workflow.detect_provider(record)
+        #record = record.record
         assert "provider" in record
         assert "url" in record['provider']
-        assert record["provider"]["url"][0] == "http://provider"
+        assert "http://provider" in record["provider"]["url"]
     
     """
     NOTE: this test superseded by test_plugin.py
@@ -364,19 +417,25 @@ class TestWorkflow(TestCase):
         
         # first check that no provider results in no change
         record = {}
+        #record = models.MessageObject(record=record)
         workflow.provider_licence(record)
+        #record = record.record
         assert not record.has_key("bibjson")
         
         # now check there's no change if there's no plugin
         mock_licence_plugin.sup = False
-        record['provider'] = {"url" : ["provider"]}
-        workflow.provider_licence(record)
+        #record['provider'] = {"url" : ["provider"]}
+        record = models.MessageObject(record=record)
+        #workflow.provider_licence(record)
+        record = record.record
         assert not record.has_key("bibjson")
         
         # check that it works when it's right
         mock_licence_plugin.sup = True
         record['provider'] = {"url" : ["testprovider"]}
+        #record = models.MessageObject(record=record)
         workflow.provider_licence(record)
+        #record = record.record
         
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license") # american spelling
@@ -388,7 +447,9 @@ class TestWorkflow(TestCase):
         # check that it works when it's right
         record = {}
         record['provider'] = {"url" : ["testprovider"]}
+        #record = models.MessageObject(record=record)
         workflow.provider_licence(record)
+        #record = record.record
         
         # mock_unknown_plugin runs but does not provide us with a licence,
         # but nonetheless, we expect an unknown licence to exist
@@ -432,7 +493,7 @@ class TestWorkflow(TestCase):
         # now check our cache and make sure that the item got cached
         # correctly
         assert CACHE.has_key("doi:10.queued")
-        assert CACHE["doi:10.queued"]['queued']
+        assert CACHE["doi:10.queued"]['queued'], CACHE
         
         
         # reset the test cache and reinstate the old back-end
@@ -448,10 +509,13 @@ class TestWorkflow(TestCase):
         
         # first check that we get the right behaviour if no licence is provided
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
+        #record = models.MessageObject(record=record)
         workflow.store_results(record)
+        #record = record.record
         assert CACHE.has_key("doi:10.1")
         assert len(ARCHIVE) == 1
-        assert "queued" not in record
+        # assert "queued" not in record
+        assert not record.get("queued", False)
         assert "bibjson" in record
         assert "license" in record['bibjson']
         assert record['bibjson']['license'][0]['type'] == "failed-to-obtain-license"
@@ -468,12 +532,16 @@ class TestWorkflow(TestCase):
             }]
         }
         record["queued"] = True
+        #record = models.MessageObject(record=record)
         workflow.store_results(record)
+        #record = record.record
         assert CACHE.has_key("doi:10.1")
-        assert "queued" not in CACHE["doi:10.1"]
+        # assert "queued" not in CACHE["doi:10.1"]
+        assert not CACHE["doi:10.1"].get("queued", False)
         assert len(ARCHIVE) == 1
         assert ARCHIVE[0]["title"] == "mytitle"
-        assert "queued" not in record
+        # assert "queued" not in record
+        assert not record.get("queued", False)
         assert "identifier" in record['bibjson']
         
         del CACHE['doi:10.1']
@@ -484,6 +552,7 @@ class TestWorkflow(TestCase):
         global ARCHIVE
         
         record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
+        #record = models.MessageObject(record=record)
         
         config.provider_detection = {"doi" : ["mock_detect_provider"]}
         config.license_detection = ["mock_licence_plugin"]
@@ -496,6 +565,8 @@ class TestWorkflow(TestCase):
         record = workflow.provider_licence(record)
         record = workflow.store_results(record)
         
+        #record = record.record
+        
         assert "provider" in record
         assert record["provider"]["url"][0] == "http://provider"
         
@@ -503,8 +574,8 @@ class TestWorkflow(TestCase):
         assert record['bibjson'].has_key("license")
         
         assert CACHE.has_key("doi:10.1")
-        assert not CACHE["doi:10.1"].has_key("queued")
-        assert len(ARCHIVE) == 1
+        assert not CACHE["doi:10.1"].get("queued", False)
+        assert len(ARCHIVE) == 1, len(ARCHIVE)
         assert ARCHIVE[0]["title"] == "mytitle"
         
         del CACHE['doi:10.1']

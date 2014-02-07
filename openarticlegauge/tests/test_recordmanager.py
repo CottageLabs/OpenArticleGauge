@@ -1,6 +1,8 @@
 from unittest import TestCase
 from openarticlegauge import recordmanager
 
+# FIXME: should be removed and replaced with model tests for the MessageObject
+
 class TestRecordManager(TestCase):
 
     def setUp(self):

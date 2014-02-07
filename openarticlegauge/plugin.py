@@ -46,27 +46,29 @@ class Plugin(object):
         """
         return {}
     
-    def type_detect_verify(self, bibjson_identifier):
+    # def type_detect_verify(self, bibjson_identifier):
+    def type_detect_verify(self, record):
         """
-        determine if the provided bibjson identifier has the correct type for this plugin, by
+        determine if the provided record's bibjson identifier has the correct type for this plugin, by
         inspecting first the "type" parameter, and then by looking at the form
         of the id.  If it is tagged as a DOI, then verify that it is a valid one. 
         
-        Add "type" parameter to the bibjson_identifier object if successful.
+        Add "type" parameter to the record object if successful.
         
         arguments:
-        bibjson_identifier -- a bibjson identifier object containing a minimum of an "id" parameter
+        record -- a record object containing a minimum of an "id" parameter
         
         """
         raise NotImplementedError("type_detect_verify has not been implemented")
     
-    def canonicalise(self, bibjson_identifier):
+    # def canonicalise(self, bibjson_identifier):
+    def canonicalise(self, record):
         """
         create a canonical form of the identifier
         and insert it into the bibjson_identifier['canonical'].
         
         arguments:
-        bibjson_identifier -- a bibjson identifier object containing a minimum of an "id" parameter and a "type" parameter
+        record-- a record object containing a minimum of an "id" parameter and a "type" parameter
         
         """
         raise NotImplementedError("canonicalise has not been implemented")
@@ -231,10 +233,13 @@ class Plugin(object):
                 }
 
                 license['provenance'] = provenance
-
+                
+                """
                 record['bibjson'].setdefault('license', [])
                 record['bibjson']['license'].append(license)
-
+                """
+                record.add_license_object(license)
+                
                 if first_match:
                     break
 
@@ -291,8 +296,9 @@ class Plugin(object):
         return 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + source_url + '. See "error_message" in the "license" object for more information.'
 
     def describe_license_fail(self, record, source_url, why, suggested_solution='', licence_url=""):
-        recordmanager.add_license(
-            record, 
+        #recordmanager.add_license(
+        #    record, 
+        record.add_license(
             source=source_url, 
             error_message=why, 
             suggested_solution=suggested_solution, 

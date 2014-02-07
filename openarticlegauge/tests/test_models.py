@@ -63,7 +63,8 @@ class TestWorkflow(TestCase):
                     "provider" : { "url" : ["http://www.hindawi.com/article"]},
                     "bibjson" : {"title" :  "my title"}
                  }
-        rs.add_result_record(result)
+        record = models.MessageObject(record=result)
+        rs.add_result_record(record)
         
         assert rs.requested == 3
         assert len(rs.results) == 1
@@ -88,7 +89,8 @@ class TestWorkflow(TestCase):
                     "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "error" : "broken"
                  }
-        rs.add_result_record(result)
+        record = models.MessageObject(record=result)
+        rs.add_result_record(record)
         
         assert rs.requested == 3
         assert len(rs.results) == 0
@@ -110,7 +112,8 @@ class TestWorkflow(TestCase):
                     "provider" : {"url" : ["http://www.hindawi.com/article"]},
                     "queued" : True
                  }
-        rs.add_result_record(result)
+        record = models.MessageObject(record=result)
+        rs.add_result_record(record)
         
         assert rs.requested == 3
         assert len(rs.results) == 0
@@ -151,7 +154,8 @@ class TestWorkflow(TestCase):
             })
             
         for result in results:
-            rs.add_result_record(result)
+            record = models.MessageObject(record=result)
+            rs.add_result_record(record)
     
         assert rs.requested == 4
         assert len(rs.results) == 2
@@ -191,7 +195,8 @@ class TestWorkflow(TestCase):
             })
             
         for result in results:
-            rs.add_result_record(result)
+            record = models.MessageObject(record=result)
+            rs.add_result_record(record)
             
         j = rs.json()
         obj = json.loads(j)

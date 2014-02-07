@@ -118,13 +118,15 @@ class Tutorial(plugin.Plugin):
         ]
         
         # some basic protection against missing fields in the incoming record
+        """
         if "provider" not in record:
             return
         if "url" not in record["provider"]:
             return
-        
+        """
         # For all URL-s associated with this resource...
-        for url in record['provider']['url']:
+        #for url in record['provider']['url']:
+        for url in record.provider_urls:
             # ... run the dumb string matcher if the URL is supported.
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url)

@@ -9,7 +9,7 @@ identifier.
 
 """
 
-import redis, json, datetime, logging
+import redis, json, datetime, logging, models
 import config
 
 log = logging.getLogger(__name__)
@@ -40,9 +40,11 @@ def check_cache(key):
         invalidate(key)
         return None
     
-    return obj
+    # return obj
+    return models.MessageObject(record=obj)
     
-def is_stale(bibjson):
+# def is_stale(bibjson):
+def is_stale(record):
     """
     Check to see if the bibjson record in the supplied record is stale.  Look
     in bibjson['license'][n]['provenance']['date'] for all n.  If the newest date
@@ -60,13 +62,14 @@ def is_stale(bibjson):
     
     """
     # check that the record has a licence at all
-    if not "license" in bibjson:
+    if not record.has_license():
+    # if not "license" in bibjson:
         return True
     
     # get the date strings of all the licences
-    log.debug("stale check on: " + str(bibjson))
+    log.debug("stale check on: " + str(record.bibjson))
     date_strings = [licence.get("provenance", {}).get("date") 
-                for licence in bibjson.get("license", []) 
+                for licence in record.bibjson.get("license", []) 
                 if licence.get("provenance", {}).get("date") is not None]
     
     # check that there were any dates, if not then the record is necessarily stale
@@ -107,7 +110,7 @@ def invalidate(key):
     client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     client.delete(key)
     
-def cache(key, obj):
+def cache(key, record):
     """
     take the provided python data structure, serialise it via json to a string, and
     store it at the provided key with the appropriate timeout.  This may be
@@ -119,9 +122,12 @@ def cache(key, obj):
     
     """
     try:
-        s = json.dumps(obj)
+        s = record.json()
+        # s = json.dumps(obj)
     except TypeError:
         raise CacheException("can only cache python objects that can be sent through json.dumps")
+    except AttributeError:
+        raise CacheException("record object does not support json() attribute - you should use a MessageObject")
     
     client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
     client.setex(key, config.REDIS_CACHE_TIMEOUT, s)

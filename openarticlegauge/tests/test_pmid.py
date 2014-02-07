@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.pmid import PMIDPlugin
-from openarticlegauge import model_exceptions
+from openarticlegauge import model_exceptions, models
 
 import os, requests
 
@@ -92,7 +92,8 @@ class TestPmid(TestCase):
         counter = 0
         for d in PMIDS:
             bjid = {'id' : d}
-            pmid.type_detect_verify(bjid)
+            record = models.MessageObject(bid=bjid)
+            pmid.type_detect_verify(record)
             assert bjid.has_key("type")
             assert bjid["type"] == "pmid"
             counter += 1
@@ -107,48 +108,56 @@ class TestPmid(TestCase):
         
         # some random digits
         bjid = {'id' : 'qp23u4ehjkjewfiuwqr'} # random numbers and digits
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'qp23u4.10238765.jewfiuwqr'} # has an 8 digit substring in it
             # (therefore also has a 1,2..7-digit substring in it)
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         # less than 1 and more than 8 digits
         bjid = {'id' : ''} # well, less than 1 digit doesn't exist
             # and letters are covered elsewhere...
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         bjid = {'id' : '123456789'}
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.type_detect_verify(record)
         assert not bjid.has_key("type")
         
     def test_03_detect_verify_type_ignores(self):
         pmid = PMIDPlugin()
         
         bjid = {"id" : "whatever", "type" : "doi"}
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.type_detect_verify(record)
         assert bjid['type'] == "doi"
         
         bjid = {"key" : "value"}
-        pmid.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        pmid.type_detect_verify(record)
         assert not bjid.has_key("type")
     
     def test_04_detect_verify_type_error(self):
         # create an invalid pmid and assert it is a pmid
         pmid = PMIDPlugin()
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
+        record = models.MessageObject(bid=bjid)
         with self.assertRaises(model_exceptions.LookupException):
-            pmid.type_detect_verify(bjid)
+            pmid.type_detect_verify(record)
             
     def test_05_canonicalise_real(self):
         pmid = PMIDPlugin()
         counter = 0
         for d in CANONICAL.keys():
             bjid = {'id' : d, 'type' : 'pmid'}
-            pmid.canonicalise(bjid)
+            record = models.MessageObject(bid=bjid)
+            pmid.canonicalise(record)
             assert bjid.has_key("canonical")
             assert bjid["canonical"] == CANONICAL[d]
             counter += 1
@@ -158,41 +167,49 @@ class TestPmid(TestCase):
     def test_06_canonicalise_ignore(self):
         pmid = PMIDPlugin()
         bjid = {"id" : "whatever", "type" : "doi"}
-        pmid.canonicalise(bjid)
+        record = models.MessageObject(bid=bjid)
+        pmid.canonicalise(record)
         assert not bjid.has_key("canonical")
         
     def test_07_canonicalise_error(self):
         pmid = PMIDPlugin()
         # create an invalid pmid and assert it is a pmid
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
+        record = models.MessageObject(bid=bjid)
         with self.assertRaises(model_exceptions.LookupException):
-            pmid.canonicalise(bjid)
+            pmid.canonicalise(record)
             
         bjid = {"key" : "value"}
+        record = models.MessageObject(record={"identifier" : bjid})
         with self.assertRaises(model_exceptions.LookupException):
-            pmid.canonicalise(bjid)
+            pmid.canonicalise(record)
     
     def test_08_provider_resolve_not_relevant(self):
         pmid = PMIDPlugin()
-        record = {}
+        record = models.MessageObject()
         
         pmid.detect_provider(record)
-        assert len(record.keys()) == 0
+        assert len(record.record.keys()) == 0
         
-        record['identifier'] = {}
-        pmid.detect_provider(record)
-        assert len(record['identifier'].keys()) == 0
+        #record['identifier'] = {}
+        #pmid.detect_provider(record)
+        #assert len(record['identifier'].keys()) == 0
         
-        record['identifier']['id'] = "123"
-        record['identifier']['type'] = "doi"
-        record['identifier']['canonical'] = "doi:123"
+        #record['identifier']['id'] = "123"
+        #record['identifier']['type'] = "doi"
+        #record['identifier']['canonical'] = "doi:123"
+        record.id = "123"
+        record.identifier_type = "doi"
+        record.canonical = "doi:123"
         pmid.detect_provider(record)
-        assert not "provider" in record
+        assert not "provider" in record.record
         
-        record['identifier']['type'] = "pmid"
-        del record['identifier']['canonical']
+        # record['identifier']['type'] = "pmid"
+        record.identifier_type = "pmid"
+        # del record['identifier']['canonical']
+        record.canonical = None
         pmid.detect_provider(record)
-        assert not "provider" in record
+        assert not "provider" in record.record
         
     def test_09_provider_resolve_doi(self):
         old_get = requests.get
@@ -200,8 +217,11 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
+        record = models.MessageObject(record=record)
         
         pmid.detect_provider(record)
+        
+        record = record.record
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502", record['provider']['url']
@@ -215,8 +235,11 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
+        record = models.MessageObject(record=record)
         
         pmid.detect_provider(record)
+        
+        record = record.record
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/cgi/pmidlookup?view=long&pmid=23175652", record['provider']["url"][0]
@@ -229,8 +252,11 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "1234567", "type" : "pmid", "canonical" : "pmid:1234567"}}
+        record = models.MessageObject(record=record)
         
         pmid.detect_provider(record)
+        
+        record = record.record
         assert "provider" in record
         assert "url" in record["provider"]
         assert "http://www.nlm.nih.gov/medlineplus/menopause.html" in record["provider"]["url"], record["provider"]["url"]
