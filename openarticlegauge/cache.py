@@ -63,7 +63,6 @@ def is_stale(record):
     """
     # check that the record has a licence at all
     if not record.has_license():
-    # if not "license" in bibjson:
         return True
     
     # get the date strings of all the licences
