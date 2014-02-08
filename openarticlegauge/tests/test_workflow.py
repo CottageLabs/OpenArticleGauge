@@ -13,7 +13,7 @@ There are other tests for working on specific plugins.
 """
 
 from unittest import TestCase
-from openarticlegauge import config, workflow, models, model_exceptions, cache, plugin
+from openarticlegauge import config, workflow, models, cache, plugin
 import json
 
 __version__ = "1.0"
@@ -37,13 +37,13 @@ class mock_doi_type(object):
             bibjson_identifier["type"] = "doi"
             return
         if bibjson_identifier.get("type") == "doi":
-            raise model_exceptions.LookupException("oi")
+            raise models.LookupException("oi")
         """
         if record.id.startswith("10"):
             record.identifier_type = "doi"
             return
         if record.identifier_type == "doi":
-            raise model_exceptions.LookupException("oi")
+            raise models.LookupException("oi")
         
 class mock_pmid_type(object):
     def type_detect_verify(self, record):
@@ -199,7 +199,7 @@ class TestWorkflow(TestCase):
         # check that we can deal with a lookup exception
         record = {"identifier" : {"id" : "123456789", "type" : "doi"}}
         record = models.MessageObject(record=record)
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             workflow._detect_verify_type(record)
         
         # check that we can deal with an unidentifiable identifier

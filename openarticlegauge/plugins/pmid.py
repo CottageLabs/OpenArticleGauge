@@ -1,5 +1,5 @@
 import re, logging, requests
-from openarticlegauge import plugin, recordmanager, model_exceptions
+from openarticlegauge import plugin, recordmanager, models
 from lxml import etree
 from openarticlegauge.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
@@ -40,7 +40,7 @@ class PMIDPlugin(plugin.Plugin):
         if record.has_type() and record.identifier_type == "pmid" and result is None:
             # the bibjson identifier asserts that it is a pmid, but the regex does not
             # support this assertion, so we raise an exception
-            raise model_exceptions.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(record.id))
+            raise models.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(record.id))
         
         if result is None:
             # no assertion that this is a PMID, and no confirmation from the regex
@@ -64,13 +64,13 @@ class PMIDPlugin(plugin.Plugin):
         # do we have enough information to canonicalise, raise an error
         # if not bibjson_identifier.has_key("id"):
         if not record.has_id():
-            raise model_exceptions.LookupException("can't canonicalise an identifier without an 'id' property")
+            raise models.LookupException("can't canonicalise an identifier without an 'id' property")
         
         # 1 to 8 digits long
         # result = re.match(self._rx, bibjson_identifier["id"])
         result = re.match(self._rx, record.id)
         if result is None:
-            raise model_exceptions.LookupException("identifier does not parse as a PMID: " + str(record.id))
+            raise models.LookupException("identifier does not parse as a PMID: " + str(record.id))
         
         # no need to validate the ID - we just prefix "pmid:" since there is an id, and the
         # type is indicated as "pmid"

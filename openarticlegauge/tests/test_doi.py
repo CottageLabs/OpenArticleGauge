@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.doi import DOIPlugin
-from openarticlegauge import model_exceptions, models
+from openarticlegauge import models
 import requests
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
@@ -125,7 +125,7 @@ class TestWorkflow(TestCase):
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         record = models.MessageObject(record={"identifier" : bjid})
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             doi.type_detect_verify(record)
     
     def test_05_canonicalise_real(self):
@@ -156,12 +156,12 @@ class TestWorkflow(TestCase):
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
         record = models.MessageObject(record={"identifier" : bjid})
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             doi.canonicalise(record)
             
         bjid = {"key" : "value"}
         record = models.MessageObject(record={"identifier" : bjid})
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             doi.canonicalise(record)
     
     def test_08_dereference_not_relevant(self):

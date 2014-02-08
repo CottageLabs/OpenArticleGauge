@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.pmid import PMIDPlugin
-from openarticlegauge import model_exceptions, models
+from openarticlegauge import models
 
 import os, requests
 
@@ -148,7 +148,7 @@ class TestPmid(TestCase):
         pmid = PMIDPlugin()
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
         record = models.MessageObject(bid=bjid)
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             pmid.type_detect_verify(record)
             
     def test_05_canonicalise_real(self):
@@ -176,12 +176,12 @@ class TestPmid(TestCase):
         # create an invalid pmid and assert it is a pmid
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "pmid"}
         record = models.MessageObject(bid=bjid)
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             pmid.canonicalise(record)
             
         bjid = {"key" : "value"}
         record = models.MessageObject(record={"identifier" : bjid})
-        with self.assertRaises(model_exceptions.LookupException):
+        with self.assertRaises(models.LookupException):
             pmid.canonicalise(record)
     
     def test_08_provider_resolve_not_relevant(self):

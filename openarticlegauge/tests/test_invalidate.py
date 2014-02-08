@@ -7,7 +7,7 @@
 
 from unittest import TestCase
 
-from openarticlegauge import models, invalidate, config, models
+from openarticlegauge import models, invalidate, config
 import time
 
 bibjson_records = [
