@@ -87,13 +87,11 @@ def lookup(bibjson_ids):
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not cached or is stale
             if cached_copy is not None:
-                #if cached_copy.get('queued', False):
+                if cached_copy.has_error():
+                    raise models.LookupException("identifier has permanent errors - please contact us and let us know")
                 if cached_copy.queued:
-                    # record['queued'] = True
                     record.queued = True
-                # elif cached_copy.has_key('bibjson'):
                 elif cached_copy.has_bibjson():
-                    # record['bibjson'] = cached_copy['bibjson']
                     record.bibjson = cached_copy.bibjson
                 log.debug("loaded from cache " + str(record))
                 rs.add_result_record(record)
@@ -399,33 +397,45 @@ def detect_provider(record_json):
     the passed in record with the 'provider' field added if possible
     
     """
-    record = models.MessageObject(record=record_json)
-    
-    # Step 1: see if we can actually detect a provider at all?
-    # as usual, this should never happen, but we should have a way to 
-    # handle it
-    """
-    if not record.has_key("identifier"):
-        return record
-    
-    if not record['identifier'].has_key("type"):
-        return record
-    """
-    if record.identifier_type is None:
-        return record
-    
-    # Step 2: get the provider plugins that are relevant, and
-    # apply each one until a provider string is added
-    # plugins = plugin.PluginFactory.detect_provider(record['identifier']["type"])
-    plugins = plugin.PluginFactory.detect_provider(record.identifier_type)
-    for p in plugins:
-        log.debug("applying plugin " + str(p._short_name))
-        p.detect_provider(record)
-    
-    # we have to return the record, so that the next step in the chain
-    # can deal with it
-    log.debug("yielded result " + str(record))
-    return record.record
+    try:
+        record = models.MessageObject(record=record_json)
+    except Exception as e:
+        error = "Unable to parse record_json into MessageObject in detect_provider: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in detect_provider: " + error)
+            return record_json
+        except:
+            return {"error" : error}
+        
+    try:
+        # Step 1: see if we can actually detect a provider at all?
+        # as usual, this should never happen, but we should have a way to 
+        # handle it
+        if record.identifier_type is None:
+            record.error = "No identifier type detected, so no provider detectable"
+            return record.record
+        
+        # Step 2: get the provider plugins that are relevant, and
+        # apply each one until a provider string is added
+        plugins = plugin.PluginFactory.detect_provider(record.identifier_type)
+        for p in plugins:
+            log.debug("applying plugin " + str(p._short_name))
+            p.detect_provider(record)
+        
+        # we have to return the record, so that the next step in the chain
+        # can deal with it
+        log.debug("yielded result " + str(record))
+        return record.record
+        
+    except Exception as e:
+        error = "Irretrievable error in detect_provider: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in detect_provider: " + error)
+            return record_json
+        except:
+            return {"error" : error}
     
 @celery.task(name="openarticlegauge.workflow.provider_licence")
 def provider_licence(record_json):
@@ -445,52 +455,63 @@ def provider_licence(record_json):
         a new licence
     
     """
-    record = models.MessageObject(record=record_json)
+    try:
+        record = models.MessageObject(record=record_json)
+    except Exception as e:
+        error = "Unable to parse record_json into MessageObject in provider_licence: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in provider_licence: " + error)
+            return record_json
+        except:
+            return {"error" : error}
     
-    # Step 1: check that we have a provider indicator to work from
-    # if not record.has_key("provider"):
-    if not record.has_provider():
-        log.debug("record has no provider, so unable to look for licence: " + str(record))
-        return record
-    
-    # Step 2: get the plugin that will run for the given provider
-    # p = plugin.PluginFactory.license_detect(record["provider"])
-    p = plugin.PluginFactory.license_detect(record.provider)
-    if p is None:
-        # log.debug("No plugin to handle provider: " + str(record['provider']))
-        log.debug("No plugin to handle provider: " + str(record.provider))
-        return record
-    # log.debug("Plugin " + str(p) + " to handle provider " + str(record['provider']))
-    log.debug("Plugin " + str(p) + " to handle provider " + str(record.provider))
-    
-    # Step 3: run the plugin on the record
-    #if "bibjson" not in record:
-        # if the record doesn't have a bibjson element, add a blank one
-    #    record['bibjson'] = {}
-    p.license_detect(record)
-    
-    # was the plugin able to detect a licence?
-    # if not, we need to add an unknown licence for this provider
-    # if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
-    if not record.has_license():
-        log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
-        # recordmanager.add_license(record, 
-        record.add_license(
-            url=config.unknown_url,
-            type="failed-to-obtain-license",
-            open_access=False,
-            error_message="unable to detect licence",
-            category="failure",
-            provenance_description="a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown",
-            handler=p._short_name,
-            handler_version=p.__version__
-        )
-        # describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url, p._short_name, p.__version__)
+    try:
+        # Step 1: check that we have a provider indicator to work from
+        if not record.has_provider():
+            log.debug("record has no provider, so unable to look for licence: " + str(record))
+            record.error = "Record has no provider, so unable to look for licence"
+            return record.record
+        
+        # Step 2: get the plugin that will run for the given provider
+        p = plugin.PluginFactory.license_detect(record.provider)
+        if p is None:
+            log.debug("No plugin to handle provider: " + str(record.provider))
+            record.error = "No plugin to handle provider"
+            return record.record
+        
+        # Step 3: run the plugin on the record
+        log.debug("Plugin " + str(p) + " to handle provider " + str(record.provider))
+        p.license_detect(record)
+        
+        # was the plugin able to detect a licence?
+        # if not, we need to add an unknown licence for this provider
+        if not record.has_license():
+            log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
+            record.add_license(
+                url=config.unknown_url,
+                type="failed-to-obtain-license",
+                open_access=False,
+                error_message="unable to detect licence",
+                category="failure",
+                provenance_description="a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown",
+                handler=p._short_name,
+                handler_version=p.__version__
+            )
 
-    # we have to return the record so that the next step in the chain can
-    # deal with it
-    log.debug("plugin " + str(p) + " yielded result " + str(record))
-    return record.record
+        # we have to return the record so that the next step in the chain can
+        # deal with it
+        log.debug("plugin " + str(p) + " yielded result " + str(record))
+        return record.record
+        
+    except Exception as e:
+        error = "Irretrievable error in provider_licence: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in provider_licence: " + error)
+            return record_json
+        except:
+            return {"error" : error}
 
 @celery.task(name="openarticlegauge.workflow.store_results")
 def store_results(record_json):
@@ -513,82 +534,75 @@ def store_results(record_json):
         necessary to prepare it for storage
     
     """
-    record = models.MessageObject(record=record_json)
+    try:
+        record = models.MessageObject(record=record_json)
+    except Exception as e:
+        error = "Unable to parse record_json into MessageObject in store_results: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in store_results: " + error)
+            # note that we do not return in this instance - we will still try to record this incident in the cache below
+        except:
+            return {"error" : error}
     
-    # Step 1: ensure that a licence was applied, and if not apply one
-    #if "bibjson" not in record:
-    if not record.has_bibjson():
-        # no bibjson record, so add a blank one
-        log.debug("record does not have a bibjson record.")
-        # record['bibjson'] = {}
+    try:
+        # Step 0: ensure that the record has an identifier
+        # This is the only occasion where we can't store a record of the error, but if it
+        # occurs, we are in big trouble code-wise anyway!
+        if record.canonical is None:
+            record.error = "No canonical identifier at the end of the chain, so unable to store"
+            return record.record
+    
+        # Step 1: ensure that a licence was applied, and if not apply one
+        if not record.has_bibjson():
+            # no bibjson record, so add a blank one
+            log.debug("record does not have a bibjson record.")
+            record.bibjson = {}
+            
+        if not record.has_license():
+            # the bibjson record does not contain a license list OR the license list is of zero length
+            log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record.bibjson))
+            record.add_license(
+                url=config.unknown_url,
+                type="failed-to-obtain-license",
+                open_access=False,
+                error_message="unable to detect licence",
+                category="failure",
+                provenance_description="no plugin was found that would try to detect a licence.  This entry records that the license is therefore unknown",
+            )
+            
+        # Step 2: unqueue the record
+        if record.queued:
+            log.debug(str(record.identifier) + ": removing this item from the queue")
+            record.queued = False
         
-    # if "license" not in record['bibjson'] or len(record['bibjson'].get("license", [])) == 0:
-    if not record.has_license():
-        # the bibjson record does not contain a license list OR the license list is of zero length
-        log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record.bibjson))
-        # recordmanager.add_license(record,
-        record.add_license(
-            url=config.unknown_url,
-            type="failed-to-obtain-license",
-            open_access=False,
-            error_message="unable to detect licence",
-            category="failure",
-            provenance_description="no plugin was found that would try to detect a licence.  This entry records that the license is therefore unknown",
-        )
-        # describe_license_fail(record, "none", "unable to detect licence", "", config.unknown_url)
+        # Step 3: update the archive
+        record.add_identifier_to_bibjson()
+        if not record.has_error():
+            log.debug(str(record.identifier) + ": storing this item in the archive")
+            models.Record.store(record.bibjson)
+        else:
+            log.debug(str(record.identifier) + ": experienced an error in the chain - not storing in the archive")
         
-    # Step 2: unqueue the record
-    # if record.has_key("queued"):
-    if record.queued:
-        # log.debug(str(record['identifier']) + ": removing this item from the queue")
-        log.debug(str(record.identifier) + ": removing this item from the queue")
-        # del record["queued"]
-        record.queued = False
-    
-    # Step 3: update the archive
-    # _add_identifier_to_bibjson(record['identifier'], record['bibjson'])
-    record.add_identifier_to_bibjson()
-    log.debug(str(record.identifier) + ": storing this item in the archive")
-    # models.Record.store(record['bibjson'])
-    models.Record.store(record.bibjson)
-    
-    # Step 4: update the cache
-    log.debug(str(record.identifier) + ": storing this item in the cache")
-    _update_cache(record)
-    
-    # we have to return the record so that the next step in the chain can
-    # deal with it (if such a step exists)
-    log.debug("yielded result " + str(record))
-    return record.record
+        # Step 4: update the cache
+        log.debug(str(record.identifier) + ": storing this item in the cache")
+        _update_cache(record)
+        
+        # we have to return the record so that the next step in the chain can
+        # deal with it (if such a step exists)
+        log.debug("yielded result " + str(record))
+        return record.record
+        
+    except Exception as e:
+        # if we find ourselves here, there's not a lot we can do - just fail
+        error = "Irretrievable error in store_results: " + e.message
+        try:
+            record_json["error"] = error
+            log.debug("error in store_results: " + error)
+            return record_json
+        except:
+            return {"error" : error}
 
-#def _add_identifier_to_bibjson(identifier, bibjson):
-def _add_identifier_to_bibjson(record):
-    # NOTE: superseded by operation on model object
-    """
-    Take the supplied bibjson identifier object and ensure that it has been added
-    to the supplied bibjson object.  The bibjson object may already contain the
-    identifier object, in which case this method will not make any changes.
-    
-    arguments:
-    identifier -- bibjson identifier object
-    bibjson -- full bibjson record to have the identifier object added
-    
-    """
-    
-    """
-    # FIXME: this is pretty blunt, could be a lot smarter
-    if not bibjson.has_key("identifier"):
-        bibjson["identifier"] = []
-    found = False
-    for identifier in bibjson['identifier']:
-        if identifier.has_key("canonical") and identifier['canonical'] == bibjson['identifier']['canonical']:
-            found = True
-            break
-    if not found:
-        bibjson['identifier'].append(identifier)
-    """
-    pass
-    
     
     
     
