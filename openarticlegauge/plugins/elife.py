@@ -15,6 +15,14 @@ class ELifePlugin(plugin.Plugin):
     
     base_urls = ["elife.elifesciences.org"]
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
     def supports(self, provider):
         """
         Does the license_detect plugin support this provider

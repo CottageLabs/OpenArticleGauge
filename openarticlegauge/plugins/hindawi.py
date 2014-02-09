@@ -17,6 +17,14 @@ class HindawiPlugin(plugin.Plugin):
     # so if the http://www.hindawi.com/journals/ecam/2013/429706/ URL comes in,
     # it should be supported.
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
     def supports(self, provider):
         """
         Does this plugin support this provider

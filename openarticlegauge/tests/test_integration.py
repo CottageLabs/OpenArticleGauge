@@ -28,6 +28,7 @@ class TestIntegration(TestCase):
         config.redis_cache_host = test_host
         config.redis_cache_port = test_port
         config.redis_cache_db = test_db
+        models.Record.refresh()
         
     def tearDown(self):
         client = redis.StrictRedis(host=test_host, port=test_port, db=test_db)
@@ -37,9 +38,11 @@ class TestIntegration(TestCase):
         client.delete("doi:10.stale/1")
         client.delete("doi:10.archived/1")
         client.delete("doi:10.1371/journal.pone.0035089")
+        models.Record.refresh()
         models.Record(id="doi:10.stale_1").delete()
         models.Record(id="doi:10.archived_1").delete()
         models.Record(id="doi:10.1371_journal.pone.0035089").delete()
+        models.Record.refresh()
         config.BUFFERING = self.buffer
         
     def test_01_http_lookup_cache_only(self):
@@ -153,10 +156,14 @@ class TestIntegration(TestCase):
             waited += 0.2
             assert waited < 10 # only give it 10 seconds, max, that should be easily enough
         
+        # now we need to wait until the buffer itself gets flushed
+        time.sleep(config.BUFFER_FLUSH_PERIOD)
+        
         # we should find the record in the async result, the archive, and the cache
         async_result = a.result
         assert async_result['identifier']['canonical'] == "doi:10.1371/journal.pone.0035089"
-        assert "queued" not in async_result
+        assert not async_result.get("queued", False)
+        #assert "queued" not in async_result
         assert async_result["bibjson"]["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert async_result["bibjson"]["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
@@ -165,8 +172,10 @@ class TestIntegration(TestCase):
         assert archive_result["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
         cached_result = cache.check_cache("doi:10.1371/journal.pone.0035089")
+        cached_result = cached_result.record
         assert cached_result['identifier']['canonical'] == "doi:10.1371/journal.pone.0035089"
-        assert "queued" not in cached_result
+        assert not cached_result.get("queued", False)
+        #assert "queued" not in cached_result
         assert cached_result["bibjson"]["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert cached_result["bibjson"]["license"][0]["title"] == "UK Open Government Licence (OGL)"
     
@@ -179,9 +188,10 @@ class TestIntegration(TestCase):
         # make some assertions about the response and then the cached record (that it is queued)
         
         obj = json.loads(resp.text)
-        assert len(obj["processing"]) == 1
+        assert len(obj["processing"]) == 1, obj
         assert cached_result['identifier']['canonical'] == "doi:10.1371/journal.pone.0035089"
-        assert "queued" in cached_result
+        assert cached_result.get("queued", False)
+        #assert "queued" in cached_result
     
     def test_05_recheck(self):
         # make the request, and then immediately look up the id in the cache
@@ -197,13 +207,18 @@ class TestIntegration(TestCase):
             queued = cached_result.get("queued", False)
             assert waited < 10 # only give it 10 seconds, max, that should be easily enough
         
+        # now we need to wait until the buffer itself gets flushed
+        time.sleep(config.BUFFER_FLUSH_PERIOD)
+        
         archive_result = models.Record.check_archive("doi:10.1371/journal.pone.0035089")
         assert archive_result["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert archive_result["license"][0]["title"] == "UK Open Government Licence (OGL)"
         
         cached_result = cache.check_cache("doi:10.1371/journal.pone.0035089")
+        cached_result = cached_result.record
         assert cached_result['identifier']['canonical'] == "doi:10.1371/journal.pone.0035089"
-        assert "queued" not in cached_result
+        assert not cached_result.get("queued", False)
+        #assert "queued" not in cached_result
         assert cached_result["bibjson"]["identifier"][0]["canonical"] == "doi:10.1371/journal.pone.0035089"
         assert cached_result["bibjson"]["license"][0]["title"] == "UK Open Government Licence (OGL)"
         

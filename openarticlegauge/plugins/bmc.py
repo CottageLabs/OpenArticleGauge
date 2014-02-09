@@ -9,6 +9,14 @@ class BMCPlugin(plugin.Plugin):
     
     ## Plugin parent class overrides ##
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
     def supports(self, provider):
         """
         Does the page_license plugin support this provider

@@ -8,6 +8,14 @@ class OUPPlugin(plugin.Plugin):
 
     supported_url_format = '(http|https){0,1}://.+?\.oxfordjournals.org/.+'
 
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+
     def supports(self, provider):
         """
         Does the page_license plugin support this provider

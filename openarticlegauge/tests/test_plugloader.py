@@ -1,3 +1,5 @@
+# DEPRECATED - soon to be removed
+
 from unittest import TestCase
 
 from openarticlegauge import plugloader, config

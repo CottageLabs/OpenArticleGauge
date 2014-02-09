@@ -57,6 +57,10 @@ if you start the daemon, you can stop it with
 
 ###Web Application
 
+Before you start the application you **must** configure the path to the plugin directory in
+
+    openarticlegauge/config.py
+
 Start the web application with:
 
     python openarticlegauge/app.py

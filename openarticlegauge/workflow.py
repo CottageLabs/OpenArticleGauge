@@ -27,7 +27,7 @@ with this model should be via that class instance.
 """
 
 from celery import chain
-from openarticlegauge import models, models, config, cache, plugin, recordmanager
+from openarticlegauge import models, models, config, cache, plugin#, recordmanager
 import logging
 from openarticlegauge.slavedriver import celery
 
@@ -74,7 +74,7 @@ def lookup(bibjson_ids):
             # Step 1a: if we don't find a type for the identifier, there's no point in us continuing
             # if record.get("identifier", {}).get("type") is None:
             if record.identifier_type is None:
-                raise model.LookupException("unable to determine the type of the identifier")
+                raise models.LookupException("unable to determine the type of the identifier")
             
             # Step 2: create a canonical version of the identifier for cache keying
             _canonicalise_identifier(record)
@@ -105,10 +105,12 @@ def lookup(bibjson_ids):
             # this returns either a valid, returnable copy of the record, or None
             # if the record is not archived, or is stale
             if archived_bibjson is not None:
-                # record['bibjson'] = archived_bibjson
                 record.bibjson = archived_bibjson
                 log.debug("loaded from archive " + str(archived_bibjson))
+                _update_cache(record)
+                log.debug("archived item retrieved, so re-cache it " + str(record))
                 rs.add_result_record(record)
+                log.debug(str(bid) + " added to result, continuing ...")
                 continue
 
             # Step 5: we need to check to see if any record we have has already

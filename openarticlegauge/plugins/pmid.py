@@ -12,6 +12,14 @@ class PMIDPlugin(plugin.Plugin):
     
     _rx = "^[\d]{1,8}$"
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : True,
+            "canonicalise" : ["pmid"],
+            "detect_provider" : ["pmid"],
+            "license_detect" : False
+        }
+    
     def type_detect_verify(self, record):
         """
         determine if the provided record's bibjson identifier has a type of "PMID", by

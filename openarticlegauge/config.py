@@ -19,47 +19,56 @@ PUBLIC_REGISTER = False
 # provide an email address for receiving errors or dispute warning
 CONTACT_EMAIL = ''
 
+# Directory where all the OAG plugins can be loaded from
+# PLUGIN_DIR = "/home/richard/Code/External/OpenArticleGauge/openarticlegauge/plugins"
+import os
+PLUGIN_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+
+# DEPRECATED - all this configuration is from the old plugin system, due to
+# be removed shortly, once testing is complete
+#
+#
 # packages that the plugloader should look in to find callable plugins if
 # it can't find them straight away in the running context.  Note that an installed
 # application and an application run from its directory will have different
 # running contexts, so this is important.
-module_search_list = ["openarticlegauge"]
+#module_search_list = ["openarticlegauge"]
 
 # List of plugins that will run in order to detect the type of an identifier.
 # All plugins will run
-type_detection = [
-    "openarticlegauge.plugins.doi.DOIPlugin",
-    "openarticlegauge.plugins.pmid.PMIDPlugin"
-]
+#type_detection = [
+#    "openarticlegauge.plugins.doi.DOIPlugin",
+#    "openarticlegauge.plugins.pmid.PMIDPlugin"
+#]
 
 # dictionary of plugins that can be used to canonicalise all the different 
 # identifier types.  Key is the identifier type as detected with type_detection,
 # value is the plugin to be used
-canonicalisers = {
-    "doi" : "openarticlegauge.plugins.doi.DOIPlugin",
-    "pmid" : "openarticlegauge.plugins.pmid.PMIDPlugin"
-}
+#canonicalisers = {
+#    "doi" : "openarticlegauge.plugins.doi.DOIPlugin",
+#    "pmid" : "openarticlegauge.plugins.pmid.PMIDPlugin"
+#}
 
 # dictionary of lists of plugins that can be used to determine the provider
 # of an identifier type.  Key is the identifier type as detected with type_detection,
 # value is a list of plugins to be run in order.  When a plugin detects a provider,
 # processing of the chain will exit without passing any further.
-provider_detection = {
-    "doi" : ["openarticlegauge.plugins.doi.DOIPlugin"], 
-    "pmid" : ["openarticlegauge.plugins.pmid.PMIDPlugin"]
-}
+#provider_detection = {
+#    "doi" : ["openarticlegauge.plugins.doi.DOIPlugin"], 
+#    "pmid" : ["openarticlegauge.plugins.pmid.PMIDPlugin"]
+#}
 
 # plugins which may support publisher pages
-license_detection = [
-    "openarticlegauge.plugins.plos.PLOSPlugin",
-    "openarticlegauge.plugins.bmc.BMCPlugin",
-    "openarticlegauge.plugins.cell_reports.CellReportsPlugin",
-    "openarticlegauge.plugins.oup.OUPPlugin",
-    "openarticlegauge.plugins.elife.ELifePlugin",
-    "openarticlegauge.plugins.nature.NaturePlugin",
-    "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
-    "openarticlegauge.plugins.ubiquitous.UbiquitousPlugin",
-]
+#license_detection = [
+#    "openarticlegauge.plugins.plos.PLOSPlugin",
+#    "openarticlegauge.plugins.bmc.BMCPlugin",
+#    "openarticlegauge.plugins.cell_reports.CellReportsPlugin",
+#    "openarticlegauge.plugins.oup.OUPPlugin",
+#    "openarticlegauge.plugins.elife.ELifePlugin",
+#    "openarticlegauge.plugins.nature.NaturePlugin",
+#    "openarticlegauge.plugins.copernicus.COPERNICUSPlugin",
+#    "openarticlegauge.plugins.ubiquitous.UbiquitousPlugin",
+#]
 
 # Cache configuration
 REDIS_CACHE_HOST = "localhost"

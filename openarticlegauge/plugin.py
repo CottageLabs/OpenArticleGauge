@@ -3,7 +3,7 @@ Common infrastructure for the plugin framework
 
 """
 
-from openarticlegauge import config, plugloader, recordmanager
+from openarticlegauge import config #, plugloader#, recordmanager
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
 
@@ -11,9 +11,7 @@ import logging
 from copy import deepcopy
 from datetime import datetime
 
-import requests
-import string
-import re
+import requests, os, imp, string, re
 
 log = logging.getLogger(__name__)
 whitespace_re = re.compile(r'\s+')
@@ -313,6 +311,55 @@ class Plugin(object):
 
 class PluginFactory(object):
     
+    MODULE_EXTENSIONS = ('.py',) # only interested in .py files, not pyc or pyo
+    PLUGIN_CONFIG = None
+
+    @classmethod
+    def load_from_directory(cls, plugin_dir=None, klazz=Plugin):
+        plugin_dir = plugin_dir if plugin_dir is not None else config.PLUGIN_DIR
+        
+        # list the plugin modules in the plugin directory
+        names = [os.path.splitext(module)[0] 
+                    for module in os.listdir(plugin_dir) 
+                    if module.endswith(cls.MODULE_EXTENSIONS) and module != "__init__.py"]
+        
+        # load an instance of each plugin
+        plugin_instances = []
+        for name in names:
+            mod = imp.load_source(name, os.path.join(plugin_dir, name + ".py"))
+            members = dir(mod)
+            for member in members:
+                attr = getattr(mod, member)
+                if isinstance(attr, type):
+                    if issubclass(attr, klazz):
+                        plugin_instances.append(attr())
+        
+        # for each plugin ask its capabilities, and build the plugin structure
+        # from it
+        plugin_structure = {
+            "type_detect_verify" : [],
+            "canonicalise" : {},
+            "detect_provider" : {},
+            "license_detect" : []
+        }
+        for inst in plugin_instances:
+            caps = inst.capabilities()
+            if caps.get("type_detect_verify", False):
+                plugin_structure["type_detect_verify"].append(inst)
+            for t in caps.get("canonicalise", []):
+                #if type not in plugin_structure["canonicalise"]:
+                #    plugin_structure["canonicalise"][type] = []
+                #plugin_structure["canonicalise"][type].append(inst)
+                plugin_structure["canonicalise"][t] = inst
+            for t in caps.get("detect_provider", []):
+                if t not in plugin_structure["detect_provider"]:
+                    plugin_structure["detect_provider"][t] = []
+                plugin_structure["detect_provider"][t].append(inst)
+            if caps.get("license_detect", False):
+                plugin_structure["license_detect"].append(inst)
+        
+        cls.PLUGIN_CONFIG = plugin_structure
+
     @classmethod
     def type_detect_verify(cls):
         """
@@ -321,6 +368,10 @@ class PluginFactory(object):
         returns a list of plugin objects (instances, not classes), which all implement the
             plugin.type_detect_verify method
         
+        """
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        return cls.PLUGIN_CONFIG.get("type_detect_verify", [])
         """
         # FIXME: this should be updated to utilise the "capabilities" aspect of the plugin
         plugins = []
@@ -331,7 +382,8 @@ class PluginFactory(object):
                 continue
             plugins.append(klazz()) # append an instance of the class
         return plugins
-    
+        """
+        
     @classmethod
     def canonicalise(cls, identifier_type):
         """
@@ -343,10 +395,16 @@ class PluginFactory(object):
         returns a plugin object (instance, not class), which implements the plugin.canonicalise method
         
         """
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        return cls.PLUGIN_CONFIG.get("canonicalise", {}).get(identifier_type)
+        
+        """
         plugin_class = config.canonicalisers.get(identifier_type)
         klazz = plugloader.load(plugin_class)
         return klazz() # return an instance of the class
-    
+        """
+        
     @classmethod
     def detect_provider(cls, identifier_type):
         """
@@ -360,12 +418,17 @@ class PluginFactory(object):
             plugin.detect_provider method
         
         """
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        return cls.PLUGIN_CONFIG.get("detect_provider", {}).get(identifier_type, [])
+        """
         plugins = []
         for plugin_class in config.provider_detection.get(identifier_type, []):
             # all provider plugins run, until each plugin has had a go at determining provider information
             klazz = plugloader.load(plugin_class)
             plugins.append(klazz()) # append an instance of the class
         return plugins
+        """
     
     @classmethod
     def license_detect(cls, provider_record):
@@ -380,6 +443,15 @@ class PluginFactory(object):
         returns a plugin object (instance, not class) which implements the plugin.license_detect method
         
         """
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        
+        for inst in cls.PLUGIN_CONFIG.get("license_detect"):
+            if inst.supports(provider_record):
+                return inst
+        return None
+        
+        """
         for plugin_class in config.license_detection:
             log.debug("checking " + plugin_class + " for support of provider " + str(provider_record))
             klazz = plugloader.load(plugin_class)
@@ -391,3 +463,6 @@ class PluginFactory(object):
                 log.debug(plugin_class + " (" + inst._short_name + " v" + inst.__version__ + ") services provider " + str(provider_record))
                 return inst
         return None
+        """
+
+

@@ -9,6 +9,13 @@ class PLOSPlugin(plugin.Plugin):
                  "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
                  "www.plosntds.org"]
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
     
     def supports(self, provider):
         """

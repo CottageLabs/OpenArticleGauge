@@ -39,6 +39,14 @@ Another less resource-intensive solution is to get rid of the AJAX fetching prev
 For any of these solutions to be effective, the multiple copyright statements viewable in "basic" (no-Javascript) mode have to be taken care of. Are "all rights reserved", who does the copyright belong to (Elsevier or the authors?); or is this actually an Open Access article available under CC-BY-NC-ND?
 '''
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
     def supports(self, provider):
         """
         Does the page_license plugin support this provider
