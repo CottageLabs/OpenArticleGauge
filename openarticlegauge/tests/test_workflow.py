@@ -526,6 +526,8 @@ class TestWorkflow(TestCase):
         assert "bibjson" in record
         assert "license" in record['bibjson']
         assert record['bibjson']['license'][0]['type'] == "failed-to-obtain-license"
+        assert record["bibjson"]["license"][0]["provenance"]["handler"] == "oag"
+        assert record["bibjson"]["license"][0]["provenance"]["handler_version"] == "0.0"
         assert "identifier" in record["bibjson"]
         
         del CACHE['doi:10.1']

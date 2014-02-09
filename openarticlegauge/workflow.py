@@ -566,6 +566,8 @@ def store_results(record_json):
                 error_message="unable to detect licence",
                 category="failure",
                 provenance_description="no plugin was found that would try to detect a licence.  This entry records that the license is therefore unknown",
+                handler="oag",
+                handler_version="0.0" # we provide a placeholder handler, so that we can discover and invalidate it later
             )
             
         # Step 2: unqueue the record
