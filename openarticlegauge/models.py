@@ -377,10 +377,29 @@ class MessageObject(object):
             "doi" : "<provider doi>"
         },
         "bibjson" : {<bibjson object - see http://bibjson.org>},
-        "error" : "<any error message>"
+        "error" : "<any error message>",
+        "licensed" : True/False
     }
+    
+    "licensed" allows us to tell in the back end if the record had a licence
+    attached to it prior to being stripped down to be sent into the back-end.
+    
     """
     def __init__(self, bid=None, record=None, bibjson=None):
+        """
+        Create a new Message object using combinations of the provided arguments.
+        
+        bid alone creates a new record with that identifier
+        record alone seeds this object with a full record object
+        bibjson alone seeds this object with a record containing that bibjson
+        record + bibjson seeds this object with the provided record, but its bibjson is overwritten
+        
+        arguments
+        bid -- bibjson identifier object or just an id string
+        record -- full internal representation of the message object
+        bibjson -- bibjson record
+        
+        """
         self.record = None
         if bid:
             if isinstance(bid, dict):
@@ -398,85 +417,9 @@ class MessageObject(object):
         if self.record is None:
             self.record = {}
     
-    @property
-    def queued(self):
-        return self.record.get("queued", False)
-    
-    @queued.setter
-    def queued(self, val):
-        self.record["queued"] = val
-    
-    def has_bibjson(self):
-        return "bibjson" in self.record
-    
-    def has_type(self):
-        return "type" in self.record.get("identifier", {})
-    
-    def has_error(self):
-        return "error" in self.record
-    
-    def has_id(self):
-        return "id" in self.record.get("identifier", {})
-    
-    def has_license(self):
-        return "license" in self.record.get("bibjson", {})
-    
-    def has_provider(self):
-        return "provider" in self.record
-    
-    @property
-    def identifier(self):
-        return self.record.get("identifier")
-    
-    @property
-    def provider(self):
-        return self.record.get("provider")
-    
-    @property
-    def error(self):
-        return self.record.get("error")
-    
-    @error.setter
-    def error(self, val):
-        self.record["error"] = val
-    
-    @property
-    def bibjson(self):
-        return self.record.get("bibjson")
-    
-    @bibjson.setter
-    def bibjson(self, bj):
-        self.record["bibjson"] = bj
-    
-    @property
-    def id(self):
-        return self.record.get("identifier", {}).get("id")
-    
-    @id.setter
-    def id(self, val):
-        if "identifier" not in self.record:
-            self.record["identifier"] = {}
-        self.record["identifier"]["id"] = val
-    
-    @property
-    def identifier_type(self):
-        return self.record.get("identifier", {}).get("type")
-    
-    @identifier_type.setter
-    def identifier_type(self, type):
-        if "identifier" not in self.record:
-            self.record["identifier"] = {}
-        self.record["identifier"]["type"] = type
-    
-    @property
-    def canonical(self):
-        return self.record.get("identifier", {}).get("canonical")
-    
-    @canonical.setter
-    def canonical(self, canonical):
-        if "identifier" not in self.record:
-            self.record["identifier"] = {}
-        self.record["identifier"]["canonical"] = canonical
+    ###############################################
+    ## Representation functions
+    ###############################################
     
     def json(self):
         return json.dumps(self.record)
@@ -484,67 +427,19 @@ class MessageObject(object):
     def __str__(self):
         return str(self.record)
     
-    @property
-    def provider_urls(self):
-        return self.record.get("provider", {}).get("url", [])
+    ###############################################
+    ## Operational functions
+    ###############################################
     
-    def add_provider_url(self, url):
-        """
-        Record a provider url in the record
-        
-        This is equivalent to placing the supplied url in record['provider']['url'] which is a list of urls
-        
-        arguments:
-        url -- the url to be added to the provider record
-        
-        """
-        if not "provider" in self.record:
-            self.record['provider'] = {}
-        if not "url" in self.record["provider"]:
-            self.record["provider"]["url"] = []
-        if url not in self.record['provider']['url']:
-            self.record['provider']['url'].append(url)
-        
-    def add_provider_urls(self, urls):
-        """
-        Record a list of provider urls in the record
-        
-        This is just a wrapper for repeated calls to record_provider_url, so look there for the documentation
-        
-        arguments:
-        urls -- the urls to be added to the provider record
-        
-        """
-        for url in urls:
-            self.add_provider_url(url)
+    def merge(self, bibjson):
+        ls = bibjson.get("license", [])
+        for l in ls:
+            self.add_license_object(l)
     
-    @property
-    def provider_doi(self):
-        return self.record.get("provider", {}).get("doi")
-    
-    def set_provider_doi(self, doi):
-        """
-        Record a DOI in the provider part of the record
-        
-        This is equivalent to placing the supplied doi in record['provider']['doi'] which is a single value field
-        
-        arguments:
-        doi -- the doi to be added to the provider record
-        """
-        if not "provider" in self.record:
-            self.record['provider'] = {}
-        self.record["provider"]["doi"] = doi
-    
-    def has_license(self):
-        return "license" in self.record.get("bibjson", {}) and len(self.record.get("bibjson", {}).get("license", [])) > 0
-    
-    def add_license_object(self, license):
-        if "bibjson" not in self.record:
-            self.record["bibjson"] = {}
-        if "license" not in self.record['bibjson']:
-            self.record['bibjson']['license'] = []
-        
-        self.record['bibjson']['license'].append(license)
+    def prep_for_backend(self):
+        self.set_licensed_flag()
+        self.remove_bibjson()
+        return self.record
     
     def add_identifier_to_bibjson(self):
         """
@@ -580,6 +475,171 @@ class MessageObject(object):
         
         if incoming not in existing:
             self.record["bibjson"]["identifier"].append(self.record.get("identifier"))
+    
+    ###############################################
+    ## Various simple property getter/setters
+    ###############################################
+    
+    # identifier stuff
+    
+    @property
+    def identifier(self):
+        return self.record.get("identifier")
+    
+    @property
+    def id(self):
+        return self.record.get("identifier", {}).get("id")
+    
+    @id.setter
+    def id(self, val):
+        if "identifier" not in self.record:
+            self.record["identifier"] = {}
+        self.record["identifier"]["id"] = val
+    
+    def has_id(self):
+        return "id" in self.record.get("identifier", {})
+    
+    @property
+    def identifier_type(self):
+        return self.record.get("identifier", {}).get("type")
+    
+    @identifier_type.setter
+    def identifier_type(self, type):
+        if "identifier" not in self.record:
+            self.record["identifier"] = {}
+        self.record["identifier"]["type"] = type
+    
+    def has_type(self):
+        return "type" in self.record.get("identifier", {})
+    
+    @property
+    def canonical(self):
+        return self.record.get("identifier", {}).get("canonical")
+    
+    @canonical.setter
+    def canonical(self, canonical):
+        if "identifier" not in self.record:
+            self.record["identifier"] = {}
+        self.record["identifier"]["canonical"] = canonical
+    
+    # queue
+    
+    @property
+    def queued(self):
+        return self.record.get("queued", False)
+    
+    @queued.setter
+    def queued(self, val):
+        self.record["queued"] = val
+        
+    # provider
+    
+    @property
+    def provider(self):
+        return self.record.get("provider")
+    
+    def has_provider(self):
+        return "provider" in self.record
+    
+    @property
+    def provider_doi(self):
+        return self.record.get("provider", {}).get("doi")
+    
+    @property
+    def provider_urls(self):
+        return self.record.get("provider", {}).get("url", [])
+    
+    def add_provider_url(self, url):
+        """
+        Record a provider url in the record
+        
+        arguments:
+        url -- the url to be added to the provider record
+        
+        """
+        if not "provider" in self.record:
+            self.record['provider'] = {}
+        if not "url" in self.record["provider"]:
+            self.record["provider"]["url"] = []
+        if url not in self.record['provider']['url']:
+            self.record['provider']['url'].append(url)
+        
+    def add_provider_urls(self, urls):
+        """
+        Record a list of provider urls in the record
+        
+        arguments:
+        urls -- the urls to be added to the provider record
+        
+        """
+        for url in urls:
+            self.add_provider_url(url)
+    
+    def set_provider_doi(self, doi):
+        """
+        Record a DOI in the provider part of the record
+        
+        arguments:
+        doi -- the doi to be added to the provider record
+        """
+        if not "provider" in self.record:
+            self.record['provider'] = {}
+        self.record["provider"]["doi"] = doi
+    
+    # bibjson
+    
+    @property
+    def bibjson(self):
+        return self.record.get("bibjson")
+    
+    @bibjson.setter
+    def bibjson(self, bj):
+        self.record["bibjson"] = bj
+    
+    def has_bibjson(self):
+        return "bibjson" in self.record
+    
+    def remove_bibjson(self):
+        if "bibjson" in self.record:
+            del self.record["bibjson"]
+    
+    # error
+    
+    @property
+    def error(self):
+        return self.record.get("error")
+    
+    @error.setter
+    def error(self, val):
+        self.record["error"] = val
+    
+    def has_error(self):
+        return "error" in self.record
+    
+    # licensed flag
+    
+    def set_licensed_flag(self):
+        self.record["licensed"] = len(self.record.get("bibjson", {}).get("license", [])) > 0
+    
+    def was_licensed(self):
+        return self.record.get("licensed", False)
+    
+    # license specifically
+    
+    @property
+    def license(self):
+        return self.record.get("bibjson", {}).get("license", [])
+    
+    def has_license(self):
+        return "license" in self.record.get("bibjson", {}) and len(self.record.get("bibjson", {}).get("license", [])) > 0
+    
+    def add_license_object(self, license):
+        if "bibjson" not in self.record:
+            self.record["bibjson"] = {}
+        if "license" not in self.record['bibjson']:
+            self.record['bibjson']['license'] = []
+        
+        self.record['bibjson']['license'].append(license)
     
     def add_license(self, 
                     description="",

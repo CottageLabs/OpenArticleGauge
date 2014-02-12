@@ -407,4 +407,114 @@ class TestWorkflow(TestCase):
         time.sleep(2.1)
         result3 = models.flush_buffer()
         assert result3
+    
+    def test_16_message_object_init(self):
+        mo = models.MessageObject()
+        assert mo.record == {}
+        
+        mo = models.MessageObject(bid="1234")
+        assert mo.record["identifier"]["id"] == "1234"
+        
+        mo = models.MessageObject(bid={"id" : "abc", "type" : "doi"})
+        assert mo.record["identifier"]["id"] == "abc"
+        assert mo.record["identifier"]["type"] == "doi"
+        
+        mo = models.MessageObject(record={"key" : "value"})
+        assert "key" in mo.record
+        assert mo.record["key"] == "value"
+        
+        mo = models.MessageObject(bibjson={"license" : "blah"})
+        assert "bibjson" in mo.record
+        assert "license" in mo.record["bibjson"]
+        assert mo.record["bibjson"]["license"] == "blah"
+    
+    def test_17_message_object_getset(self):
+        mo = models.MessageObject()
+        mo.id = "1234"
+        mo.identifier_type = "doi"
+        mo.canonical = "doi:1234"
+        mo.queued = True
+        mo.set_provider_doi("doi:4321")
+        mo.add_provider_url("http://1")
+        mo.add_provider_urls(["http://2", "http://3"])
+        mo.error = "oops"
+        mo.add_license_object({"title" : "l1"})
+        mo.add_license(title="l2")
+        mo.set_licensed_flag()
+        
+        assert mo.identifier is not None
+        assert mo.id == "1234"
+        assert mo.has_id()
+        assert mo.identifier_type == "doi"
+        assert mo.has_type()
+        assert mo.canonical == "doi:1234"
+        assert mo.queued
+        assert mo.provider is not None
+        assert mo.has_provider()
+        assert mo.provider_doi == "doi:4321"
+        assert len(mo.provider_urls) == 3
+        assert "http://1" in mo.provider_urls
+        assert "http://2" in mo.provider_urls
+        assert "http://3" in mo.provider_urls
+        assert mo.bibjson is not None
+        assert mo.has_bibjson()
+        assert mo.has_error()
+        assert mo.error == "oops"
+        assert mo.was_licensed()
+        assert mo.has_license()
+        assert len(mo.license) == 2
+        
+        mo.remove_bibjson()
+        mo.set_licensed_flag()
+        assert mo.bibjson is None
+        assert not mo.has_bibjson()
+        assert not mo.was_licensed()
+        assert len(mo.license) == 0
+    
+    def test_18_message_object_merge(self):
+        mo = models.MessageObject()
+        mo.add_license(title="l1")
+        
+        bibjson = {"license" : [{"title" : "l2"}]}
+        mo.merge(bibjson)
+        
+        assert len(mo.license) == 2
+        print mo.license
+        count = 0
+        for l in mo.license:
+            assert l.get("title") in ["l1", "l2"]
+            if l.get("title") == "l1": count += 1
+        assert count == 1
+    
+    def test_19_message_object_backend(self):
+        mo = models.MessageObject()
+        mo.add_license(title="l1")
+        record = mo.prep_for_backend()
+        
+        assert isinstance(record, dict)
+        assert "bibjson" not in record
+        assert "licensed" in record
+        assert record.get("licensed", False)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         

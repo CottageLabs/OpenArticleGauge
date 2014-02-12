@@ -39,31 +39,6 @@ def mock_store(cls, bibjson):
 def mock_store_error(cls, bibjson):
     raise Exception("oh dear!")
 
-"""
-class mock_doi_type(object):
-    def type_detect_verify(self, record):
-        if record.id.startswith("10"):
-            record.identifier_type = "doi"
-            return
-        if record.identifier_type == "doi":
-            raise models.LookupException("oi")
-        
-class mock_pmid_type(object):
-    def type_detect_verify(self, record):
-        if record.id == "12345678":
-            record.identifier_type = "pmid"
-            
-class mock_doi_canon(object):
-    def canonicalise(self, record):
-        if record.identifier_type == "doi":
-            record.canonical = record.identifier_type + ":" + record.id
-        
-class mock_pmid_canon(object):
-    def canonicalise(self, record):
-        if record.identifier_type == "pmid":
-            record.canonical = record.identifier_type + ":" + record.id
-"""
-
 def mock_check_cache(key):
     if key == "doi:10.none": return None
     if key == "doi:10.queued": 
@@ -93,48 +68,6 @@ def mock_check_archive(cls, key):
 
 @classmethod
 def mock_null_archive(cls, key): return None
-
-"""
-class mock_detect_provider(plugin.Plugin):
-    def detect_provider(self, record):
-        record.add_provider_url("http://provider")
-
-class mock_no_provider(plugin.Plugin):
-    def detect_provider(self, record): 
-        pass
-
-class mock_other_detect(plugin.Plugin):
-    def detect_provider(self, record):
-        record.add_provider_url("http://other")
-
-class mock_detect_provider_error(plugin.Plugin):
-    def detect_provider(self, record):
-        raise Exception("oh dear!")
-
-class mock_licence_plugin(plugin.Plugin):
-    sup = True
-    def supports(self, provider):
-        return self.sup
-    def license_detect(self, record):
-        record.record['bibjson'] = {}
-        record.record['bibjson']['license'] = [{}]
-        record.record['bibjson']['title'] = "mytitle"
-
-class mock_licence_plugin_error(plugin.Plugin):
-    def supports(self, provider):
-        return True
-    def license_detect(self, record):
-        raise Exception("oh dear!")
-
-class mock_unknown_licence_plugin(plugin.Plugin):
-    __version__ = "1.0"
-    _short_name = "test_workflow"
-    sup = True
-    def supports(self, provider):
-        return self.sup
-    def license_detect(self, record):
-        record.record['bibjson'] = {}
-"""
 
 def mock_back_end(record): pass
 
@@ -459,7 +392,6 @@ class TestWorkflow(TestCase):
         assert len(record['bibjson']['license']) == 1
         
     def test_12_provider_unknown_licence(self):
-        # config.license_detection = ["mock_unknown_licence_plugin"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_12")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -646,15 +578,29 @@ class TestWorkflow(TestCase):
         global CACHE
         global ARCHIVE
         
-        record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True}
+        record = {
+            'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, 
+            "queued" : True,
+            "bibjson" : {
+                "license" : [
+                    {"title" : "l1"}
+                ]
+            }
+        }
+        record = models.MessageObject(record=record)
+        record = record.prep_for_backend()
         
-        #config.provider_detection = {"doi" : ["mock_detect_provider"]}
-        #config.license_detection = ["mock_licence_plugin"]
+        # check that this sets up the chainable object correctly
+        assert record.get("licensed", False)
+        assert "bibjson" not in record
+        
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_17")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
         cache.cache = mock_cache
         models.Record.store = mock_store
+        old_check_archive = workflow._check_archive
+        workflow._check_archive = lambda x: {"license" : [{"title" : "l1"}]}
         
         # run the chain synchronously
         record = workflow.detect_provider(record)
@@ -666,17 +612,60 @@ class TestWorkflow(TestCase):
         
         assert record.has_key("bibjson")
         assert record['bibjson'].has_key("license")
+        assert len(record["bibjson"]["license"]) == 2, ARCHIVE # should have picked up the archive copy
         
         assert CACHE.has_key("doi:10.1")
         assert not CACHE["doi:10.1"].get("queued", False)
-        assert len(ARCHIVE) == 1, len(ARCHIVE)
-        assert ARCHIVE[0]["title"] == "mytitle"
+        assert len(ARCHIVE) == 1, len(ARCHIVE) 
+        assert ARCHIVE[0]["license"][0]["title"] == "mytitle"
+        assert ARCHIVE[0]["license"][1]["title"] == "l1"
         
         del CACHE['doi:10.1']
-        del ARCHIVE[0]
+        del ARCHIVE[:]
+        workflow._check_archive = old_check_archive
+    
+    def test_18_provider_licence_was_licences(self):
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_18")
+        plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
+        record = {
+            'provider' : {"url" : ["testprovider"]},
+            "bibjson" : {
+                "license" : [
+                    {"title" : "l1"}
+                ]
+            }
+        }
+        record = models.MessageObject(record=record)
+        record = record.prep_for_backend()
         
+        # check that it works when it's right
+        workflow.provider_licence(record)
         
+        # mock_unknown_plugin runs but does not provide us with a licence,
+        # but because there was a licence initially, we expect there not to have been one added
+        assert not record.has_key("bibjson")
+    
+    def test_19_store_was_licensed(self):
+        cache.cache = mock_cache
+        models.Record.store = mock_store
+        
+        record = {
+            'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, 
+            "queued" : True,
+            "bibjson" : {
+                "license" : [
+                    {"title" : "l1"}
+                ]
+            }
+        }
+        record = models.MessageObject(record=record)
+        record = record.prep_for_backend()
+        
+        record = workflow.store_results(record)
+        
+        assert "bibjson" in record # should be a basic bibjson object
+        assert "license" not in record["bibjson"]
         
         
         

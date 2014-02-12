@@ -61,7 +61,6 @@ def lookup(bibjson_ids):
     # inject it into the asynchronous back-end
     for bid in bibjson_ids:
         # first, create the basic record object
-        # record = { "identifier" : bid }
         record = models.MessageObject(bid=bid)
         log.debug("initial record " + str(record))
         
@@ -171,9 +170,7 @@ def _check_archive(record):
         raise models.LookupException("can't look anything up in the archive without a canonical id")
     
     # obtain a copy of the archived bibjson
-    #log.debug("checking archive for canonical identifier: " + record['identifier']['canonical'])
     log.debug("checking archive for canonical identifier: " + record.canonical)
-    # archived_bibjson = models.Record.check_archive(record['identifier']['canonical'])
     archived_bibjson = models.Record.check_archive(record.canonical)
     
     # if it's not in the archive, return
@@ -375,7 +372,15 @@ def _start_back_end(record):
     
     """
     log.debug("injecting record into asynchronous processing chain: " + str(record))
-    ch = chain(detect_provider.s(record.record), provider_licence.s(), store_results.s())
+    
+    # ask the record to prep itself for injection into the processing chain
+    # this will return just the record dictionary (not the message object), and will
+    # have removed the existing journal information and added any processing flags 
+    # that are relevant
+    chainable = record.prep_for_backend() 
+    log.debug("record prepped for chain: " + str(chainable))
+    
+    ch = chain(detect_provider.s(chainable), provider_licence.s(), store_results.s())
     r = ch.apply_async()
     return r
 
@@ -485,7 +490,7 @@ def provider_licence(record_json):
         
         # was the plugin able to detect a licence?
         # if not, we need to add an unknown licence for this provider
-        if not record.has_license():
+        if not record.has_license() and not record.was_licensed():
             log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
             record.add_license(
                 url=config.unknown_url,
@@ -497,6 +502,8 @@ def provider_licence(record_json):
                 handler=p._short_name,
                 handler_version=p.__version__
             )
+        elif not record.has_license() and record.was_licensed():
+            log.debug("No license detected by plugin " + p._short_name + " but was previously licensed, so NOT adding unknown license")
 
         # we have to return the record so that the next step in the chain can
         # deal with it
@@ -558,7 +565,7 @@ def store_results(record_json):
             log.debug("record does not have a bibjson record.")
             record.bibjson = {}
             
-        if not record.has_license():
+        if not record.has_license() and not record.was_licensed():
             # the bibjson record does not contain a license list OR the license list is of zero length
             log.debug("Licence could not be detected, therefore adding 'unknown' licence to " + str(record.bibjson))
             record.add_license(
@@ -571,13 +578,23 @@ def store_results(record_json):
                 handler="oag",
                 handler_version="0.0" # we provide a placeholder handler, so that we can discover and invalidate it later
             )
+        elif not record.has_license() and record.was_licensed():
+            log.debug("Licence could not be detected, but was previously licensed, so NOT adding unknown license")
             
         # Step 2: unqueue the record
         if record.queued:
             log.debug(str(record.identifier) + ": removing this item from the queue")
             record.queued = False
         
-        # Step 3: update the archive
+        # Step 2.5: determine if this is already in the archive
+        existing_bibjson = _check_archive(record)
+        if existing_bibjson is not None:
+            # if already archived, then we need to merge the existing licenses with the newly
+            # discovered licenses
+            log.debug(str(record.identifier) + ": has record in archive; merging")
+            record.merge(existing_bibjson)
+        
+        # Step 3: update the archive if no errors
         record.add_identifier_to_bibjson()
         if not record.has_error():
             log.debug(str(record.identifier) + ": storing this item in the archive")

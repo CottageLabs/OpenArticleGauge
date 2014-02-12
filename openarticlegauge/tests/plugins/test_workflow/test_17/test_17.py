@@ -22,6 +22,4 @@ class mock_licence_plugin(plugin.Plugin):
     def supports(self, provider):
         return True
     def license_detect(self, record):
-        record.record['bibjson'] = {}
-        record.record['bibjson']['license'] = [{}]
-        record.record['bibjson']['title'] = "mytitle"
+        record.add_license(title="mytitle")
