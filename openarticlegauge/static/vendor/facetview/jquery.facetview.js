@@ -726,22 +726,60 @@ This can define or reference a function that will be executed any time new searc
                 for (object in display[lineitem]) {
                     var thekey = display[lineitem][object]['field'];
                     parts = thekey.split('.');
-                    // TODO: this should perhaps recurse..
-                    if (parts.length == 1) {
-                        var res = record;
-                    } else if (parts.length == 2) {
-                        var res = record[parts[0]];
-                    } else if (parts.length == 3) {
-                        var res = record[parts[0]][parts[1]];
+                    
+                    var obtainer = function(key, subrecord) {
+                        var is_array = Object.prototype.toString.apply(subrecord) === "[object Array]"
+                        if (is_array) {
+                            if (subrecord.length > 0) {
+                                subrecord = subrecord[0]
+                                return obtainer(key, subrecord)
+                            } else {
+                                return undefined;
+                            }
+                        }
+                        if (typeof subrecord === "object") {
+                            if (subrecord.hasOwnProperty(key)) {
+                                return subrecord[key]
+                            } else {
+                                return undefined;
+                            }
+                        } else {
+                            return undefined
+                        }
                     }
-                    var counter = parts.length - 1;
-                    if (res && res.constructor.toString().indexOf("Array") == -1) {
-                        var thevalue = res[parts[counter]];  // if this is a dict
-                    } else {
+                    var sub = record
+                    for (var x = 0; x < parts.length; x++) {
+                        var k = parts[x]
+                        sub = obtainer(k, sub)
+                    }
+                    var res = sub
+                    
+                    // TODO: this should perhaps recurse..
+                    //if (parts.length == 1) {
+                    //    var res = record;
+                    //} else if (parts.length == 2) {
+                    //    var res = record[parts[0]];
+                    //} else if (parts.length == 3) {
+                    //    var res = record[parts[0]][parts[1]];
+                    //}
+                    //var counter = parts.length - 1;
+                    //if (res && res.constructor.toString().indexOf("Array") == -1) {
+                    //    var thevalue = res[parts[counter]];  // if this is a dict
+                    //} else {
+                    //    var thevalue = [];
+                    //    for (var row in res) {
+                    //        thevalue.push(res[row][parts[counter]]);
+                    //    }
+                    //}
+                    // FIXME: hangover from the old code - needs more work to refactor it right out
+                    var is_array = Object.prototype.toString.apply(res) === "[object Array]"
+                    if (is_array) {
                         var thevalue = [];
                         for (var row in res) {
-                            thevalue.push(res[row][parts[counter]]);
+                            thevalue.push(res[row]);
                         }
+                    } else {
+                        var thevalue = res
                     }
                     if (thevalue && thevalue.length) {
                         display[lineitem][object]['pre']

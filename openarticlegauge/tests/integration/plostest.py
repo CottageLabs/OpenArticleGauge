@@ -73,7 +73,7 @@ def plostest():
         while len(idbatch):
             headers = {'content-type': 'application/json'}
             try:
-                rr = requests.post('http://localhost:5051/lookup/',data=json.dumps(idbatch), headers=headers)
+                rr = requests.post('http://localhost:5000/lookup/',data=json.dumps(idbatch), headers=headers)
             except Exception:
                 print 'Exception while trying to send a batch of ID-s to OAG'
                 exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -87,6 +87,9 @@ def plostest():
                 print rr.text.encode('utf-8')
             idbatch = []
             if len(rs['processing']) != 0 and wait:
+                if len(rs['processing']) < 10:
+                    print rs['processing']
+                    print
                 # if waiting for confirmation they are all processed, add the processing ones back to the ID list
                 # otherwise the empty list sends the loop onto the next batch
                 for p in rs['processing']:

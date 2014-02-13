@@ -9,6 +9,9 @@ future (if at all - the python data structure has some utility that a class migh
 
 """
 
+'''
+DEPRECATED - remove shortly
+
 from openarticlegauge import config
 from datetime import datetime
 
@@ -145,4 +148,4 @@ def add_license(record,
             }
         }
     )
-    
+'''

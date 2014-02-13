@@ -39,6 +39,14 @@ Another less resource-intensive solution is to get rid of the AJAX fetching prev
 For any of these solutions to be effective, the multiple copyright statements viewable in "basic" (no-Javascript) mode have to be taken care of. Are "all rights reserved", who does the copyright belong to (Elsevier or the authors?); or is this actually an Open Access article available under CC-BY-NC-ND?
 '''
     
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
     def supports(self, provider):
         """
         Does the page_license plugin support this provider
@@ -65,12 +73,16 @@ For any of these solutions to be effective, the multiple copyright statements vi
         This will always fail since we can't get the license for this publisher.
         It populates the record['bibjson']['license'] (note the US spelling) field.
         """
+        
+        """
         if "provider" not in record:
             return
         if "url" not in record["provider"]:
             return
+        """
         
-        for source_url in record['provider']['url']:
+        #for source_url in record['provider']['url']:
+        for source_url in record.provider_urls:
             if self.supports_url(source_url):
                 self.describe_license_fail(record, source_url, self.fail_why, self.fail_suggested_solution)
 

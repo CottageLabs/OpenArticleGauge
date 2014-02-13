@@ -24,9 +24,21 @@ class Tutorial(plugin.Plugin):
     # The domains that this plugin will say it can support.
     # Specified without the schema (protocol - e.g. "http://") part.
     ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-    base_urls = ["www.biomedcentral.com"]
+    base_urls = ["www.example-publisher-url.com"]
     # so if the http://www.biomedcentral.com/1471-2164/13/425 URL comes in,
     # it should be supported.
+    
+    ## You can leave this function as-is if you are just doing license detection
+    ## if you are going to provide a plugin which can detect or verify identifier
+    ## types or canonicalise identifiers, or resolve the canonical identifiers to
+    ## actual providers of content, then you will need to update it.
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
     
     ## You can keep the supports() function as it is if your publisher only has
     ## a few domain names and doesn't need anything more special than
@@ -118,13 +130,15 @@ class Tutorial(plugin.Plugin):
         ]
         
         # some basic protection against missing fields in the incoming record
+        """
         if "provider" not in record:
             return
         if "url" not in record["provider"]:
             return
-        
+        """
         # For all URL-s associated with this resource...
-        for url in record['provider']['url']:
+        #for url in record['provider']['url']:
+        for url in record.provider_urls:
             # ... run the dumb string matcher if the URL is supported.
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url)

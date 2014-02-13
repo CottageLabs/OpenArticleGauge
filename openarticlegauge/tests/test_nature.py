@@ -3,7 +3,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.nature import NaturePlugin # TUTORIAL: change this to import *your* plugin
-from openarticlegauge import config
+from openarticlegauge import config, models
 
 # TUTORIAL: no need to modify any of this unless you added a key to the license info
 keys_in_license = ['provenance', 'description', 'type', 'title', 'url',
@@ -60,10 +60,13 @@ class TestBasic(TestCase):
         record['bibjson'] = {}
         record['provider'] = {}
         record['provider']['url'] = ['http://www.nature.com/srep/2013/130415/srep01657/full/srep01657.html']
+        record = models.MessageObject(record=record)
         
         npg = NaturePlugin()
         npg.license_detect(record)
 
+        record = record.record
+        
         # just barebones checks to make sure the license and provenance objects
         # exist in the first place so the handler fields can be checked
         assert record['bibjson'].has_key('license')
@@ -84,11 +87,13 @@ class TestBasic(TestCase):
         # Again, you must provide a dereferenced URL here - that's what your
         # plugin will get!
         record['provider']['url'] = ['http://www.nature.com/srep/2013/130415/srep01657/full/srep01657.html']
-
+        record = models.MessageObject(record=record)
+        
         npg = NaturePlugin()
         npg.license_detect(record)
 
         # check if all the important keys were created
+        record = record.record
         
         # TUTORIAL: You don't need to modify any of these
         assert record['bibjson'].has_key('license')
@@ -143,11 +148,13 @@ class TestBasic(TestCase):
         # Again, you must provide a dereferenced URL here - that's what your
         # plugin will get!
         record['provider']['url'] = ['http://www.nature.com/ncomms/journal/v4/n4/full/ncomms2674.html']
-
+        record = models.MessageObject(record=record)
+        
         npg = NaturePlugin()
         npg.license_detect(record)
 
         # check if all the important keys were created
+        record = record.record
         
         # TUTORIAL: You don't need to modify any of these
         assert record['bibjson'].has_key('license')
@@ -202,11 +209,13 @@ class TestBasic(TestCase):
         # Again, you must provide a dereferenced URL here - that's what your
         # plugin will get!
         record['provider']['url'] = ['http://www.nature.com/srep/2013/130129/srep01154/full/srep01154.html']
-
+        record = models.MessageObject(record=record)
+        
         npg = NaturePlugin()
         npg.license_detect(record)
 
         # check if all the important keys were created
+        record = record.record
         
         # TUTORIAL: You don't need to modify any of these
         assert record['bibjson'].has_key('license')

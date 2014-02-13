@@ -1,5 +1,5 @@
 import re, logging, requests
-from openarticlegauge import plugin, recordmanager, model_exceptions
+from openarticlegauge import plugin, recordmanager, models
 from lxml import etree
 from openarticlegauge.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
@@ -12,9 +12,17 @@ class PMIDPlugin(plugin.Plugin):
     
     _rx = "^[\d]{1,8}$"
     
-    def type_detect_verify(self, bibjson_identifier):
+    def capabilities(self):
+        return {
+            "type_detect_verify" : True,
+            "canonicalise" : ["pmid"],
+            "detect_provider" : ["pmid"],
+            "license_detect" : False
+        }
+    
+    def type_detect_verify(self, record):
         """
-        determine if the provided bibjson identifier has a type of "PMID", by
+        determine if the provided record's bibjson identifier has a type of "PMID", by
         inspecting first the "type" parameter, and then by looking at the form
         of the id.  If it is a PMID, then verify that it is a valid one.
         
@@ -24,50 +32,60 @@ class PMIDPlugin(plugin.Plugin):
         have an exhaustive list of these, so for the time being this method will FAIL
         to identify any PMID which is not just a 1 to 8 digit number
         """
-        if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
+        #if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
+        if record.has_type() and record.identifier_type != "pmid":
             return
         
-        if not bibjson_identifier.has_key("id"):
+        # if not bibjson_identifier.has_key("id"):
+        if not record.has_id():
             return
         
         # 1 to 8 digits long
-        result = re.match(self._rx, bibjson_identifier["id"])
+        result = re.match(self._rx, record.id)
         
         # validation
-        if bibjson_identifier.has_key("type") and bibjson_identifier["type"] == "pmid" and result is None:
+        #if bibjson_identifier.has_key("type") and bibjson_identifier["type"] == "pmid" and result is None:
+        if record.has_type() and record.identifier_type == "pmid" and result is None:
             # the bibjson identifier asserts that it is a pmid, but the regex does not
             # support this assertion, so we raise an exception
-            raise model_exceptions.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(bibjson_identifier["id"]))
+            raise models.LookupException("identifier asserts it is a PMID, but cannot validate: " + str(record.id))
         
         if result is None:
             # no assertion that this is a PMID, and no confirmation from the regex
             return
         
         # otherwise, this is confirmed as a PMID
-        bibjson_identifier["type"] = "pmid"
+        # bibjson_identifier["type"] = "pmid"
+        record.identifier_type = "pmid"
 
-    def canonicalise(self, bibjson_identifier):
+    # def canonicalise(self, bibjson_identifier):
+    def canonicalise(self, record):
         """
         create a canonical form of the identifier
         and insert it into the bibjson_identifier['canonical'].  This is of the form pmid:12345678
         """
         # only canonicalise DOIs (this function should only ever be called in the right context)
-        if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
+        # if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
+        if record.has_type() and record.identifier_type != "pmid":
             return
         
         # do we have enough information to canonicalise, raise an error
-        if not bibjson_identifier.has_key("id"):
-            raise model_exceptions.LookupException("can't canonicalise an identifier without an 'id' property")
+        # if not bibjson_identifier.has_key("id"):
+        if not record.has_id():
+            raise models.LookupException("can't canonicalise an identifier without an 'id' property")
         
         # 1 to 8 digits long
-        result = re.match(self._rx, bibjson_identifier["id"])
+        # result = re.match(self._rx, bibjson_identifier["id"])
+        result = re.match(self._rx, record.id)
         if result is None:
-            raise model_exceptions.LookupException("identifier does not parse as a PMID: " + str(bibjson_identifier["id"]))
+            raise models.LookupException("identifier does not parse as a PMID: " + str(record.id))
         
         # no need to validate the ID - we just prefix "pmid:" since there is an id, and the
         # type is indicated as "pmid"
-        canonical = "pmid:" + bibjson_identifier['id']
-        bibjson_identifier['canonical'] = canonical
+        #canonical = "pmid:" + bibjson_identifier['id']
+        #bibjson_identifier['canonical'] = canonical
+        canonical = "pmid:" + record.id
+        record.canonical = canonical
         
     def detect_provider(self, record):
         """
@@ -78,6 +96,7 @@ class PMIDPlugin(plugin.Plugin):
         # - must have an indentifier
         # - must be a pmid
         # - must have a canonical form
+        """
         if not "identifier" in record:
             return
         
@@ -89,22 +108,29 @@ class PMIDPlugin(plugin.Plugin):
         
         if not "canonical" in record["identifier"]:
             return
-        
+        """
+        if record.identifier_type != "pmid" or record.canonical is None:
+            return
+            
         # see if we can resolve a doi for the item
-        canon = record['identifier']['canonical']
+        # canon = record['identifier']['canonical']
+        canon = record.canonical
         doi, loc = self._resolve_doi(canon)
         
         if loc is not None:
             # if we find something, record it
-            recordmanager.record_provider_url(record, loc)
-            recordmanager.record_provider_doi(record, doi)
+            #recordmanager.record_provider_url(record, loc)
+            record.add_provider_url(loc)
+            #recordmanager.record_provider_doi(record, doi)
+            record.set_provider_doi(doi)
             return
         
         # if we get to here, the DOI lookup failed, so we need to scrape the NCBI site for possible urls
         urls = self._scrape_urls(canon)
         if urls is not None and len(urls) > 0:
             # if we find something, record it
-            recordmanager.record_provider_urls(record, urls)
+            # recordmanager.record_provider_urls(record, urls)
+            record.add_provider_urls(urls)
 
     def _scrape_urls(self, canonical_pmid):
         """

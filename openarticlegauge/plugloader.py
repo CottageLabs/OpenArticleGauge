@@ -4,8 +4,11 @@ module paths.
 
 """
 
-import config
-import logging
+'''
+DEPRECATED - remove shortly
+
+from openarticlegauge import config
+import logging, os, imp
 
 log = logging.getLogger(__name__)
 
@@ -144,3 +147,4 @@ def load_sibling(callable_path, sibling_name):
     sibling = modpath + "." + sibling_name
     return load(sibling)
 """
+'''

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from openarticlegauge.plugins.doi import DOIPlugin
-from openarticlegauge import model_exceptions
+from openarticlegauge import models
 import requests
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
@@ -65,7 +65,8 @@ class TestWorkflow(TestCase):
         counter = 0
         for d in DOIS:
             bjid = {'id' : d}
-            doi.type_detect_verify(bjid)
+            record = models.MessageObject(record={"identifier" : bjid})
+            doi.type_detect_verify(record)
             assert bjid.has_key("type")
             assert bjid["type"] == "doi"
             counter += 1
@@ -80,35 +81,42 @@ class TestWorkflow(TestCase):
         
         # try some prefixes
         bjid = {'id' : 'doi:'}
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'http://dx.doi.org/'}
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         # try some random strings
         bjid = {'id' : 'qp23u4ehjkjewfiuwqr'}
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'qp23u410.jewfiuwqr'} # has the 10. substring in it
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
         
         bjid = {'id' : 'doi:qp23u4ehjkjewfiuwqr'} # starts with a doi prefix, but isn't one
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
         
     def test_03_detect_verify_type_ignores(self):
         doi = DOIPlugin()
         
         bjid = {"id" : "whatever", "type" : "pmid"}
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert bjid['type'] == "pmid"
         
         bjid = {"key" : "value"}
-        doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.type_detect_verify(record)
         assert not bjid.has_key("type")
     
     def test_04_detect_verify_type_error(self):
@@ -116,8 +124,9 @@ class TestWorkflow(TestCase):
         
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
-        with self.assertRaises(model_exceptions.LookupException):
-            doi.type_detect_verify(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        with self.assertRaises(models.LookupException):
+            doi.type_detect_verify(record)
     
     def test_05_canonicalise_real(self):
         doi = DOIPlugin()
@@ -125,7 +134,8 @@ class TestWorkflow(TestCase):
         counter = 0
         for d in CANONICAL.keys():
             bjid = {'id' : d, 'type' : 'doi'}
-            doi.canonicalise(bjid)
+            record = models.MessageObject(record={"identifier" : bjid})
+            doi.canonicalise(record)
             assert bjid.has_key("canonical")
             assert bjid["canonical"] == CANONICAL[d]
             counter += 1
@@ -136,7 +146,8 @@ class TestWorkflow(TestCase):
         doi = DOIPlugin()
         
         bjid = {"id" : "whatever", "type" : "pmid"}
-        doi.canonicalise(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        doi.canonicalise(record)
         assert not bjid.has_key("canonical")
         
     def test_07_canonicalise_error(self):
@@ -144,34 +155,41 @@ class TestWorkflow(TestCase):
         
         # create an invalid doi and assert it is a doi
         bjid = {"id" : "a;lkdsjfjdsajadskja", "type" : "doi"}
-        with self.assertRaises(model_exceptions.LookupException):
-            doi.canonicalise(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        with self.assertRaises(models.LookupException):
+            doi.canonicalise(record)
             
         bjid = {"key" : "value"}
-        with self.assertRaises(model_exceptions.LookupException):
-            doi.canonicalise(bjid)
+        record = models.MessageObject(record={"identifier" : bjid})
+        with self.assertRaises(models.LookupException):
+            doi.canonicalise(record)
     
     def test_08_dereference_not_relevant(self):
         doi = DOIPlugin()
-        record = {}
+        record = models.MessageObject(record={})
         
         doi.provider_dereference(record)
-        assert len(record.keys()) == 0
+        assert len(record.record.keys()) == 0
         
-        record['identifier'] = {}
-        doi.provider_dereference(record)
-        assert len(record['identifier'].keys()) == 0
+        #record['identifier'] = {}
+        #doi.provider_dereference(record)
+        #assert len(record['identifier'].keys()) == 0
         
-        record['identifier']['id'] = "123"
-        record['identifier']['type'] = "pmid"
-        record['identifier']['canonical'] = "pmid:123"
+        #record['identifier']['id'] = "123"
+        #record['identifier']['type'] = "pmid"
+        #record['identifier']['canonical'] = "pmid:123"
+        record.id = "123"
+        record.identifier_type = "pmid"
+        record.canonical = "pmid:123"
         doi.provider_dereference(record)
-        assert not "provider" in record
+        assert not "provider" in record.record
         
-        record['identifier']['type'] = "doi"
-        del record['identifier']['canonical']
+        # record['identifier']['type'] = "doi"
+        record.identifier_type = "doi"
+        # del record['identifier']['canonical']
+        record.canonical = None
         doi.provider_dereference(record)
-        assert not "provider" in record
+        assert not "provider" in record.record
     
     def test_09_dereference_no_location(self):
         oldget = requests.get
@@ -179,7 +197,9 @@ class TestWorkflow(TestCase):
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        record = models.MessageObject(record=record)
         doi.provider_dereference(record)
+        record = record.record
         assert "provider" in record
         assert "url" not in record["provider"]
         assert "doi" in record["provider"]
@@ -193,7 +213,9 @@ class TestWorkflow(TestCase):
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        record = models.MessageObject(record=record)
         doi.provider_dereference(record)
+        record = record.record
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']['url'][0] == "http://location"
@@ -207,7 +229,9 @@ class TestWorkflow(TestCase):
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        record = models.MessageObject(record=record)
         doi.detect_provider(record)
+        record = record.record
         assert "provider" in record
         assert "url" in record["provider"]
         assert record['provider']['url'][0] == "http://location"

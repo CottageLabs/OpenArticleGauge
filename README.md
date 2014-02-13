@@ -39,10 +39,6 @@ Then install the project requirements using pip (recommended to also use a virtu
 
     pip install -e .
     
-or with setuptools:
-
-    python setup.py install
-
 ###Celery
 
 Start the celery backend
@@ -60,6 +56,10 @@ if you start the daemon, you can stop it with
 **Note**: you may want to modify the shell scripts with paths to the log files you want it to use
 
 ###Web Application
+
+Before you start the application you **must** configure the path to the plugin directory in
+
+    openarticlegauge/config.py
 
 Start the web application with:
 
