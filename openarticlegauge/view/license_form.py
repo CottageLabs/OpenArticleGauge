@@ -20,6 +20,6 @@ class PublisherLicense(Form):
     license_statement = TextAreaField('License Statement', [validators.required()])
     license = SelectField('Licenses', [validators.required()], choices=[('CC-By', 'CC-BY'), ('cc-nc', 'CC-NC'), ('cc-sa', 'CC-SA')])
     version = TextField('Version')
-    example_url = TextField('Example URL', [validators.required(), validators.URL()])
+    example_DOI = TextField('Example DOI', [validators.required(), validators.Regexp("^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\..+\/.+)")])
     
 
