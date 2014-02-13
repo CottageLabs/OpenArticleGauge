@@ -254,6 +254,54 @@ class License(DomainObject):
     __type__ = 'license'
 
 
+class Publisher(DomainObject):
+    __type__ = 'publisher'
+
+    @property
+    def journal_url(self): return self.get("journal_url")
+    @journal_url.setter
+    def journal_url(self, data): self.data['journal_url'] = data
+
+    @property
+    def publisher_name(self): return self.get("publisher_name")
+    @publisher_name.setter
+    def publisher_name(self, data): self.data['publisher_name'] = data
+
+    def licenses(self):
+        return self.get('licenses', [])
+
+    def add_license(self, lobj):
+        lics = self.licenses()
+        lics.append(lobj)
+
+    def remove_license(self, license_statement):
+        lics = self.licenses()
+        try:
+            del lics[license_statement]
+        except KeyError:
+            pass
+
+    # FIXME: temporary, delete the properties below
+    @property
+    def license_type(self): return self.get("license_type")
+    @license_type.setter
+    def license_type(self, data): self.data["license_type"] = data
+
+    @property
+    def license_statement(self): return self.get("license_statement")
+    @license_statement.setter
+    def license_statement(self, data): self.data['license_statement'] = data
+
+    @property
+    def version(self): return self.get("version")
+    @version.setter
+    def version(self, data): self.data['version'] = data
+
+    @property
+    def example_doi(self): return self.get("example_doi")
+    @example_doi.setter
+    def example_doi(self, data): self.data['example_doi'] = data
+
 class ResultSet(object):
     """
     Model object to represent the return object from the API.  It represents the following data structure:
