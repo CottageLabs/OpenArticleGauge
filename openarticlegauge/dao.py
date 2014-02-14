@@ -6,12 +6,12 @@ This implementation provides storage in an Elasticsearch index.
 
 """
 
-import os, json, UserDict, requests, uuid, logging
+import os, json, requests, uuid, logging
 from datetime import datetime
 
 from openarticlegauge.core import app #, current_user
 
-class DomainObject(UserDict.IterableUserDict):
+class DomainObject(dict):
     """
     All models in models.py should inherit this DomainObject to know how to save themselves in the index and so on.
     You can overwrite and add to the DomainObject functions as required. See models.py for some examples.
@@ -21,6 +21,7 @@ class DomainObject(UserDict.IterableUserDict):
     __type__ = None # set the type on the model that inherits this
 
     def __init__(self, **kwargs):
+        super(DomainObject, self).__init__(**kwargs)
         if '_source' in kwargs:
             self.data = dict(kwargs['_source'])
             self.meta = dict(kwargs)
@@ -40,9 +41,9 @@ class DomainObject(UserDict.IterableUserDict):
         overwrite this in specific model types if required'''
         return uuid.uuid4().hex
 
-    @property
-    def id(self):
-        return self.data.get('id', None)
+    # @property
+    # def id(self):
+        # return self.data.get('id', None)
         
     @property
     def version(self):

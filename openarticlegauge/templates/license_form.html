@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{% from "_formhelpers.html" import field_errors %}
 <h1> Submit License Statement </h1>
 <form action="" method="post" name="license">
+    {% if form.hidden_tag is defined %}
+        {{ form.hidden_tag() }}
+    {% else %}
+        {% if csrf_token %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        {% for f in form if f.type == 'HiddenField' %}
+            {{ f }}
+        {% endfor %}
+    {% endif %}
     <div class="row-fluid">
         <div class="span12">
             Publisher name
             {% if form.publisher_name.flags.required %}*{% endif %}
             <br>
             {{form.publisher_name(placeholder="PLOS")}}
+            {{field_errors(form.publisher_name)}}
             <br>
             <hr>
             <div id="journal_url_row" class="form-horizontal">
@@ -20,11 +31,11 @@
                 <div class="repeat_journal row-fluid" style="display:inline;">
                     <div class="span12">
                         {{form.journal_url(placeholder="http://www.plosone.org/")}}
+                        {{field_errors(form.journal_url)}}
                     </div>
                 </div>
                 <button class="btn journal_link">+</button>
-                
-                
+                    
             </div>
         </div>
             
@@ -39,14 +50,16 @@
                 {% if form.license_statement.flags.required %}*{% endif %}
                 <br>
                 {{form.license_statement(placeholder="This is an open-access article distributed under the terms of the Creative Commons Attribution License")}}
+                {{field_errors(form.license_statement)}}
                     
             </div>
             
                 <div class="span3">
                     License
-                    {% if form.license.flags.required %}*{% endif %}
+                    {% if form.license_type.flags.required %}*{% endif %}
                     <br>
-                    {{form.license}}
+                    {{form.license_type}}
+                    {{field_errors(form.license_type)}}
                     
                 </div>
                 <div class="span3">
@@ -54,14 +67,16 @@
                     {% if form.version.flags.required %}*{% endif %}
                     <br>
                     {{form.version(placeholder="3.0")}}
+                    {{field_errors(form.version)}}
                     
                 </div>
                 <div class="span3">
                     <div class="form-horizontal">
                         Example DOI
-                        {% if form.example_DOI.flags.required %}*{% endif %}
+                        {% if form.example_doi.flags.required %}*{% endif %}
                         <br>
-                        {{form.example_DOI(placeholder="10.1371/journal.pone.0031314")}}
+                        {{form.example_doi(placeholder="10.1371/journal.pone.0031314")}}
+                        {{field_errors(form.example_doi)}}
                         
                       
                     </div>
@@ -75,7 +90,7 @@
     <hr>
     
     <div class="btn-group">
-        <button class="btn, pull-right">Submit</button>
+        <input type="submit" value="Submit">
     </div>
 </form>
 {% endblock %}

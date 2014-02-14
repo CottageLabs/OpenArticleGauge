@@ -258,17 +258,17 @@ class Publisher(DomainObject):
     __type__ = 'publisher'
 
     @property
-    def journal_url(self): return self.get("journal_url")
+    def journal_url(self): return self.data.get("journal_url")
     @journal_url.setter
     def journal_url(self, data): self.data['journal_url'] = data
 
     @property
-    def publisher_name(self): return self.get("publisher_name")
+    def publisher_name(self): return self.data.get("publisher_name")
     @publisher_name.setter
-    def publisher_name(self, data): self.data['publisher_name'] = data
+    def publisher_name(self, value): self.data['publisher_name'] = value
 
     def licenses(self):
-        return self.get('licenses', [])
+        return self.data.get('licenses', [])
 
     def add_license(self, lobj):
         lics = self.licenses()
@@ -283,22 +283,22 @@ class Publisher(DomainObject):
 
     # FIXME: temporary, delete the properties below
     @property
-    def license_type(self): return self.get("license_type")
+    def license_type(self): return self.data.get("license_type")
     @license_type.setter
     def license_type(self, data): self.data["license_type"] = data
 
     @property
-    def license_statement(self): return self.get("license_statement")
+    def license_statement(self): return self.data.get("license_statement")
     @license_statement.setter
     def license_statement(self, data): self.data['license_statement'] = data
 
     @property
-    def version(self): return self.get("version")
+    def version(self): return self.data.get("version")
     @version.setter
     def version(self, data): self.data['version'] = data
 
     @property
-    def example_doi(self): return self.get("example_doi")
+    def example_doi(self): return self.data.get("example_doi")
     @example_doi.setter
     def example_doi(self, data): self.data['example_doi'] = data
 
