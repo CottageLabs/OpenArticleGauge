@@ -3,29 +3,27 @@ from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, TextAreaField, SelectField, validators
 from wtforms.widgets import TableWidget
 from wtforms.validators import Required, Length
-from flask import Blueprint, request, abort, render_template, flash
+from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
 from openarticlegauge.models import Publisher
 
 blueprint = Blueprint('license_form', __name__)
 
 @blueprint.route('/', methods=['GET','POST'])
-def publisher_license():
-    
-    form = PublisherLicense()
+@blueprint.route('/<publisher_id>', methods=['GET','POST'])
+def publisher_license(publisher_id=None):
+    p = Publisher.pull(publisher_id)
+    form = PublisherLicense(request.form, p)
     
     if request.method == 'POST' and form.validate():
-        p = Publisher()
-        print json.dumps(form.data, indent=4)
+        if not p:
+            p = Publisher()
         form.populate_obj(p)
-        p.publisher_name = "lala"
-        print p.publisher_name
-        print json.dumps(p.data, indent=2)
-        #Save object
-        #Redirect
+        p.save()
+        return redirect(url_for('.publisher_license', publisher_id=p.id))
         
     return render_template('license_form.html', 
-            form = form)
+            form=form)
 
 class PublisherLicense(Form):
     publisher_name = TextField('Publisher Name', [validators.required()])

@@ -41,9 +41,9 @@ class DomainObject(dict):
         overwrite this in specific model types if required'''
         return uuid.uuid4().hex
 
-    # @property
-    # def id(self):
-        # return self.data.get('id', None)
+    @property
+    def id(self):
+        return self.data.get('id', None)
         
     @property
     def version(self):
