@@ -22,7 +22,8 @@ setup(
         "redis",
         "lxml",
         "beautifulsoup4",
-        "nose==1.3.0"
+        "nose==1.3.0",
+        "setproctitle"
 		]
 )
 
