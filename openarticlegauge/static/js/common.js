@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
  * be necessary since the code below runs for all pages.
  */ 
 
-	// "add more" button for Useful links
+	// "add more" button 
 	$('.btn.journal_link').click( function () {
         
         // Insert a copy of the useful link <input> tag right before the 
@@ -27,7 +27,10 @@ jQuery(document).ready(function() {
         $('#license_fields').append(getOuterHTML('.all_license_fields'));
         
 		return false; // prevent form submission
+           
 	});
+    
+    $('#license-example_doi').focusout(resolve_doi);
     
 });
 
@@ -46,4 +49,25 @@ function getOuterHTML(selector) {
      * undesirable.
      */
 	return $(selector).clone().wrap('<p>').parent().html();
+}
+
+function resolve_doi() {
+    var elem = $(this);
+    var doi = elem.val();
+           
+    $.ajax({
+        type: "GET",
+        async: true,
+        url: '/resolve_doi/' + doi,
+        success: function(data, textStatus, jqXHR) { elem.after(
+        '<p><a target="_blank" href="'+ data + '">'+ data +'</a></p>'
+        ); },
+        error: function(jqXHR, textStatus, errorThrown ) { elem.after(
+        '<p>Could not contact OAG. '+ errorThrown +'</p>'
+        ); }
+        
+        
+    });
+    
+      
 }
