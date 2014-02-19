@@ -49,12 +49,14 @@ the publisher who publishes the journals given by the URL-s.
     (http://aprendeenlinea.udea.edu.co/revistas/index.php/red) as long
     as all articles in the journal can be found under that folder.)
     -----------------
-    License statement   License   Version (optional)      Example article URL
-    v
-    v   [textarea]      [drop     [version text input]    [URL text input]          (+)
-    v                   down]
+    License statement   License   Version (optional)      Example DOI
+     
+        [textarea]      [drop     [version text input]    [DOI text input]
+                        down]                             (show URL the DOI resolves to or an error here)
 
-                        Submit
+                        (      +      )
+
+    Submit
 ```
 
 All fields are mandatory unless noted otherwise above.
