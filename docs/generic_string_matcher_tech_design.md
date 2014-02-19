@@ -23,20 +23,16 @@ the publisher who publishes the journals given by the URL-s.
     ],
     "licenses": [
         {
-        "This article is available under CC-BY.":
-            {
-                "license_type": "cc-by",
-                "version": "",
-                "example_article_url": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314"
-            }
+            "license_statement": "This article is available under CC-BY.",
+            "license_type": "cc-by",
+            "version": "",
+            "example_article_url": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314"
         },
         {
-        "This article is available under CC-BY-NC v.3.0.":
-            {
-                "license_type": "cc-by-nc",
-                "version": "3.0",
-                "example_article_url": "http://a_url"
-            }
+            "license_statement": "This article is available under CC-BY-NC v.3.0.",
+            "license_type": "cc-by-nc",
+            "version": "3.0",
+            "example_article_url": "http://a_url"
         }
     ]
 }

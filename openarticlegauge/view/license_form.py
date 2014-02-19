@@ -41,6 +41,6 @@ class LicenseForm(Form):
 class PublisherLicenseForm(Form):
     publisher_name = TextField('Publisher Name', [validators.required()])
     journal_urls = FieldList(TextField('Journal URL',[validators.required(), validators.URL()]), min_entries=1)
-    license = FormField(LicenseForm)
+    licenses = FieldList(FormField(LicenseForm), min_entries=1)
     
 

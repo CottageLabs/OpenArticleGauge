@@ -17,11 +17,19 @@
         </div>
     {% elif field.type == 'FieldList' %}
         {% for subfield in field %}
+            {% if subfield.type == 'FormField' %}
+                {{ render_field(subfield,
+                      render_subfields_horizontal=render_subfields_horizontal,
+                      **kwargs
+                   )
+                }}
+            {% else %}
             <div class="control-group
             {% if subfield.errors %} error{% endif %}
             ">
                 {{ __render_field(subfield, **kwargs) }}
             </div>
+            {% endif %}
         {% endfor %}    
     {% else %}
         <div class="control-group
