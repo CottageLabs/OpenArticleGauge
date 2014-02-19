@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
  */ 
 
 	// "add more" button 
-	$('.btn.journal_link').click( function () {
+	$('.btn.journal_link').click( function (event) {
         
         all_e = $('[id^=journal_urls-]');
         e = all_e.last();
@@ -24,10 +24,10 @@ jQuery(document).ready(function() {
         e.after(ne);
         e.after('<br>');        
         
-        event.preventDefault();
-        });
+		event.preventDefault(); // prevent form submission
+    });
         
-    $('.btn.more_licenses').click( function () {
+    $('.btn.more_licenses').click( function (event) {
         
         all_e = $('[id^=licenses-][id$="container"]');
         e = all_e.last();

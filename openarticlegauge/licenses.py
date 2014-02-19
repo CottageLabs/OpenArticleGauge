@@ -3,6 +3,8 @@ A list of licenses based on the http://www.opendefinition.org/ list.
 Defines license attributes such as name, url and rights granted.
 """
 
+from collections import OrderedDict
+
 # Not all licenses may have rights / requirements declared, but for those that
 # do, this is what the keys mean
 license_rights_info = {
@@ -1435,4 +1437,17 @@ LICENSES = {
    }
 }
 
+licenses_dropdown = [('','')] # default: empty
+__process_licenses = OrderedDict(sorted(LICENSES.items(), key=lambda x: x[1]['title'])).items() # in alphabetical order of the titles (shown to the user)
 
+# Creative Commons first
+for lic_type, info in __process_licenses[:]:
+    if lic_type.startswith('cc-'):
+        choice = (lic_type, info.get('title', lic_type))
+        licenses_dropdown.append(choice)
+        __process_licenses.remove((lic_type, info))
+
+# the rest
+for lic_type, info in __process_licenses:
+    choice = (lic_type, info.get('title', lic_type))
+    licenses_dropdown.append(choice)

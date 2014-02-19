@@ -258,49 +258,32 @@ class Publisher(DomainObject):
     __type__ = 'publisher'
 
     @property
-    def journal_url(self): return self.data.get("journal_url")
-    @journal_url.setter
-    def journal_url(self, data): self.data['journal_url'] = data
+    def journal_urls(self): return self.data.get("journal_urls")
+    @journal_urls.setter
+    def journal_urls(self, data): self.data['journal_urls'] = data
 
     @property
     def publisher_name(self): return self.data.get("publisher_name")
     @publisher_name.setter
     def publisher_name(self, value): self.data['publisher_name'] = value
 
+    @property
     def licenses(self):
         return self.data.get('licenses', [])
 
+    @licenses.setter
+    def licenses(self, data): self.data['licenses'] = data
+
     def add_license(self, lobj):
-        lics = self.licenses()
+        lics = self.licenses
         lics.append(lobj)
 
     def remove_license(self, license_statement):
-        lics = self.licenses()
+        lics = self.licenses
         try:
             del lics[license_statement]
         except KeyError:
             pass
-
-    # FIXME: temporary, delete the properties below
-    @property
-    def license_type(self): return self.data.get("license_type")
-    @license_type.setter
-    def license_type(self, data): self.data["license_type"] = data
-
-    @property
-    def license_statement(self): return self.data.get("license_statement")
-    @license_statement.setter
-    def license_statement(self, data): self.data['license_statement'] = data
-
-    @property
-    def version(self): return self.data.get("version")
-    @version.setter
-    def version(self, data): self.data['version'] = data
-
-    @property
-    def example_doi(self): return self.data.get("example_doi")
-    @example_doi.setter
-    def example_doi(self, data): self.data['example_doi'] = data
 
 class ResultSet(object):
     """

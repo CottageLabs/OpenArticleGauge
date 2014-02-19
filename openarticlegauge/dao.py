@@ -31,7 +31,7 @@ class DomainObject(dict):
             
     @classmethod
     def target(cls):
-        t = 'http://' + app.config['ELASTIC_SEARCH_HOST'].lstrip('http://').rstrip('/') + '/'
+        t = app.config['ELASTIC_SEARCH_HOST'].rstrip('/') + '/'
         t += app.config['ELASTIC_SEARCH_DB'] + '/' + cls.__type__ + '/'
         return t
     
@@ -105,6 +105,16 @@ class DomainObject(dict):
                 return cls(**out.json())
         except:
             return None
+
+    @classmethod
+    def all(cls):
+        res = cls.query(q='*')
+        if res['hits']['total'] <= 0:
+            return []
+
+        hits = res['hits']['hits']
+        results = [cls(**h) for h in hits]
+        return results
 
     @classmethod
     def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, **kwargs):

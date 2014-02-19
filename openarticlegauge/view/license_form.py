@@ -6,6 +6,7 @@ from wtforms.validators import Required, Length
 from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
 from openarticlegauge.models import Publisher
+from openarticlegauge.licenses import licenses_dropdown
 
 blueprint = Blueprint('license_form', __name__)
 
@@ -19,8 +20,10 @@ def publisher_license(publisher_id=None):
     if request.method == 'POST' and form.validate():
         if not p:
             p = Publisher()
-        
-        form.populate_obj(p)
+        p.publisher_name = form.publisher_name.data
+        p.journal_urls = form.journal_urls.data
+        p.licenses = form.licenses.data
+        #form.populate_obj(p)
         print json.dumps(p.data, indent=4)
         p.save()
         return redirect(url_for('.publisher_license', publisher_id=p.id))
@@ -34,7 +37,7 @@ class LicenseForm(Form):
         super(LicenseForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
     
     license_statement = TextAreaField('License Statement', [validators.required()])
-    license_type = SelectField('Licenses', [validators.required()], choices=[('CC-By', 'CC-BY'), ('cc-nc', 'CC-NC'), ('cc-sa', 'CC-SA')])
+    license_type = SelectField('Licenses', [validators.required()], choices=licenses_dropdown)
     version = TextField('Version')
     example_doi = TextField('Example DOI', [validators.required(), validators.Regexp("^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\..+\/.+)")])
             

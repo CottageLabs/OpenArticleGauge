@@ -5,10 +5,11 @@ It's a bit special - instead of storing what license statements match to what li
 in the code, it fetches these (called Publisher configurations) from the database.
 """
 from openarticlegauge import plugin
+from openarticlegauge.models import Publisher
 
 import requests
 
-class UbiquitousPlugin(plugin.Plugin):
+class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' 
     
@@ -26,10 +27,7 @@ class UbiquitousPlugin(plugin.Plugin):
         """
         work_on = provider.get('url', [])
 
-        # validate the url(s) - don't actually send out network
-        # requests, but at least check if the requests library we're
-        # using thinks the URL is sane at all by just preparing a
-        # Request object
+        
         for url in work_on:
             if self.supports_url(url):
                 return True
