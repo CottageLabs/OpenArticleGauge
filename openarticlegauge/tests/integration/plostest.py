@@ -1,6 +1,7 @@
 import requests, json, sys
 from time import sleep
 import traceback
+from openarticlegauge import config
 
 def plostest():
     wait = False
@@ -73,7 +74,7 @@ def plostest():
         while len(idbatch):
             headers = {'content-type': 'application/json'}
             try:
-                rr = requests.post('http://localhost:5000/lookup/',data=json.dumps(idbatch), headers=headers)
+                rr = requests.post('http://{host}:5000/lookup/'.format(host=config.DEFAULT_HOST),data=json.dumps(idbatch), headers=headers)
             except Exception:
                 print 'Exception while trying to send a batch of ID-s to OAG'
                 exc_type, exc_value, exc_traceback = sys.exc_info()

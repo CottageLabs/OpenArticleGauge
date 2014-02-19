@@ -7,6 +7,9 @@ Application configuration file.  Read the comments by each key for details
 SECRET_KEY = 'reallysecret...'
 HOST = '0.0.0.0'
 PORT = '5000'
+DEFAULT_HOST = 'localhost'  # not where the app runs (that's HOST), but where elasticsearch and redis live.
+                            # all tests and the celery config should use this
+                            # also used as default SMTP server address
 DEBUG = True
 MAX_CONTENT_LENGTH = 1024 * 1024 * 3
 NO_QUERY_VIA_API = ["account"]
@@ -71,7 +74,7 @@ PLUGIN_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins"
 #]
 
 # Cache configuration
-REDIS_CACHE_HOST = "localhost"
+REDIS_CACHE_HOST = DEFAULT_HOST
 REDIS_CACHE_PORT = 6379
 REDIS_CACHE_DB = 2
 REDIS_CACHE_TIMEOUT = 7776000 # approximately 3 months
@@ -97,7 +100,7 @@ BUFFER_FLUSH_PERIOD = 30
 BUFFER_GRACE_PERIOD = 10
 
 # Redis buffer configuration
-REDIS_BUFFER_HOST = "localhost"
+REDIS_BUFFER_HOST = DEFAULT_HOST
 REDIS_BUFFER_PORT = 6379
 REDIS_BUFFER_DB = 3
 
@@ -106,7 +109,7 @@ REDIS_BUFFER_DB = 3
 BUFFER_BLOCK_SIZE = 1000
 
 # elasticsearch configs
-ELASTIC_SEARCH_HOST = 'http://localhost:9200'
+ELASTIC_SEARCH_HOST = 'http://{host}:9200'.format(host=DEFAULT_HOST)
 ELASTIC_SEARCH_DB = 'oag'
 INITIALISE_INDEX = True
 
@@ -140,7 +143,7 @@ MAPPINGS['license'] = {'license':MAPPINGS['record']['record']}
 MAPPINGS['account'] = {'account':MAPPINGS['record']['record']}
 
 # OAG version and user agent string
-version = '0.1 alpha'
+version = '0.2 alpha'
 agent = 'OpenArticleGauge Service/' + version
 
 # Date format to be used throughout the system

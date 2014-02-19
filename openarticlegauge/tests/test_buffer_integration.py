@@ -16,11 +16,11 @@ from unittest import TestCase
 from openarticlegauge import workflow, config, models, cache
 import redis, json, datetime, requests, uuid, time
 
-test_host = "localhost"
+test_host = config.DEFAULT_HOST
 test_port = 6379
 test_db = 2 # use the real cache database, since this is an integration tests
 
-lookup_url = "http://localhost:5000/lookup/"
+lookup_url = "http://{host}:5000/lookup/".format(host=config.DEFAULT_HOST)
 
 class TestIntegration(TestCase):
 
