@@ -3,7 +3,7 @@
         <div class="control-group
         {% if field.errors %} error{% endif %}
         {% if render_subfields_horizontal %} row-fluid{% endif %}
-        ">
+        " id="{{field.short_name}}-container">
             {% for subfield in field %}
                 {% if render_subfields_horizontal 
                 and not (subfield.type == 'CSRFTokenField' and not subfield.value)%}

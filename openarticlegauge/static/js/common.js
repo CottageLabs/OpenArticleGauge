@@ -11,26 +11,58 @@ jQuery(document).ready(function() {
 	// "add more" button 
 	$('.btn.journal_link').click( function () {
         
-        // Insert a copy of the useful link <input> tag right before the 
-		// "add more" button.
-		// getOuterHTML is a homebrew f(), not a jQuery one!
-        $('#journal_url_row').append(getOuterHTML('.repeat_journal'));
+        all_e = $('[id^=journal_urls-]');
+        e = all_e.last();
+        ne = e.clone()[0];
+        ne.value = '';
+        items = ne.id.split('-');
+        number = parseInt(items.pop());
+        number = number + 1;
+        new_id = 'journal_urls-' + number;
+        ne.id = new_id;
+        ne.name = new_id;
+        e.after(ne);
+        e.after('<br>');        
         
-        return false;
+        event.preventDefault();
         });
         
-    $('.btn.addmore').click( function () {
+    $('.btn.more_licenses').click( function () {
         
-        // Insert a copy of the useful link <input> tag right before the 
-		// "add more" button.
-		// getOuterHTML is a homebrew f(), not a jQuery one!
-        $('#license_fields').append(getOuterHTML('.all_license_fields'));
+        all_e = $('[id^=licenses-][id$="container"]');
+        e = all_e.last();
+        ne = e.clone()[0];
+        ne.value = '';
+        items = ne.id.split('-');
+        number = parseInt(items[1]);
+        number = number + 1;
+        new_id = 'licenses-' + number + '-container';
+        ne.id = new_id;
+        ne = $(ne);
+        ne.find('[id^=licenses-]').each( function () {
+            var ce = $(this);
+            ce.attr('value', '');
+            console.log(ce);
+            console.log(ce.attr('id'));
+            items = ce.attr('id').split('-');
+            number = parseInt(items[1]);
+            number = number + 1;
+            new_id = 'licenses-' + number + '-' + items[2];
+            ce.attr('id', new_id);
+            ce.attr('name', new_id);
+            ce.siblings('.resolved_doi').remove();
+            
+
+        });
+        e.after(ne);
+        $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
         
-		return false; // prevent form submission
+		event.preventDefault(); // prevent form submission
+        
            
 	});
     
-    $('#license-example_doi').focusout(resolve_doi);
+    $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
     
 });
 
@@ -55,19 +87,24 @@ function resolve_doi() {
     var elem = $(this);
     var doi = elem.val();
            
-    $.ajax({
-        type: "GET",
-        async: true,
-        url: '/resolve_doi/' + doi,
-        success: function(data, textStatus, jqXHR) { elem.after(
-        '<p><a target="_blank" href="'+ data + '">'+ data +'</a></p>'
-        ); },
-        error: function(jqXHR, textStatus, errorThrown ) { elem.after(
-        '<p>Could not contact OAG. '+ errorThrown +'</p>'
-        ); }
+    if (doi) {
+        $.ajax({
+            type: "GET",
+            async: true,
+            url: '/resolve_doi/' + doi,
+            success: function(data, textStatus, jqXHR) { 
+                elem.siblings('.resolved_doi').remove();
+                elem.after(
+                    '<p class="resolved_doi"><a target="_blank" href="'+ data + '">'+ data +'</a></p>'
+                    ); 
+            },
+            error: function(jqXHR, textStatus, errorThrown ) { elem.after(
+            '<p class="resolved_doi">Could not contact OAG. '+ errorThrown +'</p>'
+            ); }
+          
         
-        
-    });
+        });
+    }
     
       
 }

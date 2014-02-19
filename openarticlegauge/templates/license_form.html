@@ -16,12 +16,23 @@
         {% endfor %}
     {% endif %}
     <div>
+        <div class="form-horizontal">
         {{render_field(form.publisher_name, placeholder="PLOS")}}
+        </div>
         <hr>
-        {{render_field(form.journal_urls, placeholder="http://www.plosone.org/")}}
-        <button class="btn journal_link">+</button>
+        <div class="row-fluid">
+            <div class="span4 form-horizontal">
+            {{render_field(form.journal_urls, placeholder="http://www.plosone.org/")}}
+            </div>
+            <div class="span3">            
+            <button class="btn journal_link">+</button>
+            </div>
+        </div>
         <hr>
         {{render_field(form.licenses, render_subfields_horizontal=True)}}
+        
+        <button class="btn more_licenses">+</button>
+        
     </div>
     <hr>
     
