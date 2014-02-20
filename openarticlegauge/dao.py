@@ -117,6 +117,16 @@ class DomainObject(dict):
         return results
 
     @classmethod
+    def q2obj(cls, **kwargs):
+        res = cls.query(**kwargs)
+        if res['hits']['total'] <= 0:
+            return []
+
+        hits = res['hits']['hits']
+        results = [cls(**h['_source']) for h in hits]
+        return results
+
+    @classmethod
     def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, **kwargs):
         '''Perform a query on backend.
 

@@ -8,6 +8,7 @@ from openarticlegauge import plugin
 from openarticlegauge.models import Publisher
 
 import requests
+import json
 
 class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
@@ -26,91 +27,29 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         Does this plugin support this provider
         """
         work_on = provider.get('url', [])
+        work_on = self.clean_urls(work_on)
 
-        
-        for url in work_on:
-            if self.supports_url(url):
-                return True
+        configs = Publisher.q2obj(terms={'journal_urls':work_on})
+        if configs:
+            return True
 
         return False
     
-    def supports_url(self, url):
-        req = requests.Request('GET', url)
-        try:
-            req.prepare()
-            return True
-        except requests.exceptions.RequestException as e:
-            print e
-            return False
-
     def license_detect(self, record):
+        work_on = record.provider_urls
+        config_search = self.clean_urls(work_on)
         
-        """
-        This should determine the licence conditions of the article and populate
-        the record['bibjson']['license'] (note the US spelling) field.
-        """
-        
-        lic_statements = [
-            {'licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License':
-                {'type': 'cc-nc-sa',
-                 'version':'3.0',
-                 'url': 'http://creativecommons.org/licenses/by-nc-sa/3.0/'}
-            },
-            {'licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License':
-                {'type': 'cc-nc-nd',
-                         'version':'3.0',
-                         'url': 'http://creativecommons.org/licenses/by-nc-nd/3.0/'}
-            },
-            {'licensed under a Creative Commons Attribution 3.0 Unported License':
-                {'type': 'cc-by',
-                         'version':'3.0',
-                         'url': 'http://creativecommons.org/licenses/by/3.0/'}
-            },
-            {"under the Creative Commons Attribution 3.0 License":
-                {'type': 'cc-by', 
-                 'version':'3.0', 
-                 'url': 'http://creativecommons.org/licenses/by/3.0'}
-            },
-            {"under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>)":
-                {'type': 'cc-by', 
-                 'version':'2.0', 
-                 'url': 'http://creativecommons.org/licenses/by/2.0'}
-            },
-            {"under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)":
-                {'type': 'cc-by', 
-                 'version':'3.0', 
-                 'url': 'http://creativecommons.org/licenses/by/3.0'}
-            },
-            {'under the terms of the Creative Commons Attribution License <br/>(<a href="http://creativecommons.org/licenses/by/3.0" target="_blank">http://creativecommons.org/licenses/by/3.0</a>)':
-                {'type': 'cc-by', 
-                 'version':'3.0', 
-                 'url': 'http://creativecommons.org/licenses/by/3.0'}
-            },
-            {"under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0)":
-                {'type': 'cc-nc', 
-                 'version':'3.0', 
-                 'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
-            },
-            {"under the terms of the free Open Government License":
-                {'type': 'uk-ogl'}
-            },
-            {"under the Creative Commons CC0 public domain dedication":
-                {'type': 'cc-zero'}
-            },
-            {"under the terms of the Creative Commons Attribution License":
-                {'type': 'cc-by'}
-            },
-        ]
-        
-        """
-        if "provider" not in record:
-            return
-        if "url" not in record["provider"]:
-            return
-        """
-        
-        #for url in record['provider']['url']:
-        for url in record.provider_urls:
-            if self.supports_url(url):
-                self.simple_extract(lic_statements, record, url,
-                        first_match=True)
+        for index, url in enumerate(config_search):
+            config_search[index] = url.split('/')[0]
+
+        configs = Publisher.q2obj(terms={'journal_urls':config_search})
+
+        lic_statements = []
+        for c in configs:
+            for l in c['licenses']:
+                lic_statement = {}
+                lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l['version']}
+                lic_statements.append(lic_statement)
+
+        for url in work_on:
+            self.simple_extract(lic_statements, record, url, first_match=True)

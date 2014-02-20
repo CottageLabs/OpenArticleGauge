@@ -196,7 +196,7 @@ class Plugin(object):
 
             # logging.debug(cmp_statement)
 
-            if cmp_statement in content:
+            if cmp_statement in content.decode('utf-8'):
                 
                 # logging.debug('... matches')
 
