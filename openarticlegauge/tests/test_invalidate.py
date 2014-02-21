@@ -10,6 +10,31 @@ from unittest import TestCase
 from openarticlegauge import models, invalidate, config
 import time
 
+# run this if you want to test the migrate script
+def generate_migrate_test():
+    records = []
+    
+    # a few records missing the handler and version
+    records.append(generate_record("111", [("failed-to-obtain-license", None, None)]))
+    records.append(generate_record("222", [("failed-to-obtain-license", None, None)]))
+    records.append(generate_record("333", [("failed-to-obtain-license", None, None)]))
+    records.append(generate_record("444", [("failed-to-obtain-license", None, None)]))
+    
+    # a few properly created records
+    records.append(generate_record("555", [("cc-by", "plugin_a", "1.0")]))
+    records.append(generate_record("666", [("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("777", [("cc-by", "plugin_b", "1.0")]))
+    records.append(generate_record("888", [("cc-by", "plugin_b", "2.0")]))
+
+    # a few combos
+    records.append(generate_record("141414", [("failed-to-obtain-license", None, None), ("cc-by", "plugin_a", "1.0")]))
+    records.append(generate_record("151515", [("failed-to-obtain-license", None, None), ("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("161616", [("failed-to-obtain-license", None, None), ("cc-by", "plugin_b", "1.0")]))
+    records.append(generate_record("171717", [("failed-to-obtain-license", None, None), ("cc-by", "plugin_b", "2.0")]))
+    
+    for bj in records:
+        models.Record.store(bj)
+
 def generate_records():
     records = []
     

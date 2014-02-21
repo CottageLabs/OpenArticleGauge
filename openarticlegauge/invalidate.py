@@ -21,7 +21,6 @@ invalidate.py -e -u
 
 Definition of options:
 
--e - license has /no/ handlers (required if -a or -p is not specified)
 -a - all handlers of all versions AND those which have no handlers (required if -e or -p is not specified)
 -p - the name of the handler (required if -a or -e is not specified)
 -v - the version of the handler (optional).  If omitted, all versions of the handler will be dealt with.  Must only be present if -p is specified
@@ -34,20 +33,17 @@ import json
 
 ES_PAGE_SIZE = 100
 
-def invalidate_license(license_type=None, handler=None, handler_version=None, treat_none_as_missing=False, reporter=None):
+def invalidate_license(license_type=None, handler=None, handler_version=None, reporter=None):
     """
     Invalidate all licences with the specified licence type.  The handler and handler_version may
-    be left unset, or set to a specific value.  If left unset then treat_none_as_missing may be used
-    to expressly indicate whether a None value for the handler is a wildcard or implies that there
-    is no handler specified
+    be left unset, or set to a specific value.
     
     arguments
     license_type -- the type of the licence as would appear in the bibjson record in bibjson['license'][n]['type']
         common values include failed-to-obtain-licence, cc-by, cc0, etc, but there are a long list of possible options
     handler -- the name of the handler which assigned the licence
     handler_version -- the version of the named handler which assigned the licence (should be a string, e.g. "1.0.2")
-    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
-                             if False, then if handler=None then this will look for any value (other than None) in the handler field
+    
     reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
     
     """
@@ -91,9 +87,9 @@ def invalidate_license(license_type=None, handler=None, handler_version=None, tr
     reporter("using initial search query: " + json.dumps(query))
     
     # now delegate to invalidate_license_by_query
-    invalidate_license_by_query(query, license_type=license_type, handler=handler, handler_version=handler_version, treat_none_as_missing=treat_none_as_missing, reporter=reporter)
+    invalidate_license_by_query(query, license_type=license_type, handler=handler, handler_version=handler_version, reporter=reporter)
 
-def invalidate_license_by_query(query, license_type=None, handler=None, handler_version=None, treat_none_as_missing=None, reporter=None):
+def invalidate_license_by_query(query, license_type=None, handler=None, handler_version=None, reporter=None):
     """
     The query is used to select the records which are affected, the license_type, hander and handler_version are used to 
     determine which license(s) to remove from the selected record
@@ -134,14 +130,14 @@ def invalidate_license_by_query(query, license_type=None, handler=None, handler_
         
         # process the response from the query
         # FIXME: we still need the parameters for license_type, handler, handler_version
-        _process_response(response, license_type, handler, handler_version, treat_none_as_missing, reporter)
+        _process_response(response, license_type, handler, handler_version, reporter)
         
         if total > end_of_current_page:
             query["from"] = query["from"] + query["size"]
         else:
             break
 
-def _process_response(response, license_type, handler, handler_version, treat_none_as_missing, reporter):
+def _process_response(response, license_type, handler, handler_version, reporter):
     """
     Process the Elasticsearch response object by taking all the records therein and deleting
     the licences consistent with the arguments.
@@ -151,8 +147,6 @@ def _process_response(response, license_type, handler, handler_version, treat_no
     license_type -- the type of licence to remove
     handler -- the handler to remove (can be None)
     handler_version -- the handler_version to remove (can be None)
-    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
-                             if False, then if handler=None then this will look for any value (other than None) in the handler field
     reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
     
     """
@@ -165,7 +159,7 @@ def _process_response(response, license_type, handler, handler_version, treat_no
         keep = []
         for license in record.get("license", []):
             type_match = license.get("type") == license_type
-            handler_match = _handler_match(license, handler, treat_none_as_missing)
+            handler_match = _handler_match(license, handler)
             version_match = license.get("provenance", {}).get("handler_version") == handler_version if handler_version is not None else True
             if not (type_match and handler_match and version_match):
                 keep.append(license)
@@ -176,22 +170,27 @@ def _process_response(response, license_type, handler, handler_version, treat_no
     # now push the records back to the index
     models.Record.bulk(records)
 
-def _handler_match(license, handler, treat_none_as_missing):
+def _handler_match(license, handler):
     """
-    Determine if the supplied license matches the handler and the treat_none_as_missing treatment
+    Determine if the supplied license matches the handler
     
     arguments:
     license -- the license extracted from the bibjson record
     handler -- the name of the handler to match (can be None)
-    treat_none_as_missing -- if True, then if handler=None then this will look for licences which do not have a handler associated with them
-                             if False, then if handler=None then this will look for any value (other than None) in the handler field
     
     returns:
-    True if the handler matches the licence or if it is None and treat_none_as_missing is True and there is no handler in the licence
-    False otherwise
+    
     
     """
+    # if handler is none, treat as a wildcard (match anything)
+    if handler is None:
+        return True
     
+    # otherwise, does the provider's handler match
+    prov_handler = license.get("provenance", {}).get("handler")
+    return prov_handler == handler
+    
+    """
     # This method is a bit painful.  Here is the truth table:
     #
     # license handler   handler             treat_none_as_missing   match?      reason
@@ -218,6 +217,7 @@ def _handler_match(license, handler, treat_none_as_missing):
         match = False if handler is not None else True
     
     return match
+    """
 
 def stdout_reporter(msg):
     print msg
@@ -226,7 +226,6 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-e", "--empty", help="specify that the invalidation option should look for cases where no handler or handler version is available.  Must be present if -p is not specified", action="store_true")
     parser.add_argument("-a", "--all", help="speficy that all handlers should be dealt with by this invalidation operation.  Must be present if -p or -e is not specified", action="store_true")
     parser.add_argument("-p", "--plugin", help="the handler whose license to invalidate. Must be present if -a or -e is not specified")
     parser.add_argument("-v", "--version", help="the version of the handler whose license to invalidate (must only be present if -p is specified")
@@ -235,13 +234,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # -a, -p and -e are mutually exclusive
+    # -a, -p are mutually exclusive
     if args.all and args.plugin is not None:
         print "Cannot specify -a and -p  in the same command"
-        exit()
-        
-    if args.all and args.empty:
-        print "Cannot specify -a and -e in the same command"
         exit()
     
     if args.plugin and args.empty:
@@ -277,10 +272,9 @@ if __name__ == "__main__":
     license_type = "failed-to-obtain-license" if args.unknown else args.type
     handler = args.plugin
     handler_version = args.version
-    treat_none_as_missing = args.empty
     
     # and send off to the routine that invalidates licenses
-    invalidate_license(license_type, handler, handler_version, treat_none_as_missing, stdout_reporter)
+    invalidate_license(license_type, handler, handler_version, stdout_reporter)
 
 
     
