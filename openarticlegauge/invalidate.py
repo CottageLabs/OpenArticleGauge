@@ -91,12 +91,21 @@ def invalidate_license(license_type=None, handler=None, handler_version=None, tr
     reporter("using initial search query: " + json.dumps(query))
     
     # now delegate to invalidate_license_by_query
-    invalidate_license_by_query(query, treat_none_as_missing=treat_none_as_missing, reporter=reporter)
+    invalidate_license_by_query(query, license_type=license_type, handler=handler, handler_version=handler_version, treat_none_as_missing=treat_none_as_missing, reporter=reporter)
 
 def invalidate_license_by_query(query, license_type=None, handler=None, handler_version=None, treat_none_as_missing=None, reporter=None):
     """
     The query is used to select the records which are affected, the license_type, hander and handler_version are used to 
     determine which license(s) to remove from the selected record
+    
+    Use this with immense caution.
+    
+    The query provides a result set to which the license_type, handler and handler_version will be applied to filter out
+    licences that match.  This means you have to be very clear about what your query is achieving, especially in the case that
+    an item has more than one licence.  Licences are NOT nested objects in ES, and so if you ask for records which have licence.type=cc-by
+    and licence.provenance.handler=plugin_a, you will not necessarily guarantee that they match in the same licence object
+    in the list of items.
+    
     """
     # the reporter is a callback which handles messages of the progress of this operation.  If none
     # is specified we operate silently

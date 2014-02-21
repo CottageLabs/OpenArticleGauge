@@ -10,119 +10,78 @@ from unittest import TestCase
 from openarticlegauge import models, invalidate, config
 import time
 
-bibjson_records = [
-    {
-        "id" : "111",
-        "identifier" : [{"id" : "111", "canonical" : "111"}],
-        "license" : [
-            {
-                "type" : "failed-to-obtain-license",
-                "provenance" : {
-                    "handler" : "plugin_a",
-                    "handler_version" :  "1.0"
-                }
-            },
-            {
-                "type" : "failed-to-obtain-license",
-                "provenance" : {
-                    "handler" : "plugin_a",
-                    "handler_version" :  "1.0"
-                }
-            }
-        ]
-    },
-    {
-        "id" : "222",
-        "identifier" : [{"id" : "222", "canonical" : "222"}],
-        "license" : [
-            {
-                "type" : "failed-to-obtain-license",
-                "provenance" : {
-                    "handler" : "plugin_b",
-                    "handler_version" :  "1.0"
-                }
-            },
-            {
-                "type" : "failed-to-obtain-license"
-            }
-        ]
-    },
-    {
-        "id" : "333",
-        "identifier" : [{"id" : "333", "canonical" : "333"}],
-        "license" : [
-            {
-                "type" : "failed-to-obtain-license",
-                "provenance" : {
-                    "handler" : "plugin_a",
-                    "handler_version" :  "1.1"
-                }
-            },
-            {
-                "type" : "cc0",
-                "provenance" : {
-                    "handler" : "plugin_a",
-                    "handler_version" :  "1.1"
-                }
-            }
-        ]
-    },
-    {
-        "id" : "444",
-        "identifier" : [{"id" : "444", "canonical" : "444"}],
-        "license" : [{
-            "type" : "failed-to-obtain-license",
+def generate_records():
+    records = []
+    
+    # record with no licence
+    records.append(generate_record("000", []))
+    
+    # unknown licence for oag0.0, plugin_a1.0, plugin_a2.0, plugin_b1.0, plugin_c2.0
+    records.append(generate_record("111", [("failed-to-obtain-license", "plugin_a", "1.0")]))
+    records.append(generate_record("222", [("failed-to-obtain-license", "plugin_a", "2.0")]))
+    records.append(generate_record("333", [("failed-to-obtain-license", "plugin_b", "1.0")]))
+    records.append(generate_record("444", [("failed-to-obtain-license", "plugin_b", "2.0")]))
+    records.append(generate_record("555", [("failed-to-obtain-license", "oag", "0.0")]))
+    
+    # cc-by for plugin_a1.0, plugin_a2.0, plugin_b1.0, plugin_c2.0
+    records.append(generate_record("666", [("cc-by", "plugin_a", "1.0")]))
+    records.append(generate_record("777", [("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("888", [("cc-by", "plugin_b", "1.0")]))
+    records.append(generate_record("999", [("cc-by", "plugin_b", "2.0")]))
+    
+    # cc0 for plugin_a1.0, plugin_a2.0, plugin_b1.0, plugin_c2.0
+    records.append(generate_record("101010", [("cc0", "plugin_a", "1.0")]))
+    records.append(generate_record("111111", [("cc0", "plugin_a", "2.0")]))
+    records.append(generate_record("121212", [("cc0", "plugin_b", "1.0")]))
+    records.append(generate_record("131313", [("cc0", "plugin_b", "2.0")]))
+    
+    # unknown licence for oag0.0 + cc-by for plugin_a1.0, plugin_a2.0, plugin_b1.0, plugin_c2.0
+    records.append(generate_record("141414", [("failed-to-obtain-license", "oag", "0.0"), ("cc-by", "plugin_a", "1.0")]))
+    records.append(generate_record("151515", [("failed-to-obtain-license", "oag", "0.0"), ("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("161616", [("failed-to-obtain-license", "oag", "0.0"), ("cc-by", "plugin_b", "1.0")]))
+    records.append(generate_record("171717", [("failed-to-obtain-license", "oag", "0.0"), ("cc-by", "plugin_b", "2.0")]))
+    
+    # unknown licence for plugin_a1.0 + cc-by, cc0 licence for plugin_a2.0
+    records.append(generate_record("181818", [("failed-to-obtain-license", "plugin_a", "1.0"), ("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("191919", [("failed-to-obtain-license", "plugin_a", "1.0"), ("cc0", "plugin_a", "2.0")]))
+    
+    # unknown licence for plugin_b1.0 + cc-by, cc0 licence for plugin_b2.0
+    records.append(generate_record("202020", [("failed-to-obtain-license", "plugin_b", "1.0"), ("cc-by", "plugin_b", "2.0")]))
+    records.append(generate_record("212121", [("failed-to-obtain-license", "plugin_b", "1.0"), ("cc0", "plugin_b", "2.0")]))
+    
+    # cc-by licence for plugin_a1.0 + cc-by, cc0 licence for plugin_a2.0
+    records.append(generate_record("222222", [("cc-by", "plugin_a", "1.0"), ("cc-by", "plugin_a", "2.0")]))
+    records.append(generate_record("232323", [("cc-by", "plugin_a", "1.0"), ("cc0", "plugin_a", "2.0")]))
+    
+    # cc-by licence for plugin_b1.0 + cc-by, cc0 licence for plugin_b2.0
+    records.append(generate_record("242424", [("cc-by", "plugin_b", "1.0"), ("cc-by", "plugin_b", "2.0")]))
+    records.append(generate_record("252525", [("cc-by", "plugin_b", "1.0"), ("cc0", "plugin_b", "2.0")]))
+    
+    return records
+
+def generate_record(id, licence_tup):
+    record = {
+        "id" : id,
+        "identifier" : [{"id" : id, "canonical" : id}],
+        "license" : []
+    }
+    
+    for licence_type, handler, version in licence_tup:
+        record["license"].append({
+            "type" : licence_type,
             "provenance" : {
-                "handler" : "plugin_b",
-                "handler_version" :  "1.1"
+                "handler" : handler,
+                "handler_version" : version
             }
-        }]
-    },
-    {
-        "id" : "555",
-        "identifier" : [{"id" : "555", "canonical" : "555"}],
-        "license" : [{
-            "type" : "cc0",
-            "provenance" : {
-                "handler" : "plugin_a",
-                "handler_version" :  "1.0"
-            }
-        }]
-    },
-    {
-        "id" : "666",
-        "identifier" : [{"id" : "666", "canonical" : "666"}],
-        "license" : [{
-            "type" : "cc0",
-            "provenance" : {
-                "handler" : "plugin_b",
-                "handler_version" :  "1.0"
-            }
-        }]
-    },
-    {
-        "id" : "777",
-        "identifier" : [{"id" : "777", "canonical" : "777"}],
-        "license" : [{
-            "type" : "cc0",
-            "provenance" : {
-                "handler" : "plugin_a",
-                "handler_version" :  "1.1"
-            }
-        }]
-    },
-    {
-        "id" : "888",
-        "identifier" : [{"id" : "888", "canonical" : "888"}],
-        "license" : [{
-            "type" : "cc0",
-            "provenance" : {
-                "handler" : "plugin_b",
-                "handler_version" :  "1.1"
-            }
-        }]
-    },
-]
+        })
+    return record
+
+def compare(ids, length):
+    for i in ids:
+        obj = models.Record.pull(i)
+        assert len(obj.data['license']) == length
+
+bibjson_records = generate_records()
 
 class TestInvalidate(TestCase):
 
@@ -151,152 +110,156 @@ class TestInvalidate(TestCase):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
         invalidate.invalidate_license("failed-to-obtain-license", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0 - 5 should have no licence
+        compare(["000", "111", "222", "333", "444", "555"], 0)
         
-        assert len(one.data['license']) == 0
-        assert len(two.data['license']) == 0
-        assert len(three.data['license']) == 1
-        assert len(four.data['license']) == 0
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 1
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 1
+        # 6 - 21 should have 1 licence
+        compare(["666", "777", "888", "999", "101010", "111111", "121212", "131313", "141414", "151515", "161616", "171717", "181818", "191919", "202020", "212121"], 1)
+        
+        # 22 - 25 should still have two licences
+        compare(["222222", "232323", "242424", "252525"], 2)
     
     def test_02_unknown_one_plugin_any_version(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
         invalidate.invalidate_license("failed-to-obtain-license", handler="plugin_a", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0 - 2 should have no licence
+        compare(["000", "111", "222"], 0)
         
-        assert len(one.data['license']) == 0
-        assert len(two.data['license']) == 2
-        assert len(three.data['license']) == 1
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 1
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 1
+        # 3 - 13 and 18 - 19 should have 1 licence
+        compare(["333", "444", "555", "666", "777", "888", "999", "101010", "111111", "121212", "131313", "181818", "191919"], 1)
+        
+        # 14 - 17 and 20 - 25 should still have two licences
+        compare(["141414", "151515", "161616", "171717", "202020", "212121", "222222", "232323", "242424", "252525"], 2)
     
     def test_03_unknown_one_plugin_one_version(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
         invalidate.invalidate_license("failed-to-obtain-license", handler="plugin_a", handler_version="1.0", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0 - 1 should have no licence
+        compare(["000", "111"], 0)
         
-        assert len(one.data['license']) == 0
-        assert len(two.data['license']) == 2
-        assert len(three.data['license']) == 2
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 1
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 1
+        # 2 - 13, 18, 19 should have 1 licence
+        compare(["222", "333", "444", "555", "666", "777", "888", "999", "101010", "111111", "121212", "131313", "181818", "191919"], 1)
+        
+        # 14 - 17, 20 - 25 should still have two licences
+        compare(["141414", "151515", "161616", "171717", "202020", "212121", "222222", "232323", "242424", "252525"], 2)
     
     def test_04_known_all_plugins(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
         invalidate.invalidate_license("cc0", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0, and 10 - 13 should have no licence
+        compare(["000", "101010", "111111", "121212", "131313"], 0)
         
-        assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 2
-        assert len(three.data['license']) == 1
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 0
-        assert len(six.data['license']) == 0
-        assert len(seven.data['license']) == 0
-        assert len(eight.data['license']) == 0
+        # 2 - 9, 19, 21, 23, 25 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "666", "777", "888", "999", "191919", "212121", "232323", "252525"], 1)
+        
+        # 14 - 18, 20, 22, 24 should still have two licences
+        compare(["141414", "151515", "161616", "171717", "181818", "202020", "222222", "242424"], 2)
     
     def test_05_known_one_plugin_all_versions(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
         invalidate.invalidate_license("cc0", handler="plugin_b", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0, 12 - 13 should have no licence
+        compare(["000", "121212", "131313"], 0)
         
-        assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 2
-        assert len(three.data['license']) == 2
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 0
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 0
+        # 1 - 11, 21, 25 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "666", "777", "888", "999", "101010", "111111", "212121", "252525"], 1)
+        
+        # 14 - 20, 22 - 24 should still have two licences
+        compare(["141414", "151515", "161616", "171717", "181818", "191919", "202020", "222222", "232323", "242424"], 2)
         
     def test_06_known_all_plugins(self):
-        # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
-        invalidate.invalidate_license("cc0", handler="plugin_b", handler_version="1.1", reporter=invalidate.stdout_reporter)
+        invalidate.invalidate_license("cc0", handler="plugin_b", handler_version="2.0", reporter=invalidate.stdout_reporter)
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # 0, 13 should have no licence
+        compare(["000", "131313"], 0)
         
-        assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 2
-        assert len(three.data['license']) == 2
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 1
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 0
+        # 1 - 12, 21, 25 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "666", "777", "888", "999", "101010", "111111", "121212", "212121", "252525"], 1)
         
-    def test_07_unknown_no_plugins(self):
-        # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
-        invalidate.invalidate_license("failed-to-obtain-license", treat_none_as_missing=True, reporter=invalidate.stdout_reporter)
+        # 14 - 20, 22 - 24 should still have two licences
+        compare(["141414", "151515", "161616", "171717", "181818", "191919", "202020", "222222", "232323", "242424"], 2)
+    
+    def test_07_by_query_all(self):
+        query = {
+            "query" : {
+                "match_all" : {}
+            }
+        }
         
-        one = models.Record.pull("111")
-        two = models.Record.pull("222")
-        three = models.Record.pull("333")
-        four = models.Record.pull("444")
-        five = models.Record.pull("555")
-        six = models.Record.pull("666")
-        seven = models.Record.pull("777")
-        eight = models.Record.pull("888")
+        # invalidate all cc-by from plugin_b 2.0
+        invalidate.invalidate_license_by_query(query, license_type="cc-by", handler="plugin_b", handler_version="2.0")
         
-        assert len(one.data['license']) == 2
-        assert len(two.data['license']) == 1
-        assert len(three.data['license']) == 2
-        assert len(four.data['license']) == 1
-        assert len(five.data['license']) == 1
-        assert len(six.data['license']) == 1
-        assert len(seven.data['license']) == 1
-        assert len(eight.data['license']) == 1
+        # 0, 9 should have no licence
+        compare(["000", "999"], 0)
+        
+        # 1 - 8, 10 - 13, 17, 20, 24 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "666", "777", "888", "101010", "111111", "121212", "131313", "171717", "202020", "242424"], 1)
+        
+        # 14 - 16, 18, 19, 21 - 23, 25 should still have two licences
+        compare(["141414", "151515", "161616", "181818", "191919", "212121", "222222", "232323", "252525"], 2)
+
+    def test_08_by_query_specific(self):
+        query = {
+            "query" : {
+                "bool" : {
+                    "must" : [
+                        {"term" : {"license.type.exact" : "cc-by"}},
+                        {"term" : {"license.provenance.handler.exact" : "plugin_a"}},
+                        {"term" : {"license.provenance.handler_version.exact" : "1.0"}}
+                    ]
+                }
+            }
+        }
+        
+        # invalidate all cc-by from plugin_1 1.0
+        invalidate.invalidate_license_by_query(query, license_type="cc-by", handler="plugin_a", handler_version="1.0")
+        
+        # 0, 6 should have no licence
+        compare(["000", "666"], 0)
+        
+        # 1 - 5, 7 - 14, 22, 23 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "777", "888", "999", "101010", "111111", "121212", "131313", "141414", "222222", "232323"], 1)
+        
+        # 15 - 21, 24, 25 should still have two licences
+        compare(["151515", "161616", "171717", "181818", "191919", "202020", "212121", "242424", "252525"], 2)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
