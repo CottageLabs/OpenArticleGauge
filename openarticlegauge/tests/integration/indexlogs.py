@@ -1,6 +1,7 @@
 import requests, json
+from openarticlegauge import config
 
-es_url = 'http://localhost:9200/oag/log'
+es_url = 'http://{host}:9200/oag/log'.format(host=config.DEFAULT_HOST)
 es_mapping = {
     "log" : {
         "dynamic_templates" : [

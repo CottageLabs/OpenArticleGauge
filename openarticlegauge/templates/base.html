@@ -37,6 +37,8 @@
 
     <script type="text/javascript" src="/static/vendor/facetview/vendor/linkify/1.0/jquery.linkify-1.0-min.js"></script>
     <script type="text/javascript" src="/static/vendor/facetview/jquery.facetview.js"></script>
+    
+
 
     <link rel="stylesheet" href="/static/vendor/jquery-ui-1.8.18.custom/jquery-ui-1.8.18.custom.css">
     <script type="text/javascript" src="/static/vendor/jquery-ui-1.8.18.custom/jquery-ui-1.8.18.custom.min.js"></script>
@@ -61,6 +63,7 @@
                     <li><a href="/lookup">lookup</a></li>
                     <li><a href="/about">about</a></li>
                     <li><a href="/developers">developers</a></li>
+                    <li><a href="/license_statement">submit a license</a></li>
                     {% block subnav %}{% endblock %}
                 </ul>
             </div>
@@ -130,6 +133,10 @@
         </div>
     </div>
 </footer>
+{% block js_bottom %}
+<script type="text/javascript" src="/static/js/common.js"></script>
+        
+{% endblock js_bottom %}
 
 </body>
 </html>

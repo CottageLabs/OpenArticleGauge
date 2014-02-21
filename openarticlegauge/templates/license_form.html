@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers.html" import field_errors %}
+<h1> Submit License Statement </h1>
+<form action="" method="post" name="license">
+    {% if form.hidden_tag is defined %}
+        {{ form.hidden_tag() }}
+    {% else %}
+        {% if csrf_token %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        {% for f in form if f.type == 'HiddenField' %}
+            {{ f }}
+        {% endfor %}
+    {% endif %}
+    <div>
+        <div class="form-horizontal">
+        {{render_field(form.publisher_name, placeholder="PLOS")}}
+        </div>
+        <hr>
+        <div class="row-fluid">
+            <div class="span4 form-horizontal">
+            {{render_field(form.journal_urls, placeholder="http://www.plosone.org/")}}
+            </div>
+            <div class="span3">            
+            <button class="btn journal_link">+</button>
+            </div>
+        </div>
+        <hr>
+        {{render_field(form.licenses, render_subfields_horizontal=True)}}
+        <div class="btn-group row-fluid">
+            <div class="span3">&nbsp;</div>
+            <button class="btn more_licenses span6">Add more license information</button>
+        </div>
+        
+    </div>
+    <hr>
+    
+    <div class="btn-group">
+        <input type="submit" value="Submit">
+    </div>
+    
+</form>
+{% endblock %}
+
+
+
+

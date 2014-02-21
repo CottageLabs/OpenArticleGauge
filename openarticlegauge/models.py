@@ -254,6 +254,37 @@ class License(DomainObject):
     __type__ = 'license'
 
 
+class Publisher(DomainObject):
+    __type__ = 'publisher'
+
+    @property
+    def journal_urls(self): return self.data.get("journal_urls")
+    @journal_urls.setter
+    def journal_urls(self, data): self.data['journal_urls'] = data
+
+    @property
+    def publisher_name(self): return self.data.get("publisher_name")
+    @publisher_name.setter
+    def publisher_name(self, value): self.data['publisher_name'] = value
+
+    @property
+    def licenses(self):
+        return self.data.get('licenses', [])
+
+    @licenses.setter
+    def licenses(self, data): self.data['licenses'] = data
+
+    def add_license(self, lobj):
+        lics = self.licenses
+        lics.append(lobj)
+
+    def remove_license(self, license_statement):
+        lics = self.licenses
+        try:
+            del lics[license_statement]
+        except KeyError:
+            pass
+
 class ResultSet(object):
     """
     Model object to represent the return object from the API.  It represents the following data structure:

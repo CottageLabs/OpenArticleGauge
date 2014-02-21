@@ -13,6 +13,8 @@ from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
 from email.Utils import COMMASPACE, formatdate
 from email import Encoders
+
+from openarticlegauge import config
          
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -23,7 +25,7 @@ def is_safe_url(target):
     else:
         return '/'
 
-def send_mail(to, fro, subject, text, files=[],server="localhost"):
+def send_mail(to, fro, subject, text, files=[],server=config.DEFAULT_HOST):
     assert type(to)==list
     assert type(files)==list
  

@@ -3,7 +3,7 @@ from unittest import TestCase
 import redis, json, datetime
 from openarticlegauge import config, cache, models
 
-test_host = "localhost"
+test_host = config.DEFAULT_HOST
 test_port = 6379
 test_db = 3 # we are using 1 and 2 for the celery queue and the actual cache respectively
 

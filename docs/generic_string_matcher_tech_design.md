@@ -23,20 +23,16 @@ the publisher who publishes the journals given by the URL-s.
     ],
     "licenses": [
         {
-        "This article is available under CC-BY.":
-            {
-                "license_type": "cc-by",
-                "version": "",
-                "example_article_url": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314"
-            }
+            "license_statement": "This article is available under CC-BY.",
+            "license_type": "cc-by",
+            "version": "",
+            "example_article_url": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314"
         },
         {
-        "This article is available under CC-BY-NC v.3.0.":
-            {
-                "license_type": "cc-by-nc",
-                "version": "3.0",
-                "example_article_url": "http://a_url"
-            }
+            "license_statement": "This article is available under CC-BY-NC v.3.0.",
+            "license_type": "cc-by-nc",
+            "version": "3.0",
+            "example_article_url": "http://a_url"
         }
     ]
 }
@@ -53,12 +49,14 @@ the publisher who publishes the journals given by the URL-s.
     (http://aprendeenlinea.udea.edu.co/revistas/index.php/red) as long
     as all articles in the journal can be found under that folder.)
     -----------------
-    License statement   License   Version (optional)      Example article URL
-    v
-    v   [textarea]      [drop     [version text input]    [URL text input]          (+)
-    v                   down]
+    License statement   License   Version (optional)      Example DOI
+     
+        [textarea]      [drop     [version text input]    [DOI text input]
+                        down]                             (show URL the DOI resolves to or an error here)
 
-                        Submit
+                        (      +      )
+
+    Submit
 ```
 
 All fields are mandatory unless noted otherwise above.

@@ -6,12 +6,12 @@ This implementation provides storage in an Elasticsearch index.
 
 """
 
-import os, json, UserDict, requests, uuid, logging
+import os, json, requests, uuid, logging
 from datetime import datetime
 
 from openarticlegauge.core import app #, current_user
 
-class DomainObject(UserDict.IterableUserDict):
+class DomainObject(dict):
     """
     All models in models.py should inherit this DomainObject to know how to save themselves in the index and so on.
     You can overwrite and add to the DomainObject functions as required. See models.py for some examples.
@@ -21,6 +21,7 @@ class DomainObject(UserDict.IterableUserDict):
     __type__ = None # set the type on the model that inherits this
 
     def __init__(self, **kwargs):
+        super(DomainObject, self).__init__(**kwargs)
         if '_source' in kwargs:
             self.data = dict(kwargs['_source'])
             self.meta = dict(kwargs)
@@ -30,7 +31,7 @@ class DomainObject(UserDict.IterableUserDict):
             
     @classmethod
     def target(cls):
-        t = 'http://' + app.config['ELASTIC_SEARCH_HOST'].lstrip('http://').rstrip('/') + '/'
+        t = app.config['ELASTIC_SEARCH_HOST'].rstrip('/') + '/'
         t += app.config['ELASTIC_SEARCH_DB'] + '/' + cls.__type__ + '/'
         return t
     
@@ -104,6 +105,26 @@ class DomainObject(UserDict.IterableUserDict):
                 return cls(**out.json())
         except:
             return None
+
+    @classmethod
+    def all(cls):
+        res = cls.query(q='*')
+        if res['hits']['total'] <= 0:
+            return []
+
+        hits = res['hits']['hits']
+        results = [cls(**h) for h in hits]
+        return results
+
+    @classmethod
+    def q2obj(cls, **kwargs):
+        res = cls.query(**kwargs)
+        if res['hits']['total'] <= 0:
+            return []
+
+        hits = res['hits']['hits']
+        results = [cls(**h['_source']) for h in hits]
+        return results
 
     @classmethod
     def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, **kwargs):

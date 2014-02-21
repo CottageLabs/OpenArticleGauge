@@ -28,8 +28,8 @@ CELERY_CONFIG_MODULE = 'openarticlegauge.celeryconfig'
 #CELERYD_LOG_FILE = 'celery/log/%n.log')
 #CELERYD_PID_FILE = 'celery/run/%n.pid'
 
-BROKER_URL = 'redis://localhost'
-CELERY_RESULT_BACKEND = "redis://localhost"
+BROKER_URL = 'redis://{host}'.format(host=config.DEFAULT_HOST)
+CELERY_RESULT_BACKEND = 'redis://{host}'.format(host=config.DEFAULT_HOST)
 CELERY_IMPORTS = ('openarticlegauge.workflow', 'openarticlegauge.models')
 
 CELERY_TASK_SERIALIZER = 'json'

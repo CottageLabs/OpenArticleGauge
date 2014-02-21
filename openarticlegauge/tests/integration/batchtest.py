@@ -1,5 +1,6 @@
 import requests, json
 from time import sleep
+from openarticlegauge import config
 
 
 def batchtest():
@@ -22,7 +23,7 @@ def batchtest():
     while len(ids):
         print len(ids)
         headers = {'content-type': 'application/json'}
-        rr = requests.post('http://localhost:5000/lookup/',data=json.dumps(ids), headers=headers)
+        rr = requests.post('http://{host}:5000/lookup/'.format(host=config.DEFAULT_HOST),data=json.dumps(ids), headers=headers)
         rs = rr.json()
         if len(rs['processing']) == 0:
             return
