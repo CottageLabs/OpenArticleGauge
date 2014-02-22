@@ -8,7 +8,7 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    var record_url = 'http://localhost:5000/query/?';
+    var record_url = '/query/?';
     var record_datatype = 'JSONP';
     
     var record_resdisplay = [
@@ -104,23 +104,39 @@ jQuery(document).ready(function($) {
     ];
 
     function postSearch() {
-        var has_type_filter = false
+        var type_filter = undefined
+        var handler_filter = undefined
+        var version_filter = undefined
+        
         $(".facetview_filterselected").each(function() {
             if ($(this).attr("rel") === "license.type.exact") {
-                has_type_filter = true
+                type_filter = $(this).attr("href")
+            }
+            if ($(this).attr("rel") === "license.provenance.handler.exact") {
+                handler_filter = $(this).attr("href")
+            }
+            if ($(this).attr("rel") === "license.provenance.handler_version.exact") {
+                version_filter = $(this).attr("href")
             }
         })
-        if (has_type_filter) {
+        
+        $("#invalidate_licenses").unbind("click")
+        
+        if (type_filter || handler_filter) {
+            // enable the submission
             $("#invalidate_licenses").removeAttr("disabled")
+            $("#invalidate_confirm").removeAttr("disabled")
+            
+            // bind the functionality to the button
             $("#invalidate_licenses").click(function(event) {
                 event.preventDefault()
                 var qy = $("#facetview").facetview.options.querystring
-                var usersays = confirm("Are you really really sure?")
+                var usersays = $("#invalidate_confirm").is(":checked")
                 if (usersays){
                     $.ajax({
                         type: "get",
                         url: "{{url_for('admin.invalidate')}}",
-                        data: {source: qy},
+                        data: {source: qy },
                         dataType: "jsonp",
                         success: function(data) {
                             alert(JSON.stringify(data))
@@ -130,7 +146,27 @@ jQuery(document).ready(function($) {
             })
             
         } else {
+            // uncheck the confirm box and disable everything
             $("#invalidate_licenses").attr("disabled", "disabled")
+            $("#invalidate_confirm").attr("disabled", "disabled")
+            $("#invalidate_confirm").attr("checked", false)
+        }
+        
+        // update the UI
+        if (type_filter) {
+            $("#license_type").html(type_filter)
+        } else {
+            $("#license_type").html("any")
+        }
+        if (handler_filter) {
+            $("#handler").html(handler_filter)
+        } else {
+            $("#handler").html("any")
+        }
+        if (version_filter) {
+            $("#handler_version").html(version_filter)
+        } else {
+            $("#handler_version").html("any")
         }
     }
     
@@ -166,14 +202,24 @@ jQuery(document).ready(function($) {
 </div>
 
 <div class="row-fluid">
-    <div class="span8">&nbsp;</div>
-    <div class="span4">
-        <button id="invalidate_licenses" class="btn btn-danger" disabled="disabled">Invalidate Selected Licenses</button>
+    <div class="span9"><div id="facetview"></div></div>
+    <div class="span3">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="well">
+                    <form action="POST">
+                        <h3>Invalidate Licences</h3>
+                        <strong>License Type</strong>: <span id="license_type">any</span><br>
+                        <strong>Handler</strong>: <span id="handler">any</span><br>
+                        <strong>Handler Version</strong>: <span id="handler_version">any</span><br><br>
+                        <button id="invalidate_licenses" class="btn btn-danger" disabled="disabled">Invalidate Selected Licenses</button><br>
+                        <input id="invalidate_confirm" type="checkbox" name="confirm" value="confirm" disabled="disabled">&nbsp;Yes, I'm sure!
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row-fluid">
-    <div id="facetview"></div>
-</div>
 
 {% endblock %}

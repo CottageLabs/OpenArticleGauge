@@ -252,6 +252,31 @@ class TestInvalidate(TestCase):
         # 15 - 21, 24, 25 should still have two licences
         compare(["151515", "161616", "171717", "181818", "191919", "202020", "212121", "242424", "252525"], 2)
     
+    def test_09_by_query_handler_only(self):
+        query = {
+            "query" : {
+                "bool" : {
+                    "must" : [
+                        {"term" : {"license.type.exact" : "cc-by"}},
+                        {"term" : {"license.provenance.handler.exact" : "plugin_a"}},
+                        {"term" : {"license.provenance.handler_version.exact" : "1.0"}}
+                    ]
+                }
+            }
+        }
+        
+        # invalidate all cc-by from plugin_1 1.0
+        invalidate.invalidate_license_by_query(query, handler="plugin_a")
+        
+        # 0, 6, 18, 22, 23 should have no licence
+        compare(["000", "666", "181818", "222222", "232323"], 0)
+        
+        # 1 - 5, 7 - 14 should have 1 licence
+        compare(["111", "222", "333", "444", "555", "777", "888", "999", "101010", "111111", "121212", "131313", "141414"], 1)
+        
+        # 15 - 17, 19 - 21, 24, 25 should still have two licences
+        compare(["151515", "161616", "171717", "191919", "202020", "212121", "242424", "252525"], 2)
+    
 
 
 

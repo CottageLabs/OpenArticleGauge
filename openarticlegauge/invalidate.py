@@ -21,8 +21,8 @@ invalidate.py -e -u
 
 Definition of options:
 
--a - all handlers of all versions AND those which have no handlers (required if -e or -p is not specified)
--p - the name of the handler (required if -a or -e is not specified)
+-a - all handlers of all versions
+-p - the name of the handler (required if -a is not specified)
 -v - the version of the handler (optional).  If omitted, all versions of the handler will be dealt with.  Must only be present if -p is specified
 -t - the type of license to be removed (required if -u is not specified)
 -u - the unknown license (required if -t is not specified)
@@ -124,12 +124,13 @@ def invalidate_license_by_query(query, license_type=None, handler=None, handler_
         end_of_current_page = query["from"] + page_size
         
         if first:
+            print "total number of relevant records found: " + str(total)
             reporter("total number of relevant records found: " + str(total))
             first = False
+        print "processing records " + str(query["from"]) + " - " + str(end_of_current_page)
         reporter("processing records " + str(query["from"]) + " - " + str(end_of_current_page))
         
         # process the response from the query
-        # FIXME: we still need the parameters for license_type, handler, handler_version
         _process_response(response, license_type, handler, handler_version, reporter)
         
         if total > end_of_current_page:
@@ -144,7 +145,7 @@ def _process_response(response, license_type, handler, handler_version, reporter
     
     arguments:
     response -- Elastic search response object containing bibjson records as the individual results
-    license_type -- the type of licence to remove
+    license_type -- the type of licence to remove (can be None)
     handler -- the handler to remove (can be None)
     handler_version -- the handler_version to remove (can be None)
     reporter -- a callback function which can be used to report on the progress of this method.  Used for command line or logging integration
@@ -158,13 +159,17 @@ def _process_response(response, license_type, handler, handler_version, reporter
         reporter("processing id: " + str(record.get("id")))
         keep = []
         for license in record.get("license", []):
-            type_match = license.get("type") == license_type
+            type_match = license.get("type") == license_type or license_type is None # an incoming type of none is a wildcard
             handler_match = _handler_match(license, handler)
             version_match = license.get("provenance", {}).get("handler_version") == handler_version if handler_version is not None else True
+            #print license_type, license.get("type"), type_match
+            #print handler, license.get("provenance", {}).get("handler"), handler_match
+            #print handler_version, license.get("provenace", {}).get("handler_version"), version_match
             if not (type_match and handler_match and version_match):
                 keep.append(license)
         diff = len(record.get('license', [])) - len(keep) 
         record['license'] = keep
+        print "removed " + str(diff) + " licenses from " + str(record.get("id"))
         reporter("removed " + str(diff) + " licenses from " + str(record.get("id")))
     
     # now push the records back to the index

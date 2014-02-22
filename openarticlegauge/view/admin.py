@@ -4,7 +4,7 @@ from flask.ext.login import login_required
 from openarticlegauge.core import app
 import openarticlegauge.util as util
 import openarticlegauge.models as models
-import openarticlegauge.invalidate as invalidate
+import openarticlegauge.invalidate as inval
 
 import json
 
@@ -31,8 +31,8 @@ def invalidate():
     
     fields = {
         "license.type.exact" : "license_type", 
-        "license.provenance.handler.exact" : 
-        "handler", "license.provenance.handler_version.exact" : "handler_version"
+        "license.provenance.handler.exact" : "handler", 
+        "license.provenance.handler_version.exact" : "handler_version"
     }
     
     args = {}
@@ -43,9 +43,9 @@ def invalidate():
     
     # use the query the user specified to get the records to invalidate
     # and pass the parameters of the licences to remove
-    invalidate.invalidate_license_by_query(query, **args)
+    query = {"query" : query}
+    inval.invalidate_license_by_query(query, **args)
     
-    #resp = make_response(json.dumps(args))
-    #resp.mimetype = "application/json"
-    #return resp
-    return "success"
+    resp = make_response(json.dumps(args))
+    resp.mimetype = "application/json"
+    return resp
