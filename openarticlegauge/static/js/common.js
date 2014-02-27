@@ -11,18 +11,19 @@ jQuery(document).ready(function() {
 	// "add more" button 
 	$('.btn.journal_link').click( function (event) {
         
-        all_e = $('[id^=journal_urls-]');
+        all_e = $('[id^=journal_urls-]').parent().parent();
         e = all_e.last();
-        ne = e.clone()[0];
-        ne.value = '';
-        items = ne.id.split('-');
+        ne = $(e.clone()[0]);
+        input_ne = ne.find('[id^=journal_urls-]')[0];
+        input_ne.value = '';
+        items = input_ne.id.split('-');
         number = parseInt(items.pop());
         number = number + 1;
         new_id = 'journal_urls-' + number;
-        ne.id = new_id;
-        ne.name = new_id;
+        input_ne.id = new_id;
+        input_ne.name = new_id;
         e.after(ne);
-        e.after('<br>');        
+               
         
 		event.preventDefault(); // prevent form submission
     });
