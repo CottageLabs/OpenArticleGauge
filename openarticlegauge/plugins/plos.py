@@ -4,51 +4,13 @@ class PLOSPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
+    __desc__ = "Handles articles from PLOS"
     
-    base_urls = ["www.plosone.org", "www.plosbiology.org", "www.plosmedicine.org",
+    _base_urls = ["www.plosone.org", "www.plosbiology.org", "www.plosmedicine.org",
                  "www.ploscompbiol.org", "www.plosgenetics.org", "www.plospathogens.org",
                  "www.plosntds.org"]
     
-    def capabilities(self):
-        return {
-            "type_detect_verify" : False,
-            "canonicalise" : [],
-            "detect_provider" : [],
-            "license_detect" : True
-        }
-    
-    def supports(self, provider):
-        """
-        Does the page_license plugin support this provider
-        """
-        
-        work_on = self.clean_urls(provider.get("url", []))
-
-        for url in work_on:
-            if self.supports_url(url):
-                return True
-
-        return False
-
-    def supports_url(self, url):
-        for bu in self.base_urls:
-            if self.clean_url(url).startswith(bu):
-                return True
-        return False
-        
-    def license_detect(self, record):
-        """
-        To respond to the PLoS provider indentifiers (see config.license_detection)
-        
-        This should determine the licence conditions of the PLoS article and populate
-        the record['bibjson']['license'] (note the US spelling) field.
-        """
-
-        # licensing statements to look for on this publisher's pages
-        # take the form of {statement: meaning}
-        # where meaning['type'] identifies the license (see licenses.py)
-        # and meaning['version'] identifies the license version (if available)
-        lic_statements = [
+    _license_mappings = [
             {"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
                 {'type': 'uk-ogl'}
             },
@@ -65,16 +27,37 @@ class PLOSPlugin(plugin.Plugin):
                 {'type': 'cc-zero'}
             },
         ]
+    
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
+    def supports(self, provider):
+        """
+        Does the page_license plugin support this provider
+        """
+        return self.supports_by_base_url(provider)
         
+    def license_detect(self, record):
         """
-        if "provider" not in record:
-            return
-        if "url" not in record["provider"]:
-            return
+        To respond to the PLoS provider indentifiers (see config.license_detection)
+        
+        This should determine the licence conditions of the PLoS article and populate
+        the record['bibjson']['license'] (note the US spelling) field.
         """
-        #for url in record['provider']['url']:
+
+        # licensing statements to look for on this publisher's pages
+        # take the form of {statement: meaning}
+        # where meaning['type'] identifies the license (see licenses.py)
+        # and meaning['version'] identifies the license version (if available)
+        lic_statements = self._license_mappings
+        
         for url in record.provider_urls:
-            if self.supports_url(url):
+            if self.supports_base_url(url):
                 self.simple_extract(lic_statements, record, url)
 
 

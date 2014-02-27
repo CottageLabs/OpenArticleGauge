@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 class PMIDPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__ = "0.1"
+    __desc__ = "Plugin to interpret PubMed ids"
     
     _rx = "^[\d]{1,8}$"
     

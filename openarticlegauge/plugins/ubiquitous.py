@@ -9,48 +9,9 @@ import requests
 class UbiquitousPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' 
+    __desc__ = "Attempts to match generic licence strings to known licences"
     
-    def capabilities(self):
-        return {
-            "type_detect_verify" : False,
-            "canonicalise" : [],
-            "detect_provider" : [],
-            "license_detect" : True
-        }
-    
-    def supports(self, provider):
-        """
-        Does this plugin support this provider
-        """
-        work_on = provider.get('url', [])
-
-        # validate the url(s) - don't actually send out network
-        # requests, but at least check if the requests library we're
-        # using thinks the URL is sane at all by just preparing a
-        # Request object
-        for url in work_on:
-            if self.supports_url(url):
-                return True
-
-        return False
-    
-    def supports_url(self, url):
-        req = requests.Request('GET', url)
-        try:
-            req.prepare()
-            return True
-        except requests.exceptions.RequestException as e:
-            print e
-            return False
-
-    def license_detect(self, record):
-        
-        """
-        This should determine the licence conditions of the article and populate
-        the record['bibjson']['license'] (note the US spelling) field.
-        """
-        
-        lic_statements = [
+    _license_mappings = [
             {'licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License':
                 {'type': 'cc-nc-sa',
                  'version':'3.0',
@@ -101,16 +62,58 @@ class UbiquitousPlugin(plugin.Plugin):
                 {'type': 'cc-by'}
             },
         ]
+    
+    def capabilities(self):
+        return {
+            "type_detect_verify" : False,
+            "canonicalise" : [],
+            "detect_provider" : [],
+            "license_detect" : True
+        }
+    
+    def supports(self, provider):
+        """
+        Does this plugin support this provider
+        """
+        work_on = provider.get('url', [])
+
+        # validate the url(s) - don't actually send out network
+        # requests, but at least check if the requests library we're
+        # using thinks the URL is sane at all by just preparing a
+        # Request object
+        for url in work_on:
+            if self.supports_url(url):
+                return True
+
+        return False
+    
+    def supports_url(self, url):
+        req = requests.Request('GET', url)
+        try:
+            req.prepare()
+            return True
+        except requests.exceptions.RequestException as e:
+            print e
+            return False
+
+    def license_detect(self, record):
         
         """
-        if "provider" not in record:
-            return
-        if "url" not in record["provider"]:
-            return
+        This should determine the licence conditions of the article and populate
+        the record['bibjson']['license'] (note the US spelling) field.
         """
         
-        #for url in record['provider']['url']:
+        lic_statements = self._license_mappings
+        
         for url in record.provider_urls:
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url,
                         first_match=True)
+    
+    def get_description(self, plugin_name):
+        pd = super(UbiquitousPlugin, self).get_description(plugin_name)
+        pd.provider_support = "Supports any URL which will respond to an HTTP GET request"
+        return pd
+    
+    
+    

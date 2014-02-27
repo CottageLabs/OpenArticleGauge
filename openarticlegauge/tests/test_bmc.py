@@ -43,13 +43,13 @@ class TestWorkflow(TestCase):
         bmc = BMCPlugin()
         test_urls = ["http://www.biomedcentral.com/983242"]
         for url in test_urls:
-            assert bmc.supports_url(url)
+            assert bmc.supports_base_url(url)
     
     def test_04_bmc_supports_url_fail(self):
         bmc = BMCPlugin()
         test_urls = ["http://www.plosone.org/", "askjdfsakjdhfsa"]
         for url in test_urls:
-            assert not bmc.supports_url(url)
+            assert not bmc.supports_base_url(url)
 
     def test_05_name_and_version(self):
         """

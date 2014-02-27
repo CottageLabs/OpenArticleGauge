@@ -12,8 +12,19 @@ class ELifePlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
+    __desc__ = "Extracts licence information from the eLife API"
     
-    base_urls = ["elife.elifesciences.org"]
+    _base_urls = ["elife.elifesciences.org"]
+    
+    _license_mappings = [
+            {'//license[@xlink:href="http://creativecommons.org/licenses/by/3.0/" and @license-type="open-access"]': 
+                {
+                    'type': 'cc-by', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by/3.0/'
+                }
+            }
+        ]
     
     def capabilities(self):
         return {
@@ -27,21 +38,8 @@ class ELifePlugin(plugin.Plugin):
         """
         Does the license_detect plugin support this provider
         """
-        
-        work_on = self.clean_urls(provider.get("url", []))
-
-        for url in work_on:
-            if self.supports_url(url):
-                return True
-
-        return False
-
-    def supports_url(self, url):
-        for bu in self.base_urls:
-            if self.clean_url(url).startswith(bu):
-                return True
-        return False
-
+        return self.supports_by_base_url(provider)
+    
     def license_detect(self, record):
         """
         To respond to the provider identifier: http://elife.elifesciences.org
@@ -55,15 +53,7 @@ class ELifePlugin(plugin.Plugin):
         # since we're not scraping HTML, we're using an XML API.
         # meaning['type'] identifies the license (see licenses.py)
         # and meaning['version'] identifies the license version (if available)
-        elife_license_mappings = [
-            {'//license[@xlink:href="http://creativecommons.org/licenses/by/3.0/" and @license-type="open-access"]': 
-                {
-                    'type': 'cc-by', 'version':'3.0',
-                    # also declare some properties which override info about this license in the licenses list (see licenses module)
-                    'url': 'http://creativecommons.org/licenses/by/3.0/'
-                }
-            }
-        ]
+        elife_license_mappings = self._license_mappings
 
         # 1. get DOI from record object
         # doi = record['provider'].get('doi')

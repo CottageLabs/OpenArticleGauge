@@ -79,6 +79,9 @@ def hello():
 def about():
     return render_template('about.html')
 
+@app.route("/plugin/<plugin_name>")
+def plugin(plugin_name):
+    pass
 
 # the info for devs goes here
 @app.route("/developers")

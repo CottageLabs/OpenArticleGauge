@@ -73,7 +73,7 @@ class TestPlugin(TestCase):
     
     # Tests on the PluginFactory
     
-    def test_04_load_from_dir(self):
+    def test_03_load_from_dir(self):
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         cfg = plugin.PluginFactory.PLUGIN_CONFIG
@@ -103,7 +103,7 @@ class TestPlugin(TestCase):
         assert ld[0]._short_name == "provider_plugin"
         
     def test_04_load_type_detect_verify(self):
-        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         config.PLUGIN_DIR = pdir
         
         bjid = {}
@@ -117,7 +117,7 @@ class TestPlugin(TestCase):
             ps[0].canonicalise({})
     
     def test_05_load_canonicalise(self):
-        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         config.PLUGIN_DIR = pdir
         
         bjid = {"id" : "123", "type" : "mine"}
@@ -128,7 +128,7 @@ class TestPlugin(TestCase):
         assert bjid['canonical'] == 'mine:123'
             
     def test_06_load_detect_provider(self):
-        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         config.PLUGIN_DIR = pdir
         
         record = {"identifier": {"id" : "123", "type" : "mine", "canonical" : "mine:123"}}
@@ -140,7 +140,7 @@ class TestPlugin(TestCase):
         assert record['provider']['url'][0] == 'http://mine'
         
     def test_07_load_license_detect(self):
-        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         config.PLUGIN_DIR = pdir
         
         record = { "provider" : {"url" : ["http://mine"]}}
@@ -152,7 +152,7 @@ class TestPlugin(TestCase):
         assert record['bibjson']['license'][0]['url'] == "http://license", record
         
     def test_08_load_no_license_detect(self):
-        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
         config.PLUGIN_DIR = pdir
         
         record = { "provider" : {"url" : ["http://another"]}}

@@ -26,6 +26,22 @@ class Plugin(object):
     ## Capabilities that must be implemented by the sub-class ##
     __version__ = "0.0"
     _short_name = "vanilla_plugin"
+    __desc__ = "A description of this plugin"
+    
+    ## Capabilities that may be implemented by the sub-class ##
+    #
+    # if you use these features, then you should use supports_by_base_url
+    # as the implementation for your supports method, and the simple_extract
+    # method
+    #
+    _base_urls = []
+    _license_mappings = []
+    
+    def has_name(self, name):
+        """
+        Determines whether this plugin responds to this name
+        """
+        return name == self._short_name
     
     def capabilities(self):
         """
@@ -44,7 +60,6 @@ class Plugin(object):
         """
         return {}
     
-    # def type_detect_verify(self, bibjson_identifier):
     def type_detect_verify(self, record):
         """
         determine if the provided record's bibjson identifier has the correct type for this plugin, by
@@ -59,7 +74,6 @@ class Plugin(object):
         """
         raise NotImplementedError("type_detect_verify has not been implemented")
     
-    # def canonicalise(self, bibjson_identifier):
     def canonicalise(self, record):
         """
         create a canonical form of the identifier
@@ -112,7 +126,64 @@ class Plugin(object):
         """
         raise NotImplementedError("license_detect has not been implemented")
     
+    def get_description(self, plugin_name):
+        """
+        Constructs and returns a description for the plugin or plugin configuration
+        identified by the given plugin name.
+        
+        In most cases the plugin_name will be the same as the _short_name but 
+        in other cases, where the plugin has multiple identities, the named plugin
+        may be different from the _short_name
+        
+        This returns a PluginDescription object.
+        
+        The sub-class should overwrite this method if necessary, although standard
+        plugins should not need to.
+        """
+        
+        provider_support = "This plugin supports the following url prefixes:\n\n"
+        provider_support += "\n".join(self._base_urls)
+        
+        license_support = "The following license statements are recognised:\n\n"
+        for license in self._license_mappings:
+            statement = license.keys()[0]
+            ltype = license[statement].get("type")
+            version = license[statement].get("version")
+            license_support += ltype + " " + version + "\n" + statement   + "\n\n"
+        
+        return PluginDescription(
+            name=self._short_name, 
+            version=self.__version__, 
+            description=self.__desc__,
+            provider_support=provider_support,
+            license_support=license_support
+            )
+    
     ## utilities that the sub-class can take advantage of ##
+    
+    def supports_by_base_url(self, provider):
+        """
+        is the provider supported based on the base_urls that the class
+        is configured with.  If you want to use this as the implementation
+        for the supports method, then you should use the _base_url member
+        variable to store your base urls.
+        """
+        work_on = self.clean_urls(provider.get("url", []))
+
+        for url in work_on:
+            if self.supports_base_url(url):
+                return True
+
+        return False
+        
+    def supports_base_url(self, url):
+        """
+        Is the provided url supported in the list in _base_url 
+        """
+        for bu in self._base_urls:
+            if self.clean_url(url).startswith(bu):
+                return True
+        return False
     
     def clean_url(self, url):
         """
@@ -231,11 +302,6 @@ class Plugin(object):
                 }
 
                 license['provenance'] = provenance
-                
-                """
-                record['bibjson'].setdefault('license', [])
-                record['bibjson']['license'].append(license)
-                """
                 record.add_license_object(license)
                 
                 if first_match:
@@ -294,8 +360,6 @@ class Plugin(object):
         return 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + source_url + '. See "error_message" in the "license" object for more information.'
 
     def describe_license_fail(self, record, source_url, why, suggested_solution='', licence_url=""):
-        #recordmanager.add_license(
-        #    record, 
         record.add_license(
             source=source_url, 
             error_message=why, 
@@ -308,6 +372,15 @@ class Plugin(object):
             handler=self._short_name,
             handler_version=self.__version__
         )
+
+class PluginDescription(object):
+    def __init__(self, name=None, version=None, description=None, provider_support=None, license_support=None):
+        self.name = name
+        self.version = version
+        self.description = description
+        self.provider_support = provider_support
+        self.license_support = license_support
+        
 
 class PluginFactory(object):
     
@@ -340,16 +413,15 @@ class PluginFactory(object):
             "type_detect_verify" : [],
             "canonicalise" : {},
             "detect_provider" : {},
-            "license_detect" : []
+            "license_detect" : [],
+            "all" : []
         }
         for inst in plugin_instances:
             caps = inst.capabilities()
+            plugin_structure["all"].append(inst)
             if caps.get("type_detect_verify", False):
                 plugin_structure["type_detect_verify"].append(inst)
             for t in caps.get("canonicalise", []):
-                #if type not in plugin_structure["canonicalise"]:
-                #    plugin_structure["canonicalise"][type] = []
-                #plugin_structure["canonicalise"][type].append(inst)
                 plugin_structure["canonicalise"][t] = inst
             for t in caps.get("detect_provider", []):
                 if t not in plugin_structure["detect_provider"]:
@@ -372,17 +444,6 @@ class PluginFactory(object):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         return cls.PLUGIN_CONFIG.get("type_detect_verify", [])
-        """
-        # FIXME: this should be updated to utilise the "capabilities" aspect of the plugin
-        plugins = []
-        for plugin_class in config.type_detection:
-            klazz = plugloader.load(plugin_class)
-            if klazz is None:
-                log.warn("unable to load plugin for detecting identifier type from " + str(plugin_class))
-                continue
-            plugins.append(klazz()) # append an instance of the class
-        return plugins
-        """
         
     @classmethod
     def canonicalise(cls, identifier_type):
@@ -398,12 +459,6 @@ class PluginFactory(object):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         return cls.PLUGIN_CONFIG.get("canonicalise", {}).get(identifier_type)
-        
-        """
-        plugin_class = config.canonicalisers.get(identifier_type)
-        klazz = plugloader.load(plugin_class)
-        return klazz() # return an instance of the class
-        """
         
     @classmethod
     def detect_provider(cls, identifier_type):
@@ -421,14 +476,6 @@ class PluginFactory(object):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         return cls.PLUGIN_CONFIG.get("detect_provider", {}).get(identifier_type, [])
-        """
-        plugins = []
-        for plugin_class in config.provider_detection.get(identifier_type, []):
-            # all provider plugins run, until each plugin has had a go at determining provider information
-            klazz = plugloader.load(plugin_class)
-            plugins.append(klazz()) # append an instance of the class
-        return plugins
-        """
     
     @classmethod
     def license_detect(cls, provider_record):
@@ -450,19 +497,27 @@ class PluginFactory(object):
             if inst.supports(provider_record):
                 return inst
         return None
+    
+    @classmethod
+    def description(cls, plugin_name):
+        """
+        Return a plugin description for the current version of the given plugin
         
+        arguments
+        plugin_name -- the name of the plugin to return a plugin description for
+        
+        returns a PluginDescription instance
         """
-        for plugin_class in config.license_detection:
-            log.debug("checking " + plugin_class + " for support of provider " + str(provider_record))
-            klazz = plugloader.load(plugin_class)
-            if klazz is None:
-                continue
-            inst = klazz()
-            
-            if inst.supports(provider_record):
-                log.debug(plugin_class + " (" + inst._short_name + " v" + inst.__version__ + ") services provider " + str(provider_record))
-                return inst
-        return None
-        """
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        
+        for inst in cls.PLUGIN_CONFIG.get("all"):
+            if inst.has_name(plugin_name):
+                description = inst.get_description(plugin_name)
+                return description
+
+
+
+
 
 

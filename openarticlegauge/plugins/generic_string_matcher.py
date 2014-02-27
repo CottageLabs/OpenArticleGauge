@@ -14,6 +14,12 @@ class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' 
     
+    def has_name(self, plugin_name):
+        """
+        Return true if there is a configuration for the given plugin name
+        """
+        return False
+    
     def capabilities(self):
         return {
             "type_detect_verify" : False,
@@ -34,6 +40,19 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             return True
 
         return False
+    
+    def get_description(self, plugin_name):
+        """
+        Return a plugin.PluginDescription object that describes the plugin configuration
+        identified by the given name
+        """
+        return plugin.PluginDescription(
+            name=plugin_name,
+            version="0.0",
+            description="Some Description",
+            provider_support="<list of provider urls>",
+            license_support="<list of license statements>"
+        )
     
     def license_detect(self, record):
         work_on = record.provider_urls

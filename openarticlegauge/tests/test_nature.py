@@ -43,14 +43,14 @@ class TestBasic(TestCase):
         test_urls = ["http://www.nature.com/srep/2013/130415/srep01657/full/srep01657.html"]
         npg = NaturePlugin()
         for url in test_urls:
-            assert npg.supports_url(url)
+            assert npg.supports_base_url(url)
     
     # TUTORIAL: Repeat failure examples from above test. 
     def test_04_npg_supports_url_fail(self):
         npg = NaturePlugin()
         test_urls = ["http://www.biomedcentral.com/983242", "askjdfsakjdhfsa"]
         for url in test_urls:
-            assert not npg.supports_url(url)
+            assert not npg.supports_base_url(url)
 
     def test_05_name_and_version(self):
         """
