@@ -28,7 +28,7 @@ Definition of options:
 -u - the unknown license (required if -t is not specified)
 
 """
-from openarticlegauge import models
+from openarticlegauge import models, cache
 import json
 
 ES_PAGE_SIZE = 100
@@ -143,6 +143,8 @@ def _process_response(response, license_type, handler, handler_version, reporter
     Process the Elasticsearch response object by taking all the records therein and deleting
     the licences consistent with the arguments.
     
+    For each item that is affected, we also must invalidate the cache
+    
     arguments:
     response -- Elastic search response object containing bibjson records as the individual results
     license_type -- the type of licence to remove (can be None)
@@ -155,8 +157,23 @@ def _process_response(response, license_type, handler, handler_version, reporter
     records = [hit.get("_source") for hit in response.get("hits", {}).get("hits", [])]
     
     # for each record go through all of its licences and delete any which meet the criteria provided
+    ids = []
     for record in records:
         reporter("processing id: " + str(record.get("id")))
+        
+        # extract the canonical identifiers from the item.  If the item
+        # is affected by a licence removal, we will add these to the list
+        # if ids whose cache to invalidate
+        canonicals = [identifier.get("canonical") for identifier in record.get("identifier", []) if "canonical" in identifier]
+        
+        # check to see if the record is in the storage buffer
+        #
+        # FIXME: this is quite challenging, and is required to close a very small window in the
+        # possible race conditions in invalidating licenses, so will hold off and test the rest
+        # of this stuff first...
+        
+        # now go through each licence and see if it matches the explicit criteria given.
+        # Remove any licences which meet those criteria, and keep everything else
         keep = []
         for license in record.get("license", []):
             type_match = license.get("type") == license_type or license_type is None # an incoming type of none is a wildcard
@@ -167,13 +184,27 @@ def _process_response(response, license_type, handler, handler_version, reporter
             #print handler_version, license.get("provenace", {}).get("handler_version"), version_match
             if not (type_match and handler_match and version_match):
                 keep.append(license)
+        
+        # calculate if we removed any licences, then attach the licences we want to keep
+        # and record the canonical ids if the record was affected
         diff = len(record.get('license', [])) - len(keep) 
         record['license'] = keep
+        if diff > 0:
+            ids += canonicals
+        
+        # report
         print "removed " + str(diff) + " licenses from " + str(record.get("id"))
         reporter("removed " + str(diff) + " licenses from " + str(record.get("id")))
     
     # now push the records back to the index
     models.Record.bulk(records)
+    
+    # now the archive has been emptied, we can also invalidate the cache for 
+    # the relevant items (it will rebuild itself as time goes on, if someone
+    # requests the item)
+    ids = list(set(ids))
+    for i in ids:
+        cache.invalidate(i)
 
 def _handler_match(license, handler):
     """

@@ -40,10 +40,8 @@ def check_cache(key):
         invalidate(key)
         return None
     
-    # return obj
     return models.MessageObject(record=obj)
     
-# def is_stale(bibjson):
 def is_stale(record):
     """
     Check to see if the bibjson record in the supplied record is stale.  Look
@@ -122,7 +120,6 @@ def cache(key, record):
     """
     try:
         s = record.json()
-        # s = json.dumps(obj)
     except TypeError:
         raise CacheException("can only cache python objects that can be sent through json.dumps")
     except AttributeError:

@@ -7,7 +7,7 @@
 
 from unittest import TestCase
 
-from openarticlegauge import models, invalidate, config
+from openarticlegauge import models, invalidate, config, cache
 import time
 
 # run this if you want to test the migrate script
@@ -104,7 +104,15 @@ def generate_record(id, licence_tup):
 def compare(ids, length):
     for i in ids:
         obj = models.Record.pull(i)
-        assert len(obj.data['license']) == length
+        assert len(obj.data['license']) == length, (i, length, obj)
+
+def cache_is_empty(gone, there):
+    for i in gone:
+        id = str(i) * 3
+        assert cache.check_cache(id) is None, id
+    for i in there:
+        id = str(i) * 3
+        assert cache.check_cache(id) is not None, id
 
 bibjson_records = generate_records()
 
@@ -116,6 +124,14 @@ class TestInvalidate(TestCase):
         # load all of the bibjson objects into the index
         for bj in bibjson_records:
             models.Record.store(bj)
+        
+        # load each object into the cache
+        for bj in bibjson_records:
+            rec = {
+                "bibjson" : bj
+            }
+            key = bj.get("id")
+            cache.cache(key, models.MessageObject(record=rec))
             
         # set a page size which requires all query results to be paged (or at least, when there is more than one result)
         self.old_page_size = invalidate.ES_PAGE_SIZE
@@ -125,10 +141,11 @@ class TestInvalidate(TestCase):
     def tearDown(self):
         config.BUFFERING = self.buffer
         
-        # remove all of the bibjson objects we loaded into the index
+        # remove all of the bibjson objects we loaded into the index and the cache
         for bj in bibjson_records:
             r = models.Record(**bj)
             r.delete()
+            cache.invalidate(bj.get("id"))
         invalidate.ES_PAGE_SIZE = self.old_page_size
         
     def test_01_unknown_all_plugins(self):
@@ -143,6 +160,10 @@ class TestInvalidate(TestCase):
         
         # 22 - 25 should still have two licences
         compare(["222222", "232323", "242424", "252525"], 2)
+        
+        # we should also find that the cache is empty for 1 - 5, 14 - 21
+        # and still there for 0, 6 - 13, 22 - 25
+        cache_is_empty([1,2,3,4,5,14,15,16,17,18,19,20,21], [0,6,7,8,9,10,11,12,13,22,23,24,25])
     
     def test_02_unknown_one_plugin_any_version(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
@@ -156,6 +177,10 @@ class TestInvalidate(TestCase):
         
         # 14 - 17 and 20 - 25 should still have two licences
         compare(["141414", "151515", "161616", "171717", "202020", "212121", "222222", "232323", "242424", "252525"], 2)
+        
+        # we should also find that the cache is empty for 1, 2, 18 and 19
+        # and still there for 0, 3 - 17, 20 - 25
+        cache_is_empty([1,2,18,19], [0,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25])
     
     def test_03_unknown_one_plugin_one_version(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
@@ -169,6 +194,10 @@ class TestInvalidate(TestCase):
         
         # 14 - 17, 20 - 25 should still have two licences
         compare(["141414", "151515", "161616", "171717", "202020", "212121", "222222", "232323", "242424", "252525"], 2)
+        
+        # we should also find that the cache is empty for 1, 18, 19
+        # and still there for 0, 2 - 17, 20 - 25
+        cache_is_empty([1,18,19], [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25])
     
     def test_04_known_all_plugins(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
@@ -182,6 +211,10 @@ class TestInvalidate(TestCase):
         
         # 14 - 18, 20, 22, 24 should still have two licences
         compare(["141414", "151515", "161616", "171717", "181818", "202020", "222222", "242424"], 2)
+        
+        # we should also find that the cache is empty for 10 - 13, 19, 21, 23, 25
+        # and still there for 0 - 9, 14 - 18, 20, 22, 24
+        cache_is_empty([10,11,12,13,19,21,23,25], [0,1,2,3,4,5,6,7,8,9,14,15,16,17,18,20,22,24])
     
     def test_05_known_one_plugin_all_versions(self):
         # invalidate all failed-to-obtain-license licences, irrespective of version or plugin
@@ -196,6 +229,10 @@ class TestInvalidate(TestCase):
         # 14 - 20, 22 - 24 should still have two licences
         compare(["141414", "151515", "161616", "171717", "181818", "191919", "202020", "222222", "232323", "242424"], 2)
         
+        # we should also find that the cache is empty for 12,13,21,25
+        # and still there for 0 - 11, 14 - 20, 22 - 24
+        cache_is_empty([12,13,21,25], [0,1,2,3,4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,22,23,24])
+        
     def test_06_known_all_plugins(self):
         invalidate.invalidate_license("cc0", handler="plugin_b", handler_version="2.0", reporter=invalidate.stdout_reporter)
         
@@ -207,6 +244,10 @@ class TestInvalidate(TestCase):
         
         # 14 - 20, 22 - 24 should still have two licences
         compare(["141414", "151515", "161616", "171717", "181818", "191919", "202020", "222222", "232323", "242424"], 2)
+        
+        # we should also find that the cache is empty for 13, 21, 25
+        # and still there for 0 - 12, 14 - 20, 22 - 24
+        cache_is_empty([13,21,25], [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,22,23,24])
     
     def test_07_by_query_all(self):
         query = {
@@ -226,6 +267,10 @@ class TestInvalidate(TestCase):
         
         # 14 - 16, 18, 19, 21 - 23, 25 should still have two licences
         compare(["141414", "151515", "161616", "181818", "191919", "212121", "222222", "232323", "252525"], 2)
+        
+        # we should also find that the cache is empty for 9, 17, 20, 24
+        # and still there for 0 - 8, 10 - 16, 18, 19, 21 - 23, 25
+        cache_is_empty([9,17,20,24], [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,18,19,21,22,23,25])
 
     def test_08_by_query_specific(self):
         query = {
@@ -251,6 +296,10 @@ class TestInvalidate(TestCase):
         
         # 15 - 21, 24, 25 should still have two licences
         compare(["151515", "161616", "171717", "181818", "191919", "202020", "212121", "242424", "252525"], 2)
+        
+        # we should also find that the cache is empty for 6, 14, 22, 23
+        # and still there for 0 - 5, 7 - 13, 15 - 21, 24, 25
+        cache_is_empty([6, 14, 22, 23], [0,1,2,3,4,5,7,8,9,10,11,12,13,15,16,17,20,21,24,25])
     
     def test_09_by_query_handler_only(self):
         query = {
@@ -276,6 +325,10 @@ class TestInvalidate(TestCase):
         
         # 15 - 17, 19 - 21, 24, 25 should still have two licences
         compare(["151515", "161616", "171717", "191919", "202020", "212121", "242424", "252525"], 2)
+        
+        # we should also find that the cache is empty for 6, 14, 18, 22, 23
+        # and still there for 0 - 5, 7 - 13, 15 - 17, 19 - 21, 24 - 25
+        cache_is_empty([6, 14, 18, 22, 23], [0,1,2,3,4,5,7,8,9,10,11,12,13,15,16,17,19,20,21,24,25])
     
 
 
