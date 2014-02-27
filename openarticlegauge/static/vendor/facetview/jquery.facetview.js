@@ -372,7 +372,8 @@ This can define or reference a function that will be executed any time new searc
             "resultwrap_end":"</td></tr>",
             "result_box_colours":[],
             "fadein":800,
-            "post_search_callback": false
+            "post_search_callback": false,
+            "buildrecord" : false
         };
 
 
@@ -707,6 +708,13 @@ This can define or reference a function that will be executed any time new searc
 
         // given a result record, build how it should look on the page
         var buildrecord = function(index) {
+            if (typeof options.buildrecord == 'function') {
+                return options.buildrecord(index);
+            } else {
+                return buildrecord_default(index)
+            }
+        }
+        var buildrecord_default = function(index) {
             var record = options.data['records'][index];
             var result = options.resultwrap_start;
             // add first image where available

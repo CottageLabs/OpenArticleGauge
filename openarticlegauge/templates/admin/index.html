@@ -139,7 +139,7 @@ jQuery(document).ready(function($) {
                         data: {source: qy },
                         dataType: "jsonp",
                         success: function(data) {
-                            alert(JSON.stringify(data))
+                            alert("licenses successfully invalidated")
                         }
                     })
                 }
@@ -170,6 +170,63 @@ jQuery(document).ready(function($) {
         }
     }
     
+    function adminRecordView(index) {
+        var options = $("#facetview").facetview.options
+        var record = options.data['records'][index];
+        var result = options.resultwrap_start;
+        
+        // header row is the identifier
+        var canons = []
+        var identifiers = record["identifier"]
+        for (var i = 0; i < identifiers.length; i++) {
+            var identifier = identifiers[i]
+            var canon = identifier["canonical"]
+            if (canon) {
+                canons.push(canon)
+            }
+        }
+        var identifier_frag = canons.join(", ")
+        result += "<strong>" + identifier_frag + "</strong>"
+        
+        // now all of the licences
+        var licenses = record["license"]
+        for (var i = 0; i < licenses.length; i++) {
+            var license = licenses[i]
+            var frag = _renderLicense(license)
+            result += "<div class='row-fluid'><div class='span12' style='padding: 10px; border-top: 1px solid #cccccc'>" + frag + "</div></div>"
+        }
+        
+        result += options.resultwrap_end;
+        return result;
+    }
+    
+    function _renderLicense(license) {
+        var title = license["title"] ? license["title"] : ""
+        var type = license["type"] ? license["type"] : ""
+        var version = license["version"] ? license["version"] : ""
+        var url = license["url"]
+        var source = undefined
+        var date = ""
+        var handler = ""
+        var handler_version = ""
+        if (license["provenance"]) {
+            source = license["provenance"]["source"] ? license["provenance"]["source"] : ""
+            date = license["provenance"]["date"] ? license["provenance"]["date"] : ""
+            handler = license["provenance"]["handler"] ? license["provenance"]["handler"] : "none"
+            handler_version = license["provenance"]["handler_version"] ? license["provenance"]["handler_version"] : "none"
+        }
+        
+        var frag = "<strong>" + title + " (" + type + " " + version + ")</strong><br>"
+        if (url) {
+            frag += "<a href='" + url + "'>" + url + "</a><br>"
+        }
+        if (source) {
+            frag += "source: <a href='" + source + "'>" + source + "</a><br>"
+        }
+        frag += "<em>" + date + "</em> handler: <em>" + handler + "</em> version: <em>" + handler_version + "</em>"
+        return frag
+    }
+    
     var opts = {
         search_url: record_url,
         datatype: record_datatype,
@@ -182,7 +239,8 @@ jQuery(document).ready(function($) {
         },
         display_images: false,
         pager_on_top: true,
-        post_search_callback: postSearch
+        post_search_callback: postSearch,
+        buildrecord: adminRecordView
     };
 
     $('#facetview').facetview(opts);
