@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, make_response
 from functools import wraps
 from flask.ext.login import login_user, current_user
 from openarticlegauge.core import app, login_manager
-from openarticlegauge import models
+from openarticlegauge import models, plugin
 
 from openarticlegauge.view.contact import blueprint as contact
 from openarticlegauge.view.query import blueprint as query
@@ -80,8 +80,11 @@ def about():
     return render_template('about.html')
 
 @app.route("/plugin/<plugin_name>")
-def plugin(plugin_name):
-    pass
+def plugin_description(plugin_name):
+    pd = plugin.PluginFactory.description(plugin_name)
+    if pd is None:
+        abort(404)
+    return render_template("plugin.html", description=pd)
 
 # the info for devs goes here
 @app.route("/developers")

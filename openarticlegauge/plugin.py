@@ -149,7 +149,7 @@ class Plugin(object):
             statement = license.keys()[0]
             ltype = license[statement].get("type")
             version = license[statement].get("version")
-            license_support += ltype + " " + version + "\n" + statement   + "\n\n"
+            license_support += ltype + " " + version + ":\n" + statement   + "\n\n"
         
         return PluginDescription(
             name=self._short_name, 
