@@ -321,7 +321,7 @@ class PluginFactory(object):
         # list the plugin modules in the plugin directory
         names = [os.path.splitext(module)[0] 
                     for module in os.listdir(plugin_dir) 
-                    if module.endswith(cls.MODULE_EXTENSIONS) and module != "__init__.py"]
+                    if module.endswith(cls.MODULE_EXTENSIONS) and not module.startswith('_')]
         
         # load an instance of each plugin
         plugin_instances = []
