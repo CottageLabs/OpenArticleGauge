@@ -11,11 +11,11 @@ from openarticlegauge.view.issue import blueprint as issue
 from openarticlegauge.view.lookup import blueprint as lookup
 from openarticlegauge.view.account import blueprint as account
 from openarticlegauge.view.admin import blueprint as admin
-from openarticlegauge.view.license_form import blueprint as license_form
+from openarticlegauge.view.publisher import blueprint as publisher
 from openarticlegauge.view.resolve_doi import blueprint as resolve_doi
 
 app.register_blueprint(contact, url_prefix='/contact')
-app.register_blueprint(license_form, url_prefix='/license_statement')
+app.register_blueprint(publisher, url_prefix='/publisher')
 app.register_blueprint(query, url_prefix='/query')
 app.register_blueprint(issue, url_prefix='/issue')
 app.register_blueprint(account, url_prefix="/account")

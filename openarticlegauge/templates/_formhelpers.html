@@ -1,33 +1,66 @@
-{% macro render_field(field, render_subfields_horizontal=False) %}
+{% macro render_field(field, render_subfields_horizontal=False, render_remove=False) %}
     {% if field.type == 'FormField' %}
-        <div class="control-group
-        {% if field.errors %} error{% endif %}
-        {% if render_subfields_horizontal %} row-fluid{% endif %}
-        " id="{{field.short_name}}-container">
-            {% for subfield in field %}
-                {% if render_subfields_horizontal 
-                and not (subfield.type == 'CSRFTokenField' and not subfield.value)%}
-                    <div class="span3">
-                        {{ __render_field(subfield, **kwargs) }}
-                    </div>
-                {% else %}
-                    {{ __render_field(subfield, **kwargs) }}
-                {% endif %}
-            {% endfor %}
+
+        {% if render_subfields_horizontal %}
+        <div class="span12" id="{{field.short_name}}-container" style="margin-left: 0;">
+        <div class="{% if render_remove %} span11 {% else %} span12 {% endif %} inner-container" style="margin-left: 0;">
+        {% endif %}
+
+          <div class="control-group
+          {% if field.errors %} error{% endif %}
+          {% if render_subfields_horizontal %} row-fluid{% endif %}
+          ">
+              {% for subfield in field %}
+                  {% if render_subfields_horizontal 
+                  and not (subfield.type == 'CSRFTokenField' and not subfield.value)%}
+                      
+                      {% set subfield_widths = {
+                        'license_statement': '4',
+                        'license_type': '3',
+                        'version': '2',
+                        'example_doi': '3',
+                      } %}
+                      {% set subfield_width = subfield_widths.get(subfield.short_name, '3') %}
+                          
+                      <div class="span{{subfield_width}}">
+                          {{ __render_field(subfield, nested_field=True, **kwargs) }}
+                      </div>
+                  {% else %}
+                      {{ __render_field(subfield, nested_field=True, **kwargs) }}
+                  {% endif %}
+              {% endfor %}
+          </div>
+
+        {% if render_subfields_horizontal %}
         </div>
+        {% if render_remove %}
+          <a class="btn btn-danger remove-button license-remove-button" id="remove-{{field.short_name}}-container" href="#remove-{{field.short_name}}-container">&times;</a>
+        {% endif %}
+        </div>
+        {% endif %}
+
     {% elif field.type == 'FieldList' %}
+        {% set field_count = 0 %}
         {% for subfield in field %}
+            
+            {% set field_count = field_count + 1 %}
+            {% if field_count > 1 or render_remove %}
+              {% set render_remove = True %}
+            {% endif %}
+
             {% if subfield.type == 'FormField' %}
                 {{ render_field(subfield,
                       render_subfields_horizontal=render_subfields_horizontal,
+                      render_remove=render_remove,
                       **kwargs
                    )
                 }}
             {% else %}
             <div class="control-group
             {% if subfield.errors %} error{% endif %}
+            {{field.short_name}}-container
             ">
-                {{ __render_field(subfield, **kwargs) }}
+                {{ __render_field(subfield, render_remove=render_remove, nested_field=True, **kwargs) }}
             </div>
             {% endif %}
         {% endfor %}    
@@ -58,7 +91,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro __render_field(field) %}
+{% macro __render_field(field, render_remove=False, nested_field=False) %}
     {% if not (field.type == 'CSRFTokenField' and not field.value) %}
         {% if field.type not in ['SubmitField', 'HiddenField', 'CSRFTokenField'] %}
             <label class="control-label" for="{{field.short_name}}">{{field.label.text}}
@@ -66,8 +99,19 @@
             </label>
         {% endif %}
         <div class="controls">
+
+            {% set class = kwargs.pop('class', '') %}
+            {% if render_remove %}
+              {% set class = class + ' span10' %}
+            {% elif nested_field %}
+              {% set class = class + ' span12' %}
+            {% endif %}
+
             {% if field.type != 'RadioField' %}
-                {{ field(**kwargs) }}
+                {{ field(class=class, **kwargs) }}
+                {% if render_remove %}
+                  <a class="btn btn-danger remove-button" id="remove-{{field.short_name}}" href="#remove-{{field.short_name}}">&times;</a>
+                {% endif %}
                 {% if field.errors %}
                 <ul class="errors">
                     {% for error in field.errors %}
