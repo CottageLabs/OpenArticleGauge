@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1>Supported publishers</h1>
+<ul>
+  {% for p in publishers %}
+    <li><a href="{{ url_for('publisher.publisher_edit', publisher_id=p['id']) }}"
+      target="_blank">{{ p['publisher_name'] }}</a></li>
+  {% endfor %}
+</ul>
 {% endblock %}
 
 

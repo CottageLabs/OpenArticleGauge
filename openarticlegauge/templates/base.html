@@ -63,6 +63,7 @@
                     <li><a href="/lookup">lookup</a></li>
                     <li><a href="/about">about</a></li>
                     <li><a href="/developers">developers</a></li>
+                    <li><a href="{{ url_for('publisher.list_publishers') }}">supported publishers</a></li>
                     <li><a href="{{ url_for('publisher.publisher_edit') }}">register a publisher</a></li>
                     {% block subnav %}{% endblock %}
                 </ul>
