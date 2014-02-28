@@ -92,7 +92,7 @@ class Tutorial(plugin.Plugin):
         """
         Does this plugin support this provider
         """
-        return self.supports_by_base_url(self, provider)
+        return self.supports_by_base_url(provider)
 
     ## The function that does the license extraction itself.
     ## You should modify this:
