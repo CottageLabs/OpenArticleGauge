@@ -109,13 +109,7 @@ class DomainObject(dict):
 
     @classmethod
     def all(cls):
-        res = cls.query(q='*')
-        if res['hits']['total'] <= 0:
-            return []
-
-        hits = res['hits']['hits']
-        results = [cls(**h) for h in hits]
-        return results
+        return cls.q2obj(q='*')
 
     @classmethod
     def q2obj(cls, **kwargs):

@@ -31,6 +31,15 @@ h1, h2, h3, h4, h5, h6 {
     background:#2a333c;
 }
 
+a.remove-button {
+    display: inline-block;
+}
+
+a.license-remove-button {
+    margin-top: 23px; /* 18 (height of a label) + 5 (bottom margin of a label) */
+    margin-left: 1em;
+}
+
 #topnav h1.brand{
     color:#e36b23;
     font-weight:bold;
@@ -46,6 +55,7 @@ h1, h2, h3, h4, h5, h6 {
 #topnav .nav>li>a:hover{text-decoration:none;background-color:#eeeeee;}
 #topnav .nav-list>.active>a,.nav-list>.active>a:hover{color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#e36b23;}
 
+#publisher_form textarea { height: 8em; }
 
 .oag-unit .hero-unit{padding:60px;margin:30px 0 30px 0;font-size:18px;color:#ece9d7;background-color:#45515f;}
 .oag-unit .hero-unit h1{margin:0 0 5px 0;font-size:50px;color:#e36b23;letter-spacing:-1px;}

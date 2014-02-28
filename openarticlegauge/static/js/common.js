@@ -11,61 +11,90 @@ jQuery(document).ready(function() {
 	// "add more" button 
 	$('.btn.journal_link').click( function (event) {
         
-        all_e = $('[id^=journal_urls-]').parent().parent();
-        e = all_e.last();
-        ne = $(e.clone()[0]);
-        input_ne = ne.find('[id^=journal_urls-]')[0];
-        input_ne.value = '';
-        items = input_ne.id.split('-');
-        number = parseInt(items.pop());
+        // var all_e = $('[id^=journal_urls-]').parent().parent();
+        var all_e = $('.journal_urls-container');
+        var e = all_e.last();
+        var ne = $(e.clone()[0]);
+        var input_ne = $(ne.find('[id^=journal_urls-]')[0]);
+        var input_wrapper_div = $(ne.children('div.controls')[0]);
+        input_wrapper_div.children().slice(1).remove();
+        input_ne.addClass('span10');
+        input_ne.attr('value', '');
+        var items = input_ne.attr('id').split('-');
+        var number = parseInt(items.pop());
         number = number + 1;
-        new_id = 'journal_urls-' + number;
-        input_ne.id = new_id;
-        input_ne.name = new_id;
+        var new_id = 'journal_urls-' + number;
+        input_ne.attr('id', new_id);
+        input_ne.attr('name', new_id);
+
+        var remove_e = '<a class="btn btn-danger remove-button" id="remove-' + new_id + '" href="#remove-' + new_id + '">&times;</a>';
+        input_ne.after(remove_e);
+        add_remove_btn_handler();
         e.after(ne);
                
-        
 		event.preventDefault(); // prevent form submission
     });
         
     $('.btn.more_licenses').click( function (event) {
         
-        all_e = $('[id^=licenses-][id$="container"]');
-        e = all_e.last();
-        ne = e.clone()[0];
-        ne.value = '';
-        items = ne.id.split('-');
-        number = parseInt(items[1]);
+        var all_e = $('[id^=licenses-][id$="container"]');
+        var e = all_e.last();
+        var ne = $(e.clone()[0]);
+        ne.children().slice(1).remove();
+        var items = ne.attr('id').split('-');
+        var number = parseInt(items[1]);
         number = number + 1;
-        new_id = 'licenses-' + number + '-container';
-        ne.id = new_id;
-        ne = $(ne);
+        var new_id = 'licenses-' + number + '-container';
+        ne.attr('id', new_id);
         ne.find('[id^=licenses-]').each( function () {
             var ce = $(this);
             ce.attr('value', '');
-            console.log(ce);
-            console.log(ce.attr('id'));
-            items = ce.attr('id').split('-');
-            number = parseInt(items[1]);
+            var items = ce.attr('id').split('-');
+            var number = parseInt(items[1]);
             number = number + 1;
-            new_id = 'licenses-' + number + '-' + items[2];
+            var new_id = 'licenses-' + number + '-' + items[2];
             ce.attr('id', new_id);
             ce.attr('name', new_id);
             ce.siblings('.resolved_doi').remove();
-            
-
         });
+        ne.children('.inner-container').removeClass('span12').addClass('span11');
+
         e.after(ne);
+
+        var remove_e = '<a class="btn btn-danger remove-button license-remove-button" id="remove-' + new_id + '" href="#remove-' + new_id + '">&times;</a>';
+        ne.append(remove_e);
+        add_remove_btn_handler();
+
         $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
         
 		event.preventDefault(); // prevent form submission
-        
-           
 	});
     
+    add_remove_btn_handler();
     $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
     
 });
+
+function add_remove_btn_handler() {
+    $('.remove-button').click ( function (event) {
+        var e = $(this);
+        var id = e.attr('id').slice('remove-'.length);
+        id = id.slice(0, id.lastIndexOf('-'));
+        id = id + '-container';
+        $('#' + id).remove(); // attempt to remove the specific id first, the container might have it
+
+        // then try by class of the container
+        one_of_these_needs_to_be_removed = $('.' + id);
+        for (var i = 0; i < one_of_these_needs_to_be_removed.length; i++) {
+            current = $(one_of_these_needs_to_be_removed[i]);
+            console.log(current.find('#' + e.attr('id')).length);
+            if (current.find('#' + e.attr('id')).length !== 0) {
+                current.remove();
+            }
+        }
+        event.preventDefault();
+    });
+}
 
 function getOuterHTML(selector) {
     /* There is no easy way to get the outerHTML of an element in jQuery.
