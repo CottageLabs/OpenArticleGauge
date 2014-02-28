@@ -2,9 +2,10 @@ from openarticlegauge import plugin
 
 class CellReportsPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
-    __version__ = "0.1"   
+    __version__ = "0.1"
+    __desc__ = "Attempts (and fails) to retrieve licences from Cell Reports"
     
-    base_urls = ['www.cell.com']
+    _base_urls = ['www.cell.com']
     
     fail_why = '''It is currently not possible to obtain the license information of a Cell Reports article automatically.
 The website makes heavy use of Javascript to update its pages dynamically.
@@ -51,20 +52,7 @@ For any of these solutions to be effective, the multiple copyright statements vi
         """
         Does the page_license plugin support this provider
         """
-        
-        work_on = self.clean_urls(provider.get("url", []))
-        
-        for url in work_on:
-            if self.supports_url(url):
-                return True
-
-        return False
-
-    def supports_url(self, url):
-        for bu in self.base_urls:
-            if self.clean_url(url).startswith(bu):
-                return True
-        return False
+        return self.supports_by_base_url(provider)
         
     def license_detect(self, record):
         """
@@ -83,6 +71,6 @@ For any of these solutions to be effective, the multiple copyright statements vi
         
         #for source_url in record['provider']['url']:
         for source_url in record.provider_urls:
-            if self.supports_url(source_url):
+            if self.supports_base_url(source_url):
                 self.describe_license_fail(record, source_url, self.fail_why, self.fail_suggested_solution)
 

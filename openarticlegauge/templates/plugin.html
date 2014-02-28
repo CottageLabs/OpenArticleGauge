@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Plugin: {{description.name}}{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<div class="row-fluid oag-unit">
+    <div class="hero-unit">
+        <h1>{{description.name}} {{description.version}}</h1>
+        <p>{{description.description}}</p>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span6">
+        <div class="well">
+            {% autoescape false %}
+            {{description.license_support.replace("\n", "<br>")}}
+            {% endautoescape %}
+        </div>
+    </div>
+    <div class="span6">
+        <div class="well">
+            {% autoescape false %}
+            {{description.provider_support.replace("\n", "<br>")}}
+            {% endautoescape %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

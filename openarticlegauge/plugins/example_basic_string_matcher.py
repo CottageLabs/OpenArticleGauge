@@ -20,13 +20,58 @@ class Tutorial(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
+    __desc__ = "Describe your plugin here"
 
     # The domains that this plugin will say it can support.
     # Specified without the schema (protocol - e.g. "http://") part.
     ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-    base_urls = ["www.example-publisher-url.com"]
+    _base_urls = ["www.example-publisher-url.com"]
     # so if the http://www.biomedcentral.com/1471-2164/13/425 URL comes in,
     # it should be supported.
+    
+    ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
+    _license_mappings = [
+        {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
+            {'type': 'cc-by', # license type, see the licenses module for available ones
+                ## The one thing to be careful about is identifying your license with "type"
+                ## This MUST correspond to one of the objects in the /openarticlegauge/licenses.py
+                ## file. That is based on opendefinition.org . If your license is not present,
+                ## modify the licenses.py file and include it as a new record at the bottom,
+                ## preferably by copying the record of another license and filling in as many
+                ## fields as you can.
+
+             'version':'2.0', # version of the license if specified, can be blank
+
+                # also declare some properties which override info about this license in the licenses list (see licenses module)
+
+                ## The list in the licenses module sometimes has more
+                ## general information - for example, it doesn't link to a
+                ## specific version of the CC-BY license, just the
+                ## opendefinition.org page for it. This plugin knows a better
+                ## URL though, since it's present in the license statement above.
+                'url': 'http://creativecommons.org/licenses/by/2.0'}
+
+                ## The license rights / requirements are defined centrally in the
+                ## licenses module, not in plugins.
+                ## So the NC, SA and ND fields *must* be defined for this license in
+                ## the licenses module for it to be correctly recognised as open
+                ## access (or not). It's recommended to define BY as well. See the
+                ## licenses module for more information if you do not know what these
+                ## field names mean.
+
+        ## You can have as many license statements as you like! In order to add another license, just add a comma ... 
+        }, ## <-- ... right after the closing bracket for the previous license statement ...
+        ## ... copy the previous license statement after the comma and edit it!
+
+        ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
+        ## If you don't want more than one license statement for now, just
+        ## delete this second statement entirely. It's OK to leave the
+        ## comma before it.
+        {"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
+            {'type': 'uk-ogl'} # license type, see the licenses module for available ones
+        } ## Just add a comma here and copy the record again to add a
+          ## *third* license statement.
+    ]
     
     ## You can leave this function as-is if you are just doing license detection
     ## if you are going to provide a plugin which can detect or verify identifier
@@ -47,26 +92,7 @@ class Tutorial(plugin.Plugin):
         """
         Does this plugin support this provider
         """
-        
-        work_on = self.clean_urls(provider.get("url", []))
-
-        for url in work_on:
-            if self.supports_url(url):
-                return True
-
-        return False
-
-    ## This is what actually does the analysis on an incoming URL.
-    ## You can keep it as-is unless your publisher has many websites, in which case
-    ## you might want to match a regex like "^*.mypublisher.com" .
-    def supports_url(self, url):
-        """
-        Same as the supports() function but answers the question for a single URL.
-        """
-        for bu in self.base_urls:
-            if self.clean_url(url).startswith(bu):
-                return True
-        return False
+        return self.supports_by_base_url(self, provider)
 
     ## The function that does the license extraction itself.
     ## You should modify this:
@@ -84,61 +110,11 @@ class Tutorial(plugin.Plugin):
 
         # licensing statements to look for on this publisher's pages
         # take the form of {statement: meaning}
-
-        ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-        lic_statements = [
-            {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
-                {'type': 'cc-by', # license type, see the licenses module for available ones
-                    ## The one thing to be careful about is identifying your license with "type"
-                    ## This MUST correspond to one of the objects in the /openarticlegauge/licenses.py
-                    ## file. That is based on opendefinition.org . If your license is not present,
-                    ## modify the licenses.py file and include it as a new record at the bottom,
-                    ## preferably by copying the record of another license and filling in as many
-                    ## fields as you can.
-
-                 'version':'2.0', # version of the license if specified, can be blank
-
-                    # also declare some properties which override info about this license in the licenses list (see licenses module)
-
-                    ## The list in the licenses module sometimes has more
-                    ## general information - for example, it doesn't link to a
-                    ## specific version of the CC-BY license, just the
-                    ## opendefinition.org page for it. This plugin knows a better
-                    ## URL though, since it's present in the license statement above.
-                    'url': 'http://creativecommons.org/licenses/by/2.0'}
-
-                    ## The license rights / requirements are defined centrally in the
-                    ## licenses module, not in plugins.
-                    ## So the NC, SA and ND fields *must* be defined for this license in
-                    ## the licenses module for it to be correctly recognised as open
-                    ## access (or not). It's recommended to define BY as well. See the
-                    ## licenses module for more information if you do not know what these
-                    ## field names mean.
-
-            ## You can have as many license statements as you like! In order to add another license, just add a comma ... 
-            }, ## <-- ... right after the closing bracket for the previous license statement ...
-            ## ... copy the previous license statement after the comma and edit it!
-
-            ## ~~ TUTORIAL: YOU NEED TO MODIFY THIS ~~
-            ## If you don't want more than one license statement for now, just
-            ## delete this second statement entirely. It's OK to leave the
-            ## comma before it.
-            {"This is an open-access article distributed under the terms of the free Open Government License, which permits unrestricted use, distribution and reproduction in any medium, provided the original author and source are credited.":
-                {'type': 'uk-ogl'} # license type, see the licenses module for available ones
-            } ## Just add a comma here and copy the record again to add a
-              ## *third* license statement.
-        ]
+        lic_statements = self._license_mappings
         
-        # some basic protection against missing fields in the incoming record
-        """
-        if "provider" not in record:
-            return
-        if "url" not in record["provider"]:
-            return
-        """
         # For all URL-s associated with this resource...
         #for url in record['provider']['url']:
         for url in record.provider_urls:
             # ... run the dumb string matcher if the URL is supported.
-            if self.supports_url(url):
+            if self.supports_base_url(url):
                 self.simple_extract(lic_statements, record, url)

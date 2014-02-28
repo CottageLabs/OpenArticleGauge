@@ -4,6 +4,7 @@ from openarticlegauge import plugin, recordmanager, models
 class DOIPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__ = "0.1"
+    __desc__ = "Plugin that handles lookups on DOIs"
     
     ## Plugin Overrides ##
     
@@ -15,7 +16,6 @@ class DOIPlugin(plugin.Plugin):
             "license_detect" : False
         }
     
-    #def type_detect_verify(self, bibjson_identifier):
     def type_detect_verify(self, record):
         """
         determine if the provided bibjson identifier has a type of "DOI", by
@@ -59,7 +59,6 @@ class DOIPlugin(plugin.Plugin):
         # bibjson_identifier["type"] = "doi"
         record.identifier_type = "doi"
     
-    # def canonicalise(self, bibjson_identifier):
     def canonicalise(self, record):
         """
         create a canonical form of the identifier
