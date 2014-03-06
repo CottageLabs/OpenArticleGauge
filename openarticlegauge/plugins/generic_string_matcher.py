@@ -41,12 +41,20 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         work_on = provider.get('url', [])
         work_on = self.clean_urls(work_on)
+        work_on = self.get_domain(work_on)
 
         configs = Publisher.q2obj(terms={'journal_urls':work_on})
         if configs:
             return True
 
         return False
+
+    def get_domain(self, urls):
+        res = []
+        for url in urls:
+            r = url.split('/')[0]
+            res.append(r)
+        return res
     
     def get_description(self, plugin_name):
         """
