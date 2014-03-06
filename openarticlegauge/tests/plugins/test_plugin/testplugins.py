@@ -3,6 +3,7 @@ from openarticlegauge import plugin
 class DetectPlugin(plugin.Plugin):
     __version__ = "1.0"
     _short_name = "detect_plugin"
+    __priority__ = -100
     def capabilities(self):
         return {
             "type_detect_verify" : True,
@@ -31,6 +32,7 @@ class CanonPlugin(plugin.Plugin):
 class ProviderPlugin(plugin.Plugin):
     __version__ = "1.0"
     _short_name = "provider_plugin"
+    __priority__ = 1000
     def capabilities(self):
         return {
             "type_detect_verify" : False,

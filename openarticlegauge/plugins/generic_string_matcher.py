@@ -13,6 +13,7 @@ import json
 class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' 
+    __priority__ = -1000
     
     def has_name(self, plugin_name):
         """

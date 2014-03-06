@@ -70,6 +70,7 @@ class TestPlugin(TestCase):
         assert p.__version__ == "0.0"
         assert p._short_name == "vanilla_plugin"
         assert p.capabilities() == {}
+        assert p.__priority__ == 0
     
     # Tests on the PluginFactory
     
@@ -159,5 +160,19 @@ class TestPlugin(TestCase):
         record = models.MessageObject(record=record)
         p = plugin.PluginFactory.license_detect(record.provider)
         assert p is None
+    
+    def test_09_priority(self):
+        pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_plugin")
+        plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
+        cfg = plugin.PluginFactory.PLUGIN_CONFIG
+        
+        assert cfg["all"][2]._short_name == "detect_plugin", cfg["all"]
+        assert cfg["all"][2].__priority__ == -100
+        
+        assert cfg["all"][1]._short_name == "canon_plugin"
+        assert cfg["all"][1].__priority__ == 0
+        
+        assert cfg["all"][0]._short_name == "provider_plugin"
+        assert cfg["all"][0].__priority__ == 1000
         
         

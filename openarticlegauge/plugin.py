@@ -3,7 +3,7 @@ Common infrastructure for the plugin framework
 
 """
 
-from openarticlegauge import config #, plugloader#, recordmanager
+from openarticlegauge import config
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
 
@@ -27,6 +27,7 @@ class Plugin(object):
     __version__ = "0.0"
     _short_name = "vanilla_plugin"
     __desc__ = "A description of this plugin"
+    __priority__ = 0
     
     ## Capabilities that may be implemented by the sub-class ##
     #
@@ -430,7 +431,38 @@ class PluginFactory(object):
             if caps.get("license_detect", False):
                 plugin_structure["license_detect"].append(inst)
         
+        # finally, sort any lists of plugins in the structure according
+        # to their priority
+        plugin_structure["all"] = cls._prioritise(plugin_structure.get("all", []))
+        plugin_structure["type_detect_verify"] = cls._prioritise(plugin_structure.get("type_detect_verify", []))
+        for t in plugin_structure.get("detect_provider", {}):
+            plugin_structure["detect_provider"][t] = cls._prioritise(plugin_structure["detect_provider"].get(t, []))
+        plugin_structure["license_detect"] = cls._prioritise(plugin_structure.get("license_detect", []))
+        
         cls.PLUGIN_CONFIG = plugin_structure
+
+    @classmethod
+    def _prioritise(cls, plugin_instances):
+        if len(plugin_instances) <= 1:
+            return plugin_instances
+        
+        priorities = []
+        lookup = {}
+        for inst in plugin_instances:
+            priorities.append(inst.__priority__)
+            if inst.__priority__ not in lookup:
+                lookup[inst.__priority__] = []
+            lookup[inst.__priority__].append(inst)
+        
+        prioritised = []
+        priorities = list(set(priorities))
+        priorities.sort(reverse=True) # highest to lowest
+        for p in priorities:
+            insts = lookup[p]
+            for inst in insts:
+                prioritised.append(inst)
+        
+        return prioritised
 
     @classmethod
     def type_detect_verify(cls):

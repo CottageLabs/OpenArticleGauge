@@ -10,6 +10,7 @@ class UbiquitousPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' 
     __desc__ = "Attempts to match generic licence strings to known licences"
+    __priority__ = -2000
     
     _license_mappings = [
             {'licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License':
