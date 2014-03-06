@@ -7,6 +7,7 @@ from flask import Blueprint, request, redirect, url_for, abort, render_template,
 
 from openarticlegauge.models import Publisher
 from openarticlegauge.licenses import licenses_dropdown
+from openarticlegauge import plugin
 
 blueprint = Blueprint('publisher', __name__)
 
@@ -14,7 +15,9 @@ blueprint = Blueprint('publisher', __name__)
 @blueprint.route('/', methods=['GET'])
 @blueprint.route('/list', methods=['GET'])
 def list_publishers():
-    return render_template('publishers.html', publishers=Publisher.all())
+    descriptions = plugin.PluginFactory.list_plugins()
+    # return render_template('publishers.html', publishers=Publisher.all())
+    return render_template('publishers.html', publishers=descriptions)
 
 @blueprint.route('/new', methods=['GET','POST'])
 @blueprint.route('/<publisher_id>', methods=['GET','POST'])

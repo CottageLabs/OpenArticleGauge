@@ -21,6 +21,12 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         return False
     
+    def get_names(self):
+        """
+        Return the list of names of configurations supported by the GSM
+        """
+        return []
+    
     def capabilities(self):
         return {
             "type_detect_verify" : False,

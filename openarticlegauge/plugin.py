@@ -44,6 +44,9 @@ class Plugin(object):
         """
         return name == self._short_name
     
+    def get_names(self):
+        return [self._short_name]
+    
     def capabilities(self):
         """
         Describe the capabilities of this plugin, in the following form:
@@ -148,8 +151,8 @@ class Plugin(object):
         license_support = "The following license statements are recognised:\n\n"
         for license in self._license_mappings:
             statement = license.keys()[0]
-            ltype = license[statement].get("type")
-            version = license[statement].get("version")
+            ltype = license[statement].get("type", "")
+            version = license[statement].get("version", "")
             license_support += ltype + " " + version + ":\n" + statement   + "\n\n"
         
         return PluginDescription(
@@ -410,6 +413,7 @@ class PluginFactory(object):
         
         # for each plugin ask its capabilities, and build the plugin structure
         # from it
+        name_register = []
         plugin_structure = {
             "type_detect_verify" : [],
             "canonicalise" : {},
@@ -418,6 +422,17 @@ class PluginFactory(object):
             "all" : []
         }
         for inst in plugin_instances:
+            # check for name clashes
+            names = inst.get_names()
+            fail = False
+            for name in names:
+                if name in name_register:
+                    log.warn("Plugin name " + name + " is already registered with the PluginFactory; skipping host plugin")
+                    fail = True
+            if fail: continue
+            name_register += names
+            
+            # now register the capabilities of the plugin
             caps = inst.capabilities()
             plugin_structure["all"].append(inst)
             if caps.get("type_detect_verify", False):
@@ -548,7 +563,18 @@ class PluginFactory(object):
                 description = inst.get_description(plugin_name)
                 return description
 
-
+    @classmethod
+    def list_plugins(cls):
+        if cls.PLUGIN_CONFIG is None:
+            cls.load_from_directory()
+        
+        descriptions = []
+        for inst in cls.PLUGIN_CONFIG.get("all"):
+            names = inst.get_names()
+            for name in names:
+                descriptions.append(inst.get_description(name))
+        
+        return descriptions
 
 
 
