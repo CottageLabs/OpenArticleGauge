@@ -19,7 +19,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         Return true if there is a configuration for the given plugin name
         """
-        return False
+        return _short_name
     
     def get_names(self):
         """
@@ -55,7 +55,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         return plugin.PluginDescription(
             name=plugin_name,
-            version="0.0",
+            version=self.__version__,
             description="Some Description",
             provider_support="<list of provider urls>",
             license_support="<list of license statements>"
