@@ -16,8 +16,8 @@
                       
                       {% set subfield_widths = {
                         'license_statement': '4',
-                        'license_type': '3',
-                        'version': '2',
+                        'license_type': '4',
+                        'version': '1',
                         'example_doi': '3',
                       } %}
                       {% set subfield_width = subfield_widths.get(subfield.short_name, '3') %}
@@ -102,9 +102,9 @@
 
             {% set class = kwargs.pop('class', '') %}
             {% if render_remove %}
-              {% set class = class + ' span10' %}
+              {% set class = 'span10 ' + class %}
             {% elif nested_field %}
-              {% set class = class + ' span12' %}
+              {% set class = 'span12 ' + class %}
             {% endif %}
 
             {% if field.type != 'RadioField' %}

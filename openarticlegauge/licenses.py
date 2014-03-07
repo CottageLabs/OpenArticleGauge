@@ -1425,9 +1425,9 @@ LICENSES = {
     'SA': False,
     'ND': False
   },
-  "publisher-asserted-accessible": {
-    "type": "publisher-asserted-accessible",
-    "title": "Publisher Asserts this is Accessible",
+  "free-to-read": {
+    "type": "free-to-read",
+    "title": "Free to Read",
     # Rights and requirements
     'BY': None, # unknown - we can't decide
     'NC': None, 
@@ -1447,7 +1447,30 @@ for lic_type, info in __process_licenses[:]:
         licenses_dropdown.append(choice)
         __process_licenses.remove((lic_type, info))
 
+# Free to Read next
+for lic_type, info in __process_licenses[:]:
+    if lic_type == 'free-to-read':
+        choice = (lic_type, info.get('title', lic_type))
+        licenses_dropdown.append(choice)
+        __process_licenses.remove((lic_type, info))
+
+dropdown_separator = ('', '--------------------')
+licenses_dropdown.append(dropdown_separator)
+
+# Take out all "Other"-type licenses to append to end of options later
+other_license_choices = []
+for lic_type, info in __process_licenses[:]:
+    if lic_type.startswith('other-'):
+        choice = (lic_type, info.get('title', lic_type))
+        other_license_choices.append(choice)
+        __process_licenses.remove((lic_type, info))
+
 # the rest
 for lic_type, info in __process_licenses:
     choice = (lic_type, info.get('title', lic_type))
     licenses_dropdown.append(choice)
+
+licenses_dropdown.append(dropdown_separator)
+
+# now append "Other"-type licenses to the end of the options
+licenses_dropdown += other_license_choices

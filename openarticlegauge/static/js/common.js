@@ -56,6 +56,7 @@ jQuery(document).ready(function() {
             ce.attr('id', new_id);
             ce.attr('name', new_id);
             ce.siblings('.resolved_doi').remove();
+            ce.siblings('.select2-container').remove();
         });
         ne.children('.inner-container').removeClass('span12').addClass('span11');
 
@@ -65,14 +66,16 @@ jQuery(document).ready(function() {
         ne.append(remove_e);
         add_remove_btn_handler();
 
-        $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
+        $('#licenses-' + number + '-example_doi').focusout(resolve_doi);
+        $('#licenses-' + number + '-license_type').select2();
         
 		event.preventDefault(); // prevent form submission
 	});
     
     add_remove_btn_handler();
     $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
-    
+
+    $('[id^=licenses-][id$="license_type"]').select2();
 });
 
 function add_remove_btn_handler() {
@@ -94,23 +97,6 @@ function add_remove_btn_handler() {
         }
         event.preventDefault();
     });
-}
-
-function getOuterHTML(selector) {
-    /* There is no easy way to get the outerHTML of an element in jQuery.
-     * This is needed since we want to duplicate the useful link <input>.
-     * The code below does .clone().wrap('<p>').parent().html()
-     *
-     * The way it works is that it takes the first element with a certain
-     * class, makes a clone of it in RAM, wraps with a P tag, gets the parent 
-     * of it (meaning the P tag), and then gets the innerHTML property of that.
-     * So we end up copying the element we just selected, which is our goal.
-     
-     * The clone() means we're not actually disturbing the DOM. Without it
-     * all elements with a certain class will be wrapped in a P tag which is
-     * undesirable.
-     */
-	return $(selector).clone().wrap('<p>').parent().html();
 }
 
 function resolve_doi() {
@@ -137,4 +123,21 @@ function resolve_doi() {
     }
     
       
+}
+
+function getOuterHTML(selector) {
+    /* There is no easy way to get the outerHTML of an element in jQuery.
+     * This is needed since we want to duplicate the useful link <input>.
+     * The code below does .clone().wrap('<p>').parent().html()
+     *
+     * The way it works is that it takes the first element with a certain
+     * class, makes a clone of it in RAM, wraps with a P tag, gets the parent 
+     * of it (meaning the P tag), and then gets the innerHTML property of that.
+     * So we end up copying the element we just selected, which is our goal.
+     
+     * The clone() means we're not actually disturbing the DOM. Without it
+     * all elements with a certain class will be wrapped in a P tag which is
+     * undesirable.
+     */
+	return $(selector).clone().wrap('<p>').parent().html();
 }
