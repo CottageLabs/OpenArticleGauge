@@ -1,5 +1,5 @@
 import os, json, urllib2
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, abort
 from functools import wraps
 from flask.ext.login import login_user, current_user
 from openarticlegauge.core import app, login_manager

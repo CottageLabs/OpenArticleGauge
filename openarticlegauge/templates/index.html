@@ -18,18 +18,18 @@ jQuery(document).ready(function () {
         $('html, body').animate({scrollTop: top});
 
         if ( $('#result_status').html().length == 0 ) {
-            var s = '<div class="span6">progress bar here</div>';
-            s += '<div class="span6"><p>Requested: <span id="requested">' + data.requested + '</span>';
-            s += '. Found: <span id="found">' + data.results.length;
-            s += '</span>. Errors: <span id="errors">' + data.errors.length + '</span>. Processing: <span id="processing">';
-            s += data.processing.length + '</span>. <span id="checked"></span> <span id="done"></span></p></div>';
+            var s = '';
+            s += '<div class="span6"><p>You requested: <span id="requested">' + data.requested + '</span> identifiers</p>';
+            s += '<p>So far we have found <span id="found">' + data.results.length;
+            s += '</span>, experienced <span id="errors">' + data.errors.length + '</span> errors, and are still processing <span id="processing">';
+            s += data.processing.length + '</span>.</p> <p><span id="checked"></span> <span id="done"></span></p></div>';
             $('#result_status').html(s);
         } else {
             $('#errors').html(parseInt($('#errors').html()) + data.errors.length);
             $('#found').html(parseInt($('#found').html()) + data.results.length);
             $('#processing').html(data.processing.length);
         }
-        data.processing.length == 0 ? $('#done').html( 'Done.' ) : false;
+        data.processing.length == 0 ? $('#done').html( 'Received responses on all requested identifiers' ) : false;
         for ( var i in data.results ) {
             var record = data.results[i];
             var resobj = '<div class="resultitem span6';
@@ -46,7 +46,8 @@ jQuery(document).ready(function () {
             resobj += 'OKD compliant? ' + record.license[0].is_okd_compliant + '. OSI compliant? ' + record.license[0].is_osi_compliant + '</p>';
             resobj += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>';
             resobj += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
-            resobj += '<p>Last checked on ' + record._last_modified + '.</p>';
+            resobj += '<p>Last checked on ' + record.license[0].provenance.date + '.</p>';
+            resobj += '<p>License detected by <a href="/plugin/' + record.license[0].provenance.handler + '">' + record.license[0].provenance.handler + ' ' + record.license[0].provenance.handler_version + '</a></p>'
             resobj += '</div>';
             resobj += '</div>';
             $('#results').append(resobj);
@@ -68,7 +69,7 @@ jQuery(document).ready(function () {
     var idlist = [];
     
     var refresh = function() {
-        var al = '<div class="alert"><p>Checking for updates</p></div>';
+        var al = '<div class="alert"><p>Checking on progress ...</p></div>';
         $('#refresh_info').html(al);
         var checker = $('#checked').html().replace('Checked ','').replace(' times.','').replace(' time.','');
         var checked = 0;
