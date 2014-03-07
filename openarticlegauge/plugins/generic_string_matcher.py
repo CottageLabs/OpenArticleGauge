@@ -19,13 +19,13 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         Return true if there is a configuration for the given plugin name
         """
-        return self._short_name
+        return plugin_name == self._short_name
     
     def get_names(self):
         """
         Return the list of names of configurations supported by the GSM
         """
-        return []
+        return [self._short_name]
     
     def capabilities(self):
         return {

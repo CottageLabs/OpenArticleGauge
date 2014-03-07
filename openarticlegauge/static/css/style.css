@@ -26,7 +26,6 @@ h1, h2, h3, h4, h5, h6 {
 .red{
     color: #C2020C;
 }
-    
 
 .navbar{
     background:#2a333c;
@@ -55,6 +54,7 @@ a.license-remove-button {
 #topnav .nav>li>a{display:block;}
 #topnav .nav>li>a:hover{text-decoration:none;background-color:#eeeeee;}
 #topnav .nav-list>.active>a,.nav-list>.active>a:hover{color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#e36b23;}
+#topnav li.active>a{color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#e36b23;}
 
 #publisher_form textarea { height: 8em; }
 
@@ -78,6 +78,5 @@ a.license-remove-button {
     padding:4px;
     display:none;
 }
-
 
 

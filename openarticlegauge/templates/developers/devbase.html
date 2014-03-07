@@ -4,8 +4,21 @@
   {{ super() }}
 {% endblock %}
 {% block subnav %}
-    <li><a href="/developers/api">API</a></li>
-    <li><a href="/developers/backend">backend</a></li>
-    <li><a href="/developers/plugins">plugins</a></li>
-    <li><a href="/developers/search">search</a></li>
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span1">&nbsp;</div>
+        <div class="span11">
+            <ul class="nav">
+                <li{% if request.path.startswith('/developers/api') %} class="active"{% endif %}><a href="/developers/api">API</a></li>
+                <li{% if request.path.startswith('/developers/backend') %} class="active"{% endif %}><a href="/developers/backend">backend</a></li>
+                <li{% if request.path.startswith('/developers/plugins') %} class="active"{% endif %}><a href="/developers/plugins">plugins</a></li>
+                <li{% if request.path.startswith('/developers/search') %} class="active"{% endif %}><a href="/developers/search">search</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+
+
 {% endblock %}

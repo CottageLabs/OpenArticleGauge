@@ -15,7 +15,9 @@ blueprint = Blueprint('publisher', __name__)
 @blueprint.route('/', methods=['GET'])
 @blueprint.route('/list', methods=['GET'])
 def list_publishers():
-    return render_template('publishers.html', publishers=Publisher.all())
+    descriptions = plugin.PluginFactory.list_plugins("license_detect")
+    gsms = Publisher.all() # FIXME: this needs to be moved down into the PluginFactory
+    return render_template('publishers.html', plugins=descriptions, publishers=gsms)
 
 @blueprint.route('/new', methods=['GET','POST'])
 @blueprint.route('/<publisher_id>', methods=['GET','POST'])

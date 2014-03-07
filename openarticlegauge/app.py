@@ -86,11 +86,6 @@ def plugin_description(plugin_name):
         abort(404)
     return render_template("plugin.html", description=pd)
 
-@app.route('/plugins', methods=['GET'])
-def list_plugins():
-    descriptions = plugin.PluginFactory.list_plugins()
-    return render_template('plugins.html', plugins=descriptions)
-
 # the info for devs goes here
 @app.route("/developers")
 def dev():

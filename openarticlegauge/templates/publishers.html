@@ -1,11 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Registered Publishers</h1>
+
+<div class="row-fluid oag-unit">
+    <div class="hero-unit">
+        <h1>Registered Publisher Plugins</h1>
+        <p>OAG supports the following publishers through plugins which can determine the license types of articles in their domains</p>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="pull-right">
+            <a class="btn btn-info" href="{{ url_for('publisher.publisher_edit') }}">register a new publisher</a>
+        </div>
+    </div>
+</div>
+
+{% for desc in plugins %}
+<div class="row-fluid">
+    <div class="span12" {% if loop.index is divisibleby 2 %}style="background: #F9F9F9; padding: 5px"{% else %}style="padding: 5px"{% endif %}>
+        <strong><a href="{{url_for('plugin_description', plugin_name=desc.name)}}">{{desc.name}}</a></strong>
+        {% if desc.edit_id %}
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url_for('publisher.publisher_edit', publisher_id=desc.edit_id) }}"><i class="icon icon-edit"></i></a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+        
+        
+        <p>{{desc.description}}</p>
+    </div>
+</div>
+{% endfor %}
+
+<br><br><br>
+
+<h1>GSM Configurations</h1>
+<p>FIXME: fold this into the code that provides the above, and then remove this section</p>
+
 <ul>
   {% for p in publishers %}
     <li><a href="{{ url_for('publisher.publisher_edit', publisher_id=p['id']) }}" target="_blank">{{ p['publisher_name'] }}</a></li>
   {% endfor %}
 
 </ul>
+
+
 {% endblock %}
+

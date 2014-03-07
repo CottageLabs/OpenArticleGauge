@@ -565,12 +565,19 @@ class PluginFactory(object):
                 return description
 
     @classmethod
-    def list_plugins(cls):
+    def list_plugins(cls, category=None):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         
         descriptions = []
-        for inst in cls.PLUGIN_CONFIG.get("all"):
+        
+        instances = []
+        if category is None:
+            instances = cls.PLUGIN_CONFIG.get("all", [])
+        elif category == "license_detect":
+            instances = cls.PLUGIN_CONFIG.get("license_detect", [])
+        
+        for inst in instances:
             names = inst.get_names()
             for name in names:
                 descriptions.append(inst.get_description(name))
