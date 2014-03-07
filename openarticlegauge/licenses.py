@@ -1470,5 +1470,7 @@ for lic_type, info in __process_licenses:
     choice = (lic_type, info.get('title', lic_type))
     licenses_dropdown.append(choice)
 
+licenses_dropdown.append(dropdown_separator)
+
 # now append "Other"-type licenses to the end of the options
 licenses_dropdown += other_license_choices
