@@ -102,9 +102,9 @@
 
             {% set class = kwargs.pop('class', '') %}
             {% if render_remove %}
-              {% set class = class + ' span10' %}
+              {% set class = 'span10 ' + class %}
             {% elif nested_field %}
-              {% set class = class + ' span12' %}
+              {% set class = 'span12 ' + class %}
             {% endif %}
 
             {% if field.type != 'RadioField' %}
