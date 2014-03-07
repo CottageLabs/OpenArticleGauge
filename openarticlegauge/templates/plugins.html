@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Active Plugins</h1>
+<ul>
+
+    {% for desc in plugins %}
+        <li><a href="{{url_for('plugin_description', plugin_name=desc.name)}}">{{desc.name}}</a> - {{desc.description}}</li>
+    {% endfor %}
+
+</ul>
+{% endblock %}
+
+
+
+

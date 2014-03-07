@@ -3,6 +3,7 @@ body{
     margin:0;
     font-size:15px;
     line-height:20px;
+    padding-top:40px;
     font-family:'Oswald',sans-serif;
     text-rendering:optimizelegibility;
     background-color:#eeeeee;

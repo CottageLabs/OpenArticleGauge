@@ -1,22 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Active Plugins</h1>
+<h1>Registered Publishers</h1>
 <ul>
-{#
   {% for p in publishers %}
-    <li><a href="{{ url_for('publisher.publisher_edit', publisher_id=p['id']) }}"
-      target="_blank">{{ p['publisher_name'] }}</a></li>
+    <li><a href="{{ url_for('publisher.publisher_edit', publisher_id=p['id']) }}" target="_blank">{{ p['publisher_name'] }}</a></li>
   {% endfor %}
-#}
-
-    {% for desc in publishers %}
-        <li><a href="{{url_for('plugin_description', plugin_name=desc.name)}}">{{desc.name}}</a> - {{desc.description}}</li>
-    {% endfor %}
 
 </ul>
 {% endblock %}
-
-
-
-
