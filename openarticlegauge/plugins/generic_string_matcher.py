@@ -19,7 +19,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         Return true if there is a configuration for the given plugin name
         """
-        return _short_name
+        return self._short_name
     
     def get_names(self):
         """
@@ -66,7 +66,8 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             version=self.__version__,
             description="Some Description",
             provider_support="<list of provider urls>",
-            license_support="<list of license statements>"
+            license_support="<list of license statements>",
+            edit_id=None # put the configuration's id here, so we can link to the edit page
         )
     
     def license_detect(self, record):

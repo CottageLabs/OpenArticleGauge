@@ -378,12 +378,13 @@ class Plugin(object):
         )
 
 class PluginDescription(object):
-    def __init__(self, name=None, version=None, description=None, provider_support=None, license_support=None):
+    def __init__(self, name=None, version=None, description=None, provider_support=None, license_support=None, edit_id=None):
         self.name = name
         self.version = version
         self.description = description
         self.provider_support = provider_support
         self.license_support = license_support
+        self.edit_id = edit_id
         
 
 class PluginFactory(object):

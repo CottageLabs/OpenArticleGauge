@@ -47,7 +47,7 @@ jQuery(document).ready(function () {
             resobj += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>';
             resobj += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
             resobj += '<p>Last checked on ' + record.license[0].provenance.date + '.</p>';
-            resobj += '<p>License detected by <a href="/plugin/' + record.license[0].provenance.handler + '">' + record.license[0].provenance.handler + ' ' + record.license[0].provenance.handler_version + '</a></p>'
+            resobj += '<p>License detected by <a target="_blank" href="/plugin/' + record.license[0].provenance.handler + '">' + record.license[0].provenance.handler + ' ' + record.license[0].provenance.handler_version + '</a> plugin</p>'
             resobj += '</div>';
             resobj += '</div>';
             $('#results').append(resobj);
