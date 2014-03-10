@@ -129,6 +129,7 @@ class TestWorkflow(TestCase):
         # config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_01")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
+        print plugin.PluginFactory.PLUGIN_CONFIG
         
         # check that we can identify a doi
         record = {"identifier" : {"id" : "10.blah"}}
@@ -142,7 +143,8 @@ class TestWorkflow(TestCase):
         record = models.MessageObject(record=record)
         workflow._detect_verify_type(record)
         record = record.record
-        assert record["identifier"]["type"] == "pmid"
+        print record
+        assert record["identifier"]["type"] == "pmid", record
         
         # check that we can deal with a lookup exception
         record = {"identifier" : {"id" : "123456789", "type" : "doi"}}
@@ -665,7 +667,7 @@ class TestWorkflow(TestCase):
         record = workflow.store_results(record)
         
         assert "bibjson" in record # should be a basic bibjson object
-        assert "license" not in record["bibjson"]
+        assert "license" not in record["bibjson"], record
         
         
         

@@ -63,6 +63,11 @@ class ELifePlugin(plugin.Plugin):
         # 2. query elife XML api
             url = 'http://elife.elifesciences.org/elife-source-xml/' + doi
             response = requests.get(url)
+            
+            # determine the size of the request
+            # (we ignore the content-length header, and just always use the number of bytes that we
+            # calculate ourselves)
+            source_size = len(bytes(response.content))
 
             try:
                 xml = etree.fromstring(response.text.decode("utf-8"))
@@ -102,6 +107,7 @@ class ELifePlugin(plugin.Plugin):
                         'handler_version': self.__version__,
                         'date': datetime.strftime(datetime.now(), config.date_format),
                         'source': url,
+                        "source_size" : source_size,
                         'agent': config.agent,
                         'category': 'xml_api', # TODO we need to think how the
                             # users get to know what the values here mean.. docs?
@@ -109,8 +115,4 @@ class ELifePlugin(plugin.Plugin):
                     }
         
                     license['provenance'] = provenance
-                    """
-                    record['bibjson'].setdefault('license', [])
-                    record['bibjson']['license'].append(license)
-                    """
                     record.add_license_object(license)

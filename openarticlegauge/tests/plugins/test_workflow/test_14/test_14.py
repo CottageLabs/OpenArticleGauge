@@ -1,6 +1,7 @@
 from openarticlegauge import plugin
 
 class mock_doi_type(plugin.Plugin):
+    _short_name="mock_doi"
     def capabilities(self):
         return {
             "type_detect_verify" : True,
@@ -16,6 +17,7 @@ class mock_doi_type(plugin.Plugin):
             raise models.LookupException("oi")
         
 class mock_pmid_type(plugin.Plugin):
+    _short_name="mock_pmid"
     def capabilities(self):
         return {
             "type_detect_verify" : True,
@@ -28,6 +30,7 @@ class mock_pmid_type(plugin.Plugin):
             record.identifier_type = "pmid"
             
 class mock_doi_canon(plugin.Plugin):
+    _short_name="mock_doi_canon"
     def capabilities(self):
         return {
             "type_detect_verify" : False,
@@ -40,6 +43,7 @@ class mock_doi_canon(plugin.Plugin):
             record.canonical = record.identifier_type + ":" + record.id
         
 class mock_pmid_canon(plugin.Plugin):
+    _short_name="mock_pmid_canon"
     def capabilities(self):
         return {
             "type_detect_verify" : False,

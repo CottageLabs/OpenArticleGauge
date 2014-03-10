@@ -143,6 +143,7 @@
                     "description": "how the content was acquired ...",
                     "agent": "OpenArticleGauge Service/0.1 alpha",
                     "source": "http://www.plosbiology.org/article/info%3Adoi%2F10...",
+                    "source_size" : "3456",
                     "date": "2013-02-16T21:51:54.669040",
                     "handler" : "myplugin",
                     "handler_version" : "1.0"
@@ -180,6 +181,8 @@
             <li><code>xml_api</code> - the content was acquired by interrogating an XML-based API provided by the provider</li>
         </ul>
     </li>
+
+    <li><code>license/provenance/source</code> and <code>license/provenance/source_size</code> - The URL of the actual resource we looked at, and the size of it in bytes</li>
 
     <li><code>license/provenance/date</code> - the date that this licence was acquired.  This is the field that developers should use to determine the most recent licence record, which is considered by OAG to be the current licence conditions of the item.</li>
     

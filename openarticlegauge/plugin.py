@@ -219,8 +219,7 @@ class Plugin(object):
             cleaned_urls.append(self.clean_url(url))
         return cleaned_urls
 
-    def simple_extract(self, lic_statements, record, url,
-            first_match=False):
+    def simple_extract(self, lic_statements, record, url, first_match=False):
         """
         Generic code which looks for a particular string in a given web
         page (URL), determines the licence conditions of the article and
@@ -253,6 +252,12 @@ class Plugin(object):
 
         # get content
         r = requests.get(url)
+        
+        # determine the size of the request
+        # (we ignore the content-length header, and just always use the number of bytes that we
+        # calculate ourselves)
+        source_size = len(bytes(r.content))
+        
         # logging.debug('got content')
         content = self.normalise_string(r.content)
         
@@ -297,6 +302,7 @@ class Plugin(object):
                 provenance = {
                     'date': datetime.strftime(datetime.now(), config.date_format),
                     'source': url,
+                    "source_size" : source_size,
                     'agent': config.agent,
                     'category': 'page_scrape', # TODO we need to think how the
                         # users get to know what the values here mean.. docs?
@@ -363,9 +369,10 @@ class Plugin(object):
     def gen_provenance_description_fail(self, source_url):
         return 'We have found it impossible or prohibitively difficult to decide what the license of this item is by scraping the resource at ' + source_url + '. See "error_message" in the "license" object for more information.'
 
-    def describe_license_fail(self, record, source_url, why, suggested_solution='', licence_url=""):
+    def describe_license_fail(self, record, source_url, why, suggested_solution='', licence_url="", source_size=""):
         record.add_license(
-            source=source_url, 
+            source=source_url,
+            source_size=source_size,
             error_message=why, 
             suggested_solution=suggested_solution, 
             url=licence_url,

@@ -2,36 +2,6 @@ import os
 from unittest import TestCase
 from openarticlegauge import plugin, config, models
 
-'''
-class DetectPlugin(plugin.Plugin):
-    def type_detect_verify(self, record):
-        # bibjson_identifier['type'] = "mine"
-        record.identifier_type = "mine"
-
-class CanonPlugin(plugin.Plugin):
-    def canonicalise(self, record):
-        # bibjson_identifier["canonical"] = bibjson_identifier["type"] + ":" + bibjson_identifier["id"]
-        record.canonical = record.identifier_type + ":" + record.id
-
-class ProviderPlugin(plugin.Plugin):
-    def detect_provider(self, record):
-        """
-        if record["identifier"]["canonical"] == "mine:123":
-            record['provider'] = {"url" : ["http://mine"]}
-        """
-        if record.canonical == "mine:123":
-            record.add_provider_url("http://mine")
-        
-    def supports(self, provider):
-        if "http://mine" in provider['url']:
-            return True
-        return False
-    
-    def license_detect(self, record):
-        # record['bibjson'] = {"license" : {"url" : "http://license"}}
-        record.add_license_object({"url" : "http://license"})
-'''
-
 class TestPlugin(TestCase):
 
     def setUp(self):

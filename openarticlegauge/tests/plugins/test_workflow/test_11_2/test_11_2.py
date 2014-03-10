@@ -1,6 +1,7 @@
 from openarticlegauge import plugin
 
 class mock_licence_plugin(plugin.Plugin):
+    _short_name="mock"
     def capabilities(self):
         return {
             "type_detect_verify" : False,

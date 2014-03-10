@@ -690,6 +690,7 @@ class MessageObject(object):
                     provenance_description="",
                     agent=config.agent,
                     source="",
+                    source_size=-1,
                     date=datetime.strftime(datetime.now(), config.date_format),
                     handler="",
                     handler_version=""):
@@ -716,6 +717,7 @@ class MessageObject(object):
                 "description": self.gen_provenance_description_fail(source_url),
                 "agent": config.agent,
                 "source": source_url,
+                "source_size" : source_size,
                 "date": datetime.strftime(datetime.now(), config.date_format),
                 "handler" : self._short_name,
                 "handler_version" : self.__version__
@@ -753,6 +755,7 @@ class MessageObject(object):
                     "description": provenance_description,
                     "agent": agent,
                     "source": source,
+                    "source_size" : source_size,
                     "date": date,
                     "handler" : handler,
                     "handler_version" : handler_version

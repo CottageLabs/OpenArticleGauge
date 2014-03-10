@@ -58,6 +58,7 @@ RESOURCE_AND_RESULT = {
                 "description": 'License decided by querying the eLife XML API at http://elife.elifesciences.org/elife-source-xml/10.7554/eLife.00160', # description is a long string
                 "agent": config.agent, # agent is from configuration
                 "source": "http://elife.elifesciences.org/elife-source-xml/10.7554/eLife.00160", # source is the url where we look this record up
+                "source_size" : 183422, # the expected number of bytes
                 "date": -1 # date is not null (but we don't know the exact value)
             }
        }
@@ -90,6 +91,7 @@ Full specification of the OAG licence object, as taken from the API documentatio
         "description": "how the content was acquired ...",
         "agent": "OpenArticleGauge Service/0.1 alpha",
         "source": "http://www.plosbiology.org/article/info%3Adoi%2F10...",
+        "source_size" : source_size_in_bytes,
         "date": "2013-02-16T21:51:54.669040"
     }
 }
