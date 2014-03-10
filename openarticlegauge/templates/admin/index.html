@@ -209,11 +209,13 @@ jQuery(document).ready(function($) {
         var date = ""
         var handler = ""
         var handler_version = ""
+        var source_size = ""
         if (license["provenance"]) {
             source = license["provenance"]["source"] ? license["provenance"]["source"] : ""
             date = license["provenance"]["date"] ? license["provenance"]["date"] : ""
             handler = license["provenance"]["handler"] ? license["provenance"]["handler"] : "none"
             handler_version = license["provenance"]["handler_version"] ? license["provenance"]["handler_version"] : "none"
+            source_size = license["provenance"]["source_size"] ? license["provenance"]["source_size"] : "not recorded"
         }
         
         var frag = "<strong>" + title + " (" + type + " " + version + ")</strong><br>"
@@ -221,7 +223,7 @@ jQuery(document).ready(function($) {
             frag += "<a href='" + url + "'>" + url + "</a><br>"
         }
         if (source) {
-            frag += "source: <a href='" + source + "'>" + source + "</a><br>"
+            frag += "source: <a href='" + source + "'>" + source + "</a> (size: " + source_size + ")<br>"
         }
         frag += "<em>" + date + "</em> handler: <em>" + handler + "</em> version: <em>" + handler_version + "</em>"
         return frag
