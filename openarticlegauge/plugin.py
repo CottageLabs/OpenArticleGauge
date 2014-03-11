@@ -566,6 +566,10 @@ class PluginFactory(object):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         
+        # special treatment for oag default plugin
+        if plugin_name == "oag":
+            return cls._oag_plugin_description()
+        
         for inst in cls.PLUGIN_CONFIG.get("all"):
             if inst.has_name(plugin_name):
                 description = inst.get_description(plugin_name)
@@ -590,7 +594,15 @@ class PluginFactory(object):
                 descriptions.append(inst.get_description(name))
         
         return descriptions
-
-
+    
+    @classmethod
+    def _oag_plugin_description(cls):
+        return PluginDescription(
+            name="oag",
+            version="0.0",
+            description="The OpenArticleGauge default plugin - it runs when no other will",
+            provider_support="All providers and URLs are supported",
+            license_support="This plugin cannot detect any licences, it will simply record a failure on behalf of all the plugins that wouldn't run.",
+        )
 
 
