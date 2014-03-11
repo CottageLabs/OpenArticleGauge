@@ -245,10 +245,11 @@ class Record(DomainObject):
 class Issue(DomainObject):
     __type__ = 'issue'
 
-
 class Log(DomainObject):
     __type__ = 'log'
 
+class Error(DomainObject):
+    __type__ = "error"
 
 class License(DomainObject):
     __type__ = 'license'
@@ -763,7 +764,6 @@ class MessageObject(object):
             }
         )
     
-
 @celery.task(name="openarticlegauge.models.flush_buffer")
 def flush_buffer():
     """

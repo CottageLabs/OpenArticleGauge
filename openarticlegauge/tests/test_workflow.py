@@ -20,6 +20,7 @@ __version__ = "1.0"
 
 CACHE = {}
 ARCHIVE = []
+ERROR = []
 
 def mock_cache(key, record):
     global CACHE
@@ -38,6 +39,10 @@ def mock_store(cls, bibjson):
 @classmethod
 def mock_store_error(cls, bibjson):
     raise Exception("oh dear!")
+
+def mock_error_save(record):
+    global ERROR
+    ERROR.append(record)
 
 def mock_check_cache(key):
     if key == "doi:10.none": return None
@@ -96,10 +101,6 @@ def does_support(provider): return True
 class TestWorkflow(TestCase):
 
     def setUp(self):
-        # add this test file to the search path for plugins
-        #config.module_search_list.append("openarticlegauge.tests")
-        #config.module_search_list.append("tests.test_workflow")
-        #config.module_search_list.append("openarticlegauge.tests.test_workflow")
         current_support_request = 0
         
         self.old_cache = cache.cache
@@ -108,16 +109,10 @@ class TestWorkflow(TestCase):
     def tearDown(self):
         global ARCHIVE
         global CACHE
-        #for i in range(len(config.module_search_list)):
-        #    if config.module_search_list[i] == "tests.test_workflow":
-        #        del config.module_search_list[i]
-        #        break
-        #for i in range(len(config.module_search_list)):
-        #    if config.module_search_list[i] == "openarticlegauge.tests.test_workflow":
-        #        del config.module_search_list[i]
-        #        break
+        global ERROR
         current_support_request = 0
         del ARCHIVE[:]
+        del ERROR[:]
         for key in CACHE.keys():
             del CACHE[key]
             
@@ -126,7 +121,6 @@ class TestWorkflow(TestCase):
             
         
     def test_01_detect_verify_type(self):
-        # config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_01")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         print plugin.PluginFactory.PLUGIN_CONFIG
@@ -160,7 +154,6 @@ class TestWorkflow(TestCase):
         assert not record["identifier"].has_key("type")
 
     def test_02_canonicalise(self):
-        # config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_02")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -226,8 +219,6 @@ class TestWorkflow(TestCase):
         ids = [{"id" : "10.cached"}]
         
         # set up the mocks for the first test
-        #config.type_detection = ["mock_doi_type", "mock_pmid_type"]
-        #config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_05")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -272,8 +263,6 @@ class TestWorkflow(TestCase):
         ids = [{"id" : "10.archived"}]
         
         # set up the mocks for the first test
-        #config.type_detection = ["mock_doi_type", "mock_pmid_type"]
-        #config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_07")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -295,7 +284,6 @@ class TestWorkflow(TestCase):
         
     def test_08_lookup_error(self):
         ids = [{"id" : "12345", "type" : "doi"}]
-        # config.type_detection = ["mock_doi_type", "mock_pmid_type"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_08")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -320,7 +308,6 @@ class TestWorkflow(TestCase):
         assert not "provider" in record
         
         # check that a plugin is applied
-        # config.provider_detection = {"doi" : ["mock_detect_provider"]}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_09_1")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -331,7 +318,6 @@ class TestWorkflow(TestCase):
         assert record["provider"]["url"][0] == "http://provider"
         
         # now check that the chain continues all the way to the end
-        # config.provider_detection = {"doi" : ["mock_no_provider", "mock_other_detect", "mock_detect_provider"]}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_09_2")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -348,7 +334,6 @@ class TestWorkflow(TestCase):
         assert "error" in record
         
         # detect provider fails
-        #config.provider_detection = {"doi" : ["mock_detect_provider_error"]}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_10")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -358,12 +343,10 @@ class TestWorkflow(TestCase):
         assert "error" in record
         
         # detect provider fails and message object corrupt
-        # config.provider_detection = {"doi" : ["mock_detect_provider_error"]}
         ret = workflow.detect_provider("whatever")
         assert "error" in ret
     
     def test_11_provider_licence(self):
-        # config.license_detection = ["mock_licence_plugin"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_11_1")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -373,7 +356,6 @@ class TestWorkflow(TestCase):
         assert not record.has_key("bibjson")
         
         # now check there's no change if there's no plugin
-        # mock_licence_plugin.sup = False
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_11_2")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -382,7 +364,6 @@ class TestWorkflow(TestCase):
         assert not record.has_key("bibjson")
         
         # check that it works when it's right
-        # mock_licence_plugin.sup = True
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_11_1")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -414,7 +395,6 @@ class TestWorkflow(TestCase):
         assert licence['provenance']['handler_version'] == "1.0", licence['provenance']['handler_version']
     
     def test_13_provider_licence_error(self):
-        # config.license_detection = ["mock_licence_plugin"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_13_1")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -425,7 +405,6 @@ class TestWorkflow(TestCase):
         assert "error" in ret
         
         # no plugin to handle provider
-        # config.license_detection = []
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_13_2")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -435,7 +414,6 @@ class TestWorkflow(TestCase):
         assert "error" in ret
         
         # some error in license detect
-        # config.license_detection = ["mock_licence_plugin_error"]
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_13_3")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         
@@ -444,7 +422,6 @@ class TestWorkflow(TestCase):
         assert "error" in ret
         
         # some error in licence detect and record corrupt
-        # config.license_detection = ["mock_licence_plugin_error"]
         ret = workflow.detect_provider("whatever")
         assert "error" in ret
     
@@ -454,8 +431,6 @@ class TestWorkflow(TestCase):
         
         # set up the configuration so that the type and canonical form are created
         # but no copy of the id is found in the cache or archive
-        #config.type_detection = ["mock_doi_type", "mock_pmid_type"]
-        #config.canonicalisers = {"doi" : "mock_doi_canon", "pmid" : "mock_pmid_canon"}
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_14")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
         cache.check_cache = mock_null_cache
@@ -534,9 +509,11 @@ class TestWorkflow(TestCase):
     def test_16_store_error(self):
         global CACHE
         global ARCHIVE
+        global ERROR
         
         cache.cache = mock_cache
         models.Record.store = mock_store
+        models.Error.save = mock_error_save
         
         # no canonical identifier
         record = {}
@@ -555,6 +532,9 @@ class TestWorkflow(TestCase):
         assert "license" in record['bibjson']
         assert record['bibjson']['license'][0]['type'] == "failed-to-obtain-license"
         assert "identifier" in record["bibjson"]
+        assert len(ERROR) == 1
+        assert ERROR[0]["identifier"]["canonical"] == "doi:10.1"
+        assert ERROR[0]["error"] == "oops"
         
         del CACHE['doi:10.1']
         
@@ -668,9 +648,14 @@ class TestWorkflow(TestCase):
         
         assert "bibjson" in record # should be a basic bibjson object
         assert "license" not in record["bibjson"], record
+    
+    """
+    def test_20_store_error_integration(self):
+        # pre-existing error
+        record = {'identifier' : {"id" : "10.1", "type" : "doi", "canonical" : "doi:10.1"}, "queued" : True, "error" : "oops"}
+        ret = workflow.store_results(record)
         
-        
-        
+    """
         
         
         

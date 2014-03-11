@@ -600,7 +600,10 @@ def store_results(record_json):
             log.debug(str(record.identifier) + ": storing this item in the archive")
             models.Record.store(record.bibjson)
         else:
+            # otherwise, record the error in the error index
             log.debug(str(record.identifier) + ": experienced an error in the chain - not storing in the archive")
+            err = models.Error(**record.record)
+            err.save()
         
         # Step 4: update the cache
         log.debug(str(record.identifier) + ": storing this item in the cache")

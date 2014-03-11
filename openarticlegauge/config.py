@@ -141,6 +141,7 @@ MAPPINGS['dispute'] = {'dispute':MAPPINGS['record']['record']}
 MAPPINGS['log'] = {'log':MAPPINGS['record']['record']}
 MAPPINGS['license'] = {'license':MAPPINGS['record']['record']}
 MAPPINGS['account'] = {'account':MAPPINGS['record']['record']}
+MAPPINGS['error'] = {'error':MAPPINGS['record']['record']}
 
 # OAG version and user agent string
 version = '0.2 alpha'
