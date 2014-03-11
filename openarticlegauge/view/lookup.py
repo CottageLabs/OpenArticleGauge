@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, render_template, abort
 
 import json, logging
 
-from openarticlegauge import workflow
+from openarticlegauge import workflow, config
 from openarticlegauge import util
 
 LOG_FORMAT = '%(asctime)-15s %(message)s'
@@ -18,7 +18,13 @@ blueprint = Blueprint('lookup', __name__)
 def api_lookup(path='',ids=[]):
     givejson = util.request_wants_json()
     path = path.replace('.json','')
-
+    idlimit = config.LOOKUP_LIMIT
+    
+    # have we been asked to prioritise?
+    priority = bool(request.values.get("priority", False))
+    if priority:
+        idlimit = config.PRIORITY_LOOKUP_LIMIT
+    
     idlist = []
 
     # look for JSON in the incoming request data
@@ -61,11 +67,11 @@ def api_lookup(path='',ids=[]):
         idlist = [ {"id":i} for i in path.split(',') ]
 
     log.debug('LOOKUP: About to do a request size test. Len of idlist: ' + str(len(idlist)))
-    if len(idlist) > 1000:
+    if len(idlist) > idlimit:
         abort(400)
 
     if idlist:
-        results = workflow.lookup(idlist).json()
+        results = workflow.lookup(idlist, priority).json()
     else:
         results = json.dumps({})
 

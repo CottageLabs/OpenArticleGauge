@@ -154,3 +154,17 @@ date_format = "%Y-%m-%dT%H:%M:%SZ"
 unknown_url = ""
 known_unknown_url = ""
 
+
+############################################################
+## Configuration for the API
+############################################################
+
+# The maximum number of identifiers that can be requested from the API
+# in one hit
+LOOKUP_LIMIT = 1000
+
+# The maximum number of identifiers that can be requested from the API
+# in one hit where the priority queue system is being used.
+PRIORITY_LOOKUP_LIMIT = 20
+
+

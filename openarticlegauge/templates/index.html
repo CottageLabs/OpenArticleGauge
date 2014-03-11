@@ -89,7 +89,7 @@ jQuery(document).ready(function () {
     var getoag = function() {
         $.ajax({
             'type':'POST',
-            'url': '/lookup/',
+            'url': '/lookup/?priority=true',
             'data': JSON.stringify(idlist),
             'contentType': "application/json; charset=utf-8", 
             'processData': false,
@@ -121,7 +121,7 @@ jQuery(document).ready(function () {
             <h2>Open Article Gauge</h2>
             <h3>A service to determine the license for journal articles</h3>
             <p>Researchers and funders often spend inordinate amounts of time trying to figure out what license terms apply to scholarly articles. The Open Article Gauge (OAG) is a service designed to search for, locate, and present the license information for an article – the terms under which it can be accessed and/or reused.</p>
-            <p>Simply cut and paste a DOI or Pubmed ID (or a list) in the box on the right, click “find”, and the OAG will display the available license information for you.</p>
+            <p>Simply cut and paste a DOI or Pubmed ID (or a list of up to 20 identifiers) in the box on the right, click “find”, and the OAG will display the available license information for you.</p>
         </div>
         <div class="span1">
         </div>

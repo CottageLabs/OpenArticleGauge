@@ -39,7 +39,10 @@ CELERY_ROUTES = {
     'openarticlegauge.workflow.detect_provider' : {"queue": "detect_provider"},
     'openarticlegauge.workflow.provider_licence' : {"queue" : "provider_licence"},
     'openarticlegauge.workflow.store_results' : {"queue" : "store_results"},
-    'openarticlegauge.models.flush_buffer' : {'queue' : 'flush_buffer'}
+    'openarticlegauge.models.flush_buffer' : {'queue' : 'flush_buffer'},
+    'openarticlegauge.workflow.priority_detect_provider' : {"queue" : "priority_detect_provider"},
+    'openarticlegauge.workflow.priority_provider_licence' : {"queue" : "priority_provider_licence"},
+    'openarticlegauge.workflow.priority_store_results' : {"queue" : "priority_store_results"}
 }
 
 CELERYBEAT_SCHEDULE = {

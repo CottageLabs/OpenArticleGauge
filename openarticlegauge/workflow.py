@@ -27,7 +27,7 @@ with this model should be via that class instance.
 """
 
 from celery import chain
-from openarticlegauge import models, models, config, cache, plugin#, recordmanager
+from openarticlegauge import models, models, config, cache, plugin
 import logging
 from openarticlegauge.slavedriver import celery
 
@@ -35,7 +35,7 @@ LOG_FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 log = logging.getLogger(__name__)
 
-def lookup(bibjson_ids):
+def lookup(bibjson_ids, priority=False):
     """
     Take a list of bibjson id objects
     {
@@ -46,6 +46,7 @@ def lookup(bibjson_ids):
     
     arguments:
     bibjson_ids -- a list of bibjson id objects with optional type parameter
+    priority -- should the request be placed on the priority queue
     
     returns:
     a models.ResultSet object with results, errors and a list of identifiers waiting to be processed
@@ -71,7 +72,6 @@ def lookup(bibjson_ids):
             log.debug("type detected record " + str(record))
             
             # Step 1a: if we don't find a type for the identifier, there's no point in us continuing
-            # if record.get("identifier", {}).get("type") is None:
             if record.identifier_type is None:
                 raise models.LookupException("unable to determine the type of the identifier")
             
@@ -116,7 +116,6 @@ def lookup(bibjson_ids):
             # been queued.  In theory, this step is pointless, but we add it
             # in for completeness, and just in case any of the above checks change
             # in future
-            # if record.get("queued", False):
             if record.queued:
                 # if the item is already queued, we just need to update the 
                 # cache (which may be a null operation anyway), and then carry on
@@ -127,17 +126,15 @@ def lookup(bibjson_ids):
                         
             # Step 6: if we get to here, we need to set the state of the record
             # queued, and then cache it.
-            #record['queued'] = True
             record.queued = True
             _update_cache(record)
             log.debug("caching record " + str(record))
             
             # Step 7: the record needs the licence looked up on it, so we inject
             # it into the asynchronous lookup workflow
-            _start_back_end(record)
+            _start_back_end(record, priority)
             
         except models.LookupException as e:
-            # record['error'] = e.message
             record.error = e.message
         
         # write the resulting record into the result set
@@ -358,7 +355,7 @@ def _detect_verify_type(record):
         # p.type_detect_verify(record['identifier'])
         p.type_detect_verify(record)
     
-def _start_back_end(record):
+def _start_back_end(record, priority=False):
     """
     kick off the asynchronous licence lookup process.  There is no need for this to return
     anything, although a handle on the asynchronous request object is provided for convenience of
@@ -380,9 +377,14 @@ def _start_back_end(record):
     chainable = record.prep_for_backend() 
     log.debug("record prepped for chain: " + str(chainable))
     
-    ch = chain(detect_provider.s(chainable), provider_licence.s(), store_results.s())
-    r = ch.apply_async()
-    return r
+    if priority:
+        ch = chain(priority_detect_provider.s(chainable), priority_provider_licence.s(), priority_store_results.s())
+        r = ch.apply_async()
+        return r
+    else:
+        ch = chain(detect_provider.s(chainable), provider_licence.s(), store_results.s())
+        r = ch.apply_async()
+        return r
 
 ############################################################################
 # Celery Tasks
@@ -390,6 +392,13 @@ def _start_back_end(record):
 
 @celery.task(name="openarticlegauge.workflow.detect_provider")
 def detect_provider(record_json):
+    return do_detect_provider(record_json)
+
+@celery.task(name="openarticlegauge.workflow.priority_detect_provider")
+def priority_detect_provider(record_json):
+    return do_detect_provider(record_json)
+
+def do_detect_provider(record_json):
     """
     Attempt to detect the provider of the identifier supplied in the record.  This
     will - if successful - add the record['provider'] object to the OAG record
@@ -443,6 +452,13 @@ def detect_provider(record_json):
     
 @celery.task(name="openarticlegauge.workflow.provider_licence")
 def provider_licence(record_json):
+    return do_provider_licence(record_json)
+
+@celery.task(name="openarticlegauge.workflow.priority_provider_licence")
+def priority_provider_licence(record_json):
+    return do_provider_licence(record_json)
+
+def do_provider_licence(record_json):
     """
     Attempt to determine the licence of the record based on the provider information
     contained in record['provider'].  Whether this is successful or not a record['bibjson']['license']
@@ -521,6 +537,13 @@ def provider_licence(record_json):
 
 @celery.task(name="openarticlegauge.workflow.store_results")
 def store_results(record_json):
+    return do_store_results(record_json)
+
+@celery.task(name="openarticlegauge.workflow.priority_store_results")
+def priority_store_results(record_json):
+    return do_store_results(record_json)
+
+def do_store_results(record_json):
     """
     Store the OAG record object in all the appropriate locations:
     - in the cache
