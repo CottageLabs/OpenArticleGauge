@@ -70,7 +70,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         names = [p['publisher_name'] for p in configs]
 
         p = Publisher.q2obj(q='publisher_name:' + plugin_name.lower())
-        if not r:
+        if not p:
             # shouldn't really happen, but this should give an
             # indication if it does
             raise ValueError('Unsupported plugin name.')
