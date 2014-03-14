@@ -12,20 +12,25 @@ import json
 
 class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
-    __version__='0.1' 
+    __version__ = '0.1' 
     __priority__ = -1000
     
     def has_name(self, plugin_name):
         """
-        Return true if there is a configuration for the given plugin name
+        Return True if there is a configuration for the given plugin name
         """
-        return plugin_name == self._short_name
+        r = Publisher.query(q='publisher_name:' + plugin_name.lower())
+        if r['hits']['total'] > 0:
+            return True
+        return False
     
     def get_names(self):
         """
         Return the list of names of configurations supported by the GSM
         """
-        return [self._short_name]
+        configs = Publisher.all()
+        names = [p['publisher_name'] for p in configs]
+        return names
     
     def capabilities(self):
         return {
@@ -61,13 +66,30 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         Return a plugin.PluginDescription object that describes the plugin configuration
         identified by the given name
         """
+        configs = Publisher.all()
+        names = [p['publisher_name'] for p in configs]
+
+        p = Publisher.q2obj(q='publisher_name:' + plugin_name.lower())
+        if not r:
+            # shouldn't really happen, but this should give an
+            # indication if it does
+            raise ValueError('Unsupported plugin name.')
+        p = p[0]
+
+        license_support = "The following license statements are recognised:\n\n"
+        for license in p.data['licenses']:
+            statement = license['license_statement']
+            ltype = license['license_type']
+            version = license['version']
+            license_support += ltype + " " + version + ":\n" + statement   + "\n\n"
+
         return plugin.PluginDescription(
             name=plugin_name,
             version=self.__version__,
-            description="Some Description",
-            provider_support="<list of provider urls>",
-            license_support="<list of license statements>",
-            edit_id=None # put the configuration's id here, so we can link to the edit page
+            description="A supported publisher (registered via the register a publisher form)",
+            provider_support="\n".join(p.data['journal_urls']),
+            license_support=license_support,
+            edit_id=p['id']
         )
     
     def license_detect(self, record):
