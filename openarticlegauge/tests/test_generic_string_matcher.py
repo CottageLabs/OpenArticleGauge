@@ -15,8 +15,7 @@ from openarticlegauge.plugins.generic_string_matcher import GenericStringMatcher
 SUPPORTED_URLS = ["www.plosone.org"]
 
 # a list of urls which your plugin SHOULD NOT be able to support
-UNSUPPORTED_URLS = ['''not sure what the point of this test is, exactly, though there might be the rare plugin which has a complex supports procedure ''', "I mean, I'm writing the plugin, I just don't want to think about what URL-s should fail .. all of them 'cept the ones I want to work...",
-]
+UNSUPPORTED_URLS = [ ]
 
 # a list of file paths and the expected licence object from parsing that file path
 #

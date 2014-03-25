@@ -5,7 +5,7 @@ It's a bit special - instead of storing what license statements match to what li
 in the code, it fetches these (called Publisher configurations) from the database.
 """
 from openarticlegauge import plugin
-from openarticlegauge.models import Publisher
+from openarticlegauge.models import Publisher, LicenseStatement
 
 import requests
 import json
@@ -44,6 +44,9 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         Does this plugin support this provider
         """
+        # temporary while this plugin acts as the ubiquitous plugin
+        return True
+        '''
         work_on = provider.get('url', [])
         work_on = self.clean_urls(work_on)
         work_on = self.get_domain(work_on)
@@ -53,6 +56,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             return True
 
         return False
+        '''
 
     def get_domain(self, urls):
         res = []
@@ -76,11 +80,18 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             raise ValueError('Unsupported plugin name.')
         p = p[0]
 
+        ls = LicenseStatement.all()
         license_support = "The following license statements are recognised:\n\n"
         for license in p.data['licenses']:
             statement = license['license_statement']
             ltype = license['license_type']
             version = license['version']
+            license_support += ltype + " " + version + ":\n" + statement   + "\n\n"
+
+        for license in ls:
+            statement = license['license_statement']
+            ltype = license['license_type']
+            version = license.get('version', '')
             license_support += ltype + " " + version + ":\n" + statement   + "\n\n"
 
         return plugin.PluginDescription(
@@ -94,6 +105,8 @@ class GenericStringMatcherPlugin(plugin.Plugin):
     
     def license_detect(self, record):
         work_on = record.provider_urls
+
+        '''
         config_search = self.clean_urls(work_on)
         
         for index, url in enumerate(config_search):
@@ -107,6 +120,14 @@ class GenericStringMatcherPlugin(plugin.Plugin):
                 lic_statement = {}
                 lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l['version']}
                 lic_statements.append(lic_statement)
+        '''
+
+        lic_statements = []
+        all_statements = LicenseStatement.all()
+        for l in all_statements:
+            lic_statement = {}
+            lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l['version']}
+            lic_statements.append(lic_statement)
 
         for url in work_on:
             self.simple_extract(lic_statements, record, url, first_match=True)
