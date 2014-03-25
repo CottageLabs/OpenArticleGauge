@@ -64,7 +64,8 @@
             <div class="nav-collapse">
                 <ul id="mainnavlist" class="nav">
                     <li{% if request.path.startswith('/about') %} class="active"{% endif %}><a href="/about">about</a></li>
-                    <li{% if request.path.startswith('/publisher') %} class="active"{% endif %}><a href="{{ url_for('publisher.list_publishers') }}">publisher plugins</a></li>
+                    <li{% if request.path.startswith('/publisher') %} class="active"{% endif %}><a href="{{ url_for('publisher.list_publishers') }}">recognised publishers</a></li>
+                    <li{% if request.path.startswith('/license_statement') %} class="active"{% endif %}><a href="{{ url_for('license_statement.list_statements') }}">recognised licenses</a></li>
                     <li{% if request.path.startswith('/developers') %} class="active"{% endif %}><a href="/developers/api">developers</a></li>
                 </ul>
             </div>

@@ -76,6 +76,7 @@ jQuery(document).ready(function() {
     $('[id^=licenses-][id$="example_doi"]').focusout(resolve_doi);
 
     $('[id^=licenses-][id$="license_type"]').select2();
+    $('#license_type').select2();
 });
 
 function add_remove_btn_handler() {

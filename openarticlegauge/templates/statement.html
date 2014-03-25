@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "_formhelpers.html" import render_field, render_inside_field %}
+{% from "_formhelpers.html" import field_errors %}
+<h1>Tell OAG about a license statement</h1>
+<p>Note that Version and Example DOI are optional for this form.</p>
+<form action="" method="post" name="license" id="license_statement_form">
+    {% if form.hidden_tag is defined %}
+        {{ form.hidden_tag() }}
+    {% else %}
+        {% if csrf_token %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        {% for f in form if f.type == 'HiddenField' %}
+            {{ f }}
+        {% endfor %}
+    {% endif %}
+
+    <div class="span12" id="license-container" style="margin-left: 0;">
+    <div class="span12 inner-container" style="margin-left: 0;">
+      <div class="control-group
+            {% if form.errors %} error{% endif %}
+            row-fluid
+            ">
+
+        <div class="span4">
+          {{render_inside_field(form.license_statement, nested_field=True)}} 
+        </div>
+
+        <div class="span4">
+          {{render_inside_field(form.license_type, nested_field=True)}} 
+        </div>
+
+        <div class="span1">
+          {{render_inside_field(form.version, nested_field=True)}} 
+        </div>
+
+        <div class="span3">
+          {{render_inside_field(form.example_doi, nested_field=True)}} 
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+    <hr>
+    
+    <div class="row-fluid">
+    <div class="btn-group">
+        <input class="btn btn-success" type="submit" value="Submit">
+    </div>
+    </div>
+
+    
+</form>
+{% endblock %}
+
+
+
+

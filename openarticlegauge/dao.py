@@ -108,8 +108,8 @@ class DomainObject(dict):
             return None
 
     @classmethod
-    def all(cls):
-        return cls.q2obj(q='*')
+    def all(cls, **kwargs):
+        return cls.q2obj(q='*', **kwargs)
 
     @classmethod
     def q2obj(cls, **kwargs):
@@ -132,6 +132,7 @@ class DomainObject(dict):
         :param facets: dict of facets to return from the query.
         :param kwargs: any keyword args as per
             http://www.elasticsearch.org/guide/reference/api/search/uri-request.html
+            q["sort"] = [{"id" : {"order" : "asc"}}]
         '''
         if recid and not recid.endswith('/'): recid += '/'
         if isinstance(q,dict):
@@ -164,8 +165,12 @@ class DomainObject(dict):
         for k,v in kwargs.items():
             if k == '_from':
                 query['from'] = v
+            elif k == 'sort':
+                query['sort'] = v
             else:
                 query[k] = v
+
+
 
         if endpoint in ['_mapping']:
             r = requests.get(cls.target() + recid + endpoint)

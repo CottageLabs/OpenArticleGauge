@@ -5,7 +5,7 @@ from wtforms.widgets import TableWidget
 from wtforms.validators import Required, Length
 from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
-from openarticlegauge.models import Publisher
+from openarticlegauge.models import Publisher, LicenseStatement
 from openarticlegauge.licenses import licenses_dropdown
 from openarticlegauge import plugin
 
@@ -23,8 +23,11 @@ def list_publishers():
 @blueprint.route('/<publisher_id>', methods=['GET','POST'])
 def publisher_edit(publisher_id=None):
     p = Publisher.pull(publisher_id)
+    print 'request data'
+    print json.dumps(request.form, indent=4)
     form = PublisherLicenseForm(request.form, p)
        
+    print 'form data'
     print json.dumps(form.data, indent=4)
     if request.method == 'POST' and form.validate():
         if not p:
@@ -32,6 +35,9 @@ def publisher_edit(publisher_id=None):
         p.publisher_name = form.publisher_name.data
         p.journal_urls = form.journal_urls.data
         p.licenses = form.licenses.data
+        for l in p.licenses:
+            new_ls = LicenseStatement(**l)
+            new_ls.save()
         #form.populate_obj(p)
         print json.dumps(p.data, indent=4)
         p.save()

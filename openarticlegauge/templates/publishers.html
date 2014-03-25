@@ -4,8 +4,10 @@
 
 <div class="row-fluid oag-unit">
     <div class="hero-unit">
-        <h1>Registered Publisher Plugins</h1>
-        <p>OAG supports the following publishers through plugins which can determine the license types of articles in their domains</p>
+        <h1>Recognised Publishers</h1>
+        <p>OAG supports the following publishers through plugins which can determine the license types of articles in their domains. Plugins can be actual code (if the publisher has an API) or they can simply added using the "register a new publisher" button below.</p>
+        <p>Publishers added via the website can also be edited. Publishers supported via code plug-ins can be edited with a pull request against the appropriate plugin <a href="https://github.com/CottageLabs/OpenArticleGauge">on github</a>.</p>
+        <p>Finally, if you want to just add a license statement to OpenArticleGauge but do not know which publisher uses it, <a href="{{url_for('license_statement.statement_edit')}}">you can do so here!</a>.</p>
     </div>
 </div>
 
@@ -35,6 +37,7 @@
 
 <br><br><br>
 
+{#
 <h1>GSM Configurations</h1>
 <p>FIXME: fold this into the code that provides the above, and then remove this section</p>
 
@@ -44,7 +47,7 @@
   {% endfor %}
 
 </ul>
-
+#}
 
 {% endblock %}
 

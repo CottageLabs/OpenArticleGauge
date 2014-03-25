@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row-fluid oag-unit">
+    <div class="hero-unit">
+        <h1>Recognised License Statements</h1>
+        <p>This is a list of all license statements OpenArticleGauge knows about. Currently it just shows what has been contributed through the "add license" button below.</p>
+        <p>If you have more information, such as which publisher uses a license statement in which journals, <a href="{{url_for('publisher.list_publishers')}}">you can find that publisher in the "recognised publishers" list, or register them with OAG.</a>.</p>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="pull-right">
+            <a class="btn btn-info" href="{{ url_for('license_statement.statement_edit') }}">add a new license statement to OAG</a>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+      <p><strong>Note that if you delete a statement it might take a while for it to disappear from this page. Refresh after 1 minute, contact us if it's not gone.</strong></p>
+    </div>
+</div>
+
+{% for ls in statements %}
+<div class="row-fluid">
+    <div class="span12" {% if loop.index is divisibleby 2 %}style="background: #F9F9F9; padding: 5px"{% else %}style="padding: 5px"{% endif %}>
+      <a name="{{ls.edit_id}}" style="position:relative; top:-40px;">&nbsp;</a>
+      <a href="{{url_for('license_statement.statement_edit', statement_id=ls.edit_id)}}">
+        <strong>{{license_info[ls['license_type']]['title']}}</strong>
+        {% if ls['version'] %}
+        version {{ls['version']}}
+        {% endif %}
+      </a>
+        -
+        {{ls['license_statement']}}
+
+        <form action="" method="post" name="delete_license_statement_{{ls.edit_id}}" id="delete_license_statement_form_{{ls.edit_id}}" style="display:inline;">
+          <input class="btn btn-danger" name="delete_statement-{{ls.edit_id}}" id="remove-{{ls.edit_id}}" type="submit" value="delete this statement">
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+

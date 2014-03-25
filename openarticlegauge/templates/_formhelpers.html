@@ -74,6 +74,10 @@
     
 {% endmacro %}
 
+{% macro render_inside_field() %}
+  {{ __render_field(*varargs, **kwargs) }}
+{% endmacro %}
+
 {% macro __render_radio(field, caller=None) %}
 <label class="radio" for="{{field.short_name}}">
     {{ field }}

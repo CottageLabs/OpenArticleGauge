@@ -254,6 +254,31 @@ class Error(DomainObject):
 class License(DomainObject):
     __type__ = 'license'
 
+class LicenseStatement(DomainObject):
+    __type__ = 'license_statement'
+
+    @property
+    def edit_id(self): return self.data['id']
+
+    @property
+    def license_statement(self): return self.data.get("license_statement")
+    @license_statement.setter
+    def license_statement(self, value): self.data['license_statement'] = value
+
+    @property
+    def license_type(self): return self.data.get("license_type")
+    @license_type.setter
+    def license_type(self, value): self.data['license_type'] = value
+
+    @property
+    def version(self): return self.data.get("version")
+    @version.setter
+    def version(self, value): self.data['version'] = value
+
+    @property
+    def example_doi(self): return self.data.get("example_doi")
+    @example_doi.setter
+    def example_doi(self, value): self.data['example_doi'] = value
 
 class Publisher(DomainObject):
     __type__ = 'publisher'
