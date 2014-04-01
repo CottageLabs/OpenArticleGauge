@@ -18,7 +18,7 @@ def configure_app(app):
     app.config.from_object(config)
     # parent directory
     here = os.path.dirname(os.path.abspath( __file__ ))
-    config_path = os.path.join(os.path.dirname(here), 'app.cfg')
+    config_path = os.path.join(os.path.dirname(here), '..', 'app.cfg')  # this file will be in the package dir, app.cfg is at the root of the repo
     if os.path.exists(config_path):
         app.config.from_pyfile(config_path)
 
