@@ -12,3 +12,5 @@ tests/usage_tests/errors
 celerybeat-schedule
 *.pid
 openarticlegauge/tests/integration/plos.json
+
+.idea
