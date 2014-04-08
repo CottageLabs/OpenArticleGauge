@@ -189,7 +189,7 @@ class Plugin(object):
                 return True
         return False
     
-    def clean_url(self, url):
+    def clean_url(self, url, strip_leading_www=False):
         """
         Cleanup the supplied url so it is suitable for comparison inside plugins
         
@@ -203,9 +203,13 @@ class Plugin(object):
         elif url.startswith("https://"):
             url = url[len("https://"):]
 
+        if strip_leading_www:
+            if url.startswith('www.'):
+                url = url[len('www.'):]
+
         return url
 
-    def clean_urls(self, urls):
+    def clean_urls(self, urls, strip_leading_www=False):
         """
         Cleanup the supplied urls so they are suitable for comparison inside plugins.
         Just runs clean_url(url) on each url.
@@ -216,7 +220,7 @@ class Plugin(object):
         """
         cleaned_urls = []
         for url in urls:
-            cleaned_urls.append(self.clean_url(url))
+            cleaned_urls.append(self.clean_url(url, strip_leading_www=strip_leading_www))
         return cleaned_urls
 
     def simple_extract(self, lic_statements, record, url, first_match=False):

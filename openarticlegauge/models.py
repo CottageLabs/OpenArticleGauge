@@ -311,6 +311,13 @@ class Publisher(DomainObject):
         except KeyError:
             pass
 
+    @classmethod
+    def all_journal_urls(cls):
+        return cls.facets2flatlist(
+            facets= { 'journal_urls': { "field": "journal_urls.exact", "size": 10000 } },
+            size=0
+        )['journal_urls']
+
 class ResultSet(object):
     """
     Model object to represent the return object from the API.  It represents the following data structure:
@@ -478,8 +485,8 @@ class MessageObject(object):
     ## Representation functions
     ###############################################
     
-    def json(self):
-        return json.dumps(self.record)
+    def json(self, **kwargs):
+        return json.dumps(self.record, **kwargs)
     
     def __str__(self):
         return str(self.record)

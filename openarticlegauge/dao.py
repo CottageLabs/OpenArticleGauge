@@ -122,6 +122,16 @@ class DomainObject(dict):
         return results
 
     @classmethod
+    def facets2flatlist(cls, **kwargs):
+        res = cls.query(**kwargs)
+        result = {}
+        for f in res['facets']:
+            result[f] = []
+            for term in res['facets'][f]['terms']:
+                result[f].append(term['term'])
+        return result
+
+    @classmethod
     def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, **kwargs):
         '''Perform a query on backend.
 
@@ -129,7 +139,9 @@ class DomainObject(dict):
         :param endpoint: default is _search, but could be _mapping, _mlt, _flt etc.
         :param q: maps to query_string parameter if string, or query dict if dict.
         :param terms: dictionary of terms to filter on. values should be lists. 
-        :param facets: dict of facets to return from the query.
+        :param facets: dict of facets to return from the query. {'facet_name': <term object>}
+            examples of term objects (under the "terms" key in each facet):
+            http://www.elasticsearch.org/guide/en/elasticsearch/reference/0.90/search-facets-terms-facet.html
         :param kwargs: any keyword args as per
             http://www.elasticsearch.org/guide/reference/api/search/uri-request.html
             q["sort"] = [{"id" : {"order" : "asc"}}]

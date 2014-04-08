@@ -58,8 +58,29 @@ RESOURCE_AND_RESULT = {
                 "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
+        },
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "10.1111_j.1365-2869.2012.01054.x.html"):
+        {
+            "id" : None,            # there should be no id field
+            "version": "",          # version should be the empty string
+            "type": "free-to-read",
+            "jurisdiction": "",     # jurisdiction should be the empty string
+            # rights fields - just check that they are present
+            "open_access": -1,
+            "BY": -1,
+            "NC": -1,
+            "ND": -1,
+            "SA": -1,
+            "provenance": {
+                "handler": 'generic_string_matcher', # name of plugin which processed this record
+                "handler_version": '0.1', # version of plugin which processed this record
+                "category": "page_scrape", # category is page_scrape
+                "description": 'License decided by scraping the resource at http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract and looking for the following license statement: "<span class="openAccess" title="You have full text access to this OnlineOpen article">You have full text access to this OnlineOpen article</span>".', # description is a long string
+                "agent": config.agent, # agent is from configuration
+                "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract", # source is the url where we look this record up
+                "date": -1 # date is not null (but we don't know the exact value)
+            }
        },
-
 }
 
 """
