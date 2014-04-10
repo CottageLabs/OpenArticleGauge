@@ -280,6 +280,16 @@ class LicenseStatement(DomainObject):
     @example_doi.setter
     def example_doi(self, value): self.data['example_doi'] = value
 
+    def save(self):
+        t = self.q2obj(terms={'license_statement.exact': [self.license_statement]})
+
+        if len(t) == 1:
+            # just one such statement exists - edit it instead
+            print 'editing statement', t[0]['id']
+            self.data['id'] = t[0]['id']
+
+        super(LicenseStatement, self).save()
+
 class Publisher(DomainObject):
     __type__ = 'publisher'
 

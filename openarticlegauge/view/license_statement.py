@@ -1,14 +1,11 @@
 import json
 from time import sleep
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, TextAreaField, SelectField, validators, FormField, FieldList
-from wtforms.widgets import TableWidget
-from wtforms.validators import Required, Length
+from wtforms import TextField, TextAreaField, SelectField, validators, FormField, FieldList
 from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
 from openarticlegauge.models import LicenseStatement
 from openarticlegauge.licenses import licenses_dropdown, LICENSES
-from openarticlegauge import plugin
 
 blueprint = Blueprint('license_statement', __name__)
 
@@ -17,6 +14,7 @@ blueprint = Blueprint('license_statement', __name__)
 @blueprint.route('/list', methods=['GET', 'POST'])
 def list_statements():
     statements = LicenseStatement.all(sort=[{"license_type" : {"order" : "asc"}}])
+
     if request.method == 'POST':
         for key in request.form:
             if key.startswith('delete_statement'):
@@ -24,6 +22,9 @@ def list_statements():
                 ls = LicenseStatement.pull(which)
                 if ls:
                     ls.delete()
+                    sleep(1.5)  # ugly hack, make sure statement is saved before showing to user
+                    statements = LicenseStatement.all(sort=[{"license_type" : {"order" : "asc"}}])
+
     return render_template('statements.html', statements=statements, license_info=LICENSES)
 
 @blueprint.route('/new', methods=['GET','POST'])
@@ -32,8 +33,6 @@ def statement_edit(statement_id=None):
     ls = LicenseStatement.pull(statement_id)
     form = LicenseForm(request.form, ls)
        
-    print 'form data'
-    print json.dumps(form.data, indent=4)
     if request.method == 'POST' and form.validate():
         if not ls:
             ls = LicenseStatement()
@@ -47,10 +46,8 @@ def statement_edit(statement_id=None):
         ls.save()
         sleep(1.5)  # ugly hack, make sure statement is saved before showing to user
         return redirect(url_for('.list_statements', _anchor=ls.edit_id))
-    print json.dumps(form.errors)
         
-    return render_template('statement.html', 
-            form=form)
+    return render_template('statement.html', form=form)
 
 class LicenseForm(Form): 
     

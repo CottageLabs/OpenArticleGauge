@@ -1,8 +1,6 @@
 import json
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, TextAreaField, SelectField, validators, FormField, FieldList
-from wtforms.widgets import TableWidget
-from wtforms.validators import Required, Length
+from wtforms import TextField, TextAreaField, SelectField, validators, FormField, FieldList
 from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
 from openarticlegauge.models import Publisher, LicenseStatement
@@ -16,19 +14,15 @@ blueprint = Blueprint('publisher', __name__)
 @blueprint.route('/list', methods=['GET'])
 def list_publishers():
     descriptions = plugin.PluginFactory.list_plugins("license_detect")
-    gsms = Publisher.all() # FIXME: this needs to be moved down into the PluginFactory
+    gsms = Publisher.all()  # FIXME: this needs to be moved down into the PluginFactory
     return render_template('publishers.html', plugins=descriptions, publishers=gsms)
 
 @blueprint.route('/new', methods=['GET','POST'])
 @blueprint.route('/<publisher_id>', methods=['GET','POST'])
 def publisher_edit(publisher_id=None):
     p = Publisher.pull(publisher_id)
-    print 'request data'
-    print json.dumps(request.form, indent=4)
     form = PublisherLicenseForm(request.form, p)
-       
-    print 'form data'
-    print json.dumps(form.data, indent=4)
+
     if request.method == 'POST' and form.validate():
         if not p:
             p = Publisher()
@@ -38,13 +32,10 @@ def publisher_edit(publisher_id=None):
         for l in p.licenses:
             new_ls = LicenseStatement(**l)
             new_ls.save()
-        #form.populate_obj(p)
-        print json.dumps(p.data, indent=4)
         p.save()
         return redirect(url_for('.publisher_edit', publisher_id=p.id))
         
-    return render_template('publisher.html', 
-            form=form)
+    return render_template('publisher.html', form=form)
 
 class LicenseForm(Form): 
 
