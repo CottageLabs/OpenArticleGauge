@@ -80,29 +80,7 @@ RESOURCE_AND_RESULT = {
                 "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
-        },
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "10.1002_hipo.20995.html"):
-        {
-            "id" : None,            # there should be no id field
-            "version": "",          # version should be the empty string
-            "type": "free-to-read",
-            "jurisdiction": "",     # jurisdiction should be the empty string
-            # rights fields - just check that they are present
-            "open_access": -1,
-            "BY": -1,
-            "NC": -1,
-            "ND": -1,
-            "SA": -1,
-            "provenance": {
-                "handler": 'generic_string_matcher', # name of plugin which processed this record
-                "handler_version": '0.1', # version of plugin which processed this record
-                "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at http://onlinelibrary.wiley.com/doi/10.1002/hipo.20995/abstract and looking for the following license statement: "Re-use of this article is permitted in accordance with the Terms and Conditions set out at <!--TODO: clickthrough URL--><a href="http://wileyonlinelibrary.com/onlineopen#OnlineOpen_Terms" title="Link to external resource: http://wileyonlinelibrary.com/onlineopen#OnlineOpen_Terms" shape="rect">http://wileyonlinelibrary.com/onlineopen#OnlineOpen_Terms</a>".', # description is a long string
-                "agent": config.agent, # agent is from configuration
-                "source": "http://onlinelibrary.wiley.com/doi/10.1002/hipo.20995/abstract", # source is the url where we look this record up
-                "date": -1 # date is not null (but we don't know the exact value)
-            }
-        },
+        }
 }
 
 """
