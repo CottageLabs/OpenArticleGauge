@@ -10,6 +10,7 @@ from openarticlegauge import oa_policy
 import logging
 from copy import deepcopy
 from datetime import datetime
+import bleach
 
 import requests, os, imp, string, re
 
@@ -263,7 +264,8 @@ class Plugin(object):
         source_size = len(bytes(r.content))
         
         # logging.debug('got content')
-        content = self.normalise_string(r.content)
+        r.encoding = 'utf-8'
+        content = self.normalise_string(r.text)
         
         # see if one of the licensing statements is in content 
         # and populate record with appropriate license info
@@ -280,8 +282,34 @@ class Plugin(object):
 
             # logging.debug(cmp_statement)
 
-            if cmp_statement in content.decode('utf-8'):
-                
+            #content = content.decode('utf-8', errors='replace').encode('utf-8', errors='replace')
+            #print 'cmp statement type', type(cmp_statement)
+            #print 'content type', type(content)
+
+            #if type(cmp_statement) == unicode:
+            #    print 'converting cmp_statement to str'
+            #    cmp_statement = cmp_statement.encode('utf-8', 'ignore')
+            #if type(content) == unicode:
+            #    content = content.encode('utf-8', 'ignore')
+
+            if type(cmp_statement) == str:
+                #print 'converting cmp_statement to unicode'
+                cmp_statement = cmp_statement.decode('utf-8', 'replace')
+            if type(content) == str:
+                content = content.decode('utf-8', 'replace')
+
+            #print 'after safeguards'
+            #print 'cmp statement type', type(cmp_statement)
+            #print 'content type', type(content)
+
+            match = cmp_statement in content
+
+            if not match:
+                cmp_statement = self.strip_html(cmp_statement)
+                content = self.strip_html(content)
+                match = cmp_statement in content
+
+            if match:
                 # logging.debug('... matches')
 
                 # okay, statement found on the page -> get license type
@@ -324,7 +352,8 @@ class Plugin(object):
             # logging.debug('... does NOT match')
 
     def strip_html(self, html_str):
-        return html_tag_re.sub('', html_str)
+        #html_tag_re.sub('', html_str)
+        return bleach.clean(html_str, tags=[], strip=True, strip_comments=True)
 
     def strip_special_chars(self, s):
         '''
