@@ -91,7 +91,6 @@ function add_remove_btn_handler() {
         one_of_these_needs_to_be_removed = $('.' + id);
         for (var i = 0; i < one_of_these_needs_to_be_removed.length; i++) {
             current = $(one_of_these_needs_to_be_removed[i]);
-            console.log(current.find('#' + e.attr('id')).length);
             if (current.find('#' + e.attr('id')).length !== 0) {
                 current.remove();
             }
