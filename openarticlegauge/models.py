@@ -618,6 +618,22 @@ class MessageObject(object):
     @property
     def provider_doi(self):
         return self.record.get("provider", {}).get("doi")
+
+    @property
+    def doi_without_prefix(self):
+        doi = self.provider_doi
+
+        # is it a string? could get None too
+        # convention dictates to test for capability, not identity though
+        if getattr(doi, 'startswith', None):
+            # if it can be lowercased, then do it - higher chance of matching the prefix
+            if getattr(doi, 'lower', None):
+                if doi.lower().startswith('doi:'):
+                    return doi[4:]
+            # we can use startswith, but can't lowercase it (?!) - just check for the prefix
+            if doi.startswith('doi:') or doi.startswith('DOI:'):
+                    return doi[4:]
+        return doi
     
     @property
     def provider_urls(self):

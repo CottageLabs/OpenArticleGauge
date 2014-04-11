@@ -57,7 +57,7 @@ class ELifePlugin(plugin.Plugin):
 
         # 1. get DOI from record object
         # doi = record['provider'].get('doi')
-        doi = record.provider_doi
+        doi = record.doi_without_prefix  # it MUST NOT HAVE the canonical DOI prefix, "doi:" or "DOI:"
 
         if doi:
         # 2. query elife XML api
@@ -70,10 +70,12 @@ class ELifePlugin(plugin.Plugin):
             source_size = len(bytes(response.content))
 
             try:
-                xml = etree.fromstring(response.text.decode("utf-8"))
+                xml = etree.fromstring(response.text.decode("utf-8", "ignore"))
             except Exception as e:
                 log.error("Error parsing the XML from " + url)
                 log.error(e)
+                return None  # no point in doing anything else, so just do what
+                             # Python would do anyway upon reaching the end of this function
         
             # process the XML response
             namespaces = {'xlink': 'http://www.w3.org/1999/xlink'}
