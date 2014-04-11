@@ -173,9 +173,7 @@ class Plugin(object):
         for the supports method, then you should use the _base_url member
         variable to store your base urls.
         """
-        work_on = self.clean_urls(provider.get("url", []))
-
-        for url in work_on:
+        for url in provider.get("url", []):
             if self.supports_base_url(url):
                 return True
 
