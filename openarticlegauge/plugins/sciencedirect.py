@@ -12,6 +12,9 @@ class ScienceDirectPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
     __version__='0.1' # consider incrementing or at least adding a minor version
                     # e.g. "0.1.1" if you change this plugin
+    # The long lines in the description below are intentional, as it will be displayed as-is
+    # including the whitespace, on a few HTML pages - so newlines *will* show up and look
+    # strange. Better let browsers do the word wrapping.
     __desc__ = \
 """Extracts licence information from the Science Direct API.
 
@@ -20,8 +23,7 @@ This plugin will look for the following in the XML response from Elsevier's API:
 2. look for the "openaccessUserLicense" XML element and try to extract the license info.
     If it's a link to the creativecommons.org website, the license type is encoded in the URL.
 
-If Elsevier's API says the article's Open Access but doesn't (clearly or at all) say what the license is,
-we degrade the license to free-to-read."""
+If Elsevier's API says the article's Open Access but doesn't (clearly or at all) say what the license is, we degrade the license to free-to-read."""
     
     _base_urls = ["www.sciencedirect.com"]
     

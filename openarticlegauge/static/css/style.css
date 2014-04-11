@@ -31,6 +31,10 @@ h1, h2, h3, h4, h5, h6 {
     background:#2a333c;
 }
 
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
 a.remove-button {
     display: inline-block;
 }

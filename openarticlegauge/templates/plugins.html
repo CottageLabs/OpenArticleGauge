@@ -5,7 +5,7 @@
 <ul>
 
     {% for desc in plugins %}
-        <li><a href="{{url_for('plugin_description', plugin_name=desc.name)}}">{{desc.name}}</a> - {{desc.description}}</li>
+      <li><a href="{{url_for('plugin_description', plugin_name=desc.name)}}">{{desc.name}}</a> - <span class="preserve-whitespace">{{desc.description}}</span></li>
     {% endfor %}
 
 </ul>
