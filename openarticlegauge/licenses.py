@@ -260,7 +260,7 @@ LICENSES = {
     'SA': True,
     'ND': False
   },
-    "cc-nc-nd": {
+  "cc-nc-nd": {
     "domain_content": False, 
     "domain_data": False, 
     "domain_software": False, 
@@ -1434,8 +1434,27 @@ LICENSES = {
     'SA': None,
     'ND': None,
     "comment" : "The publisher asserts using a badge or statement that this article is accessible. We cannot determine any specific re-use or use rights as there is no explicit statement or link to a license." 
-   }
+   },
+  "cc-by-nd": {
+    "type": "cc-by-nd",
+    "status": "active",
+    "title": "Creative Commons Attribution-NoDerivatives (Any)",
+    "url": "http://creativecommons.org/licenses/by-nd/4.0/",
+    # Rights and requirements
+    'BY': True,
+    'NC': False,
+    'SA': False,
+    'ND': True
+  },
+
 }
+
+# alias new license types to existing licenses by recording them in the aliases dict below
+# "new type": "existing type", e.g. "cc-by-nc": "cc-nc" (the open definition only includes cc-nc, not cc-by-nc)
+aliases = {'cc-by-nc': 'cc-nc', 'cc-by-nc-sa': 'cc-nc-sa', 'cc-by-nc-nd': 'cc-nc-nd'}
+for alias, target in aliases.items():
+    LICENSES[alias] = LICENSES[target]
+
 
 licenses_dropdown = [('','')] # default: empty
 __process_licenses = OrderedDict(sorted(LICENSES.items(), key=lambda x: x[1]['title'])).items() # in alphabetical order of the titles (shown to the user)
