@@ -50,14 +50,19 @@ If Elsevier's API says the article's Open Access but doesn't (clearly or at all)
         # 2. query Elsevier XML api
             url = 'http://api.elsevier.com/content/article/' + doi
             response = requests.get(url)
-            
+
             # determine the size of the request
             # (we ignore the content-length header, and just always use the number of bytes that we
             # calculate ourselves)
             source_size = len(bytes(response.content))
 
+            response.encoding = 'utf-8'
+            content = response.text
+            if type(content) == str:
+                content = content.decode('utf-8', 'replace')
+            
             try:
-                xml = etree.fromstring(response.text.decode("utf-8", "ignore"))
+                xml = etree.fromstring(content)
             except Exception as e:
                 log.error("Error parsing the XML from " + url)
                 log.error(e)
