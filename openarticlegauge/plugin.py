@@ -184,7 +184,7 @@ class Plugin(object):
         Is the provided url supported in the list in _base_url 
         """
         for bu in self._base_urls:
-            if self.clean_url(url).startswith(bu):
+            if self.clean_url(url).startswith(self.clean_url(bu)):
                 return True
         return False
     
