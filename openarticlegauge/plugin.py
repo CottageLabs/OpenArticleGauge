@@ -188,7 +188,8 @@ class Plugin(object):
                 return True
         return False
     
-    def clean_url(self, url, strip_leading_www=False):
+    @staticmethod
+    def clean_url(url, strip_leading_www=True):
         """
         Cleanup the supplied url so it is suitable for comparison inside plugins
         
@@ -208,7 +209,7 @@ class Plugin(object):
 
         return url
 
-    def clean_urls(self, urls, strip_leading_www=False):
+    def clean_urls(self, urls, strip_leading_www=True):
         """
         Cleanup the supplied urls so they are suitable for comparison inside plugins.
         Just runs clean_url(url) on each url.
