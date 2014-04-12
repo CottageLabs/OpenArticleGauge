@@ -38,4 +38,4 @@ def oa_for_license(lic_type):
     oa_from_rights. It just selects the appropriate license from the
     licenses module.
     """
-    return oa_from_rights(**LICENSES[lic_type])
+    return oa_from_rights(**LICENSES.get(lic_type, {'NC': None, 'SA': None, 'ND': None}))
