@@ -280,8 +280,12 @@ class LicenseStatement(DomainObject):
     @example_doi.setter
     def example_doi(self, value): self.data['example_doi'] = value
 
+    @classmethod
+    def find_by_statement(cls, statement):
+        return cls.q2obj(terms={'license_statement.exact': [statement]}, consistent_order=True)
+
     def save(self):
-        t = self.q2obj(terms={'license_statement.exact': [self.license_statement]})
+        t = self.find_by_statement(self.license_statement)
 
         if len(t) == 1:
             # just one such statement exists - edit it instead
@@ -294,12 +298,12 @@ class Publisher(DomainObject):
     __type__ = 'publisher'
 
     @property
-    def journal_urls(self): return self.data.get("journal_urls")
+    def journal_urls(self): return self.data.get("journal_urls", [])
     @journal_urls.setter
     def journal_urls(self, data): self.data['journal_urls'] = data
 
     @property
-    def publisher_name(self): return self.data.get("publisher_name")
+    def publisher_name(self): return self.data.get("publisher_name", '')
     @publisher_name.setter
     def publisher_name(self, value): self.data['publisher_name'] = value
 
@@ -327,6 +331,11 @@ class Publisher(DomainObject):
             facets= { 'journal_urls': { "field": "journal_urls.exact", "size": 10000 } },
             size=0
         )['journal_urls']
+
+    @classmethod
+    def find_by_journal_url(cls, url):
+        return cls.q2obj(terms={'journal_urls.exact': [url]}, consistent_order=True)
+
 
 class ResultSet(object):
     """
