@@ -114,6 +114,8 @@ class DomainObject(dict):
     @classmethod
     def q2obj(cls, **kwargs):
         res = cls.query(**kwargs)
+        if 'hits' not in res:
+            return []
         if res['hits']['total'] <= 0:
             return []
 
@@ -132,7 +134,7 @@ class DomainObject(dict):
         return result
 
     @classmethod
-    def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, **kwargs):
+    def query(cls, recid='', endpoint='_search', q='', terms=None, facets=None, consistent_order=False, **kwargs):
         '''Perform a query on backend.
 
         :param recid: needed if endpoint is about a record, e.g. mlt
@@ -174,15 +176,18 @@ class DomainObject(dict):
                 boolean['must'].append( query['query'] )
             query['query'] = {'bool': boolean}
 
+        sort_specified = False
         for k,v in kwargs.items():
             if k == '_from':
                 query['from'] = v
             elif k == 'sort':
+                sort_specified = True
                 query['sort'] = v
             else:
                 query[k] = v
 
-
+        if not sort_specified and consistent_order:
+            query['sort'] = [{"id" : {"order" : "asc"}}]
 
         if endpoint in ['_mapping']:
             r = requests.get(cls.target() + recid + endpoint)
