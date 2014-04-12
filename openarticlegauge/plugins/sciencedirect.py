@@ -154,3 +154,7 @@ If Elsevier's API says the article's Open Access but doesn't (clearly or at all)
 
                 license['provenance'] = provenance
                 record.add_license_object(license)
+            else:
+                # this plugin failed, but would like to give another plugin the opportunity to try
+                # like the Generic String Matcher, for example
+                raise plugin.TryAnotherPluginException()
