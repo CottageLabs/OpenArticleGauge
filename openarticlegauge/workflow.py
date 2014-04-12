@@ -502,8 +502,19 @@ def do_provider_licence(record_json):
         
         # Step 3: run the plugin on the record
         log.debug("Plugin " + str(p) + " to handle provider " + str(record.provider))
-        p.license_detect(record)
-        
+
+        try:
+            p.license_detect(record)
+        except plugin.TryAnotherPluginException:
+            p = plugin.PluginFactory.license_detect(record.provider, skip_plugin=p)
+            if p is None:
+                log.debug("No further plugin to handle provider after {name} tried: {provider}"
+                          .format(name=p._short_name, provider=str(record.provider))
+                )
+                record.error = "No plugin to handle provider after {name} tried unsuccessfully and requested that another plugin should try to handle this provider.".format(name=p._short_name)
+                return record.record
+            p.license_detect(record)
+
         # was the plugin able to detect a licence?
         # if not, we need to add an unknown licence for this provider
         if not record.has_license() and not record.was_licensed():

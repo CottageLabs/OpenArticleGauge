@@ -565,7 +565,7 @@ class PluginFactory(object):
         return cls.PLUGIN_CONFIG.get("detect_provider", {}).get(identifier_type, [])
     
     @classmethod
-    def license_detect(cls, provider_record):
+    def license_detect(cls, provider_record, skip_plugin=None):
         """
         Return a plugin which asserts that it is capable of determining the licence type for a
         resource held by the supplied provider
@@ -581,6 +581,9 @@ class PluginFactory(object):
             cls.load_from_directory()
         
         for inst in cls.PLUGIN_CONFIG.get("license_detect"):
+            if skip_plugin:
+                if skip_plugin._short_name == inst._short_name:
+                    continue
             if inst.supports(provider_record):
                 return inst
         return None
@@ -638,3 +641,5 @@ class PluginFactory(object):
         )
 
 
+class TryAnotherPluginException(Exception):
+    pass
