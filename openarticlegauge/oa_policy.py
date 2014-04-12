@@ -3,6 +3,7 @@ Contains the open access policy functions, which define what "open_access" is
 based on the rights / requirements of an individual license.
 """
 
+from copy import deepcopy
 from openarticlegauge.licenses import LICENSES
 
 def oa_from_rights(NC, SA, ND, **kwargs):
@@ -38,4 +39,15 @@ def oa_for_license(lic_type):
     oa_from_rights. It just selects the appropriate license from the
     licenses module.
     """
-    return oa_from_rights(**LICENSES.get(lic_type, {'NC': None, 'SA': None, 'ND': None}))
+    try:
+        lic_info = deepcopy(LICENSES[lic_type])
+    except KeyError:
+        lic_info = {'NC': None, 'SA': None, 'ND': None}
+
+    # we could *find* a license in LICENSES, but one with no rights defined at all
+    # which would still break
+    lic_info.setdefault('NC')
+    lic_info.setdefault('SA')
+    lic_info.setdefault('ND')
+
+    return oa_from_rights(**lic_info)
