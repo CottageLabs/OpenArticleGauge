@@ -47,7 +47,7 @@ In order to see the rights / license statement on SpringerLink following an arti
         relevant_publishers = []
         for bu in self._base_urls:
             cburl = self.clean_url(bu)
-            relevant_publishers += Publisher.find_by_journal_url(cburl)
+            relevant_publishers += Publisher.find_by_journal_url('http://' + cburl)
 
         lic_statements = []
         for pub in relevant_publishers:
