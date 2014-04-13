@@ -275,10 +275,6 @@ if __name__ == "__main__":
         print "Cannot specify -a and -p  in the same command"
         exit()
     
-    if args.plugin and args.empty:
-        print "Cannot specify -p and -e in the same command"
-        exit()
-
     # must have one or other of -a or -p
     if not args.all and args.plugin is None:
         print "Must specify either -a or -p"
