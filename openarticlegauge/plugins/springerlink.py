@@ -61,6 +61,11 @@ In order to see the rights / license statement on SpringerLink following an arti
 
         for url in record.provider_urls:
             if self.supports_base_url(url):
-                if not url.endswith('/fulltext.html'):
-                    url += '/fulltext.html'
+                # try the URL as-is first
                 self.simple_extract(lic_statements, record, url)
+
+                if not record.has_license() and not record.was_licensed():
+                    # if unsuccessful, try again, but append a suffix to the URL
+                    if not url.endswith('/fulltext.html'):
+                        url += '/fulltext.html'
+                        self.simple_extract(lic_statements, record, url)
