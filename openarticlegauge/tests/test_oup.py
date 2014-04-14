@@ -105,6 +105,97 @@ class TestWorkflow(TestCase):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
+        record['provider']['url'] = ['http://bioinformatics.oxfordjournals.org/content/28/22/2981']
+        record = models.MessageObject(record=record)
+
+        oup = OUPPlugin()
+        oup.license_detect(record)
+
+        record = record.record
+
+        # check if all the important keys were created
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        # NB: some examples may fail the 'url' test since the Open Definition
+        # data we're using as the basis for our licenses dictionary does not
+        # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
+        assert all (key in record['bibjson']['license'][-1] for key in keys_in_license)
+
+        assert all (key in record['bibjson']['license'][-1]['provenance'] for key in keys_in_provenance)
+
+        # some content checks now
+        assert record['bibjson']['license'][-1]['type'] == 'cc-by'
+        assert record['bibjson']['license'][-1]['version'] == '3.0'
+        assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license'][-1]['jurisdiction']
+        assert record['bibjson']['license'][-1]['open_access']
+        assert record['bibjson']['license'][-1]['BY']
+        assert not record['bibjson']['license'][-1]['NC']
+        assert not record['bibjson']['license'][-1]['SA']
+        assert not record['bibjson']['license'][-1]['ND']
+        # In this case we also expect the OUP plugin to overwrite the ['license']['url']
+        # property with a more specific one from the license statement.
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by/3.0/'
+
+        assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
+        assert record['bibjson']['license'][-1]['provenance']['date']
+        assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0)," \
+        + "\n" + ' '*21 + 'which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
+
+    def test_04_oup_standard_OA_license_example3(self):
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://aje.oxfordjournals.org/content/178/7/1177']
+        record = models.MessageObject(record=record)
+        
+        oup = OUPPlugin()
+        oup.license_detect(record)
+        
+        record = record.record
+        
+        # check if all the important keys were created
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        # NB: some examples may fail the 'url' test since the Open Definition
+        # data we're using as the basis for our licenses dictionary does not
+        # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
+        assert all (key in record['bibjson']['license'][-1] for key in keys_in_license)
+
+        assert all (key in record['bibjson']['license'][-1]['provenance'] for key in keys_in_provenance)
+
+        # some content checks now
+        assert record['bibjson']['license'][-1]['type'] == 'cc-by'
+        assert record['bibjson']['license'][-1]['version'] == '3.0'
+        assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license'][-1]['jurisdiction']
+        assert record['bibjson']['license'][-1]['open_access']
+        assert record['bibjson']['license'][-1]['BY']
+        assert not record['bibjson']['license'][-1]['NC']
+        assert not record['bibjson']['license'][-1]['SA']
+        assert not record['bibjson']['license'][-1]['ND']
+        # In this case we also expect the OUP plugin to overwrite the ['license']['url']
+        # property with a more specific one from the license statement.
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by/3.0/'
+
+        assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
+        assert record['bibjson']['license'][-1]['provenance']['date']
+        assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)," \
+        + "\n" + ' '*21 + 'which permits unrestricted re-use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
+
+
+    def test_04_oup_standard_OA_license_example4(self):
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
         record['provider']['url'] = ['http://nar.oxfordjournals.org/content/40/21/10668']
         record = models.MessageObject(record=record)
         
@@ -145,6 +236,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
         + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)," \
         + "\n" + ' '*21 + 'which permits unrestricted, distribution, and reproduction in any medium, provided the original work is properly cited.".'
+
 
     def test_05_oup_OA_NC_license(self):
         record = {}
@@ -193,7 +285,7 @@ class TestWorkflow(TestCase):
         + "\n" + ' '*21 + "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is" \
         + "\n" + ' '*21 + 'properly cited.".'
         
-    def test_06_oup_OA_NC_license2(self):
+    def test_05_oup_OA_NC_license2(self):
         record = {}
         record['bibjson'] = {}
         record['provider'] = {}
@@ -239,4 +331,51 @@ class TestWorkflow(TestCase):
         + "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/)," \
         + "\n" + ' '*21 + "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is" \
         + "\n" + ' '*21 + 'properly cited.".'
+
+    def test_05_oup_OA_NC_license3(self):
+        record = {}
+        record['bibjson'] = {}
+        record['provider'] = {}
+        record['provider']['url'] = ['http://cardiovascres.oxfordjournals.org/content/98/2/286']
+        record = models.MessageObject(record=record)
+        
+        oup = OUPPlugin()
+        oup.license_detect(record)
+
+        record = record.record
+        
+        # check if all the important keys were created
+        assert record['bibjson'].has_key('license')
+        assert record['bibjson']['license']
+
+        # NB: some examples may fail the 'url' test since the Open Definition
+        # data we're using as the basis for our licenses dictionary does not
+        # have 'url' for all licenses. Fix by modifying licenses.py - add the data.
+        assert all (key in record['bibjson']['license'][-1] for key in keys_in_license)
+
+        assert all (key in record['bibjson']['license'][-1]['provenance'] for key in keys_in_provenance)
+
+        # some content checks now
+        assert record['bibjson']['license'][-1]['type'] == 'cc-nc'
+        assert record['bibjson']['license'][-1]['version'] == '3.0'
+        assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
+        assert not record['bibjson']['license'][-1]['jurisdiction']
+        assert not record['bibjson']['license'][-1]['open_access']
+        assert record['bibjson']['license'][-1]['BY']
+        assert record['bibjson']['license'][-1]['NC']
+        assert not record['bibjson']['license'][-1]['SA']
+        assert not record['bibjson']['license'][-1]['ND']
+        # In this case we also expect the OUP plugin to overwrite the ['license']['url']
+        # property with a more specific one from the license statement.
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0'
+
+        assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
+        assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
+        assert record['bibjson']['license'][-1]['provenance']['date']
+        assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
+
+        assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/)," \
+        + "\n" + ' '*21 + "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is properly" \
+        + "\n" + ' '*21 + 'and fully attributed".'
 
