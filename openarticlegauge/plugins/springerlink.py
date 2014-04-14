@@ -16,8 +16,7 @@ It will use all license statements from registered publishers who have these URL
 
 So ideally Springer will be registered as a publisher. If it fails to find it, the plugin will fall back to some hardcoded license statements.
 
-In order to see the rights / license statement on SpringerLink following an article's DOI is not enough.
-/fulltext.html has to be appended to the article's URL to get a rights statement.
+In order to see the rights / license statement on SpringerLink following an article's DOI may not be enough. Sometimes /fulltext.html has to be appended to the article's URL to get a rights statement.
 """.format(urls=", ".join(_base_urls))
     
     _license_mappings = [

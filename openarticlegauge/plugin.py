@@ -608,7 +608,7 @@ class PluginFactory(object):
                 return description
 
     @classmethod
-    def list_plugins(cls, category=None):
+    def list_plugins(cls, category=None, sort_for_display=False):
         if cls.PLUGIN_CONFIG is None:
             cls.load_from_directory()
         
@@ -619,7 +619,13 @@ class PluginFactory(object):
             instances = cls.PLUGIN_CONFIG.get("all", [])
         elif category == "license_detect":
             instances = cls.PLUGIN_CONFIG.get("license_detect", [])
-        
+
+        if sort_for_display:
+            # plugins with multiple configs first, they won't be affected by the
+            # _short_name condition (it's the same on all their instances)
+            # then sort by short name
+            instances.sort(key=lambda x: (-len(x.get_names()), getattr(x, '_short_name', '')))
+
         for inst in instances:
             names = inst.get_names()
             for name in names:

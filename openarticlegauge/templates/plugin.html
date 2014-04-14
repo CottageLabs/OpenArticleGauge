@@ -8,7 +8,7 @@
 <div class="row-fluid oag-unit">
     <div class="hero-unit">
         <h1>{{description.name}} {{description.version}}</h1>
-        <p class="preserve-whitespace">{{description.description}}</p>
+        <p class="preserve-whitespace">{{description.description | safe}}</p>
     </div>
 </div>
 

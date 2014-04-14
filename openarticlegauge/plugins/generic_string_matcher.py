@@ -4,6 +4,7 @@ This plugin matches incoming identifiers to Publisher configurations from the da
 It's a bit special - instead of storing what license statements match to what licenses
 in the code, it fetches these (called Publisher configurations) from the database.
 """
+from flask import url_for
 from openarticlegauge import plugin
 from openarticlegauge.models import Publisher, LicenseStatement
 
@@ -28,8 +29,9 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         Return the list of names of configurations supported by the GSM
         """
-        configs = Publisher.all()
+        configs = Publisher.all(sort=[{"publisher_name.exact" : {"order" : "asc"}}])
         names = [p['publisher_name'] for p in configs]
+        print names
         return names
     
     def capabilities(self):
@@ -70,18 +72,10 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             version = lic['version']
             license_support += ltype + " " + version + ":\n" + statement + "\n\n"
 
-        ls = LicenseStatement.all()
-        for lic in ls:
-            statement = lic['license_statement']
-            if statement not in statement_index:
-                ltype = lic['license_type']
-                version = lic.get('version', '')
-                license_support += ltype + " " + version + ":\n" + statement + "\n\n"
-
         return plugin.PluginDescription(
             name=plugin_name,
             version=self.__version__,
-            description="A supported publisher (registered via the register a publisher form)",
+            description="A supported publisher (registered via the register a publisher form). If none of the registered license statements results in a match, OAG will try all of the <a href=\"{registered_licenses_url}\">registered license statements</a> too.".format(registered_licenses_url=url_for('license_statement.list_statements')),
             provider_support="\n".join(p.data['journal_urls']),
             license_support=license_support,
             edit_id=p['id']

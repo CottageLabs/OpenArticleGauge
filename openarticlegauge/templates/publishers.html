@@ -30,24 +30,10 @@
         {% endif %}
         
         
-        <p class="preserve-whitespace">{{desc.description}}</p>
+        <p class="preserve-whitespace">{{desc.description | safe}}</p>
     </div>
 </div>
 {% endfor %}
-
-<br><br><br>
-
-{#
-<h1>GSM Configurations</h1>
-<p>FIXME: fold this into the code that provides the above, and then remove this section</p>
-
-<ul>
-  {% for p in publishers %}
-    <li><a href="{{ url_for('publisher.publisher_edit', publisher_id=p['id']) }}" target="_blank">{{ p['publisher_name'] }}</a></li>
-  {% endfor %}
-
-</ul>
-#}
 
 {% endblock %}
 
