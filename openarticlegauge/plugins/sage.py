@@ -18,7 +18,7 @@ class SagePlugin(plugin.Plugin):
             {"""This article is distributed under the terms of the Creative Commons Attribution-Non Commercial 3.0 License (http://www.creativecommons.org/licenses/by-nc/3.0/) which permits non-commercial use, reproduction and distribution of the work without further permission provided the original work is attributed as specified""":
                     {'type': 'cc-nc', 'version':'3.0',
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
-                    'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
             }
         ]
 
