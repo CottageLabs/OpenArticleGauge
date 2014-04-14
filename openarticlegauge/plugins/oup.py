@@ -28,7 +28,14 @@ class OUPPlugin(plugin.Plugin):
                     + "\n" + ' '*21 +  "properly cited.":
                 {'type': 'cc-nc', 'version':'3.0',
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
-                    'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
+            },
+            {"This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/),"
+                    + "\n" + ' '*21 +  "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is"
+                    + "\n" + ' '*21 +  "properly cited.":
+                {'type': 'cc-nc', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
             }
         ]
 
