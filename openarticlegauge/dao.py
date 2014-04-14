@@ -108,8 +108,8 @@ class DomainObject(dict):
             return None
 
     @classmethod
-    def all(cls, **kwargs):
-        return cls.q2obj(q='*', **kwargs)
+    def all(cls, size=10000000, **kwargs):
+        return cls.q2obj(size=size, consistent_order=True, **kwargs)
 
     @classmethod
     def q2obj(cls, **kwargs):

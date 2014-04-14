@@ -282,7 +282,7 @@ class LicenseStatement(DomainObject):
 
     @classmethod
     def find_by_statement(cls, statement):
-        return cls.q2obj(terms={'license_statement.exact': [statement]}, consistent_order=True)
+        return cls.q2obj(terms={'license_statement.exact': [statement]}, size=1000000, consistent_order=True)
 
     def save(self):
         t = self.find_by_statement(self.license_statement)
@@ -334,7 +334,7 @@ class Publisher(DomainObject):
 
     @classmethod
     def find_by_journal_url(cls, url):
-        return cls.q2obj(terms={'journal_urls.exact': [url]}, consistent_order=True)
+        return cls.q2obj(terms={'journal_urls.exact': [url]}, size=1000000, consistent_order=True)
 
 
 class ResultSet(object):
