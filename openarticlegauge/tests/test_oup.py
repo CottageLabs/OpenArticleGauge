@@ -170,26 +170,26 @@ class TestWorkflow(TestCase):
         assert all (key in record['bibjson']['license'][-1]['provenance'] for key in keys_in_provenance)
 
         # some content checks now
-        assert record['bibjson']['license'][-1]['type'] == 'cc-by'
+        assert record['bibjson']['license'][-1]['type'] == 'cc-nc'
         assert record['bibjson']['license'][-1]['version'] == '3.0'
         assert 'id' not in record['bibjson']['license'][-1] # should not have "id" - due to bibserver
         assert not record['bibjson']['license'][-1]['jurisdiction']
-        assert record['bibjson']['license'][-1]['open_access']
+        assert not record['bibjson']['license'][-1]['open_access']
         assert record['bibjson']['license'][-1]['BY']
-        assert not record['bibjson']['license'][-1]['NC']
+        assert record['bibjson']['license'][-1]['NC']
         assert not record['bibjson']['license'][-1]['SA']
         assert not record['bibjson']['license'][-1]['ND']
         # In this case we also expect the OUP plugin to overwrite the ['license']['url']
         # property with a more specific one from the license statement.
-        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by/3.0/'
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0/'
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
         assert record['bibjson']['license'][-1]['provenance']['date']
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
-        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/)," \
-        + "\n" + ' '*21 + 'which permits unrestricted re-use, distribution, and reproduction in any medium, provided the original work is properly cited.".'
+        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0)," \
+        + "\n" + ' '*21 + 'which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.".'
 
 
     def test_04_oup_standard_OA_license_example4(self):
@@ -273,7 +273,7 @@ class TestWorkflow(TestCase):
         assert not record['bibjson']['license'][-1]['ND']
         # In this case we also expect the OUP plugin to overwrite the ['license']['url']
         # property with a more specific one from the license statement.
-        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0'
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0/'
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
@@ -320,7 +320,7 @@ class TestWorkflow(TestCase):
         assert not record['bibjson']['license'][-1]['ND']
         # In this case we also expect the OUP plugin to overwrite the ['license']['url']
         # property with a more specific one from the license statement.
-        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0'
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0/'
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
@@ -367,7 +367,7 @@ class TestWorkflow(TestCase):
         assert not record['bibjson']['license'][-1]['ND']
         # In this case we also expect the OUP plugin to overwrite the ['license']['url']
         # property with a more specific one from the license statement.
-        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0'
+        assert record['bibjson']['license'][-1]['url'] == 'http://creativecommons.org/licenses/by-nc/3.0/'
 
         assert record['bibjson']['license'][-1]['provenance']['agent'] == config.agent
         assert record['bibjson']['license'][-1]['provenance']['source'] == record['provider']['url'][0]
@@ -375,7 +375,7 @@ class TestWorkflow(TestCase):
         assert record['bibjson']['license'][-1]['provenance']['category'] == 'page_scrape'
 
         assert record['bibjson']['license'][-1]['provenance']['description'] == 'License decided by scraping the resource at ' + record['provider']['url'][0] + ' and looking for the following license statement: "' \
-        + "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/)," \
-        + "\n" + ' '*21 + "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is properly" \
-        + "\n" + ' '*21 + 'and fully attributed".'
+            "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by-nc/3.0/)," \
+            "\n" + ' '*21 + "which permits non-commercial use, distribution, and reproduction in any medium, provided that the original authorship is properly" \
+            "\n" + ' '*21 + 'and fully attributed".'
 

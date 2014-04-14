@@ -16,6 +16,13 @@ class OUPPlugin(plugin.Plugin):
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by/3.0/'}
             },
+            # same, but note "re-use" vs "reuse"
+            {"This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0/),"
+                    + "\n" + ' '*21 + "which permits unrestricted re-use, distribution, and reproduction in any medium, provided the original work is properly cited.":
+                {'type': 'cc-by', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by/3.0/'}
+            },
             { # Same as above but without the trailing slash in the URL in the license statement and 'use' rather than 'reuse'
              "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/3.0),"
                     + "\n" + ' '*21 + "which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.":
@@ -52,10 +59,34 @@ class OUPPlugin(plugin.Plugin):
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
             },
-            { # Subtly different text which handles the case at eg: http://cardiovascres.oxfordjournals.org/content/98/2/286
+            { # Subtly different text
              "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/),"
                     + "\n" + ' '*21 +  "which permits unrestricted non-commercial use, distribution, and reproduction in any medium, provided the original work is properly"
                     + "\n" + ' '*21 +  "and fully attributed":
+                {'type': 'cc-nc', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
+            },
+            # Yet another subtly different case - note "reuse" immediately after unrestricted
+            {
+             "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0),"
+                    + "\n" + ' '*21 +  "which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.":
+                {'type': 'cc-nc', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
+            },
+            # Variation on the above with a trailing slash in the license URL
+            {
+             "This is an Open Access article distributed under the terms of the Creative Commons Attribution Non-Commercial License (http://creativecommons.org/licenses/by-nc/3.0/),"
+                    + "\n" + ' '*21 +  "which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.":
+                {'type': 'cc-nc', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
+            },
+            { # Yet another case at eg: http://cardiovascres.oxfordjournals.org/content/98/2/286
+             "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by-nc/3.0/),"
+             + "\n" + ' '*21 + "which permits non-commercial use, distribution, and reproduction in any medium, provided that the original authorship is properly"
+             + "\n" + ' '*21 + "and fully attributed":
                 {'type': 'cc-nc', 'version':'3.0',
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by-nc/3.0/'}
