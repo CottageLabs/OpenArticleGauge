@@ -24,7 +24,13 @@ class BMJPlugin(plugin.Plugin):
                     {'type': 'cc-nc', 'version':'3.0',
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
-            }
+            },
+            {"""This is an Open Access article distributed in accordance with the Creative Commons Attribution Non Commercial (CC BY-NC 3.0) license, which permits others to distribute, remix, adapt, build upon this work non-commercially, and license their derivative works on different terms, provided the original work is properly cited and the use is non-commercial. See: <a href="http://creativecommons.org/licenses/by-nc/3.0/">http://creativecommons.org/licenses/by-nc/3.0/</a>""":
+                    {'type': 'cc-nc', 'version':'3.0',
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by-nc/3.0'}
+            },
+
         ]
 
     def capabilities(self):
