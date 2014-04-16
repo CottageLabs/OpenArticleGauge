@@ -17,6 +17,24 @@ class BMCPlugin(plugin.Plugin):
                     # also declare some properties which override info about this license in the licenses list (see licenses module)
                     'url': 'http://creativecommons.org/licenses/by/2.0'
                 }
+            },
+            { # Same as above but has a space in the license link text
+                "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'> http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited." : 
+                {
+                    'type': 'cc-by', 
+                    'version':'2.0', 
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by/2.0'
+                }
+            },
+            { # Same as top but 'credited' rather than cited
+                "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<a href='http://creativecommons.org/licenses/by/2.0'>http://creativecommons.org/licenses/by/2.0</a>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly credited." : 
+                {
+                    'type': 'cc-by', 
+                    'version':'2.0', 
+                    # also declare some properties which override info about this license in the licenses list (see licenses module)
+                    'url': 'http://creativecommons.org/licenses/by/2.0'
+                }
             }
         ]
     
