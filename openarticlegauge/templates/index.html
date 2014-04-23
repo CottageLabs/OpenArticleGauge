@@ -8,82 +8,183 @@
 <script type="text/javascript">
 jQuery(document).ready(function () {
 
-    var showmore = function(event) {
-        event ? event.preventDefault() : false;
-        $(this).parent().siblings('.oagmore').toggle();
-    }
+    // this is where the page stores all the ids that we are requesting
+    var idlist = [];
 
-    var success = function(data) {
-        var top = $('#result_status').offset().top - 70;
-        $('html, body').animate({scrollTop: top});
-
+    function statusTable(data) {
+        // if the div is empty, then draw this for the first time
         if ( $('#result_status').html().length == 0 ) {
-            var s = '';
-            s += '<div class="span6"><p>You requested: <span id="requested">' + data.requested + '</span> identifiers</p>';
-            s += '<p>So far we have found <span id="found">' + data.results.length;
-            s += '</span>, experienced <span id="errors">' + data.errors.length + '</span> errors, and are still processing <span id="processing">';
-            s += data.processing.length + '</span>.</p> <p><span id="checked"></span> <span id="done"></span></p></div>';
+            var s = "<table id='status_table'>"
+            s += "<thead><tr><th>identifiers requested</th><th>still processing</th><th>found</th><th>errors</th><th>number of attempts</th><th>details</th></tr></thead>"
+
+            s += "<tbody><tr>"
+            s += '<td>' + data.requested + '</td>';
+            s += '<td id="processing">' + data.processing.length + '</td>';
+            s += '<td id="found">' + data.results.length + '</td>';
+            s += '<td id="errors">' + data.errors.length + '</td>';
+            s += '<td id="checked">1</td>';
+            s += '<td id="message">waiting...</td>';
+            s += "</tr></tbody></table>"
+
             $('#result_status').html(s);
+            $('#status_table').tablesorter(
+                {
+                    headers: {
+                        0 : {sorter : false},
+                        1 : {sorter : false},
+                        2 : {sorter : false},
+                        3 : {sorter : false},
+                        4 : {sorter : false},
+                        5 : {sorter : false}
+                    }
+                }
+            )
+
+        // otherwise, just update the values in the table
         } else {
             $('#errors').html(parseInt($('#errors').html()) + data.errors.length);
             $('#found').html(parseInt($('#found').html()) + data.results.length);
             $('#processing').html(data.processing.length);
+            $('#checked').html(parseInt($('#checked').html()) + 1);
+            $('#message').html("waiting...");
         }
-        data.processing.length == 0 ? $('#done').html( 'Received responses on all requested identifiers' ) : false;
+    }
+
+    function successResults(data) {
+        // don't do anything if there's nothing to do
+        if ( $('#results').html().length == 0 && data.results.length == 0) {
+            return
+        }
+
+        var t = ""
+
+        // if the div is empty, draw this for the first time
+        if ( $('#results').html().length == 0 ) {
+            t += "<h2>Results</h2>"
+            t += "<table id='success_table'>"
+            t += "<thead><tr><th>identifier</th><th>license</th><th>BY</th><th>NC</th><th>SA</th><th>ND</th><th>OKD</th><th>OSI</th><th>info</th><th>checked</th><th>by</th></tr></thead>"
+            t += "<tbody id='success_results'>"
+        }
+
         for ( var i in data.results ) {
             var record = data.results[i];
-            var resobj = '<div class="resultitem span6';
-            record.license[0].open_access ? resobj += ' alert alert-success' : resobj += ' alert alert-danger';
-            resobj += '">';
-            resobj += '<h3>' + record.identifier[0].id + '</h3>';
-            resobj += '<h4>';
-            resobj += '<a class="oagshowmore" href="#" alt="view more details" title="view more details"> ++ </a>';
-            resobj += record.license[0].title + ' (' + record.license[0].type + ')</h4>';
-            resobj += '<div class="oagmore">';
-            resobj += '<p>' + record.license[0].provenance.description + '</p>';
-            resobj += '<p>' + 'BY: ' + record.license[0].BY;
-            resobj += '. NC: ' + record.license[0].NC + '. SA: ' + record.license[0].SA + '. ND: ' + record.license[0].ND + '. ';
-            resobj += 'OKD compliant? ' + record.license[0].is_okd_compliant + '. OSI compliant? ' + record.license[0].is_osi_compliant + '</p>';
-            resobj += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>';
-            resobj += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
-            resobj += '<p>Last checked on ' + record.license[0].provenance.date + '.</p>';
-            resobj += '<p>License detected by <a target="_blank" href="/plugin/' + record.license[0].provenance.handler + '">' + record.license[0].provenance.handler + ' ' + record.license[0].provenance.handler_version + '</a> plugin</p>'
-            resobj += '</div>';
-            resobj += '</div>';
-            $('#results').append(resobj);
+
+            var info = '<p>' + record.license[0].provenance.description + '</p>';
+            if (record.license[0].url) {
+                info += '<p>Learn more about this license at <a target="_blank" href="' + record.license[0].url + '">' + record.license[0].url + '</a></p>'
+            }
+            if (record.license[0].provenance.source) {
+                info += '<p>We retrieved this information from <a target="_blank" href="' + record.license[0].provenance.source + '">' + record.license[0].provenance.source + '</a>.</p>';
+            }
+
+            var plugin = '<p>License detected by <a target="_blank" href="/plugin/' + record.license[0].provenance.handler + '">' + record.license[0].provenance.handler + ' ' + record.license[0].provenance.handler_version + '</a> plugin</p>'
+
+            var color = record.license[0].open_access ? ' style="background-color: #aaffaa"' : ' style="background-color: #ffaaaa"';
+
+            var row = "<tr>"
+
+            row += "<td>" + record.identifier[0].id + "</td>"
+            row += "<td" + color + ">" + record.license[0].title + " (" + record.license[0].type + ")</td>"
+            row += "<td>" + record.license[0].BY + "</td>"
+            row += "<td>" + record.license[0].NC + "</td>"
+            row += "<td>" + record.license[0].SA + "</td>"
+            row += "<td>" + record.license[0].ND + "</td>"
+            row += "<td>" + (typeof(record.license[0].is_okd_compliant) === "undefined" ? "" : record.license[0].is_okd_compliant) + "</td>"
+            row += "<td>" + (typeof(record.license[0].is_osi_compliant) === "undefined" ? "" : record.license[0].is_osi_compliant) + "</td>"
+            row += "<td>" + info + "</td>"
+            row += "<td>" + record.license[0].provenance.date + "</td>"
+            row += "<td>" + plugin + "</td>"
+            row += "</tr>"
+
+            t += row
         }
-        $('#results .resultitem:nth-child(2n+1)').css("margin-left",0);
-        $('.oagshowmore').unbind('click',showmore);
-        $('.oagshowmore').bind('click',showmore);
+
+        if ( $('#results').html().length == 0 ) {
+            t += "</tbody></table>"
+            $('#results').html(t);
+            $('#success_table').tablesorter()
+        } else {
+            $("#success_results").append(t)
+        }
+    }
+
+    function errorResults(data) {
+        // don't do anything if there's nothing to do
+        if ( $('#failed').html().length == 0 && data.errors.length == 0) {
+            return
+        }
+
+        var t = ""
+
+        // if the div is empty, draw this for the first time
+        if ( $('#failed').html().length == 0 ) {
+            t += "<h2>Errors encountered</h2>"
+            t += "<table id='errors_table'>"
+            t += "<thead><tr><th>identifier</th><th>error message</th></tr></thead>"
+            t += "<tbody id='errors_results'>"
+        }
+
+        for ( var i in data.errors ) {
+            var record = data.errors[i];
+
+            var row = "<tr>"
+            row += "<td>" + record.identifier.id + "</td>"
+            row += "<td>" + record.error + "</td>"
+            row += "</tr>"
+
+            t += row
+        }
+
+        if ( $('#failed').html().length == 0 ) {
+            t += "</tbody></table>"
+            $('#failed').html(t);
+            $('#errors_table').tablesorter()
+        } else {
+            $("#errors_results").append(t)
+        }
+    }
+
+    var success = function(data) {
+        // scroll to the results
+        var top = $('#result_status').offset().top - 70;
+        $('html, body').animate({scrollTop: top});
+
+        // regenerate the status table
+        statusTable(data)
+
+        // if we're finished, tell the user
+        data.processing.length == 0 ? $('#message').html( 'Received responses on all requested identifiers' ) : false;
+
+        // for the responses we receive, do the successful results
+        successResults(data)
+
+        // for the response we receive, do the error results
+        errorResults(data)
+
+        // shrink the id list to just those we haven't had responses on
         idlist = [];
         for ( var obj in data.processing ) {
             idlist.push(data.processing[obj].identifier.id);
         };
+
+        // wait 5 seconds, then refresh
         idlist.length != 0 ? setTimeout(refresh,5000) : false;
     };
     
-    var error = function(xhr, message, error) {
-        alert("Error... " + error)
+    var error = function(xhr, message, err) {
+        alert("Error... " + err)
     };
-    
-    var idlist = [];
-    
+
     var refresh = function() {
-        var al = '<div class="alert"><p>Checking on progress ...</p></div>';
-        $('#refresh_info').html(al);
-        var checker = $('#checked').html().replace('Checked ','').replace(' times.','').replace(' time.','');
-        var checked = 0;
-        checker.length != 0 ? checked = parseInt(checker) : checked = 0;
-        checked += 1; // increment the note of how many times it has been checked
-        if ( checked > 20 ) {
-            $('#done').html('Given up...');
+        var al = 'Checking on progress ...';
+        $("#message").html(al)
+
+        var checked = parseInt($('#checked').html())
+        if ( checked >= 20 ) {
+            $('#message').html('Checked 20 times, stopping.');
         } else {
-            var checknote = 'Checked ' + checked;
-            checked == 1 ? checknote += ' time.' : checknote += ' times.';
-            $('#checked').html(checknote);
             getoag();
         }
-        setTimeout(function() { $('#refresh_info').html("") },1000);
     };
     
     var getoag = function() {
@@ -102,7 +203,8 @@ jQuery(document).ready(function () {
         event ? event.preventDefault() : false;
         $('#result_status').html("");
         $('#results').html("");
-        idlist = $('#idlist').val().replace('\n',',').replace(' ','').split(',');
+        $('#failed').html("");
+        idlist = $('#idlist').val().replace(/\n/g,',').replace(/ /g,'').split(',');
         getoag();
     };
     $('#oag').bind('click',oag);
@@ -140,13 +242,13 @@ jQuery(document).ready(function () {
 
 <div class="row-fluid">
     <div class="span12">
-        <div id="refresh_info" class="clearfix" style="height:40px; margin-bottom:10px;"></div>
+        <div id="results"></div>
     </div>
 </div>
 
 <div class="row-fluid">
     <div class="span12">
-        <div id="results"></div>
+        <div id="failed"></div>
     </div>
 </div>
 
