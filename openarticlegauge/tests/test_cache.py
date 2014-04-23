@@ -1,11 +1,21 @@
 from unittest import TestCase
 
-import redis, json, datetime
-from openarticlegauge import config, cache, models
-
+from openarticlegauge import config
 test_host = config.DEFAULT_HOST
 test_port = 6379
 test_db = 3 # we are using 1 and 2 for the celery queue and the actual cache respectively
+
+# now patch them into the root config for this runtime - necessary as the client is loaded once at import time
+OLD_HOST = config.REDIS_CACHE_HOST
+OLD_PORT = config.REDIS_CACHE_PORT
+OLD_DB = config.REDIS_CACHE_DB
+
+config.REDIS_CACHE_HOST = test_host
+config.REDIS_CACHE_PORT = test_port
+config.REDIS_CACHE_DB = test_db
+
+import redis, json, datetime
+from openarticlegauge import cache, models
 
 class TestWorkflow(TestCase):
 
@@ -13,12 +23,17 @@ class TestWorkflow(TestCase):
         config.REDIS_CACHE_HOST = test_host
         config.REDIS_CACHE_PORT = test_port
         config.REDIS_CACHE_DB = test_db
+        #pass
         
     def tearDown(self):
-        # FIXME: should probably set the config values back
         client = redis.StrictRedis(host=test_host, port=test_port, db=test_db)
         client.delete("exists")
         client.delete("corrupt")
+
+        # set the config values back
+        config.REDIS_CACHE_HOST = OLD_HOST
+        config.REDIS_CACHE_PORT = OLD_PORT
+        config.REDIS_CACHE_DB = OLD_DB
         
     def test_01_check_redis_up(self):
         # not really a test, but we can't carry on if redis isn't responding

@@ -14,6 +14,8 @@ import config
 
 log = logging.getLogger(__name__)
 
+CLIENT = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
+
 def check_cache(key):
     """
     check the cache for an object stored under the given key, and convert it
@@ -27,8 +29,8 @@ def check_cache(key):
     - A python data structure if one can be found, which will hopefully be a bibjson record if you stored it right
     
     """
-    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
-    s = client.get(key)
+    # client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
+    s = CLIENT.get(key)
     
     if s is None:
         return None
@@ -104,8 +106,8 @@ def invalidate(key):
     key -- the key to be removed from the cache.  This should be the canonical identifier of the record concerned
     
     """
-    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
-    client.delete(key)
+    # client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
+    CLIENT.delete(key)
     
 def cache(key, record):
     """
@@ -125,8 +127,8 @@ def cache(key, record):
     except AttributeError:
         raise CacheException("record object does not support json() attribute - you should use a MessageObject")
     
-    client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
-    client.setex(key, config.REDIS_CACHE_TIMEOUT, s)
+    # client = redis.StrictRedis(host=config.REDIS_CACHE_HOST, port=config.REDIS_CACHE_PORT, db=config.REDIS_CACHE_DB)
+    CLIENT.setex(key, config.REDIS_CACHE_TIMEOUT, s)
     
 class CacheException(Exception):
     """
