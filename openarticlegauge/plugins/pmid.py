@@ -97,19 +97,6 @@ class PMIDPlugin(plugin.Plugin):
         # - must have an indentifier
         # - must be a pmid
         # - must have a canonical form
-        """
-        if not "identifier" in record:
-            return
-        
-        if not "type" in record["identifier"]:
-            return
-        
-        if record["identifier"]["type"] != "pmid":
-            return
-        
-        if not "canonical" in record["identifier"]:
-            return
-        """
         if record.identifier_type != "pmid" or record.canonical is None:
             return
             

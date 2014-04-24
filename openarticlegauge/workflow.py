@@ -27,7 +27,7 @@ with this model should be via that class instance.
 """
 
 from celery import chain
-from openarticlegauge import models, models, config, cache, plugin
+from openarticlegauge import models, config, cache, plugin
 import logging
 from openarticlegauge.slavedriver import celery
 
@@ -87,7 +87,7 @@ def lookup(bibjson_ids, priority=False):
             # if the record is not cached or is stale
             if cached_copy is not None:
                 if cached_copy.has_error():
-                    raise models.LookupException("identifier has permanent errors - please contact us and let us know")
+                    raise models.LookupException("identifier has permanent errors - please contact us and let us know: " + cached_copy.error)
                 if cached_copy.queued:
                     record.queued = True
                 elif cached_copy.has_bibjson():
@@ -155,14 +155,6 @@ def _check_archive(record):
     - a bibjson record if one is found
     
     """
-    """
-    if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
-        
-    if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't look anything up in the archive without a canonical id")
-    """
-    
     if record.canonical is None:
         raise models.LookupException("can't look anything up in the archive without a canonical id")
     
@@ -196,13 +188,6 @@ def _update_cache(record):
     record -- an OAG record object, see the module documentation for details
     
     """
-    """
-    if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
-    
-    if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't create/update anything in the cache without a canonical id")
-    """
     if record.canonical is None:
         raise models.LookupException("can't create/update anything in the cache without a canonical id")
     
@@ -217,13 +202,6 @@ def _invalidate_cache(record):
     arguments:
     record -- an OAG record object, see the module documentation for details
     
-    """
-    """
-    if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
-    
-    if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't invalidate anything in the cache without a canonical id")
     """
     if record.canonical is None:
         raise models.LookupException("can't invalidate anything in the cache without a canonical id")
@@ -254,13 +232,6 @@ def _check_cache(record):
     - None if nothing in the cache or the cached record is found to be stale
     - OAG record object if one is found
     
-    """
-    """
-    if not record.has_key('identifier'):
-        raise models.LookupException("no identifier in record object")
-        
-    if not record['identifier'].has_key('canonical'):
-        raise models.LookupException("can't look anything up in the cache without a canonical id")
     """
     if record.canonical is None:
         raise models.LookupException("can't look anything up in the cache without a canonical id")
@@ -310,16 +281,6 @@ def _canonicalise_identifier(record):
     
     """
     # verify that we have everything required for this step
-    """
-    if not record.has_key("identifier"):
-        raise models.LookupException("no identifier in record object")
-    
-    if not record['identifier'].has_key("id"):
-        raise models.LookupException("bibjson identifier object does not contain an 'id' field")
-        
-    if not record['identifier'].has_key("type"):
-        raise models.LookupException("bibjson identifier object does not contain a 'type' field")
-    """
     if not record.has_id() or not record.has_type():
         raise models.LookupException("bibjson identifier object does not contain a 'type' and/or 'id' field")
     
