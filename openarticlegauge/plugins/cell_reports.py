@@ -61,16 +61,10 @@ For any of these solutions to be effective, the multiple copyright statements vi
         This will always fail since we can't get the license for this publisher.
         It populates the record['bibjson']['license'] (note the US spelling) field.
         """
-        
-        """
-        if "provider" not in record:
-            return
-        if "url" not in record["provider"]:
-            return
-        """
-        
+
         #for source_url in record['provider']['url']:
         for source_url in record.provider_urls:
             if self.supports_base_url(source_url):
                 self.describe_license_fail(record, source_url, self.fail_why, self.fail_suggested_solution)
 
+        return (self._short_name, self.__version__)

@@ -68,3 +68,5 @@ class NaturePlugin(plugin.Plugin):
             # ... run the dumb string matcher if the URL is supported.
             if self.supports_base_url(url):
                 self.simple_extract(lic_statements, record, url)
+
+        return (self._short_name, self.__version__)

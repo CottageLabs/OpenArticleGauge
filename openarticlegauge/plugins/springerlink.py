@@ -70,3 +70,5 @@ In order to see the rights / license statement on SpringerLink following an arti
                 if not record.has_license() and not record.was_licensed():
                     # if not successful, try the URL as-is
                     self.simple_extract(lic_statements, record, url)
+
+        return (self._short_name, self.__version__)

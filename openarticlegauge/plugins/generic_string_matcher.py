@@ -156,6 +156,10 @@ class GenericStringMatcherPlugin(plugin.Plugin):
             for incoming_url in record.provider_urls:
                 self.simple_extract(lic_statements, record, incoming_url, first_match=True)
 
+        # FIXME: this won't work properly for the GSM - it needs to return the name and version of the configuration
+        # that ran
+        return (self._short_name, self.__version__)
+
     @staticmethod
     def longest_prefix_match(search, urllist):
         matches = [url for url in urllist if url.startswith(search)]

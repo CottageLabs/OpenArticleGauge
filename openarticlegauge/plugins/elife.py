@@ -118,3 +118,5 @@ class ELifePlugin(plugin.Plugin):
         
                     license['provenance'] = provenance
                     record.add_license_object(license)
+
+        return (self._short_name, self.__version__)

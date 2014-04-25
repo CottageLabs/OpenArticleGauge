@@ -128,19 +128,7 @@ class DOIPlugin(plugin.Plugin):
         # - must have an indentifier
         # - must be a doi
         # - must have a canonical form
-        """
-        if not "identifier" in record:
-            return
-        
-        if not "type" in record["identifier"]:
-            return
-        
-        if record["identifier"]["type"] != "doi":
-            return
-        
-        if not "canonical" in record["identifier"]:
-            return
-        """
+
         if record.identifier_type != "doi" or record.canonical is None:
             return
         

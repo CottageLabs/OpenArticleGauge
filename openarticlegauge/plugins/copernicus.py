@@ -45,3 +45,5 @@ class COPERNICUSPlugin(plugin.Plugin):
         for url in record.provider_urls:
             if self.supports_base_url(url):
                 self.simple_extract(lic_statements, record, url)
+
+        return (self._short_name, self.__version__)

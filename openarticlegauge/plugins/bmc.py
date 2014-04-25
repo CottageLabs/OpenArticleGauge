@@ -73,4 +73,4 @@ class BMCPlugin(plugin.Plugin):
             if self.supports_base_url(url):
                 self.simple_extract(lic_statements, record, url)
 
-
+        return (self._short_name, self.__version__)

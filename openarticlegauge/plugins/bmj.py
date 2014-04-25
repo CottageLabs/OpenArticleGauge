@@ -75,6 +75,8 @@ class BMJPlugin(plugin.Plugin):
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url)
 
+        return (self._short_name, self.__version__)
+
     def get_description(self, plugin_name):
         pd = super(BMJPlugin, self).get_description(plugin_name)
         pd.provider_support = "Supports urls which match the regular expression: " + self.supported_url_format

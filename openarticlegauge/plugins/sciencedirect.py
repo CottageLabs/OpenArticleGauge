@@ -154,3 +154,5 @@ If Elsevier's API says the article's Open Access but doesn't (clearly or at all)
 
                 license['provenance'] = provenance
                 record.add_license_object(license)
+
+        return (self._short_name, self.__version__)

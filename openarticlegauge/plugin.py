@@ -127,7 +127,9 @@ class Plugin(object):
         
         arguments:
         record -- OAG record object.  See high-level documentation for details on its structure
-        
+
+        returns
+        (name, version) - name and version of plugin as executed during license detection
         """
         raise NotImplementedError("license_detect has not been implemented")
     
@@ -412,7 +414,7 @@ class Plugin(object):
             open_access=False,
             category="page_scrape",
             provenance_description=self.gen_provenance_description_fail(source_url),
-            handler=self._short_name,
+            handler=self._short_name, # FIXME: if this gets used elsewhere, these may need to be patched with passable args
             handler_version=self.__version__
         )
 

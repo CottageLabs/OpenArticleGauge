@@ -463,12 +463,12 @@ def do_provider_licence(record_json):
         
         # Step 3: run the plugin on the record
         log.debug("Plugin " + str(p) + " to handle provider " + str(record.provider))
-        p.license_detect(record)
+        short_name, ver = p.license_detect(record)
         
         # was the plugin able to detect a licence?
         # if not, we need to add an unknown licence for this provider
         if not record.has_license() and not record.was_licensed():
-            log.debug("No licence detected by plugin " + p._short_name + " so adding unknown licence")
+            log.debug("No licence detected by plugin " + short_name + " so adding unknown licence")
             record.add_license(
                 url=config.unknown_url,
                 type="failed-to-obtain-license",
@@ -476,11 +476,11 @@ def do_provider_licence(record_json):
                 error_message="unable to detect licence",
                 category="failure",
                 provenance_description="a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown",
-                handler=p._short_name,
-                handler_version=p.__version__
+                handler=short_name,
+                handler_version=ver
             )
         elif not record.has_license() and record.was_licensed():
-            log.debug("No license detected by plugin " + p._short_name + " but was previously licensed, so NOT adding unknown license")
+            log.debug("No license detected by plugin " + short_name + " but was previously licensed, so NOT adding unknown license")
 
         # we have to return the record so that the next step in the chain can
         # deal with it

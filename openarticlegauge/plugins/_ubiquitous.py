@@ -110,7 +110,9 @@ class UbiquitousPlugin(plugin.Plugin):
             if self.supports_url(url):
                 self.simple_extract(lic_statements, record, url,
                         first_match=True)
-    
+
+        return (self._short_name, self.__version__)
+
     def get_description(self, plugin_name):
         pd = super(UbiquitousPlugin, self).get_description(plugin_name)
         pd.provider_support = "Supports any URL which will respond to an HTTP GET request"
