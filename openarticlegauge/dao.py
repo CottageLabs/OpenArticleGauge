@@ -6,11 +6,11 @@ This implementation provides storage in an Elasticsearch index.
 
 """
 
-import os, json, requests, uuid, logging
+import json, requests, uuid
 from datetime import datetime
 from copy import deepcopy
 
-from openarticlegauge.core import app #, current_user
+from openarticlegauge.core import app, refresh_mappings
 
 class DomainObject(dict):
     """
@@ -54,14 +54,15 @@ class DomainObject(dict):
     def json(self):
         return json.dumps(self.data)
 
-    def save(self):
+    def save(self, do_not_timestamp=False):
         if 'id' in self.data:
             id_ = self.data['id'].strip()
         else:
             id_ = self.makeid()
             self.data['id'] = id_
-        
-        self.data['last_updated'] = datetime.now().strftime("%Y-%m-%d %H%M")
+
+        if not do_not_timestamp:
+            self.data['last_updated'] = datetime.now().strftime("%Y-%m-%d %H%M")
 
         if 'created_date' not in self.data:
             self.data['created_date'] = datetime.now().strftime("%Y-%m-%d %H%M")
@@ -204,6 +205,11 @@ class DomainObject(dict):
             usr = "anonymous"
         self.data['last_access'].insert(0, { 'user':usr, 'date':datetime.now().strftime("%Y-%m-%d %H%M") } )
         r = requests.put(self.target() + self.data['id'], data=json.dumps(self.data))
+
+    @classmethod
+    def delete_all(cls):
+        r = requests.delete(cls.target())  # will delete the mapping for this type
+        refresh_mappings(app)  # put the mapping back in, dynamic templates and .exact won't work otherwise
 
     def delete(self):        
         r = requests.delete(self.target() + self.id)

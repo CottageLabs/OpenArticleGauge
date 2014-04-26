@@ -1,7 +1,7 @@
 import json
 from flask.ext.wtf import Form
 from wtforms import TextField, TextAreaField, SelectField, validators, FormField, FieldList
-from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
+from flask import Blueprint, request, redirect, url_for, render_template
 
 from openarticlegauge.models import Publisher, LicenseStatement
 from openarticlegauge.licenses import licenses_dropdown

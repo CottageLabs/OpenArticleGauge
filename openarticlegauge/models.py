@@ -8,7 +8,6 @@ from datetime import datetime
 
 from openarticlegauge import config
 from openarticlegauge.dao import DomainObject
-from openarticlegauge.core import app
 from openarticlegauge.slavedriver import celery
 
 from werkzeug import generate_password_hash, check_password_hash
@@ -284,7 +283,7 @@ class LicenseStatement(DomainObject):
     def find_by_statement(cls, statement):
         return cls.q2obj(terms={'license_statement.exact': [statement]}, size=1000000, consistent_order=True)
 
-    def save(self):
+    def save(self, **kwargs):
         t = self.find_by_statement(self.license_statement)
 
         if len(t) == 1:
@@ -292,7 +291,7 @@ class LicenseStatement(DomainObject):
             print 'editing statement', t[0]['id']
             self.data['id'] = t[0]['id']
 
-        super(LicenseStatement, self).save()
+        super(LicenseStatement, self).save(**kwargs)
 
 class Publisher(DomainObject):
     __type__ = 'publisher'

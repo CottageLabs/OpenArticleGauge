@@ -28,9 +28,20 @@ def prep_redis(app):
     client.flushdb()
 
 def initialise_index(app):
-    mappings = app.config["MAPPINGS"]
+    # refreshing the mappings and making all known licenses available
+    # in the index are split out since the latter can take quite a while
+    # but refreshing the mappings has to be done every time dao.DomainObject.delete_all() is called
+    refresh_mappings(app)
+    put_licenses_in_index(app)
+
+def get_index_path(app):
     i = str(app.config['ELASTIC_SEARCH_HOST']).rstrip('/')
     i += '/' + app.config['ELASTIC_SEARCH_DB']
+    return i
+
+def refresh_mappings(app):
+    i = get_index_path(app)
+    mappings = app.config["MAPPINGS"]
     for key, mapping in mappings.iteritems():
         im = i + '/' + key + '/_mapping'
         exists = requests.get(im)
@@ -38,6 +49,9 @@ def initialise_index(app):
             ri = requests.post(i)
             r = requests.put(im, json.dumps(mapping))
             print key, r.status_code
+
+def put_licenses_in_index(app):
+    i = get_index_path(app)
     # put the currently available licences into the licence index
     for l in licenses.LICENSES:
         r = requests.post(i + '/license/' + l, json.dumps(licenses.LICENSES[l]))

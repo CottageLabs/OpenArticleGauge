@@ -1,5 +1,6 @@
 from unittest import TestCase
 import requests, os
+import time
 
 from openarticlegauge import config, models
 
@@ -38,6 +39,7 @@ UNSUPPORTED_URLS = [ ]
 # - if a key's value is -1, the resulting object MUST have the key
 #
 RESOURCE_AND_RESULT = {
+    # the following cases should be matched by GSM configs
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pone.0031314.html"):
         {
             "id" : None,            # there should be no id field
@@ -80,7 +82,31 @@ RESOURCE_AND_RESULT = {
                 "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract", # source is the url where we look this record up
                 "date": -1 # date is not null (but we don't know the exact value)
             }
-        }
+        },
+
+        # the following cases should be matched by the flat license index
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pone.0037743.html"):
+        {
+            "id" : None,            # there should be no id field
+            "version": "",          # version should be the empty string
+            "type": "cc-zero",
+            "jurisdiction": "",     # jurisdiction should be the empty string
+            "open_access": True,
+            "BY": False,
+            "NC": False,
+            "ND": False,
+            "SA": False,
+            "provenance": {
+                "handler": 'generic_string_matcher', # name of plugin which processed this record
+                "handler_version": '0.1', # version of plugin which processed this record
+                "category": "page_scrape", # category is page_scrape
+                "description": 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743 and looking for the following license statement: "This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.".', # description is a long string
+                "agent": config.agent, # agent is from configuration
+                "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743", # source is the url where we look this record up
+                "date": -1 # date is not null (but we don't know the exact value)
+            }
+        },
+
 }
 
 """
@@ -143,6 +169,58 @@ def mock_get(url, *args, **kwargs):
 class TestProvider(TestCase):
 
     def setUp(self):
+        # need to remove the current publishers and license statements for
+        # the duration of testing
+        self.old_publishers = models.Publisher.all()
+        self.old_license_statements = models.LicenseStatement.all()
+        print 'current statements'
+        print self.old_license_statements
+        models.Publisher.delete_all()
+        models.LicenseStatement.delete_all()
+
+        p = models.Publisher()
+        p.publisher_name = 'PLOS'
+        p.journal_urls = ['http://www.plosone.org']
+        p.licenses =\
+        [
+            {
+                "license_type":"cc-by",
+                "version":"",
+                "example_doi":"doi:10.1371/journal.pone.0031314",
+                "license_statement":"This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited."
+            }
+        ]
+        p.save()
+        
+        p2 = models.Publisher()
+        p2.publisher_name = 'Wiley'
+        p2.journal_urls = ['http://onlinelibrary.wiley.com']
+        p2.licenses =\
+        [
+            {
+                "license_type":"free-to-read",
+                "version":"",
+                "example_doi":"doi:10.1111/j.1365-2869.2012.01054.x",
+                "license_statement":"""<span class="openAccess" title="You have full text access to this OnlineOpen article">You have full text access to this OnlineOpen article</span>"""
+            }
+        ]
+        p2.save()
+
+        lic1 = models.LicenseStatement()
+        lic1.license_type = 'cc-zero'
+        lic1.version = ''
+        lic1.example_doi = '10.1371/journal.pone.0037743'
+        lic1.license_statement = 'This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.'
+        lic1.save()
+
+        self.test_publishers = [p, p2]
+        self.test_license_statements = [lic1]
+
+        models.Publisher.refresh()
+        models.LicenseStatement.refresh()
+        time.sleep(2)  # give the index a chance to perform the refresh
+
+        # no live http connections inside the tests
         global CURRENT_REQUEST
         CURRENT_REQUEST = None
         self.old_get = requests.get
@@ -152,6 +230,20 @@ class TestProvider(TestCase):
         global CURRENT_REQUEST
         CURRENT_REQUEST = None
         requests.get = self.old_get
+
+        # delete the test publishers and license statements
+        for thing in self.test_publishers + self.test_license_statements:
+            thing.delete()
+
+        # restore the publisher and license statement records as they were
+        for thing in self.old_publishers + self.old_license_statements:
+            print 'restoring', thing
+            thing.save(do_not_timestamp=True)
+
+        time.sleep(2)  # give the index time to catch up with the newly restored statements
+        # otherwise the next setUp will only save 1 (or a few) of the license statements
+        # before deleting them all
+
 
     def test_01_supports_success(self):
         p = MyPlugin()
