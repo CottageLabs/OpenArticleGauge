@@ -225,7 +225,7 @@ class Plugin(object):
             cleaned_urls.append(self.clean_url(url, strip_leading_www=strip_leading_www))
         return cleaned_urls
 
-    def simple_extract(self, lic_statements, record, url, first_match=False, content=''):
+    def simple_extract(self, lic_statements, record, url, first_match=False, content='', handler=''):
         """
         Generic code which looks for a particular string in a given web
         page (URL), determines the licence conditions of the article and
@@ -255,6 +255,8 @@ class Plugin(object):
         'license' objects to the record it's been passed. If you want
         "first successful match only" behaviour, set this to True.
         """
+        if not handler:
+            handler = self._short_name  # can't put it in the method signature above, self is unresolved
 
         if not content:
             # get content from the web unless it's being passed into this method
@@ -352,7 +354,7 @@ class Plugin(object):
                     'category': 'page_scrape', # TODO we need to think how the
                         # users get to know what the values here mean.. docs?
                     'description': self.gen_provenance_description(url, statement),
-                    'handler': self._short_name, # the name of the plugin processing this record
+                    'handler': handler, # the name of the plugin processing this record
                     'handler_version': self.__version__ # version of the plugin processing this record
                 }
 

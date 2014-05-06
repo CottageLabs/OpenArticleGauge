@@ -41,71 +41,128 @@ UNSUPPORTED_URLS = [ ]
 RESOURCE_AND_RESULT = {
     # the following cases should be matched by GSM configs
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pone.0031314.html"):
-        {
-            "id" : None,            # there should be no id field
-            "version": "",          # version should be the empty string
-            "type": "cc-by",
-            "jurisdiction": "",     # jurisdiction should be the empty string
-            "open_access": True,
-            "BY": True,
-            "NC": False,
-            "ND": False,
-            "SA": False,
-            "provenance": {
-                "handler": 'generic_string_matcher', # name of plugin which processed this record
-                "handler_version": '0.1', # version of plugin which processed this record
-                "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
-                "agent": config.agent, # agent is from configuration
-                "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314", # source is the url where we look this record up
-                "date": -1 # date is not null (but we don't know the exact value)
-            }
-        },
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "10.1111_j.1365-2869.2012.01054.x.html"):
-        {
-            "id" : None,            # there should be no id field
-            "version": "",          # version should be the empty string
-            "type": "free-to-read",
-            "jurisdiction": "",     # jurisdiction should be the empty string
-            # rights fields - just check that they are present
-            "open_access": -1,
-            "BY": -1,
-            "NC": -1,
-            "ND": -1,
-            "SA": -1,
-            "provenance": {
-                "handler": 'generic_string_matcher', # name of plugin which processed this record
-                "handler_version": '0.1', # version of plugin which processed this record
-                "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract and looking for the following license statement: "<span class="openAccess" title="You have full text access to this OnlineOpen article">You have full text access to this OnlineOpen article</span>".', # description is a long string
-                "agent": config.agent, # agent is from configuration
-                "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract", # source is the url where we look this record up
-                "date": -1 # date is not null (but we don't know the exact value)
-            }
-        },
+    {
+        "id" : None,            # there should be no id field
+        "version": "",          # version should be the empty string
+        "type": "cc-by",
+        "jurisdiction": "",     # jurisdiction should be the empty string
+        "open_access": True,
+        "BY": True,
+        "NC": False,
+        "ND": False,
+        "SA": False,
+        "provenance": {
+            "handler": 'PLOS', # name of plugin which processed this record
+            "handler_version": '0.2', # version of plugin which processed this record
+            "category": "page_scrape", # category is page_scrape
+            "description": 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314 and looking for the following license statement: "This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.".', # description is a long string
+            "agent": config.agent, # agent is from configuration
+            "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0031314", # source is the url where we look this record up
+            "date": -1 # date is not null (but we don't know the exact value)
+        }
+    },
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "10.1111_j.1365-2869.2012.01054.x.html"):
+    {
+        "id" : None,            # there should be no id field
+        "version": "",          # version should be the empty string
+        "type": "free-to-read",
+        "jurisdiction": "",     # jurisdiction should be the empty string
+        # rights fields - just check that they are present
+        "open_access": -1,
+        "BY": -1,
+        "NC": -1,
+        "ND": -1,
+        "SA": -1,
+        "provenance": {
+            "handler": 'Wiley', # name of plugin which processed this record
+            "handler_version": '0.2', # version of plugin which processed this record
+            "category": "page_scrape", # category is page_scrape
+            "description": 'License decided by scraping the resource at http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract and looking for the following license statement: "<span class="openAccess" title="You have full text access to this OnlineOpen article">You have full text access to this OnlineOpen article</span>".', # description is a long string
+            "agent": config.agent, # agent is from configuration
+            "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract", # source is the url where we look this record up
+            "date": -1 # date is not null (but we don't know the exact value)
+        }
+    },
 
-        # the following cases should be matched by the flat license index
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pone.0037743.html"):
-        {
-            "id" : None,            # there should be no id field
-            "version": "",          # version should be the empty string
-            "type": "cc-zero",
-            "jurisdiction": "",     # jurisdiction should be the empty string
-            "open_access": True,
-            "BY": False,
-            "NC": False,
-            "ND": False,
-            "SA": False,
-            "provenance": {
-                "handler": 'generic_string_matcher', # name of plugin which processed this record
-                "handler_version": '0.1', # version of plugin which processed this record
-                "category": "page_scrape", # category is page_scrape
-                "description": 'License decided by scraping the resource at http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743 and looking for the following license statement: "This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.".', # description is a long string
-                "agent": config.agent, # agent is from configuration
-                "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743", # source is the url where we look this record up
-                "date": -1 # date is not null (but we don't know the exact value)
-            }
-        },
+    # this case should be matched by the flat license index, not a publisher config
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "fnbeh.2013.00049.html"):
+    {
+        "id" : None,            # there should be no id field
+        "version": "3.0",          # version should be the empty string
+        "type": "cc-by",
+        "jurisdiction": "",     # jurisdiction should be the empty string
+        "open_access": True,
+        "BY": True,
+        "NC": False,
+        "ND": False,
+        "SA": False,
+        "provenance": {
+            "handler": 'generic_string_matcher', # name of plugin which processed this record
+            "handler_version": '0.2', # version of plugin which processed this record
+            "category": "page_scrape", # category is page_scrape
+            "description": 'License decided by scraping the resource at http://journal.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/full and looking for the following license statement: "This is an open-access article distributed under the terms of the <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution License</a>".', # description is a long string
+            "agent": config.agent, # agent is from configuration
+            "source": "http://journal.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/full", # source is the url where we look this record up
+            "date": -1 # date is not null (but we don't know the exact value)
+        }
+    },
+
+    # This case should not be matched - the statement exists in the flat license index,
+    # but the PLOS config should assert it will handle the case, therefore the flat
+    # license index should never be used.
+    # NOTE: none of the values will actually get tested as no license object will be created
+    # Testing the unknown license is the job of the workflow tests, not this test.
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "pone.0037743.html"):
+    {
+        "id": None,            # there should be no id field
+        "version": None,
+        "type": "failed-to-obtain-license",
+        "error_message": "unable to detect licence",
+        "url": config.unknown_url,
+        "jurisdiction": None,
+        "open_access": False,
+        "BY": None,
+        "NC": None,
+        "ND": None,
+        "SA": None,
+        "provenance": {
+            "handler": 'oag', # name of plugin which processed this record
+            "handler_version": '0.2', # version of plugin which processed this record
+            "description": 'a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown', # description is a long string
+            "agent": config.agent,
+            "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract",
+            "category": "failure",
+            "date": -1 # date is not null (but we don't know the exact value)
+        }
+    },
+
+    # just for testing whether a completely bogus one fails correctly, with the right handler and so on
+    # NOTE: none of the values will actually get tested as no license object will be created
+    # Testing the unknown license is the job of the workflow tests, not this test.
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "fail_please.txt"):
+    {
+        "id": None,            # there should be no id field
+        "version": None,
+        "type": "failed-to-obtain-license",
+        "error_message": "unable to detect licence",
+        "url": config.unknown_url,
+        "jurisdiction": None,
+        "open_access": False,
+        "BY": None,
+        "NC": None,
+        "ND": None,
+        "SA": None,
+        "provenance": {
+            "handler": 'oag',
+            "handler_version": '0.2',
+            "description": 'a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown', # description is a long string
+            "agent": config.agent,
+            "source": "",
+            "category": "failure",
+
+            "date": -1 # date is not null (but we don't know the exact value)
+        }
+    },
 
 }
 
@@ -173,8 +230,6 @@ class TestProvider(TestCase):
         # the duration of testing
         self.old_publishers = models.Publisher.all()
         self.old_license_statements = models.LicenseStatement.all()
-        print 'current statements'
-        print self.old_license_statements
         models.Publisher.delete_all()
         models.LicenseStatement.delete_all()
 
@@ -212,9 +267,16 @@ class TestProvider(TestCase):
         lic1.example_doi = '10.1371/journal.pone.0037743'
         lic1.license_statement = 'This is an open-access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.'
         lic1.save()
+        
+        lic2 = models.LicenseStatement()
+        lic2.license_type = 'cc-by'
+        lic2.version = '3.0'
+        lic2.example_doi = '10.3389/fnbeh.2013.00049'
+        lic2.license_statement = 'This is an open-access article distributed under the terms of the <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution License</a>'
+        lic2.save()
 
         self.test_publishers = [p, p2]
-        self.test_license_statements = [lic1]
+        self.test_license_statements = [lic1, lic2]
 
         models.Publisher.refresh()
         models.LicenseStatement.refresh()
@@ -237,7 +299,6 @@ class TestProvider(TestCase):
 
         # restore the publisher and license statement records as they were
         for thing in self.old_publishers + self.old_license_statements:
-            print 'restoring', thing
             thing.save(do_not_timestamp=True)
 
         time.sleep(2)  # give the index time to catch up with the newly restored statements
@@ -260,6 +321,9 @@ class TestProvider(TestCase):
         
         # go through each file and result object
         for path, comparison in RESOURCE_AND_RESULT.iteritems():
+            detect_should_fail = False
+            if comparison.get('type') == 'failed-to-obtain-license':
+                detect_should_fail = True
             # construct a request object, using the provenance/source url as the provider url
             record = {}
             record['bibjson'] = {}
@@ -278,10 +342,13 @@ class TestProvider(TestCase):
             
             # check if all the top-level keys were created
             assert "bibjson" in record
-            assert "license" in record['bibjson'], 'While testing with ' + path
-            assert record['bibjson']['license'] is not None
-            assert len(record['bibjson']['license']) == 1 # only 1
-                # license was detected
+            if not detect_should_fail:
+                assert "license" in record['bibjson'], 'While testing with ' + path
+                assert record['bibjson']['license'] is not None
+                assert len(record['bibjson']['license']) == 1  # only 1 license was detected
+            else:
+                assert not "license" in record['bibjson'], 'While testing with ' + path
+                return
             
             # The rules for the comparison licence object are:
             # - if a key has a value, there resulting object's value must match exactly
@@ -296,22 +363,22 @@ class TestProvider(TestCase):
                     continue
                 if value is None:
                     # the resulting object MUST NOT have the key or MUST be the empty string
-                    assert key not in licence or licence.get(key) == "", ((key, value), licence.get(key))
+                    assert key not in licence or licence.get(key) == "", ('While testing with ' + path, (key, value), licence.get(key))
                 elif value == -1:
                     # the resulting object MUST have the key
-                    assert key in licence, ((key, value), licence.get(key))
+                    assert key in licence, ('While testing with ' + path, (key, value), licence.get(key))
                 else:
                     # the resulting object must match the comparison object
-                    assert value == licence.get(key), ((key, value), licence.get(key))
+                    assert value == licence.get(key), ('While testing with ' + path, (key, value), licence.get(key))
             
             prov = licence.get("provenance", {})
             for key, value in comparison.get("provenance", {}).iteritems():
                 if value is None:
                     # the resulting object MUST NOT have the key
-                    assert key not in prov or prov.get(key) == "", ((key, value), prov.get(key))
+                    assert key not in prov or prov.get(key) == "", ('While testing with ' + path, (key, value), prov.get(key))
                 elif value == -1:
                     # the resulting object MUST have the key
-                    assert key in prov, ((key, value), prov.get(key))
+                    assert key in prov, ('While testing with ' + path, (key, value), prov.get(key))
                 else:
                     # the resulting object must match the comparison object
-                    assert value == prov.get(key), ((key, value), prov.get(key))
+                    assert value == prov.get(key), ('While testing with ' + path, (key, value), prov.get(key))

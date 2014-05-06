@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info = {"beacon":"beacon-5.newrelic.com","errorBeacon":"jserror.newrelic.com","licenseKey":"598a124f17","applicationID":"3007887","transactionName":"MQcDMkECCkNSW0YMWghNJQlHLQFEcFdcEUcJDg0DQUwlQkdRUQlQSSQUCl83AUhHekshei8=","queueTime":0,"applicationTime":53,"ttGuid":"232A7281345E7879","agent":"js-agent.newrelic.com/nr-400.min.js"}</script><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgUHUl5WGwAAVFZaDwY="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e){function n(t,e,n){n||(n={});for(var r=o[t],a=r&&r.length||0,s=n[i]||(n[i]={}),u=0;a>u;u++)r[u].apply(s,e);return s}function r(t,e){var n=o[t]||(o[t]=[]);n.push(e)}var o={},i="nr@context";e.exports={on:r,emit:n}},{}],2:[function(t){function e(t,e,o,a,u){return s?s-=1:n("err",[u||new UncaughtException(t,e,o)]),"function"==typeof i?i.apply(this,r(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}var n=t("handle"),r=t(6),o=t(5),i=window.onerror,a=!1,s=0;t("loader").features.push("err"),window.onerror=e;try{throw new Error}catch(u){"stack"in u&&(t(1),t(2),"addEventListener"in window&&t(3),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&t(4),a=!0)}o.on("fn-start",function(){a&&(s+=1)}),o.on("fn-err",function(t,e,r){a&&(this.thrown=!0,n("err",[r,(new Date).getTime()]))}),o.on("fn-end",function(){a&&!this.thrown&&s>0&&(s-=1)}),o.on("internal-error",function(t){n("ierr",[t,(new Date).getTime(),!0])})},{1:5,2:4,3:3,4:6,5:1,6:14,handle:"D5DuLP",loader:"G9z0Bl"}],3:[function(t){function e(t){r.inPlace(t,["addEventListener","removeEventListener"],"-",n)}function n(t){return t[1]}var r=t(1),o=(t(3),t(2));if(e(window),"getPrototypeOf"in Object){for(var i=document;i&&!i.hasOwnProperty("addEventListener");)i=Object.getPrototypeOf(i);i&&e(i);for(var a=XMLHttpRequest.prototype;a&&!a.hasOwnProperty("addEventListener");)a=Object.getPrototypeOf(a);a&&e(a)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&e(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t){if(t[1]){var e=t[1];"function"==typeof e?this.wrapped=e["nr@wrapped"]?t[1]=e["nr@wrapped"]:e["nr@wrapped"]=t[1]=r(e,"fn-"):"function"==typeof e.handleEvent&&r.inPlace(e,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:15,2:1,3:14}],4:[function(t){var e=(t(3),t(1)),n=t(2);e.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=e(t[0],"fn-")})},{1:15,2:1,3:14}],5:[function(t){function e(t){var e=t[0];"string"==typeof e&&(e=new Function(e)),t[0]=n(e,"fn-")}var n=(t(3),t(1)),r=t(2);n.inPlace(window,["setTimeout","setInterval","setImmediate"],"setTimer-"),r.on("setTimer-start",e)},{1:15,2:1,3:14}],6:[function(t){function e(){o.inPlace(this,s,"fn-")}function n(t,e){o.inPlace(e,["onreadystatechange"],"fn-")}function r(t,e){return e}var o=t(1),i=t(2),a=window.XMLHttpRequest,s=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];window.XMLHttpRequest=function(t){var n=new a(t);return i.emit("new-xhr",[],n),o.inPlace(n,["addEventListener","removeEventListener"],"-",function(t,e){return e}),n.addEventListener("readystatechange",e,!1),n},window.XMLHttpRequest.prototype=a.prototype,o.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",r),i.on("send-xhr-start",n),i.on("open-xhr-start",n)},{1:15,2:1}],7:[function(t){function e(){function e(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function n(t){var n=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;u>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!n.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){n.status=t.status;var a=t.responseType,d="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,p=e(d);if(p&&(r.rxSize=p),this.sameOrigin){var f=t.getResponseHeader("X-NewRelic-App-Data");f&&(n.cat=f.split(", ").pop())}}else n.status=0;r.cbTime=this.cbTime,o("xhr",[n,r])}}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}t("loader").features.push("xhr");var o=t("handle"),i=t(1),a=t(5),s=["load","error","abort","timeout"],u=s.length,d=t(2);t(3),t(4),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=n,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,n){var r=this.metrics,o=t[0],i=this;if(r&&o){var d=e(o);d&&(r.txSize=d)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof n.onload))&&i.end(n)}catch(e){a.emit("internal-error",e)}};for(var p=0;u>p;p++)n.addEventListener(s[p],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof XMLHttpRequest&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&e()},{1:8,2:11,3:3,4:6,5:1,handle:"D5DuLP",loader:"G9z0Bl"}],8:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],D5DuLP:[function(t,e){function n(t,e){var n=r[t];return n?n.apply(this,e):(o[t]||(o[t]=[]),void o[t].push(e))}var r={},o={};e.exports=n,n.queues=o,n.handlers=r},{}],11:[function(t,e){function n(t){if(!t||"object"!=typeof t&&"function"!=typeof t)return-1;if(t===window)return 0;if(o.call(t,"__nr"))return t.__nr;try{return Object.defineProperty(t,"__nr",{value:r,writable:!0,enumerable:!1}),r}catch(e){return t.__nr=r,r}finally{r+=1}}var r=1,o=Object.prototype.hasOwnProperty;e.exports=n},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=c.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID){c.proto="https"===f.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=u.createElement("script");e.src=c.proto+t.agent,u.body.appendChild(e)}}function r(){"complete"===u.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=window,u=s.document,d="addEventListener",p="attachEvent",f=(""+location).split("?")[0],c=e.exports={offset:i(),origin:f,features:[]};u[d]?(u[d]("DOMContentLoaded",o,!1),s[d]("load",n,!1)):(u[p]("onreadystatechange",r),s[p]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}],14:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],15:[function(t,e){function n(t,e,n,r){function nrWrapper(){try{var a,u=s(arguments),d=this,p=n&&n(u,d)||{}}catch(f){i([f,"",[u,d,r],p])}o(e+"start",[u,d,r],p);try{return a=t.apply(d,u)}catch(c){throw o(e+"err",[u,d,c],p),c}finally{o(e+"end",[u,d,a],p)}}return t&&"function"==typeof t&&t.apply&&!t._wrapped?(e||(e=""),nrWrapper._wrapped=!0,nrWrapper):t}function r(t,e,r,o){r||(r="");var i,a,s,u="-"===r.charAt(0);for(s=0;s<e.length;s++)a=e[s],i=t[a],i&&"function"==typeof i&&i.apply&&!i._wrapped&&(t[a]=n(i,u?a+r:r,o,a,t))}function o(t,e,n){try{a.emit(t,e,n)}catch(r){i([r,t,e,n])}}function i(t){try{a.emit("internal-error",t)}catch(e){}}var a=t(1),s=t(2);e.exports=n,n.inPlace=r},{1:1,2:14}]},{},["G9z0Bl",2,7]);</script>
+    <meta charset="utf-8">
+    
+    <title>Frontiers | Flow parsing and heading perception show similar dependence on quality and quantity of optic flow | Frontiers in Behavioral Neuroscience</title>
+
+    
+    <link rel="shortcut icon" href="/Images/Frontiers/Common/Icon/favicon.ico" type="image/x-icon" />
+
+    
+    <meta property="og:type" content="article">
+    <meta name="Keywords" content="Optic flow processing, Heading, flow parsing, object movement, ego-motion">
+    <meta property="og:site_name" name="site_name" content="Frontiers">
+    <meta property="og:title" name="Title" content="Flow parsing and heading perception show similar dependence on quality and quantity of optic flow">
+    <meta property="og:description" name="Description" content="In a companion study we have investigated the pattern of dependence of human heading estimation on the quantity (amount of dots per frame) and quality (amount of directional noise) of motion inform...">
+    <meta property="og:url" name="url" content="http://journal.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/full">
+            <meta name="citation_volume" content="7">
+        <meta name="citation_publication_date" content="2013/06/19">
+        <meta name="citation_journal_title" content="Frontiers in Behavioral Neuroscience">
+        <meta name="citation_online_date" content="2013/05/06">
+        <meta name="citation_publisher" content="Frontiers">
+        <meta name="citation_journal_abbrev" content="Front. Behav. Neurosci.">
+        <meta name="citation_doi" content="10.3389/fnbeh.2013.00049">
+        <meta name="citation_issn" content="1662-5153">
+        <meta name="citation_pages" content="49">
+        <meta name="citation_language" content="English">
+        <meta name="citation_title" content="Flow parsing and heading perception show similar dependence on quality and quantity of optic flow">
+        <meta name="citation_keywords" content="Optic flow processing; Heading; flow parsing; object movement; ego-motion">
+        <meta name="citation_date" content="2013">
+        <meta name="citation_author" content="Foulkes, Andrew J">
+        <meta name="citation_author_email" content="foulkea@hope.ac.uk">
+        <meta name="citation_author" content="Rushton, Simon K.">
+        <meta name="citation_author_email" content="rushtonsk@Cardiff.ac.uk">
+        <meta name="citation_author" content="Warren, Paul A">
+        <meta name="citation_author_email" content="Paul.Warren@manchester.ac.uk">
+        <meta name="citation_abstract" content="In a companion study we have investigated the pattern of dependence of human heading estimation on the quantity (amount of dots per frame) and quality (amount of directional noise) of motion information in an optic flow field. In the present study we investigated whether the flow parsing mechanism, which is thought to aid in the assessment of scene-relative object movement during observer movement, exhibits a similar pattern of dependence on these stimulus manipulations. Finding that the pattern of flow parsing effects was similar to the that observed for heading thresholds would provide some evidence that these two complementary roles for optic flow processing are reliant on the same, or similar, neural computation. We found that the pattern of flow parsing effects observed does indeed display a striking similarity to the heading thresholds. As with judgements of heading, there is a critical value of around 25 dots per frame; below this value flow parsing effects rapidly deteriorate and above this value flow parsing effects are stable (see Warren et al. (1988) for similar results for heading). Again, as with judgements of heading, when there were 50 or more dots there was a systematic effect of noise on the magnitude of the flow parsing effect. These results are discussed in the context of different possible schemes of flow processing to support both heading and flow parsing mechanisms.">
+        <meta name="description" content="In a companion study we have investigated the pattern of dependence of human heading estimation on the quantity (amount of dots per frame) and quality (amount of directional noise) of motion information in an optic flow field. In the present study we investigated whether the flow parsing mechanism, which is thought to aid in the assessment of scene-relative object movement during observer movement, exhibits a similar pattern of dependence on these stimulus manipulations. Finding that the pattern of flow parsing effects was similar to the that observed for heading thresholds would provide some evidence that these two complementary roles for optic flow processing are reliant on the same, or similar, neural computation. We found that the pattern of flow parsing effects observed does indeed display a striking similarity to the heading thresholds. As with judgements of heading, there is a critical value of around 25 dots per frame; below this value flow parsing effects rapidly deteriorate and above this value flow parsing effects are stable (see Warren et al. (1988) for similar results for heading). Again, as with judgements of heading, when there were 50 or more dots there was a systematic effect of noise on the magnitude of the flow parsing effect. These results are discussed in the context of different possible schemes of flow processing to support both heading and flow parsing mechanisms.">
+        <meta name="WT.cg_n" content="Frontiers">
+        <meta name="WT.cg_s" content="Science Journals;Medicine Journals">
+        <meta name="WT.z_cg_cat" content="Neuroscience;Psychiatry">
+        <meta name="WT.z_cg_topic" content="Behavioral Neuroscience">
+        <meta name="citation_fulltext_html_url" content="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/full">
+        <meta name="citation_abstract_html_url" content="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/abstract">
+        <meta name="citation_pdf_url" content="http://journal.frontiersin.org/Article/DownloadFile/79324/FLPDF/fnbeh-07-00049.pdf/7">
+        <meta name="fulltext_pdf" content="http://journal.frontiersin.org/Article/DownloadFile/79324/FLPDF/fnbeh-07-00049.pdf/7">
+        <meta name="fulltext_html" content="http://journal.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/full">
+
+    
+    <script type="text/javascript">
+        
+      
+        
+        var CurrentIBarMenu= 'bysubjects';
+
+        var FRConfiguration = (function() {
+            return {
+                Environment: 'Live',
+                SANVirtualPath: 'http://www.frontiersin.org/files/',
+                SharepointWebsiteUrl: 'http://www.frontiersin.org',
+                CommunityWebsiteUrl: 'http://community.frontiersin.org',
+                FrontiersJournalUIUrl: 'http://journal.frontiersin.org',
+                FrontiersJournalAPIUrl: 'https://api-journal.frontiersin.org',
+                FrontiersReviewUIUrl: 'http://review.frontiersin.org',
+                FrontiersReviewAPIUrl: 'http://api-review.frontiersin.org/v1',
+                FrontiersNetworkingAPIUrl: 'http://api-network.frontiersin.org'
+            };
+        })();
+
+        var FRLanguage = (function () {
+            var languageSet = {"ART_FRONTIERS":"Frontiers ","Article_AcceptedDate":"Accepted: ","Article_AnalyticsToolTip":"The total view count is updated once a day, so not to worry if you don\u0027t see immediate results.","Article_AnalyticsTotalViews":"total views","Article_AnalyticsViewImpact":"View Article Impact","Article_ArchiveLinkText":"Archive","Article_BibTex":"BibTex","Article_Citation":"Citation: ","Article_Commentary":"COMMENTARY","Article_Copyright":"Copyright: ","Article_CopyrightText":"This is an open-access article distributed under the terms of the \u003ca href=\"http://creativecommons.org/licenses/by/3.0/\"\u003eCreative Commons Attribution License (CC BY)\u003c/a\u003e. The use, distribution or reproduction in other forums is permitted, provided the original author(s) or licensor are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.","Article_Correspondence":"* Correspondence: ","Article_DownloadPDF":"Download PDF","Article_EditedBy":"Edited by: ","Article_EndNote":"EndNote","Article_ExportCitation":"Export Citation","Article_JATS":"JATS","Article_Keywords":"Keywords: ","Article_NLM":"NLM","Article_OriginalArticle":"ORIGINAL ARTICLE","Article_PaperPendingPublishedDate":"Paper pending published: ","Article_PDF":"PDF","Article_ProvisionalPDF":"Provisional PDF","Article_PublishedDate":"Published online: ","Article_ReadFullText":"Read Full Text","Article_ReceivedDate":"Received: ","Article_ReferenceManager":"Reference Manager","Article_ReviewedBy":"Reviewed by: ","Article_RTInfoText":"This article is part of the Research Topic","Article_ShareOn":"SHARE ON","Article_SimpleTEXTfile":"Simple TEXT file","Article_SupplementalData":"SUPPLEMENTAL DATA","Article_TableOfContent":"TABLE OF CONTENTS","Article_ViewEnhancedPDF":"View Enhanced PDF","Article_XML":"XML","BrowserWarningText":"\u003ch2\u003eWarning!\u003c/h2\u003e\u003cp\u003eYou are using an \u003cstrong\u003eoutdated\u003c/strong\u003e browser. This page doesn\u0027t support Internet Explorer 6, 7 and 8.\u003cbr /\u003ePlease \u003ca class=\"blue\" href=\"http://browsehappy.com/\"\u003eupgrade your browser\u003c/a\u003e or \u003ca class=\"blue\" href=\"http://www.google.com/chromeframe/?redirect=true\"\u003eactivate Google Chrome Frame\u003c/a\u003e to improve your experience.\u003c/p\u003e","COMMENT_HEADERTEXT":"Comment text too long","COMMENT_WARNINGTEXT":"Comments must be less than 4,000 characters. You have entered ","Impact_BackToArticle":"Back to article","People_Also_LookedAt":"People also looked at"};
+            
+            return {
+                value: function (key) {
+                    if (languageSet[key]) {
+                        return languageSet[key];
+                    } else {
+                        throw new Error('Unable to get the value status from the language set'); // Use Error, not FRError
+                    }
+                }
+            };
+            
+        })();
+
+    </script>
+
+
+    <link href="/bundles/frontiers-basic-css?v=mtPmZlF0BWtgds-7X3Jz3E8Orup7OjMPKxP8YyUxKaw1" rel="stylesheet"/>
+
+    <link href="/bundles/frontiers-common-css?v=kKtkq5QCcztx4iPfJqtamrQPxZxgNxeFeRZUoYIDRBE1" rel="stylesheet"/>
+
+
+    
+    <link href="/bundles/frontiers-journal-css?v=o2aUA7prMCWtNkg9qje45R65B0J2JGAz8tXgfT8w3f01" rel="stylesheet"/>
+
+    
+
+</head>
+<body>
+    <div class="frontiers-ibar"></div>
+
+
+
+<div class="container alert-box">
+    <div class="alert-content">
+        <ul id="alerts"></ul>
+    </div>
+</div>
+
+
+    <div class="page-container">
+        <div class="container">
+            
+
+
+
+
+
+<!--[if lte IE 8]>
+    <div class="row">
+        <div class="span16">
+            <div style="margin-bottom:15px;"><h2>Warning!</h2><p>You are using an <strong>outdated</strong> browser. This page doesn't support Internet Explorer 6, 7 and 8.<br />Please <a class="blue" href="http://browsehappy.com/">upgrade your browser</a> or <a class="blue" href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p></div>
+        </div>
+    </div>
+<![endif]-->
+
+
+
+
+<div class="article-section">
+    
+    <div class="row">
+    <div class="span16">
+        <div class="element banner-wrapper"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="span16 article-main-bar">
+        <div class="row">
+            <div class="span7">
+                <div class="back-page">
+                    <a href="http://www.frontiersin.org/Journal/Archive.aspx?s=99&amp;name=Behavioral Neuroscience"><span class="fr-icon-v2-left-open"></span>Archive</a>
+                </div>
+            </div>
+        
+                <div class="span9">
+                    <div class="element research-topic-block">
+                        <div class="thumbnail-icon">
+                            <i class="fr-icon-medium research-topic"></i>
+                        </div>
+                        <div class="research-topic-data">
+                            <span class="topic-title">This article is part of the Research Topic</span>
+                            <a href="http://www.frontiersin.org/Journal/SpecialTopicDetail.aspx?s=99&amp;name=Behavioral_Neuroscience&amp;st=854&amp;sname=Movement_in_3D_space" data-topic="Movement in 3D space" class="topic-link-trim"   data-webtrendtracking='{ "WT_action": "research_topics_click", "WT_destination": "research_topics_page", "WT_source": "article", "WT_dl": "1", "WT_ndl": "1"  }'>Movement in 3D space</a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="span16">
+            <div class="row article-container">
+                <div class="span12 abstract-container">
+                    <div class="article-header-container">
+                        <div class="header-bar-one">
+                            <h2>Original Research ARTICLE</h2>
+                        </div>
+                        <div class="header-bar-three">
+                            Front. Behav. Neurosci., 19 June 2013 | doi: 10.3389/fnbeh.2013.00049
+                        </div>
+                    </div>
+<div class="JournalAbstract">
+<a id="h1" name="h1"></a><h1>Flow parsing and heading perception show similar dependence on quality and quantity of optic flow</h1>
+<div class="authors">
+<a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=AndrewFoulkes&#x00026;UID=71948">Andrew J. Foulkes</a><sup>1&#x02020;</sup>, <a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=SimonRushton&#x00026;UID=10165">Simon K. Rushton</a><sup>2</sup> and <a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=PaulWarren&#x00026;UID=13682">Paul A. Warren</a><sup>1</sup>*</div>
+<ul class="notes">
+<li><span><sup>1</sup></span>School of Psychological Sciences, The University of Manchester, Manchester, UK</li>
+<li><span><sup>2</sup></span>School of Psychology, Cardiff University, Cardiff, UK</li>
+</ul>
+<p>Here we examine the relationship between the perception of heading and flow parsing. In a companion study we have investigated the pattern of dependence of human heading estimation on the quantity (amount of dots per frame) and quality (amount of directional noise) of motion information in an optic flow field. In the present study we investigated whether the flow parsing mechanism, which is thought to aid in the assessment of scene-relative object movement during observer movement, exhibits a similar pattern of dependence on these stimulus manipulations. Finding that the pattern of flow parsing effects was similar to that observed for heading thresholds would provide some evidence that these two complementary roles for optic flow processing are reliant on the same, or similar, neural computation. We found that the pattern of flow parsing effects observed does indeed display a striking similarity to the heading thresholds. As with judgements of heading, there is a critical value of around 25 dots per frame; below this value flow parsing effects rapidly deteriorate and above this value flow parsing effects are stable [see <a href="#B26">Warren et al. (1988)</a> for similar results for heading]. Also, as with judgements of heading, when there were 50 or more dots there was a systematic effect of noise on the magnitude of the flow parsing effect. These results are discussed in the context of different possible schemes of flow processing to support both heading and flow parsing mechanisms.</p>
+<div class="clear"></div>
+</div>
+<div class="JournalFullText">
+<a id="h2" name="h2"></a><h2>Introduction</h2>
+<p class="mb0">Motion of the image of an object across the retina indicates relative movement between the object and the eye. The relative movement may have arisen due to movement of the object (Figure <a href="#F1">1A</a>), movement of the eye (Figure <a href="#F1">1B</a>), or a combination of the two (Figure <a href="#F1">1C</a>). How does the brain distinguish between these possibilities?</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 1</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g001.jpg" name="figure1" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g001.gif" id="F1" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 1. Schematic illustration, in plan view, of the problem of recovering an appropriate estimate of scene-relative object movement when an observer is moving</strong>. Retinal motion occurs when <strong>(A)</strong> the scene is stationary but the observer moves; <strong>(B)</strong> the observer is stationary but an object moves in the scene or <strong>(C)</strong> The observer moves and there are both stationary and moving objects in the scene.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb15 w100pc float_left mt15">One solution is to use non-visual information such as copies of motor commands issued by the brain&#x02014;efference copy, vestibular information, etc. If the observer moved then there should be a correlation between retinal and extra-retinal motion signals and the extra-retinal information can be used to compensate for the retinal consequence of the observer movement. The role of non-visual information in distinguishing between retinal movement due to the movement of the observer (&#x0201C;re-afference&#x0201D;) from retinal motion due to movement of objects in the environment (&#x0201C;ex-afference&#x0201D;) was described and investigated by von Holst (e.g., <a href="#B18">von Holst and Mittelstaedt, 1950</a>) and explored further by <a href="#B19">Wallach (1987</a> for a review) and <a href="#B8">Gogel (1990</a> for a review).</p>
+<p class="mb15">Recently we have been investigating whether retinal information, specifically optic flow (the global patterns of retinal motion that are characteristic of self movement), can be used to distinguish retinal motion due to self-movement from retinal movement due to object movement (<a href="#B16">Rushton and Warren, 2005</a>; <a href="#B15">Rushton et al., 2007</a>; <a href="#B20">Warren and Rushton, 2007</a>, <a href="#B21">2008</a>, <a href="#B22">2009a</a>,<a href="#B23">b</a>; <a href="#B24">Warren et al., 2012</a>).</p>
+<p class="mb15">The primate brain has a known neural sensitivity to optic flow (<a href="#B4">Duffy and Wurtz, 1991</a>; <a href="#B9">Lappe et al., 1999</a>; <a href="#B11">Morrone et al., 2000</a>; <a href="#B17">Smith et al., 2006</a>). Therefore, in principle it could identify global components of retinal motion that are likely due to self-movement and parse them out, isolating components of motion due to movement of objects within the scene. We have demonstrated that observers behave in a manner which is consistent with the existence of such a process (<a href="#B16">Rushton and Warren, 2005</a>; <a href="#B15">Rushton et al., 2007</a>; <a href="#B20">Warren and Rushton, 2007</a>, <a href="#B22">2009a</a>). Others have characterized performance (<a href="#B10">Matsumiya and Ando, 2009</a>; <a href="#B14">Royden and Connors, 2010</a>; <a href="#B2">Calabro et al., 2011</a>) and explored how non-visual information might contribute (<a href="#B1">Angelaki et al., 2011</a>; <a href="#B5">Fajen and Matthis, 2011</a>; <a href="#B10a">MacNeilage et al., 2012</a>). Recently we have begun exploring the mechanisms that underpin the &#x0201C;parsing&#x0201D; process (<a href="#B23">Warren and Rushton, 2009b</a>; <a href="#B24">Warren et al., 2012</a>).</p>
+<p class="mb15">There is a very extensive literature that shows observers can judge their instantaneous direction of movement (heading) from optic flow alone [for a review see <a href="#B9">Lappe et al. (1999)</a> and see the companion paper to the present paper, <a href="#B6">Foulkes et al. (2013)</a>]. In our experiments on flow parsing we have also found that observers can also judge scene-relative object movement in pure optic flow displays. An obvious question is whether both processes rely on the same neural processing mechanisms. One way to explore this question is to look for signatures of common processing.</p>
+<p class="mb15">In the companion paper to the present paper (<a href="#B6">Foulkes et al., 2013</a>) we examined how the precision and accuracy of human heading judgements varied as a function of the quality (noise in the flow field) and quantity (number of flow vectors present) of the optic flow to generate a performance profile. We then compared the profile to similar performance profiles (accuracy and precision as a function of the quality and quantity of optic flow) for four candidate models of human heading computation. Here we derive a similar characterization of &#x0201C;flow parsing&#x0201D; as a function of the quality and quantity of optic flow available. This allows us to see whether the performance profiles are similar in the two tasks&#x02014;if they are then this lends weight to the conclusion that they share neural processing mechanisms.</p>
+<p class="mb15">In the heading judgement tasks, thresholds for human performance decreased as the quantity of dots increased from 5 to 25&#x02013;35 optic flow vectors. Beyond this point thresholds were relatively stable irrespective of the quantity of flow vectors. This data is comparable to that found in <a href="#B26">Warren et al. (1988)</a>, which also examined the effects of flow field density on heading thresholds. Also beyond 25&#x02013;30 dots, heading thresholds increased as a function of directional noise in the flow field. In the present experiment we will assess whether a similar profile arises for a flow parsing task.</p>
+<p class="mb15">The approach used in our previous flow parsing studies has involved participants making judgements about the perceived trajectory of an onscreen probe object that was contralateral to a hemi-field of optic flow (<a href="#B23">Warren and Rushton, 2009b</a>). We have argued that if observers are able to perform something akin to a subtraction of a global component of flow associated with self-movement then the presence of optic flow should have a predictable effect on the perceived trajectory of the probe. Specifically, when the optic flow is an expanding radial flow field, due to global subtraction of the outwards field, the perceived probe trajectory should be biased inwards toward the focus of expansion. Here, we rely on a similar rationale and experimental paradigm in order to assess how flow parsing varies as a function of the quantity and the quality of information in the flow field.</p>
+<p class="mb0">To pre-empt the results we find that the profile for the parsing effect is very similar to that seen for the heading estimation task. Specifically there is a significant reduction in the effect when the brain has access to fewer than 25 dots per frame but beyond this quantity of flow vectors the effect is relatively stable. In addition, when there are more than 25 dots per frame the magnitude of the effect depends upon the quality of the flow information, with increasing levels of noise leading to smaller effects.</p>
+<a id="h3" name="h3"></a><h2>General Methods</h2>
+<h3 class="pt0">Participants</h3>
+<p class="mb0">Twelve observers took part in experiment 1 and eleven observers took part in experiment 2. All participants worked or studied in the School of Psychological Sciences, University of Manchester. Two authors participated in both studies (Paul A. Warren and Andrew J. Foulkes), all other participants were naive regarding the purpose of the study. All participants had normal or corrected to normal vision. Recruitment and testing procedures were in line with the Declaration of Helsinki and were approved by the appropriate institutional ethics committees.</p>
+<h3>Apparatus</h3>
+<p class="mb0">Observers were seated with the chin positioned in a chin rest in a dark room with the eyes at a distance of approximately 57 cm from the display. Stimuli were presented on a 22&#x02033; Viewsonic (pf225) CRT with 100 Hz frame rate and resolution 1024 &#x000D7; 768 pixels. The visible portion of the CRT subtended &#x0007E;40 &#x000D7; 30&#x000B0;. To minimize stray light, irregularly shaped black card was used to obscure the CRT casing and the edges of the visible portion of the screen. We used Lazarus (a free, open source development system for Pascal&#x02014;<a href="http://www.lazarus.freepascal.org">http://www.lazarus.freepascal.org</a>) together with the JediSDL libraries (<a href="http://jedi-sdl.pascalgamedevelopment.com/">http://jedi-sdl.pascalgamedevelopment.com/</a>) to code the experiments. The displays were rendered using OpenGL on a NVidia GeForce 9600GT 512Mb graphics card with 16x anti-aliasing.</p>
+<h3>Stimuli</h3>
+<p class="mb15">Stimuli were onscreen for 2 s and comprised a moving cloud of red limited lifetime (25 frames = 250 ms) dots on a black background. The field of dot motion simulated forward observer movement at a speed of 1 m/s, with the median onscreen dot speed &#x0007E;5.4&#x000B0;/s. The focus of expansion of the resultant radial flow field was coincident with the center of the screen.</p>
+<p class="mb15">At generation and regeneration (i.e., when lifetime had expired), 2D on-screen dot location was sampled randomly from a uniform distribution and then assigned a random depth in the range 0.5&#x02013;4.5 m from the observer before perspective back-projection to obtain a 3D location.</p>
+<p class="mb0">We manipulated the number of dots in the flow field on a given frame (see Figure <a href="#F2">2</a>). We also varied the directional noise in the vectors comprising the flow field. Specifically, at the point of generation the direction of each vector in the flow field was corrupted by independent, additive zero mean Gaussian noise, such that for an optic flow vector <strong><i>v</i></strong> = (<i>r</i>, &#x003B8;)<sup><i>T</i></sup> in the radial flow field, the associated vector in the noisy flow field was given by <strong><i>v</i></strong>&#x02032; = (<i>r</i>, &#x003B8; &#43; <i>N</i>(0, &#x003C3;))<sup><i>T</i></sup>.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 2</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g002.jpg" name="figure2" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g002.gif" id="F2" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 2. Sample stimuli: (Top left): 200 points, no noise; (top right) 50 points, no noise; (bottom left) 200 points, 15&#x000B0; s.d. noise; (bottom right) 50 points, 15&#x000B0; s.d. noise</strong>. We also show the fixation point (in green) with white probe moving in one of three possible directions starting at one of two locations. The dashed circle is a 3&#x000B0; aperture which the radial flow dots could not enter. This minimized the contribution of local motion processing mechanisms.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb15 w100pc float_left mt15">In addition, to the dots in the flow field, a small (0.09&#x000B0; diameter), white probe dot was present in the display (Figure <a href="#F2">2</a>). The dot moved at a speed of &#x0007E;0.6&#x000B0;/s on a linear trajectory either to the left or right of fixation. In order to minimize the contribution of local motion processing mechanisms to the effects seen, the probe was surrounded by a black circular mask of radius 3&#x000B0; which obscured the flow information neighboring the probe (see <a href="#B23">Warren and Rushton, 2009b</a>).</p>
+<p class="mb0">In all trials a green fixation spot was presented in the middle of the screen, which coincided with the focus of expansion of the radial flow field (Figure <a href="#F2">2</a>).</p>
+<a id="h4" name="h4"></a><h2>Experiment 1</h2>
+<p class="mb0">In the first experiment, we quantified the effects of changes in the amount of directional noise and number of flow vectors on flow parsing. As explained in the Introduction, if flow parsing and heading estimation are underpinned by common neural processing we would expect to find a similar pattern in the flow parsing effect data to that seen in the heading threshold data in <a href="#B6">Foulkes et al. (2013)</a>.</p>
+<h3>Design</h3>
+<p class="mb15">In experiment 1 we manipulated quality (amount of noise) and quantity (number of flow vectors) of the flow field for two probe positions and three probe movement directions.</p>
+<p class="mb15">The quantity of flow field information was manipulated by varying the number of dots present per frame (5, 50, 100, 200 dots/frame). It should be noted that given the limited lifetime of our dots (250 ms) and an estimate of visual persistence of around 100 ms (see <a href="#B3">Di Lollo, 1980</a>) we expect that the brain actually has access to &#x0007E;40% more points than are present on any single frame.</p>
+<p class="mb15">The quality of the flow field information was controlled by corrupting each flow vector direction with an independent additive Gaussian noise process (see stimulus section). To vary the amount of noise we adjusted the standard deviation of the Gaussian noise process (0, 7.5, 15&#x000B0;).</p>
+<p class="mb15">The quality and quantity factors were the two experimental factors of interest. Probe position and movement direction were manipulated simply to improve data quality. The probe moved in one of three directions (75, 90, 105&#x000B0;), centred on the vertical upwards direction (90&#x000B0;). The reason for this manipulation was to ensure that participants never knew whether perceived motion was real, illusory, or a combination of the two. Finally, so that participant responses were not always in one direction the start point of the probe motion was either presented 3&#x000B0; to the left or 3&#x000B0; to the right of fixation. The data were processed such that we were able to average responses over the probe direction and position factors (See Data processing and analysis section).</p>
+<p class="mb0">Participants indicated the perceived direction of movement of the probe (see procedure section). We call the difference between the perceived and physical trajectories the &#x0201C;relative tilt&#x0201D; (<a href="#B22">Warren and Rushton, 2009a</a>,<a href="#B23">b</a>; see Figure <a href="#F3">3</a>). The magnitude of the relative tilt is a measure of the effect of the global subtraction process. Participants saw each condition (flow quantity, flow quality, probe position, probe direction) twice per session, giving 144 trials in total in each of two sessions.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 3</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g003.jpg" name="figure3" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g003.gif" id="F3" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 3. The adjustable onscreen gauge [reproduced from <a href="#B24">Warren et al. (2012)</a>]</strong>. The red arrow represents the actual trajectory of the probe, with the green arrow the observer&#x00027;s perceived probe direction.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<h3>Procedure</h3>
+<p class="mb15">In each trial, initially a red fixation cross appeared for 1 s to give the participant a warning that the trial was about to start. The red cross turned into a green annulus and the stimulus was presented. Observers then indicated the perceived trajectory of the probe by using a mouse to rotate an onscreen paddle. The paddle was drawn against reference horizontal and vertical axes (Figure <a href="#F3">3</a>).</p>
+<p class="mb0">Participants were instructed to adjust the orientation of the paddle until it matched the perceived orientation of the trajectory of the probe dot, relative to where the dot first started. Participants were told that if the probe was seen to move along a curved trajectory they should set the paddle to a straight line fit to the perceived trajectory.</p>
+<h3>Data Processing and Analysis</h3>
+<p class="mb0">As explained in the design section, the dependent variable, relative tilt, was defined as the difference between the perceived and onscreen probe trajectories. The coordinate system and sign convention were defined such that 0&#x000B0; corresponded to the positive x-axis and angles increased in the anticlockwise direction. To make the data consistent across probe direction conditions, for each trial relative tilts obtained in the 75 and 105&#x000B0; probe angle conditions (i.e., 15&#x000B0; either side of vertical) were transformed to the equivalent quantity, <math><mrow><msub><mover accent='true'><mi mathcolor="black">&#x003B8;</mi><mo mathcolor="black">&#x0005E;</mo></mover><mrow><mstyle class="text" mathcolor="black"><mtext>RT</mtext></mstyle></mrow></msub></mrow></math>, which would have been obtained if the probe had moved vertically using Equation 1, in which &#x003B8;<sub>RT</sub> and &#x003B8;<sub>P</sub> correspond to the relative tilt measured and the probe angle (see <a href="#B20">Warren and Rushton, 2007</a> for a derivation):</p>
+<div class="equationImageholder"><math id="M1"><mrow><mtable><mtr><mtd><mrow><msub><mover accent='true'><mi mathsize="11pt" mathcolor="black">&#x003B8;</mi><mo mathsize="11pt" mathcolor="black">&#x0005E;</mo></mover><mrow><mi mathsize="11pt" mathcolor="black">R</mi><mi mathsize="11pt" mathcolor="black">T</mi></mrow></msub><mo mathsize="11pt" mathcolor="black">=</mo><msup><mrow><mi mathsize="11pt" mathcolor="black">tan</mi></mrow><mrow><mo mathsize="11pt" mathcolor="black">&#x02212;</mo><mn mathsize="11pt" mathcolor="black">1</mn></mrow></msup><mrow><mo mathsize="11pt" mathcolor="black">(</mo><mrow><mi mathsize="11pt" mathcolor="black">sin</mi><msub><mi mathsize="11pt" mathcolor="black">&#x003B8;</mi><mrow><mi mathsize="11pt" mathcolor="black">R</mi><mi mathsize="11pt" mathcolor="black">T</mi></mrow></msub><mo mathsize="11pt" mathcolor="black">/</mo><mi mathsize="11pt" mathcolor="black">sin</mi><msub><mi mathsize="11pt" mathcolor="black">&#x003B8;</mi><mi mathsize="11pt" mathcolor="black">P</mi></msub></mrow><mo mathsize="11pt" mathcolor="black">)</mo></mrow><mo mathsize="11pt" mathcolor="black">,</mo></mrow></mtd><mtd><mrow><mo mathsize="11pt" mathcolor="black" stretchy='false'>(</mo><mn mathsize="11pt" mathcolor="black">1</mn><mo mathsize="11pt" mathcolor="black" stretchy='false'>)</mo></mrow></mtd></mtr></mtable></mrow></math>
+<div class="clear"></div>
+</div>
+<p class="mb15">Perceived trajectory was then averaged over probe angle conditions. The sign of the data was flipped for the &#x02212;3&#x000B0; probe conditions and combined with the &#43;3&#x000B0; data.</p>
+<p class="mb0">In previous experiments, although the pattern of results was consistent across participants there was variability in the magnitude of the effect. To minimize this source of variability we normalized relative tilt scores as follows. After taking averages in relative tilt over repetitions, probe positions and probe directions we calculated the grand mean for each participant over the different quality and quantity conditions. Each relative tilt data point was then divided by the grand mean so that it now characterized the proportional size of the relative tilt effect in that condition compared to the grand mean over all conditions.</p>
+<h3>Results</h3>
+<p class="mb0">Figure <a href="#F4">4</a> shows the normalized mean relative tilt data across all 12 participants for the flow quantity range 5&#x02013;200 dots per frame. We show the relative tilt data as a function of the flow quantity factor for each of the flow quality conditions. In order to give an indication of the magnitude of the relative tilt effect before normalization the grand mean of the effect over all conditions and observers was &#x0007E;20&#x000B0;.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 4</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g004.jpg" name="figure4" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g004.gif" id="F4" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 4. Data from experiment 1 with number of dots per frame on the horizontal axis, and normalized relative tilt on the vertical axis</strong>. The three different plots on each graph represent the data for the three noise levels&#x02014;squares with solid lines for no noise; circles with dashed lines for noise level 1; and diamonds with dotted lines for noise level 2. Error bars represent standard errors.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">First, it can be seen that there is a significant reduction in the flow parsing effect with only five dots in the flow field. Second, the magnitude of the effect appears to plateau once there are 50 or more dots. Third, once there are 50 or more dots, a clear difference between the noise levels is apparent. The first of these observations was tested by conducting a 2 &#x000D7; 3 repeated measures ANOVA on the 5 and 50 dots per frame data across all three noise levels. The ANOVA revealed only an interaction between the quantity and quality manipulations [<i>F</i><sub>(2, 22)</sub> = 6.068, <i>p</i> = 0.008] due to the fact that the effects observed were similar at 5 but not 50 points per frame. The second and third observations were tested by conducting a 3 &#x000D7; 3 repeated measures ANOVA on the 50, 100, 200 dots per frame data across all three noise levels, revealing only a main effect of the flow quality manipulation [<i>F</i><sub>(2, 22)</sub> = 10.426, <i>p</i> = 0.001]. We then performed 1 factor ANOVAs at each of quantity levels which revealed a significant effect of flow quality at every level except five points per frame [five points: <i>F</i><sub>(2, 22)</sub> = 0.052, <i>p</i> = 0.949; 50 points: <i>F</i><sub>(2, 22)</sub> = 4.730, <i>p</i> = 0.020; 100 points: <i>F</i><sub>(2, 22)</sub> = 3.695, <i>p</i> = 0.041; 200 points: <i>F</i><sub>(2, 22)</sub> = 5.306, <i>p</i> = 0.013]. These analyses are presented in greater detail in the appendix.</p>
+<a id="h5" name="h5"></a><h2>Experiment 2</h2>
+<h3 class="pt0">Rationale</h3>
+<p class="mb0">It is apparent from the last experiment that the critical range for performance is between 5 and 50 dots per frame. Consequently in the second experiment we examined flow parsing effects in this range in more detail.</p>
+<h3>Design</h3>
+<p class="mb0">The design of experiment 2 was exactly the same as experiment 1. All experimental factors remained the same save the levels of the flow quantity factor which were set at 5, 15, 25, 35, and 50 dots per frame.</p>
+<h3>Procedure, Data Processing, and Analysis</h3>
+<p class="mb0">The procedure used was exactly the same as that described in experiment 1, as was the data processing and analysis.</p>
+<h3>Results</h3>
+<p class="mb0">Figure <a href="#F5">5</a> shows the normalized mean relative tilt across all 11 participants for the dots per frame range 5&#x02013;50 as an insert into the data already presented in Figure <a href="#F4">4</a>. In order to give an indication of the magnitude of the relative tilt effect before normalization in experiment 2 the grand mean of the effect over all conditions and observers was &#x0007E;14&#x000B0;.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 5</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g005.jpg" name="figure5" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g005.gif" id="F5" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 5. Data from experiment 2 with number of dots per frame on the horizontal axis, and normalized relative tilt on the vertical axis</strong>. The three different plots on each graph represent the data for the three noise levels&#x02014;squares with solid lines for no noise; circles with dashed lines for noise level 1; and diamonds with dotted lines for noise level 2. Filled shapes represent the 5&#x02013;50 data and hollow shapes the 5&#x02013;200 data. Error bars represent standard errors.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">It can be seen from the figure that the relative tilt effect stabilizes at around 25 points per frame. To test this assertion we ran four 2 &#x000D7; 3 repeated measures ANOVAs (one for each of the neighboring flow quality pairs, i.e., 5&#x02013;15, 15&#x02013;25, 25&#x02013;35, 35&#x02013;50) to determine the ranges for which there was no main effect of number of points. We confirmed that the 25&#x02013;35 range was the first range for which there was no main effect of number of dots per frame [<i>F</i><sub>(1, 10)</sub> = 0.001, <i>p</i> = 0.980]. See Appendix for the details of this analysis. We note that relative to experiment 1 there appears to be a greater effect of the noise manipulation in the lowest dots per frame condition in this experiment. However, we then investigated the point at which the addition of noise led to a difference in the relative tilts by running a series of 5 one factor repeated measures ANOVAs&#x02014;one at each flow quantity level. In partial agreement with experiment 1, we found that there was only marginal evidence for a main effect of the noise manipulation at the five dots per frame level [<i>F</i><sub>(2, 20)</sub> = 3.222, <i>p</i> = 0.061]. However, by 35 dots per frame the effect of the noise manipulation was highly significant [<i>F</i><sub>(2, 20)</sub> = 6.58, <i>p</i> = 0.006). See Appendix for details of this analysis.</p>
+<h3>Comparison with Heading Data</h3>
+<p class="mb15">As noted in the Introduction, we have also collected data on a heading task using a similar design and similar stimuli (<a href="#B6">Foulkes et al., 2013</a>). Now we examine the performance profiles for the two tasks. Similarities would support the hypothesis that the flow parsing and heading estimation mechanisms share some neural processing.</p>
+<p class="mb0">In Figure <a href="#F6">6</a> we re-plot the heading data from <a href="#B6">Foulkes et al. (2013)</a> for comparison with the data in Figure <a href="#F5">5</a>. We point to four features in common for these two data sets. First with five dots per frame, there is little difference between the noise conditions. Second with 50 or more dots a performance plateau is reached. Third, with 50 or more dots there is a clear separation between noise conditions. Finally, for both parsing and heading tasks, when we look closer at the region between 5 and 50 dots per frame we find that the critical range is around 25&#x02013;35 dots per frame&#x02014;below that there is a rapid change [again this value is in line with previous data describing the relationship between heading thresholds and dot density found in <a href="#B26">Warren et al. (1988)</a>].</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 6</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g006.jpg" name="figure6" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g006.gif" id="F6" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 6. Normalized weighted thresholds for the twelve flow field conditions</strong>. As with the flow parsing data, squares with solid lines represent no noise, circles with dashed lines for noise level 1, and diamonds with dotted lines for noise level 2. Filled shapes are for the 5&#x02013;50 data and hollow shapes for 5&#x02013;200. Error bars represent &#x000B1;1 s.e.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mt15 w100pc float_left">In order to compare formally the data in the two tasks, we first converted thresholds to sensitivities (reciprocal of the threshold). We then conducted a linear regression in which the relative tilt was regressed against the heading sensitivity measure. In Figure <a href="#F7">7</a> we show the outcome of this analysis.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">FIGURE 7</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-g007.jpg" name="figure7" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-g007.gif" id="F7" alt="www.frontiersin.org" /></a>
+<p><strong>Figure 7. Results of regression analysis to predict the relative tilt data from the sensitivity data obtained in heading task</strong>. Squares represent the no noise data, circles noise level 1, and diamonds noise level 2. <strong>(left)</strong> 5&#x02013;200 points data, <strong>(center)</strong> 5&#x02013;50 points data; <strong>(right)</strong> all data. The solid line is the line Predicted Relative Tilt = Relative Tilt.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">We see from Figure <a href="#F7">7</a> (left panel) that for the 5&#x02013;200 data, there is a strong relationship between the heading sensitivity and the relative tilt data (<i>p</i> = &#x0003C; 0.001, <i>R</i><sup>2</sup> = 0.88). For the 5&#x02013;50 data, we see that the relationship is also strong (<i>p</i> = &#x0003C; 0.001, <i>R</i><sup>2</sup> = 0.74), as is the relationship when all the data from experiments 1 and 2 are combined and regressed against the commensurate heading threshold data (<i>p</i> = &#x0003C; 0.001, <i>R</i><sup>2</sup> = 0.69). We show the full details of the analysis in the appendix.</p>
+<a id="h6" name="h6"></a><h2>Discussion</h2>
+<h3 class="pt0">Summary</h3>
+<p class="mb0">We have investigated the dependence of flow parsing on both the quantity (number of flow vectors in the image) and quality (amount of noise in the flow vector directions) of optic flow information. We found that there appears to be a critical level of flow quantity (around 25 dots per frame) above and below which the patterns of relative tilt effects observed are qualitatively different. Below the critical level the relative tilt effect depends on the flow quantity, decreasing as fewer dots are presented. In addition below the critical level the effect of flow quality on flow parsing is seen to diminish with no difference in the size of the effect between the different noise levels at the lowest value of flow quantity tested. Above the critical level the pattern of effects is quite different. The relative tilt effect no longer appears to depend on the flow quantity but does depend on the flow quality, such that as directional noise is added the effect is reduced. The pattern of effects is broadly consistent with those observed in a related study on heading estimation using a similar optic flow stimulus.</p>
+<h3>Heading and Flow Parsing&#x02014;Served by Common Flow Processing?</h3>
+<p class="mb0">We designed an experiment to examine whether heading and parsing show similar performance profiles. They do, which suggests that heading estimation and flow parsing rely on common processing to estimate self-movement. However, it is worth noting that work we have described elsewhere indicates that parsing does not rely on a prior estimate of heading (<a href="#B24">Warren et al., 2012</a>). Therefore, we are left with two alternatives to consider. Either heading or parsing both rely on a common early stage in which direction of self-movement is estimated such that the output of one mechanism does not provide input for the other, or heading relies on the output of the parsing system. In future work we aim to distinguish between these two possibilities.</p>
+<h3>Optic Flow Processing Mechanisms</h3>
+<p class="mb0">The performance of participants in both tasks in the face of our noise and density manipulations has clear implications for optic flow processing mechanisms that might underpin both flow parsing and heading recovery. The sharp improvement in performance up to around 25&#x02013;35 dots per frame and drop off in performance improvement after that suggests that even though the task is still possible for the most sparse case tested here, a minimum number of image points is required to support robust performance. This finding is in line with previous studies on heading perception suggesting an &#x0007E;N<sup>&#x02212;0.5</sup> relationship between thresholds and density (<a href="#B26">Warren et al., 1988</a>). When taken together with the relative robustness to noise exhibited in both tasks, we suggest that our results point strongly toward a shared global motion processing stage that integrates motion information over the visual field (which may implicate cells in area MST). These findings are also consistent with our own previous studies on flow parsing which emphasize the importance of global motion processing (<a href="#B22">Warren and Rushton, 2009a</a>,<a href="#B23">b</a>).</p>
+<h3>Robustness of Flow Parsing</h3>
+<p class="mb15">It is interesting to consider the robustness of the flow parsing mechanism to changes in the quality and quantity of information in the flow field. Although there was a (statistically) significant reduction in the magnitude of the effect when the stimulus was composed of five dots per frame, the relative tilt magnitude was still 80&#x02013;95% (depending on the flow quality condition) of that seen when there were 250 dots per frame. Similarly, even in the conditions in which the noise manipulation had the biggest effect (i.e., when the flow field contained many dots), the relative tilt magnitude in the highest noise condition was still on the order of 85&#x02013;90% of that seen when there was no noise.</p>
+<p class="mb0">This robustness is reassuring given that the visual system sometimes faces conditions in which there is reduced visual information (e.g. in fog, sparse environments). In addition, as well as any sensory noise in the representation of motion information, the visual system must also cope with ambiguity in input motion signals due to the aperture problem (<a href="#B12">Nakayama and Silverman, 1988a</a>,<a href="#B13">b</a>). The aperture problem occurs because the primary motion sensors in the visual system have local receptive fields and consequently cannot uniquely specify motion of relatively larger objects. This ambiguity is equivalent to an additional source of noise in the input motion vectors. Since the visual system is exposed to low density conditions and must deal with input noise, a mechanism which is responsible for assessing scene-relative object motion from visual self-movement information (or estimating heading) should be able to operate under such circumstances and our data confirm that this is the case for flow parsing.</p>
+<h3>Noise Manipulation</h3>
+<p class="mb0">We used noise to derive a &#x0201C;signature&#x0201D; of human performance that could be compared across tasks (flow parsing and heading in this paper) and in the companion paper across models. The choice of the type of noise was somewhat arbitrary although informed by the previous literature (<a href="#B25">Warren et al., 1991</a>). We used an unbiased Guassian noise process to perturb motion direction. Alternatives might have been the selective perturbation of speed, the combined perturbation of speed and direction, the addition of outlier noise, or temporal noise (manipulating the lifetime of the dots to change the ratio of signal to noise dots).</p>
+<a id="h7" name="h7"></a><h2>Conclusions</h2>
+<p class="mb0">The data presented in these experiments suggest that there are a number of similarities between the performance of the flow parsing and heading estimation mechanisms. Both exhibit a similar pattern of dependence on&#x02014;but also appear relatively robust to changes in&#x02014;the quality and quantity of information in the optic flow field. These findings suggest that they share common neural mechanisms for assessment of observer movement and that these involve global motion processing.</p>
+<a id="h8" name="h8"></a><h2>Conflict of Interest Statement</h2>
+<p class="mb0">The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.</p>
+<a id="h9" name="h9"></a><h2>Acknowledgments</h2>
+<p class="mb0">This work was supported by the Wellcome Trust [89934] (Paul A. Warren, Simon K. Rushton).</p>
+<a id="h10" name="h10"></a><h2>References</h2>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B1" id="B1"></a> Angelaki, D. E., Gu, Y., and DeAngelis, G. C. (2011). Visual and vestibular cue integration for heading perception in extrastriate visual cortex. <i>J. Physiol</i>. 589, 825&#x02013;833.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=20679353" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=20679353" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1113/jphysiol.2010.194720" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B2" id="B2"></a> Calabro, F. J., Beardsley, S. A., and Vaina, L. M. (2011). Different motion cues are used to estimate time-to-arrival for frontoparallel and looming trajectories. <i>Vision Res</i>. 51, 2378&#x02013;2385.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=22056519" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=22056519" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.visres.2011.09.016" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B3" id="B3"></a> Di Lollo, V. (1980). Temporal integration in visual memory. <i>J. Exp. Psychol. Gen</i>. 109, 75&#x02013;97.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=6445405" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=6445405" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B4" id="B4"></a> Duffy, C. J., and Wurtz, R. H. (1991). Sensitivity of MST neurons to optic flow stimuli. I. A continuum of response selectivity to large field stimuli. <i>J. Neurophysiol</i>. 65, 1329&#x02013;1345.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=1875243" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=1875243" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B5" id="B5"></a> Fajen, B., and Matthis, J. (2011). Visual and non-visual contributions to the perception of object motion during self-motion. <i>J. Vis</i>. 11:920. doi: 10.1167/11.11.920</p>
+<p class="ReferencesCopy2"><a href="http://dx.doi.org/10.1167/11.11.920" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B6" id="B6"></a> Foulkes, A. J., Rushton, S. K., and Warren, P. A. (2013). Heading recovery from optic flow: comparing performance of humans and computational models. <i>Front. Behav. Neurosci</i>. 7:53. doi: 10.3389/fnbeh.2013.00053</p>
+<p class="ReferencesCopy2"><a href="http://dx.doi.org/10.3389/fnbeh.2013.00053" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B8" id="B8"></a> Gogel, W. C. (1990). A theory of phenomenal geometry and its applications. <i>Percept. Psychophys</i>. 48, 105&#x02013;123.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=2385484" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=2385484" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B9" id="B9"></a> Lappe, M., Bremmer, F., and van der Berg, A. V. (1999). Perception of Self Motion from visual flow. <i>Trends Cogn. Sci</i>. 3, 329&#x02013;336.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=10461195" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=10461195" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/S1364-6613(99)01364-9" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B10a" id="B10a"></a> MacNeilage, P. R., Zhang, Z., DeAngelis, G. C., and Angelaki, D. E. (2012). Vestibular facilitation of optic flow parsing. <i>PLoS ONE</i> 7:e40264. doi: 10.1371/journal.pone.0040264</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=22768345" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=22768345" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1371/journal.pone.0040264" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B10" id="B10"></a> Matsumiya, K., and Ando, H. (2009). World-centered perception of 3D object motion during visually guided self-motion. <i>J. Vis</i>. 9, 1&#x02013;13.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=19271885" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=19271885" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1167/9.1.15" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B11" id="B11"></a> Morrone, M. C., Tosetti, M., Montanaro, D., Fiorentini, A., Cioni, G., and Burr, D. C. (2000). A cortical area that responds specifically to optic flow, revealed by fMRI. <i>Nat. Neurosci</i>. 3, 1322&#x02013;1328.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=11100154" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=11100154" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1038/81860" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B12" id="B12"></a> Nakayama, K., and Silverman, G. H. (1988a). The aperture problem &#x02013; I. Perception of nonrigidity and motion direction in translating sinusoidal lines. <i>Vision Res</i>. 28, 739&#x02013;746.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=3227650" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=3227650" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B13" id="B13"></a> Nakayama, K., and Silverman, G. H. (1988b). The aperture problem &#x02013; II. Spatial integrations of velocity information along contours. <i>Vision Res</i>. 28, 747&#x02013;753.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=3227651" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=3227651" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B14" id="B14"></a> Royden, C. S., and Connors, E. M. (2010). The detection of moving objects by moving observers. <i>Vision Res</i>. 50, 1014&#x02013;1024.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=20304002" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=20304002" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.visres.2010.03.008" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B15" id="B15"></a> Rushton, S. K., Bradshaw, M. F., and Warren, P. A. (2007). The pop out of scene-relative object movement against retinal motion due to self-movement. <i>Cognition</i> 105, 237&#x02013;245.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=17069787" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=17069787" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.cognition.2006.09.004" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B16" id="B16"></a> Rushton, S. K., and Warren, P. A. (2005). Moving observers, relative retinal motion and the detection of object movement. <i>Curr. Biol</i>. 15, R542.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=16051158" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=16051158" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.cub.2005.07.020" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B17" id="B17"></a> Smith, A. T., Wall, M. B., Williams, A. L., and Singh, K. D. (2006). Sensitivity to optic flow in human cortical areas MT and MST. <i>Eur. J. Neurosci</i>. 23, 561&#x02013;569.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=16420463" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=16420463" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1111/j.1460-9568.2005.04526.x" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References" style="margin-bottom:0.5em;">
+<p class="ReferencesCopy1"><a name="B18" id="B18"></a> von Holst, E., and Mittelstaedt, H. (1950). &#x0201C;The reafference principle. Interaction between the central nervous system and the periphery,&#x0201D; in <i>Selected Papers of Erich von Holst: The Behavioural Physiology of Animals and Man</i>. Vol. 1, London: Methuen, 39&#x02013;73.</p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B19" id="B19"></a> Wallach, J. (1987). Perceiving a stable environment when one moves. <i>Annu. Rev. Psychol</i>. 39, 1&#x02013;29.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=3548572" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=3548572" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1146/annurev.ps.38.020187.000245" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B20" id="B20"></a> Warren, P. A., and Rushton, S. K. (2007). Perception of object trajectory: Parsing retinal motion into self and object movement components. <i>J. Vis</i>. 7:2. doi: 10.1167/7.11.2</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=17997657" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=17997657" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1167/7.11.2" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B21" id="B21"></a> Warren, P. A., and Rushton, S. K. (2008). Evidence for flow-parsing in radial flow displays. <i>Vision Res</i>. 48, 655&#x02013;663.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=18243274" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=18243274" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.visres.2007.10.023" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B22" id="B22"></a> Warren, P. A., and Rushton, S. K. (2009a). Perception of scene-relative object movement: Optic flow parsing and the contribution of monocular depth cues. <i>Vision Res</i>. 49, 1406&#x02013;1419.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=19480063" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=19480063" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B23" id="B23"></a> Warren, P. A., and Rushton, S. K. (2009b). Optic flow processing for the assessment of object movement during ego movement. <i>Curr. Biol</i>. 19, 1555&#x02013;1560.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=19699091" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=19699091" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1016/j.cub.2009.07.057" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B24" id="B24"></a> Warren, P. A., Rushton, S. K., and Foulkes, A. J. (2012). Does optic flow parsing depend on prior estimation of heading? <i>J. Vis</i>. 12, 1&#x02013;14.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=23064244" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=23064244" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1167/12.11.8" target="_blank">CrossRef Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B25" id="B25"></a> Warren, W. H., Blackwell, A. W., Kurtz, K. J., Hatsopoulos, N. G., and Kalish, M. L. (1991). On the sufficiency of the velocity field for perception of heading. <i>Biol. Cybern</i>. 65, 311&#x02013;320.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=1742369" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=1742369" target="_blank">Pubmed Full Text</a></p></div>
+<div class="References">
+<p class="ReferencesCopy1"><a name="B26" id="B26"></a> Warren, W. H., Morris, M. W., and Kalish, M. L. (1988). Perception of translational heading from optic flow. <i>J. Exp. Psychol</i>. 14, 646&#x02013;660.</p>
+<p class="ReferencesCopy2"><a href="http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&#x00026;Cmd=ShowDetailView&#x00026;TermToSearch=2974874" target="_blank">Pubmed Abstract</a> | <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?db=pubmed&#x00026;cmd=prlinks&#x00026;retmode=ref&#x00026;id=2974874" target="_blank">Pubmed Full Text</a> | <a href="http://dx.doi.org/10.1037/0096-1523.14.4.646" target="_blank">CrossRef Full Text</a></p></div>
+<a id="h11" name="h11"></a><h2>Appendix: Statistical Analyses</h2>
+<p class="mb0">In this appendix, we provide further details of the data analysis of the two experiments in the main article.</p>
+<h3>Experiment 1</h3>
+<p class="mb0">We present the results of several repeated measures ANOVAs conducted on the data for experiment 1. First we conducted a 3 &#x000D7; 3 ANOVA on the 50, 100, 200 dots per frame conditions across all three noise conditions. The results are shown in Table <a href="#TA1">A1</a> and suggest that there is no effect of the flow quantity manipulation beyond the 50 dots per frame level. There is, however, a clear effect of the flow quality manipulation.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">TABLE A1</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t001.jpg" name="TableA1" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t001.gif" id="TA1" alt="www.frontiersin.org" /></a>
+<p><strong>Table A1. Outcome of 3 &#x000D7; 3 Repeated Measures ANOVA tests of the effects of flow quality and quantity for the 50, 100, 200 number of points levels across all three noise conditions</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mt15 w100pc float_left">We also conducted three 2 &#x000D7; 3 ANOVAs on the data for each successive pair of number of points per frame conditions across all three noise levels. The outcome is presented in Table <a href="#TA2">A2</a>. Note that the number of points factor is only significant for the 5&#x02013;50 comparison. In addition there was a significant interaction present for this comparison which was driven by the fact that that there was no difference in relative tilt at five points per frame but a significant difference at 50 points per frame (see Table <a href="#TA3">A3</a>). In agreement with the ANOVA conducted in Table <a href="#TA1">A1</a> we see for the other number of points comparisons (50&#x02013;100 and 100&#x02013;200) there were only main effects of the flow quality manipulation.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">TABLE A2</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t002.jpg" name="TableA2" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t002.gif" id="TA2" alt="www.frontiersin.org" /></a>
+<p><strong>Table A2. Results of 2 &#x000D7; 3 Repeated Measures ANOVA tests of the effects of flow quantity and quality at each consecutive pair of points per frame level</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine mb15"></div>
+<div class="Imageheaders">TABLE A3</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t003.jpg" name="TableA3" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t003.gif" id="TA3" alt="www.frontiersin.org" /></a>
+<p><strong>Table A3. Results of One-Way Repeated Measures ANOVA tests of the effect of flow quality at each level of the number of points per frame factor</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">Finally, we conducted four One-Way ANOVAs at each level of the number of dots per frame factor across the three noise levels. We found no effect of noise for five points per frame, but a main effect in all three other cases. We show the results in Table <a href="#TA3">A3</a>.</p>
+<h3>Experiment 2</h3>
+<p class="mb0">In Table <a href="#TA4">A4</a> we present the results of four 2 &#x000D7; 3 RM ANOVA tests for neighbouring dot conditions across all three noise conditions. We found main effects of the number of dots per frame factor for the 5&#x02013;15 and 15&#x02013;25 cases, but not for the 25&#x02013;35 and 35&#x02013;50 cases. This suggests that beyond 25&#x02013;35 dots per frame the relative tilt effect is stable. In contrast the noise factor was significant across all number of points comparisons.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">TABLE A4</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t004.jpg" name="TableA4" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t004.gif" id="TA4" alt="www.frontiersin.org" /></a>
+<p><strong>Table A4. Results of 2 &#x000D7; 3 Repeated Measures ANOVA tests of the effects of flow quantity and quality at each consecutive pair of points per frame level</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mt15 w100pc float_left">Finally, in Table <a href="#TA5">A5</a> we present the results of five One-Way ANOVAs conducted for each dots per frame condition across all three noise levels.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">TABLE A5</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t005.jpg" name="TableA5" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t005.gif" id="TA5" alt="www.frontiersin.org" /></a>
+<p><strong>Table A5. Results of One-Way Repeated Measures ANOVA tests of the effect of flow quality at each level of the number of points per frame factor</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">We found that there was an effect of the noise manipulation at all levels except 5 and 25 dots per frame. We might have expected there to be a critical level of the number of dots per frame factor beyond which the noise manipulation began to have an effect. This is not the case in our analysis. However, we suspect that this is simply due to sampling error and that with more data the critical value would have been around the 25&#x02013;35 dots per frame level.</p>
+<h3>Regression Analysis</h3>
+<p class="mb0">We saw in the main article that there were similarities between the patterns of data for the relative tilt data from the flow parsing task and the heading threshold data obtained in a comparable heading task. To assess the strength of this relationship we performed regressed the flow parsing and heading data. We fit a linear model of the form</p>
+<div class="equationImageholder"><math id="M2"><mrow><msub><mi mathsize="11pt" mathcolor="black">&#x003C4;</mi><mi mathsize="11pt" mathcolor="black">F</mi></msub><mo mathsize="11pt" mathcolor="black">=</mo><mi mathsize="11pt" mathcolor="black">&#x003B1;</mi><mo mathsize="11pt" mathcolor="black">+</mo><mi mathsize="11pt" mathcolor="black">&#x003B2;</mi><msub><mi mathsize="11pt" mathcolor="black">&#x003C4;</mi><mi mathsize="11pt" mathcolor="black">S</mi></msub><mo mathsize="11pt" mathcolor="black">,</mo></mrow></math>
+<div class="clear"></div>
+</div>
+<p class="mb15 w100pc float_left mt15">where &#x003C4;<sub><i>F</i></sub> and &#x003C4;<sub><i>S</i></sub> refer to the relative tilt data heading threshold data respectively. We undertook three separate regression analyses for the 5&#x02013;200 data, the 5&#x02013;50 data and the combined data set. We show the results in Figure <a href="#F7">7</a> and also in Table <a href="#TA6">A6</a> below.</p>
+<div class="DottedLine"></div>
+<div class="Imageheaders">TABLE A6</div>
+<div class="FigureDesc">
+<a href="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_m/fnbeh-07-00049-t006.jpg" name="TableA6" target="_blank">
+<img src="http://www.frontiersin.org/files/Articles/39978/fnbeh-07-00049-HTML/image_t/fnbeh-07-00049-t006.gif" id="TA6" alt="www.frontiersin.org" /></a>
+<p><strong>Table A6. Results of the regression analyses</strong>.</p></div>
+<div class="clear"></div>
+<div class="DottedLine"></div>
+<p class="mb0 w100pc float_left mt15">It is clear that the fits were highly significant for all three cases suggesting that the heading and flow parsing data are strongly correlated and thereby providing evidence that they are underpinned by similar neural processing.</p></div>
+<div class="thinLineM20"></div>
+<div class="AbstractSummary">
+<p><span>Keywords:</span> optic flow processing, heading, flow parsing, object movement, ego-motion</p>
+<p><span>Citation:</span> Foulkes AJ, Rushton SK and Warren PA (2013) Flow parsing and heading perception show similar dependence on quality and quantity of optic flow. <i>Front. Behav. Neurosci</i>. <b>7</b>:49. doi: 10.3389/fnbeh.2013.00049</p>
+<p id="timestamps"><span>Received:</span> 01 November 2012; <span>Accepted:</span> 06 May 2013;<br/> <span>Published online:</span> 19 June 2013.</p>
+<div><p>Edited by:</p> <a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=MarkusLappe&#x00026;UID=7468">Markus Lappe</a>, Universit&#x000E4;t M&#x000FC;nster, Germany</div>
+<div><p>Reviewed by:</p> <a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=AlbertVan_Den_Berg&#x00026;UID=50916">Albert Van Den Berg</a>, University Medical Centre St Radboud Nijmegen, Netherlands<br/> <a href="http://www.frontiersin.org/Community/WhosWhoActivity.aspx?sname=HeikoNeumann&#x00026;UID=75766">Heiko Neumann</a>, Ulm University, Germany</div>
+<p><span>Copyright</span> &#x000A9; 2013 Foulkes, Rushton and Warren. This is an open-access article distributed under the terms of the <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution License</a>, which permits use, distribution and reproduction in other forums, provided the original authors and source are credited and subject to any copyright notices concerning any third-party graphics etc.</p>
+<p><span>*Correspondence:</span> Paul A. Warren, School of Psychological Sciences, The University of Manchester, Room 131, Zochonis Building, Brunswick Street, Manchester M13 9PL, UK e-mail: paul.warren@manchester.ac.uk</p>
+<p><span><sup>&#x02020;</sup>Present address:</span> Andrew J. Foulkes, Department of Mathematics and Computer Science, Liverpool Hope University, Liverpool, UK</p>
+<div class="clear"></div>
+</div>
+
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:StageName msdt:dt="string"></mso:StageName>
+<mso:DocumentType msdt:dt="string">Finalhtml</mso:DocumentType>
+<mso:TitleName msdt:dt="string">fnbeh-07-00049-HTML.html</mso:TitleName>
+<mso:FileFormat msdt:dt="string">html</mso:FileFormat>
+<mso:DocumentId msdt:dt="string">fnbeh-07-00049-HTML.html</mso:DocumentId>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>                    <div class="thin-line-dark"></div>
+                    <div class="social-feed">
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="right-container">
+    <div class="downloads-content">
+        <ul>
+                    <li>
+                        <a href="javascript:void(0);" class="popover-trigger popover-enhanced " data-type="pdf">
+                            <i class="fr-icon-small dropdown-pdf"></i>
+                            <span>PDF</span>
+                        </a>
+                            <input type="hidden" data-name="Download PDF" data-url="/Journal/10.3389/fnbeh.2013.00049/pdf" />
+                            <input type="hidden" data-name="View Enhanced PDF" data-url="http://www.readcube.com/articles/10.3389/fnbeh.2013.00049" />
+                    </li>
+
+                <li>
+                    <a href="javascript:void(0);" class="popover-trigger" data-type="xml">
+                        <i class="fr-icon-small xml"></i>
+                        <span>XML</span>
+                    </a>
+                            <input type="hidden" data-name="NLM" data-url="/Journal/10.3389/fnbeh.2013.00049/xml/nlm" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;xml_download&quot;,&quot;WT_destination&quot;:&quot;xml_nlm&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                            <input type="hidden" data-name="JATS" data-url="/Journal/10.3389/fnbeh.2013.00049/xml/jats" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;xml_download&quot;,&quot;WT_destination&quot;:&quot;xml_jats&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                </li>
+                            <li>
+                    <a href="javascript:void(0);" class="popover-trigger" data-type="citation">
+                        <i class="fr-icon-mini citation"></i>
+                        <span class="citation-wrap">Export Citation</span>
+                    </a>
+                        <input type="hidden" data-name="EndNote" data-url="http://www.frontiersin.org/Journal/DownloadFile.ashx?cit=1&amp;aid=39978&amp;cid=21&amp;fe=.enw" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;citation_download&quot;,&quot;WT_destination&quot;:&quot;citation_endnote&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                        <input type="hidden" data-name="Reference Manager" data-url="http://www.frontiersin.org/Journal/DownloadFile.ashx?cit=1&amp;aid=39978&amp;cid=21&amp;fe=.ris" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;citation_download&quot;,&quot;WT_destination&quot;:&quot;citation_reference_manager&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                        <input type="hidden" data-name="Simple TEXT file" data-url="http://www.frontiersin.org/Journal/DownloadFile.ashx?cit=1&amp;aid=39978&amp;cid=21&amp;fe=.txt" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;citation_download&quot;,&quot;WT_destination&quot;:&quot;citation_simple_text_file&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                        <input type="hidden" data-name="BibTex" data-url="http://www.frontiersin.org/Journal/DownloadFile.ashx?cit=1&amp;aid=39978&amp;cid=21&amp;fe=.bib" data-webtrendtracking="&#39;{&quot;WT_action&quot;:&quot;citation_download&quot;,&quot;WT_destination&quot;:&quot;citation_bibtex&quot;,&quot;WT_source&quot;:&quot;article&quot;,&quot;WT_dl&quot;:&quot;51&quot;,&quot;WT_ndl&quot;:&quot;51&quot;}&#39;" />
+                </li>
+        </ul>
+    </div>
+    <div class="article-share-count">
+        <div class="total-views" title="The total view count is updated once a day, so not to worry if you don&#39;t see immediate results.">
+            <div>
+                <span class="count"></span>
+                <span class="name">total views</span>
+
+            </div>
+        </div>
+            <div class="altmetric-icon">
+                <div class='altmetric-embed' data-badge-type='1' data-doi='10.3389/fnbeh.2013.00049' data-link-target="new"></div>
+            </div>
+                    <div class="buttons">
+
+                <a class="btn btn-impact" href="http://journal.frontiersin.org/Journal/10.3389/fnbeh.2013.00049/impact#impact" data-webtrendtracking='{ "WT_action": "article_impact_click", "WT_destination": "article_impact_page", "WT_source": "article", "WT_dl": "1", "WT_ndl": "1"  }'><i class="fr-icon-mini impact"></i>View Article Impact</a>
+
+            </div>
+        <div class="thin-line"></div>
+        <h4 class="main-heading">FRONTIERS</h4>
+        <div class="frontiers-network" style="display: none">
+            <div class="button-likes">
+                <button class="btn btn-white like" type="button" data-webtrendtracking='{ "WT_action": "like", "WT_destination": "like", "WT_source": "article", "WT_dl": "51", "WT_ndl": "51"  }'>Like</button>
+                <span class="final-counts"></span>
+            </div>
+            <div class="button-comments">
+                <button class="btn btn-white comment" type="button">Comment</button>
+                <span class="final-counts"></span>
+            </div>
+            <div class="button-shares">
+                <button class="btn btn-white share" type="button">Share</button>
+                <span class="final-counts"></span>
+            </div>
+        </div>
+        <div class="thin-line"></div>
+        <h4 class="main-heading">SHARE ON</h4>
+
+        <div class="share-media">
+
+            <div class="social_block">
+                <span class='st_facebook' st_url="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049"></span>
+                <a><span class="stfacebook_count"></span></a>
+            </div>
+
+
+            <div class="social_block">
+                <span class='st_twitter' st_url="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049"></span>
+                <a><span class="sttwitter_count"></span></a>
+            </div>
+
+
+            <div class="social_block">
+                <span class='st_googleplus' st_url="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049"></span>
+                <a><span class="stgoogleplus_count"></span></a>
+
+            </div>
+
+            <div class="social_block">
+                <span class='st_linkedin' st_url="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049"></span>
+                <a><span class="stlinkedin_count"></span></a>
+
+            </div>
+
+            <div class="social_block">
+                <span class='st_sharethis' st_url="http://www.frontiersin.org/Journal/10.3389/fnbeh.2013.00049"></span>
+                <a><span class="sttotal_count"></span></a>
+            </div>
+
+
+        </div>
+    </div>
+
+        <div class="widget-listing">
+            <h3>TABLE OF CONTENTS</h3>
+
+<ul class="flyoutJournal">
+<li><a href="#h1">Abstract</a></li>
+<li><a href="#h2">Introduction</a></li>
+<li><a href="#h3">General Methods</a></li>
+<li><a href="#h4">Experiment 1</a></li>
+<li><a href="#h5">Experiment 2</a></li>
+<li><a href="#h6">Discussion</a></li>
+<li><a href="#h7">Conclusions</a></li>
+<li><a href="#h8">Conflict of Interest Statement</a></li>
+<li><a href="#h9">Acknowledgments</a></li>
+<li><a href="#h10">References</a></li>
+<li><a href="#h11">Appendix: Statistical Analyses</a></li>
+</ul><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:StageName msdt:dt="string"></mso:StageName>
+<mso:DocumentType msdt:dt="string">Finalhtml</mso:DocumentType>
+<mso:TitleName msdt:dt="string">fnbeh-07-00049-HTML-menu.html</mso:TitleName>
+<mso:FileFormat msdt:dt="string">html</mso:FileFormat>
+<mso:DocumentId msdt:dt="string">fnbeh-07-00049-HTML-menu.html</mso:DocumentId>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>        </div>
+
+
+    <div class="widget-listing commentary-article hide">
+    </div>
+
+    <div class="widget-listing original-article hide">
+    </div>
+
+        <div class="widget-listing people-also-looked-at hide">
+        </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+        </div>
+    </div>
+
+    
+<div class="container">
+    <div class="backTop"><a href="#">Back to top</a></div>
+</div>
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="nav">
+                <ul>
+                    <li><a href="http://www.frontiersin.org/Journal/Frontiers.aspx">Home</a></li>
+                    <li><a href="http://www.frontiersin.org/about">About Frontiers</a></li>
+                    <li><a href="http://www.frontiersin.org/about/journalseries">Journals A-Z</a></li>
+                    <li><a href="http://www.frontiersin.org/about/frontierssupporters">Frontiers Supporters</a></li>
+
+                </ul>
+                <ul>
+                    <li><a href="http://www.frontiersin.org/about/contact">Contact</a></li>
+                    <li><a href="http://www.frontiersin.org/press">Press Relations</a></li>
+                    <li><a href="http://www.frontiersin.org/news/all_news">News</a></li>
+                </ul>
+                <ul>
+                    <li><a href="http://www.frontiersin.org/submissioninfo">Submit</a></li>
+                    <li><a href="http://www.frontiersin.org/about/faq">FAQs</a></li>
+                    <li><a href="http://www.frontiersin.org/TermsandConditions.aspx">Terms &amp; Conditions</a></li>
+                </ul>
+                <ul>
+                    <li><a href="http://www.frontiersin.org/journal/alerts.aspx">Newsletters</a></li>
+                    <li><a href="http://www.frontiersin.org/blog/Frontiers_Social_Media_and_RSS/496">RSS/Twitter</a></li>
+                    <li><a href="http://www.frontiersin.org/Team.aspx">Team</a></li>
+                    <li><a href="http://www.frontiersin.org/Careers">Careers</a></li>
+
+                </ul>
+                <span class="ftrCols">
+                    <img src="/Images/Frontiers/Common/Footer/footer.gif" alt="logo" />
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="copyright">
+        <p>© 2007 - 2014 Frontiers Media S.A. All Rights Reserved</p>
+    </div>
+</div>
+
+
+
+
+
+
+    <script src="/bundles/frontiers-basic-js?v=sOOHqNOXjh__QHjYBW3s9SrfT0cYBzCNDZd2kx14RA81"></script>
+
+    <script src="https://api-journal.frontiersin.org/Configuration/Bootstrapper"></script>
+
+    <script src="https://api-journal.frontiersin.org/iBar/Bootstrapper"></script>
+
+    <script src="/bundles/frontiers-common-js?v=QYOG2fdR6dVd38vnto_N8tIGhOWpzkk6aOyNlY_V8-41"></script>
+
+
+    
+    <script type="text/javascript">
+        var FRPublishedArticle = (function () {
+            return {
+                ArticleId: '39978',
+                LoginUserId: '0',
+                DomainId: '1',
+                FieldId: '55',
+                SpecialityId: '99',
+                IsPreview: FRSafe.boolean('False')
+            };
+        })();
+        
+        var FRSocial = (function () {
+            return {
+                itemId: 14,
+                itemTypeId: 1,
+                entityId: '39978',
+                ownerId: '71948',
+                sanPath: 'http://www.frontiersin.org/files/',
+                subItemId: '8',
+                loginUserId: '0',
+                ownerNWDBId: '9'
+            };
+        })();
+    </script>
+
+    <script src="/bundles/frontiers-journal-js?v=Q2rKrdEj07tJzzrqAakS2ov6MYqJyxQYQHJO38-ctfE1"></script>
+
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-9164039-1']);
+        _gaq.push(['_setDomainName', '.frontiersin.org']);
+        _gaq.push(['_trackPageview']);
+    </script>
+
+    
+
+</body>
+</html>

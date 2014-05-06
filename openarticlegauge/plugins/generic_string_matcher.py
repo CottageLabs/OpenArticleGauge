@@ -5,6 +5,7 @@ It's a bit special - instead of storing what license statements match to what li
 in the code, it fetches these (called Publisher configurations) from the database.
 """
 from flask import url_for
+import requests
 from openarticlegauge import plugin
 from openarticlegauge.models import Publisher, LicenseStatement
 
@@ -13,7 +14,7 @@ from collections import OrderedDict
 
 class GenericStringMatcherPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
-    __version__ = '0.1' 
+    __version__ = '0.2'
     __priority__ = -1000
     
     def has_name(self, plugin_name):
@@ -31,7 +32,6 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         """
         configs = Publisher.all(sort=[{"publisher_name.exact" : {"order" : "asc"}}])
         names = [p['publisher_name'] for p in configs]
-        print names
         return names
     
     def capabilities(self):
@@ -104,39 +104,56 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         #     if the results of this could be ordered by URL length that
         #     would be great, or stop at first match option
 
+        urls_contents = {}
+        # prefetch the content, we'll be reusing it a lot
+        for incoming_url in record.provider_urls:
+            urls_contents[incoming_url] = requests.get(incoming_url)
+            urls_contents[incoming_url].encoding = 'utf-8'
+
         # order their license statements by whether they have a version,
         # and then by length
-        matching_configs_licenses = []
+
+        successful_config = None
+        current_licenses_count = len(record.license)
+        new_licenses_count = 0
         for config in matching_configs:
-            matching_configs_licenses += config['licenses']
+            matching_config_licenses = config['licenses']
 
-        matching_configs_licenses = sorted(
-            matching_configs_licenses,
-            key=lambda lic: (
-                lic.get('version'),  # this will actually sort licenses in REVERSE ALPHABETICAL order of their versions, blank versions go last
-                len(lic['license_statement'])
-            ),
-            reverse=True
-        )
+            matching_config_licenses = sorted(
+                matching_config_licenses,
+                key=lambda lic: (
+                    lic.get('version'),  # with reverse=True, this will actually sort licenses in REVERSE ALPHABETICAL order of their versions, blank versions go last
+                    len(lic['license_statement'])  # longest first with reverse=True
+                ),
+                reverse=True
+            )
 
-        # try matching like that
+            # try matching like that
+            lic_statements = []
+            for l in matching_config_licenses:
+                lic_statement = {}
+                lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l['version']}
+                lic_statements.append(lic_statement)
+
+            for incoming_url, content in urls_contents.iteritems():
+                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content.text, handler=config.publisher_name)
+                new_licenses_count = len(record.license)
+                # if we find a license, stop trying the different URL-s
+                if new_licenses_count > current_licenses_count:
+                    break
+            # if we find a license, stop trying the configs and record which config found it
+            if new_licenses_count > current_licenses_count:
+                # found it!
+                successful_config = config
+                break
+
+        # if no config exists which can match the license, then try the flat list
+        # do not try the flat list of statements if a matching config has been found
+        # this keeps these "virtual" plugins, i.e. the configs, consistent with how
+        # the rest of the system operates
         lic_statements = []
-        for l in matching_configs_licenses:
-            lic_statement = {}
-            lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l['version']}
-            lic_statements.append(lic_statement)
-
-        for incoming_url in record.provider_urls:
-            self.simple_extract(lic_statements, record, incoming_url, first_match=True)
-
-
-        #print record.json(indent=3)
-
-        # if that does not result in a license being found, try the flat list
-        lic_statements = []
-        if not record.has_license() and not record.was_licensed():
-            # didn't manage to find one, time to try the flat list
-
+        flat_license_list_success = False
+        if len(matching_configs) <= 0:
             all_statements = LicenseStatement.all()
             all_statements = sorted(
                 all_statements,
@@ -153,12 +170,28 @@ class GenericStringMatcherPlugin(plugin.Plugin):
                 lic_statement[l['license_statement']] = {'type': l['license_type'], 'version': l.get('version', '')}
                 lic_statements.append(lic_statement)
 
-            for incoming_url in record.provider_urls:
-                self.simple_extract(lic_statements, record, incoming_url, first_match=True)
+            for incoming_url, content in urls_contents.iteritems():
+                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content.text)  # default handler - the plugin's name
+                new_licenses_count = len(record.license)
+                # if we find a license, stop trying the different URL-s
+                if new_licenses_count > current_licenses_count:
+                    break
 
-        # FIXME: this won't work properly for the GSM - it needs to return the name and version of the configuration
-        # that ran
-        return (self._short_name, self.__version__)
+            if new_licenses_count > current_licenses_count:
+            # one of the flat license index did it
+                flat_license_list_success = True
+
+        if successful_config:
+            return successful_config.publisher_name, self.__version__
+        elif flat_license_list_success:
+            return self._short_name, self.__version__
+
+        # in case everything fails, return 'oag' as the handler to
+        # be consistent with the failure handler in the workflow module
+        # so that way, all "completely failed" licenses will have 'oag'
+        # on them, except that the GSM ones will have the GSM's current
+        # version
+        return 'oag', self.__version__
 
     @staticmethod
     def longest_prefix_match(search, urllist):
