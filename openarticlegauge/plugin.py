@@ -225,7 +225,7 @@ class Plugin(object):
             cleaned_urls.append(self.clean_url(url, strip_leading_www=strip_leading_www))
         return cleaned_urls
 
-    def simple_extract(self, lic_statements, record, url, first_match=False):
+    def simple_extract(self, lic_statements, record, url, first_match=False, content=''):
         """
         Generic code which looks for a particular string in a given web
         page (URL), determines the licence conditions of the article and
@@ -256,17 +256,22 @@ class Plugin(object):
         "first successful match only" behaviour, set this to True.
         """
 
-        # get content
-        r = requests.get(url)
-        
+        if not content:
+            # get content from the web unless it's being passed into this method
+            r = requests.get(url)
+
+            # logging.debug('got content')
+            r.encoding = 'utf-8'
+            content = r.text
+
         # determine the size of the request
         # (we ignore the content-length header, and just always use the number of bytes that we
         # calculate ourselves)
-        source_size = len(bytes(r.content))
-        
-        # logging.debug('got content')
-        r.encoding = 'utf-8'
-        content = self.normalise_string(r.text)
+        # bytes() is just an alias for str() in Python 2.x and causes Unicode encoding errors
+        # so we don't use it here
+        source_size = len(content)
+
+        content = self.normalise_string(content)
         
         # see if one of the licensing statements is in content 
         # and populate record with appropriate license info
