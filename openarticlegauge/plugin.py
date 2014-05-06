@@ -285,6 +285,9 @@ class Plugin(object):
             # normalisation as the incoming content (whitespace,
             # lowercasing etc.)
             cmp_statement = self.normalise_string(statement)
+            # do not try to match empty statements, will always result in a match
+            if not cmp_statement:
+                continue
 
             # logging.debug(cmp_statement)
 
@@ -313,7 +316,11 @@ class Plugin(object):
             if not match:
                 cmp_statement = self.strip_html(cmp_statement)
                 content = self.strip_html(content)
-                match = cmp_statement in content
+                if cmp_statement:  # if there's anything left of the statement after the html stripping...
+                                   # otherwise '' in 'string' == True! so lots of false positives
+                    match = cmp_statement in content
+                else:
+                    continue
 
             if match:
                 # logging.debug('... matches')
