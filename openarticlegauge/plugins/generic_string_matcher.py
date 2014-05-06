@@ -4,7 +4,6 @@ This plugin matches incoming identifiers to Publisher configurations from the da
 It's a bit special - instead of storing what license statements match to what licenses
 in the code, it fetches these (called Publisher configurations) from the database.
 """
-from flask import url_for
 import requests
 from openarticlegauge import plugin
 from openarticlegauge.models import Publisher, LicenseStatement
@@ -75,7 +74,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         return plugin.PluginDescription(
             name=plugin_name,
             version=self.__version__,
-            description="A supported publisher (registered via the register a publisher form). If none of the registered license statements results in a match, OAG will try all of the <a href=\"{registered_licenses_url}\">registered license statements</a> too.".format(registered_licenses_url=url_for('license_statement.list_statements')),
+            description="A supported publisher (registered via the register a publisher form).",
             provider_support="\n".join(p.data['journal_urls']),
             license_support=license_support,
             edit_id=p['id']
