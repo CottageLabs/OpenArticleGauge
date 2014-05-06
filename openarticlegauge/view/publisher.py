@@ -1,5 +1,5 @@
 import json
-from flask.ext.wtf import Form
+from flask.ext.wtf import Form, RecaptchaField
 from wtforms import TextField, TextAreaField, SelectField, validators, FormField, FieldList
 from flask import Blueprint, request, redirect, url_for, render_template
 
@@ -50,5 +50,6 @@ class PublisherLicenseForm(Form):
     publisher_name = TextField('Publisher Name', [validators.required()])
     journal_urls = FieldList(TextField('Journal URL',[validators.required(), validators.URL()]), min_entries=1)
     licenses = FieldList(FormField(LicenseForm), min_entries=1)
+    captcha = RecaptchaField()
     
 

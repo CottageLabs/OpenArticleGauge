@@ -169,4 +169,8 @@ LOOKUP_LIMIT = 1000
 # in one hit where the priority queue system is being used.
 PRIORITY_LOOKUP_LIMIT = 20
 
-
+############################################################
+## reCaptcha configuration
+############################################################
+RECAPTCHA_PUBLIC_KEY = '6LdxG_MSAAAAALt_fqhvlogrpVUovWGJWdwbjlPv'
+# the private key should be in <root of repo>/app.cfg which should never be added to the repo

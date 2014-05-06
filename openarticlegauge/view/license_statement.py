@@ -1,6 +1,6 @@
 import json
 from time import sleep
-from flask.ext.wtf import Form
+from flask.ext.wtf import Form, RecaptchaField
 from wtforms import TextField, TextAreaField, SelectField, validators, FormField, FieldList
 from flask import Blueprint, request, redirect, url_for, abort, render_template, flash
 
@@ -42,7 +42,6 @@ def statement_edit(statement_id=None):
             ls.version = form.version.data
         if form.example_doi.data:
             ls.example_doi = form.example_doi.data
-        print json.dumps(ls.data, indent=4)
         ls.save()
         sleep(1.5)  # ugly hack, make sure statement is saved before showing to user
         return redirect(url_for('.list_statements', _anchor=ls.edit_id))
@@ -55,6 +54,7 @@ class LicenseForm(Form):
     license_type = SelectField('Licenses', [validators.required()], choices=licenses_dropdown)
     version = TextField('Version')
     example_doi = TextField('Example DOI', [validators.Optional(), validators.Regexp("^((http:\/\/){0,1}dx.doi.org/|(http:\/\/){0,1}hdl.handle.net\/|doi:|info:doi:){0,1}(?P<id>10\..+\/.+)")])
+    captcha = RecaptchaField()
             
 class MultipleStatementsForm(Form):
     licenses = FieldList(FormField(LicenseForm), min_entries=1)
