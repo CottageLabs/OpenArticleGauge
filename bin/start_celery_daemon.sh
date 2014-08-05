@@ -9,6 +9,9 @@
 # Worker 10 will be the priority provider_licence queue
 # Worker 11 will be the priority store_results queue
 celery multi start 11 -A openarticlegauge.slavedriver -l info --pidfile=%n.pid --logfile=%n.log -Q:1-3 detect_provider -Q:4-6 provider_licence -Q:7 store_results -Q:8 flush_buffer -Q:9 priority_detect_provider -Q:10 priority_provider_licence -Q:11 priority_store_results
+# if individual workers have failed, look here for some examples of how
+# to use celery multi to start individual named workers
+# http://celery.readthedocs.org/en/latest/reference/celery.bin.multi.html
 
 # start a celery beat instance which will publish flush_buffer requests
 # to the flush_buffer queue (managed by Worker 8 above)
