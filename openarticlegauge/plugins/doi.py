@@ -73,10 +73,8 @@ class DOIPlugin(plugin.Plugin):
         # if not bibjson_identifier.has_key("id"):
         if not record.has_id():
             raise models.LookupException("can't canonicalise an identifier without an 'id' property")
-        
-        # canonical = self.canonical_form(bibjson_identifier["id"])
+
         canonical = self.canonical_form(record.id)
-        # bibjson_identifier['canonical'] = canonical
         record.canonical = canonical
     
     def detect_provider(self, record):
