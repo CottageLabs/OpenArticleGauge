@@ -147,6 +147,9 @@ class PMIDPlugin(plugin.Plugin):
         
         # now dereference it and find out the target of the (chain of) 303(s)
         response = requests.get(xml_url)
+        if response.status_code != requests.codes.ok:
+            raise plugin.PluginException(plugin.PluginException.HTTP, "unable to retrieve record from PubMed")
+
         try:
             xml = etree.fromstring(response.text.encode("utf-8"))
         except:

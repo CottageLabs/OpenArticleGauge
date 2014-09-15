@@ -438,6 +438,15 @@ class PluginDescription(object):
         self.edit_id = edit_id
         
 
+class PluginException(Exception):
+    IDENTIFIER = "identifier"
+    HTTP = "http"
+    DATA = "data"
+
+    def __init__(self, type, message):
+        super(PluginException, self).__init__(message)
+        self.type = type
+
 class PluginFactory(object):
     
     MODULE_EXTENSIONS = ('.py',) # only interested in .py files, not pyc or pyo
