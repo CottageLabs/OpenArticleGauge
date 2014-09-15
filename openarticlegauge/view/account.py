@@ -28,7 +28,7 @@ def index():
     if current_user.is_anonymous():
         abort(401)
     users = models.Account.all() #{"sort":{'id':{'order':'asc'}}},size=1000000
-    if users['hits']['total'] != 0:
+    if len(users) > 0:
         accs = [models.Account.pull(i['_source']['id']) for i in users['hits']['hits']]
         # explicitly mapped to ensure no leakage of sensitive data. augment as necessary
         users = []
