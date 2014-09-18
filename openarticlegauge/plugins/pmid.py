@@ -1,5 +1,5 @@
 import re, logging, requests
-from openarticlegauge import plugin, recordmanager, models
+from openarticlegauge import plugin, models
 from lxml import etree
 from openarticlegauge.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
