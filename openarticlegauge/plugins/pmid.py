@@ -1,5 +1,5 @@
 import re, logging, requests
-from openarticlegauge import plugin, recordmanager, models
+from openarticlegauge import plugin, models
 from lxml import etree
 from openarticlegauge.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
@@ -66,25 +66,20 @@ class PMIDPlugin(plugin.Plugin):
         and insert it into the bibjson_identifier['canonical'].  This is of the form pmid:12345678
         """
         # only canonicalise DOIs (this function should only ever be called in the right context)
-        # if bibjson_identifier.has_key("type") and bibjson_identifier["type"] != "pmid":
         if record.has_type() and record.identifier_type != "pmid":
             return
         
         # do we have enough information to canonicalise, raise an error
-        # if not bibjson_identifier.has_key("id"):
         if not record.has_id():
             raise models.LookupException("can't canonicalise an identifier without an 'id' property")
         
         # 1 to 8 digits long
-        # result = re.match(self._rx, bibjson_identifier["id"])
         result = re.match(self._rx, record.id)
         if result is None:
             raise models.LookupException("identifier does not parse as a PMID: " + str(record.id))
         
         # no need to validate the ID - we just prefix "pmid:" since there is an id, and the
         # type is indicated as "pmid"
-        #canonical = "pmid:" + bibjson_identifier['id']
-        #bibjson_identifier['canonical'] = canonical
         canonical = "pmid:" + record.id
         record.canonical = canonical
         
@@ -101,15 +96,12 @@ class PMIDPlugin(plugin.Plugin):
             return
             
         # see if we can resolve a doi for the item
-        # canon = record['identifier']['canonical']
         canon = record.canonical
         doi, loc = self._resolve_doi(canon)
         
         if loc is not None:
             # if we find something, record it
-            #recordmanager.record_provider_url(record, loc)
             record.add_provider_url(loc)
-            #recordmanager.record_provider_doi(record, doi)
             record.set_provider_doi(doi)
             return
         
@@ -117,7 +109,6 @@ class PMIDPlugin(plugin.Plugin):
         urls = self._scrape_urls(canon)
         if urls is not None and len(urls) > 0:
             # if we find something, record it
-            # recordmanager.record_provider_urls(record, urls)
             record.add_provider_urls(urls)
 
     def _scrape_urls(self, canonical_pmid):

@@ -1,5 +1,5 @@
 import re, requests
-from openarticlegauge import plugin, recordmanager, models
+from openarticlegauge import plugin, models
 
 class DOIPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
@@ -73,10 +73,8 @@ class DOIPlugin(plugin.Plugin):
         # if not bibjson_identifier.has_key("id"):
         if not record.has_id():
             raise models.LookupException("can't canonicalise an identifier without an 'id' property")
-        
-        # canonical = self.canonical_form(bibjson_identifier["id"])
+
         canonical = self.canonical_form(record.id)
-        # bibjson_identifier['canonical'] = canonical
         record.canonical = canonical
     
     def detect_provider(self, record):
@@ -138,14 +136,12 @@ class DOIPlugin(plugin.Plugin):
         loc = self.dereference(canon)
         
         # either way we are going to copy the doi into the provider object
-        # recordmanager.record_provider_doi(record, canon)
         record.set_provider_doi(canon)
         
         if loc is None:
             return
         
         # if we find something, record it
-        # recordmanager.record_provider_url(record, loc)
         record.add_provider_url(loc)
 
     def dereference(self, canonical):

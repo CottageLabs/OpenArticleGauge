@@ -106,8 +106,11 @@ def lookup(bibjson_ids, priority=False):
             if archived_bibjson is not None:
                 record.bibjson = archived_bibjson
                 log.debug("loaded from archive " + str(archived_bibjson))
+
+                # the record is not in the cache for some reason, so put it there
                 _update_cache(record)
                 log.debug("archived item retrieved, so re-cache it " + str(record))
+
                 rs.add_result_record(record)
                 log.debug(str(bid) + " added to result, continuing ...")
                 continue
@@ -135,7 +138,7 @@ def lookup(bibjson_ids, priority=False):
             _start_back_end(record, priority)
             
         except models.LookupException as e:
-            record.error = e.message
+            record.error = _safe_message(e)
         
         # write the resulting record into the result set
         rs.add_result_record(record)
@@ -285,12 +288,9 @@ def _canonicalise_identifier(record):
         raise models.LookupException("bibjson identifier object does not contain a 'type' and/or 'id' field")
     
     # load the relevant plugin based on the "type" field, and then run it on the record object
-    # p = plugin.PluginFactory.canonicalise(record['identifier']['type'])
     p = plugin.PluginFactory.canonicalise(record.identifier_type)
     if p is None:
-        # raise models.LookupException("no plugin for canonicalising " + record['identifier']['type'])
         raise models.LookupException("no plugin for canonicalising " + record.identifier_type)
-    # p.canonicalise(record['identifier'])
     p.canonicalise(record)
 
 def _detect_verify_type(record):
@@ -302,10 +302,6 @@ def _detect_verify_type(record):
     
     """
     # verify that the record has an identifier key, which is required for this operation
-    #if not record.has_key("identifier"):
-    #    raise models.LookupException("no identifier in record object")
-    
-    #if not record['identifier'].has_key("id"):
     if not record.has_id():
         raise models.LookupException("bibjson identifier object does not contain an 'id' field")
     
@@ -313,7 +309,6 @@ def _detect_verify_type(record):
     # the identifier
     plugins = plugin.PluginFactory.type_detect_verify()
     for p in plugins:
-        # p.type_detect_verify(record['identifier'])
         p.type_detect_verify(record)
     
 def _start_back_end(record, priority=False):
@@ -348,6 +343,19 @@ def _start_back_end(record, priority=False):
         return r
 
 ############################################################################
+# Utilities
+############################################################################
+
+def _safe_message(exception):
+    msg = exception.message
+    if isinstance(msg, str) or isinstance(msg, unicode):
+        return msg
+    try:
+        return str(msg)
+    except:
+        return "<no message>"
+
+############################################################################
 # Celery Tasks
 ############################################################################    
 
@@ -374,7 +382,7 @@ def do_detect_provider(record_json):
     try:
         record = models.MessageObject(record=record_json)
     except Exception as e:
-        error = "Unable to parse record_json into MessageObject in detect_provider: " + e.message
+        error = "Unable to parse record_json into MessageObject in detect_provider: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in detect_provider: " + error)
@@ -403,7 +411,7 @@ def do_detect_provider(record_json):
         return record.record
         
     except Exception as e:
-        error = "Irretrievable error in detect_provider: " + e.message
+        error = "Irretrievable error in detect_provider: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in detect_provider: " + error)
@@ -439,7 +447,7 @@ def do_provider_licence(record_json):
     try:
         record = models.MessageObject(record=record_json)
     except Exception as e:
-        error = "Unable to parse record_json into MessageObject in provider_licence: " + e.message
+        error = "Unable to parse record_json into MessageObject in provider_licence: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in provider_licence: " + error)
@@ -488,7 +496,7 @@ def do_provider_licence(record_json):
         return record.record
         
     except Exception as e:
-        error = "Irretrievable error in provider_licence: " + e.message
+        error = "Irretrievable error in provider_licence: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in provider_licence: " + error)
@@ -527,7 +535,7 @@ def do_store_results(record_json):
     try:
         record = models.MessageObject(record=record_json)
     except Exception as e:
-        error = "Unable to parse record_json into MessageObject in store_results: " + e.message
+        error = "Unable to parse record_json into MessageObject in store_results: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in store_results: " + error)
@@ -600,7 +608,7 @@ def do_store_results(record_json):
         
     except Exception as e:
         # if we find ourselves here, there's not a lot we can do - just fail
-        error = "Irretrievable error in store_results: " + e.message
+        error = "Irretrievable error in store_results: " + _safe_message(e)
         try:
             record_json["error"] = error
             log.debug("error in store_results: " + error)
