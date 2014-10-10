@@ -16,6 +16,9 @@ NO_QUERY_VIA_API = ["account"]
 ANONYMOUS_SEARCH_FILTER = False
 SEARCH_SORT = False
 
+# Maximum file size of downloads OAG makes
+MAX_REMOTE_FILE_SIZE = 2097152
+
 # Auth configuration
 PUBLIC_REGISTER = False
 

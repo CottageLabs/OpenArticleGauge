@@ -111,13 +111,19 @@ def mock_get(url, *args, **kwargs):
     resp = MockResponse()
     resp.status_code = 200
     resp.url = CURRENT_REQUEST
-    
+    resp.headers = {'content-length': 100}
     for filename, obj in RESOURCE_AND_RESULT.iteritems():
         if obj['provenance']['source'] == CURRENT_REQUEST:
             with open(filename) as f:
                 resp.text = f.read()
             break
     resp.content = resp.text
+
+    def return_all_content(*args, **kwargs):
+        return resp.content
+
+    resp.iter_content = return_all_content
+
     return resp
 
 class TestProvider(TestCase):

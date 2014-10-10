@@ -25,6 +25,7 @@ setup(
         "nose==1.3.0",
         "setproctitle",
         "bleach==1.4",
+        "python-magic==0.4.6",
 		]
 )
 

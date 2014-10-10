@@ -14,3 +14,4 @@ celerybeat-schedule
 openarticlegauge/tests/integration/plos.json
 
 .idea
+magic.mgc

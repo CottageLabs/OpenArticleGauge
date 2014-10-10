@@ -6,13 +6,14 @@ Common infrastructure for the plugin framework
 from openarticlegauge import config
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
+from openarticlegauge import util
 
 import logging
 from copy import deepcopy
 from datetime import datetime
 import bleach
 
-import requests, os, imp, string, re
+import os, imp, string, re
 
 log = logging.getLogger(__name__)
 whitespace_re = re.compile(r'\s+')
@@ -260,20 +261,15 @@ class Plugin(object):
 
         if not content:
             # get content from the web unless it's being passed into this method
-            r = requests.get(url)
+            not_used_response, content, source_size = util.http_stream_get(url)
+        else:
+            source_size = len(bytes(content))
 
-            # logging.debug('got content')
-            r.encoding = 'utf-8'
-            content = r.text
-
-        # determine the size of the request
-        # (we ignore the content-length header, and just always use the number of bytes that we
-        # calculate ourselves)
-        # bytes() is just an alias for str() in Python 2.x and causes Unicode encoding errors
-        # so we don't use it here
-        source_size = len(content)
 
         content = self.normalise_string(content)
+
+        if not content:
+            return
         
         # see if one of the licensing statements is in content 
         # and populate record with appropriate license info
