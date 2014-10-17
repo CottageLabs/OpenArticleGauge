@@ -130,7 +130,7 @@ RESOURCE_AND_RESULT = {
             "handler_version": '0.2', # version of plugin which processed this record
             "description": 'a plugin ran and failed to detect a license for this record.  This entry records that the license is therefore unknown', # description is a long string
             "agent": config.agent,
-            "source": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2869.2012.01054.x/abstract",
+            "source": "http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0037743",
             "category": "failure",
             "date": -1 # date is not null (but we don't know the exact value)
         }

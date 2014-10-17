@@ -266,7 +266,7 @@ class Plugin(object):
             if r.status_code != requests.codes.ok:
                 raise PluginException(PluginException.HTTP, "could not retrieve content from " + url + " - " + str(r.status_code))
         else:
-            source_size = len(bytes(content))
+            source_size = len(content)
 
         content = self.normalise_string(content)
 
