@@ -149,6 +149,10 @@ class DOIPlugin(plugin.Plugin):
         
         # now dereference it and find out the target of the (chain of) 303(s)
         response = requests.get(resolvable)
+        if response.status_code != requests.codes.ok:
+            raise plugin.PluginException(plugin.PluginException.HTTP,
+                                        "Unable to dereference DOI to valid endpoint, got " + str(response.status_code))
+
         return response.url
 
 

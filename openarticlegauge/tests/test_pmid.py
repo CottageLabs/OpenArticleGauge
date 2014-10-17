@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from openarticlegauge.plugins.pmid import PMIDPlugin
 from openarticlegauge import models
+from openarticlegauge import plugin
 
 import os, requests
 
@@ -78,6 +79,16 @@ def get_linkout(url):
         with open(NCBI_NO_ICON_FILE) as f:
             resp.text = f.read()
     return resp
+
+def get_doi_fail(url):
+    if url == "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=23175652&retmode=xml":
+        with open(ENTREZ_FILE) as f:
+            resp = MockResponse(200)
+            resp.text = f.read()
+            return resp
+    elif url == "http://dx.doi.org/10.1128/JB.01321-12":
+        resp = MockResponse(404)
+        return resp
 
 class TestPmid(TestCase):
 
@@ -190,23 +201,14 @@ class TestPmid(TestCase):
         
         pmid.detect_provider(record)
         assert len(record.record.keys()) == 0
-        
-        #record['identifier'] = {}
-        #pmid.detect_provider(record)
-        #assert len(record['identifier'].keys()) == 0
-        
-        #record['identifier']['id'] = "123"
-        #record['identifier']['type'] = "doi"
-        #record['identifier']['canonical'] = "doi:123"
+
         record.id = "123"
         record.identifier_type = "doi"
         record.canonical = "doi:123"
         pmid.detect_provider(record)
         assert not "provider" in record.record
-        
-        # record['identifier']['type'] = "pmid"
+
         record.identifier_type = "pmid"
-        # del record['identifier']['canonical']
         record.canonical = None
         pmid.detect_provider(record)
         assert not "provider" in record.record
@@ -265,3 +267,15 @@ class TestPmid(TestCase):
         
         requests.get = old_get
     
+    def test_12_provider_resolve_fail_doi(self):
+        old_get = requests.get
+        requests.get = get_doi_fail
+        pmid = PMIDPlugin()
+
+        record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
+        record = models.MessageObject(record=record)
+
+        with self.assertRaises(plugin.PluginException):
+            pmid.detect_provider(record)
+
+        requests.get = old_get

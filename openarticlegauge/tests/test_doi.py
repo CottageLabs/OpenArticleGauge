@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from openarticlegauge.plugins.doi import DOIPlugin
 from openarticlegauge import models
+from openarticlegauge import plugin
 import requests
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
@@ -51,6 +52,9 @@ def get_success(url):
     r = MockResponse(200)
     r.url = "http://location"
     return r
+
+def get_fail(url):
+    return MockResponse(404)
 
 class TestWorkflow(TestCase):
 
@@ -170,23 +174,14 @@ class TestWorkflow(TestCase):
         
         doi.provider_dereference(record)
         assert len(record.record.keys()) == 0
-        
-        #record['identifier'] = {}
-        #doi.provider_dereference(record)
-        #assert len(record['identifier'].keys()) == 0
-        
-        #record['identifier']['id'] = "123"
-        #record['identifier']['type'] = "pmid"
-        #record['identifier']['canonical'] = "pmid:123"
+
         record.id = "123"
         record.identifier_type = "pmid"
         record.canonical = "pmid:123"
         doi.provider_dereference(record)
         assert not "provider" in record.record
-        
-        # record['identifier']['type'] = "doi"
+
         record.identifier_type = "doi"
-        # del record['identifier']['canonical']
         record.canonical = None
         doi.provider_dereference(record)
         assert not "provider" in record.record
@@ -238,7 +233,18 @@ class TestWorkflow(TestCase):
         assert record["provider"]["doi"] == "doi:123"
         
         requests.get = oldget
-        
+
+    def test_12_dereference_fail(self):
+        oldget = requests.get
+        requests.get = get_fail
+
+        doi = DOIPlugin()
+        record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
+        record = models.MessageObject(record=record)
+        with self.assertRaises(plugin.PluginException):
+            doi.detect_provider(record)
+
+        requests.get = oldget
         
         
         

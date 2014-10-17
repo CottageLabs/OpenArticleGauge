@@ -12,6 +12,7 @@ import logging
 from copy import deepcopy
 from datetime import datetime
 import bleach
+import requests
 
 import os, imp, string, re
 
@@ -261,10 +262,11 @@ class Plugin(object):
 
         if not content:
             # get content from the web unless it's being passed into this method
-            not_used_response, content, source_size = util.http_stream_get(url)
+            r, content, source_size = util.http_stream_get(url)
+            if r.status_code != requests.codes.ok:
+                raise PluginException(PluginException.HTTP, "could not retrieve content from " + url + " - " + str(r.status_code))
         else:
             source_size = len(bytes(content))
-
 
         content = self.normalise_string(content)
 
@@ -437,6 +439,15 @@ class PluginDescription(object):
         self.license_support = license_support
         self.edit_id = edit_id
         
+
+class PluginException(Exception):
+    IDENTIFIER = "identifier"
+    HTTP = "http"
+    DATA = "data"
+
+    def __init__(self, type, message):
+        super(PluginException, self).__init__(message)
+        self.type = type
 
 class PluginFactory(object):
     
