@@ -7,6 +7,7 @@ in the code, it fetches these (called Publisher configurations) from the databas
 import requests
 from openarticlegauge import plugin
 from openarticlegauge.models import Publisher, LicenseStatement
+from openarticlegauge import util
 
 from collections import OrderedDict
 
@@ -106,8 +107,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
         urls_contents = {}
         # prefetch the content, we'll be reusing it a lot
         for incoming_url in record.provider_urls:
-            urls_contents[incoming_url] = requests.get(incoming_url)
-            urls_contents[incoming_url].encoding = 'utf-8'
+            unused_response, urls_contents[incoming_url], unused_content_length = util.http_stream_get(incoming_url)
 
         # order their license statements by whether they have a version,
         # and then by length
@@ -135,7 +135,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
                 lic_statements.append(lic_statement)
 
             for incoming_url, content in urls_contents.iteritems():
-                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content.text, handler=config.publisher_name)
+                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content, handler=config.publisher_name)
                 new_licenses_count = len(record.license)
                 # if we find a license, stop trying the different URL-s
                 if new_licenses_count > current_licenses_count:
@@ -170,7 +170,7 @@ class GenericStringMatcherPlugin(plugin.Plugin):
                 lic_statements.append(lic_statement)
 
             for incoming_url, content in urls_contents.iteritems():
-                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content.text)  # default handler - the plugin's name
+                self.simple_extract(lic_statements, record, incoming_url, first_match=True, content=content)  # default handler - the plugin's name
                 new_licenses_count = len(record.license)
                 # if we find a license, stop trying the different URL-s
                 if new_licenses_count > current_licenses_count:
