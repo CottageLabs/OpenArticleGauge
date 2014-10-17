@@ -122,6 +122,12 @@ def mock_get(url, *args, **kwargs):
 
     resp.iter_content = return_all_content
 
+    class MockConnection(object):
+        @staticmethod
+        def close():
+            return True
+    resp.connection = MockConnection()
+
     return resp
 
 class TestProvider(TestCase):

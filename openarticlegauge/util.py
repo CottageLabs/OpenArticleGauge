@@ -17,6 +17,7 @@ from email.Utils import COMMASPACE, formatdate
 from email import Encoders
 
 from openarticlegauge import config
+from openarticlegauge import models
 
 log = logging.getLogger(__name__)
          
@@ -100,20 +101,19 @@ def http_stream_get(url):
     downloaded_bytes = 0
     content = ''
     chunk_no = 0
-    for chunk in r.iter_content(chunk_size=1048576):  # 1Mb chunks, needs to be at least 4096 bytes for PDF detection to work reliably
+    for chunk in r.iter_content(chunk_size=262144):  # 250kb chunks, needs to be at least 4096 bytes for PDF detection to work reliably
         chunk_no += 1
         downloaded_bytes += len(bytes(chunk))
 
         if chunk_no == 1:
             if magic.from_buffer(chunk).startswith('PDF'):
-                logging.warn('File at {0} is a PDF according to the python-magic library. Not allowed!'.format(url))
-                break
+                raise models.LookupException('File at {0} is a PDF according to the python-magic library. Not allowed!'.format(url))
 
         # check the size limit again
         if downloaded_bytes > size_limit:
-            logging.warn('File at {0} is larger than limit of {1}'.format(url, size_limit))
-            break
+            raise models.LookupException('File at {0} is larger than limit of {1}'.format(url, size_limit))
         if chunk:  # filter out keep-alive new chunks
             content += chunk
 
+    r.connection.close()
     return r, content, downloaded_bytes
