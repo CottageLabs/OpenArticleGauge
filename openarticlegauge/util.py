@@ -1,9 +1,11 @@
-from urllib import urlopen, urlencode
-import md5
-import os, re, string
+import os, string
 from functools import wraps
 from flask import request, current_app
 from random import choice
+
+import requests
+import logging
+import magic
 
 from urlparse import urlparse, urljoin
 
@@ -15,6 +17,9 @@ from email.Utils import COMMASPACE, formatdate
 from email import Encoders
 
 from openarticlegauge import config
+from openarticlegauge import models
+
+log = logging.getLogger(__name__)
          
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -79,3 +84,36 @@ def generate_password(length=8):
     pw = ''.join(choice(chars) for _ in range(length))
     return pw
 
+def http_stream_get(url):
+    r = requests.get(url, stream=True)
+    r.encoding = 'utf-8'
+
+    size_limit = config.MAX_REMOTE_FILE_SIZE
+    header_reported_size = r.headers.get("content-length")
+    try:
+        header_reported_size = int(header_reported_size)
+    except Exception as e:
+        header_reported_size = 0
+
+    if header_reported_size > size_limit:
+        return ''
+
+    downloaded_bytes = 0
+    content = ''
+    chunk_no = 0
+    for chunk in r.iter_content(chunk_size=262144):  # 250kb chunks, needs to be at least 4096 bytes for PDF detection to work reliably
+        chunk_no += 1
+        downloaded_bytes += len(bytes(chunk))
+
+        if chunk_no == 1:
+            if magic.from_buffer(chunk).startswith('PDF'):
+                raise models.LookupException('File at {0} is a PDF according to the python-magic library. Not allowed!'.format(url))
+
+        # check the size limit again
+        if downloaded_bytes > size_limit:
+            raise models.LookupException('File at {0} is larger than limit of {1}'.format(url, size_limit))
+        if chunk:  # filter out keep-alive new chunks
+            content += chunk
+
+    r.connection.close()
+    return r, content, downloaded_bytes
