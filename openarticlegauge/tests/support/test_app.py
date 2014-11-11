@@ -11,5 +11,10 @@ def hello_world():
 
     return Response(generate())
 
+@app.route('/hello')
+def static_hello():
+    sleep(20)
+    return "Hello!"
+
 if __name__ == '__main__':
     app.run()

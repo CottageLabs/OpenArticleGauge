@@ -3,9 +3,9 @@ from unittest import TestCase
 from openarticlegauge.plugins.pmid import PMIDPlugin
 from openarticlegauge import models
 from openarticlegauge import plugin
+from openarticlegauge import util
 
-import os, requests
-
+import os
 # some random PMIDs obtained by just doing a search for "test" on the pubmed dataset
 # and adding random numbers to the end of http://www.ncbi.nlm.nih.gov/pubmed/<number>
 # e.g. http://www.ncbi.nlm.nih.gov/pubmed/1
@@ -214,8 +214,8 @@ class TestPmid(TestCase):
         assert not "provider" in record.record
         
     def test_09_provider_resolve_doi(self):
-        old_get = requests.get
-        requests.get = get_doi
+        old_get = util.http_get
+        util.http_get = get_doi
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
@@ -229,11 +229,11 @@ class TestPmid(TestCase):
         assert record['provider']["url"][0] == "http://jb.asm.org/content/195/3/502", record['provider']['url']
         assert record["provider"]["doi"] == "doi:10.1128/JB.01321-12"
         
-        requests.get = old_get
+        util.http_get = old_get
     
     def test_10_provider_resolve_from_icon(self):
-        old_get = requests.get
-        requests.get = get_icon
+        old_get = util.http_get
+        util.http_get = get_icon
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
@@ -246,11 +246,11 @@ class TestPmid(TestCase):
         assert "url" in record["provider"]
         assert record['provider']["url"][0] == "http://jb.asm.org/cgi/pmidlookup?view=long&pmid=23175652", record['provider']["url"][0]
         
-        requests.get = old_get
+        util.http_get = old_get
         
     def test_11_provider_resolve_from_resources(self):
-        old_get = requests.get
-        requests.get = get_linkout
+        old_get = util.http_get
+        util.http_get = get_linkout
         pmid = PMIDPlugin()
         
         record = {"identifier" : {"id" : "1234567", "type" : "pmid", "canonical" : "pmid:1234567"}}
@@ -265,11 +265,11 @@ class TestPmid(TestCase):
         assert "http://toxnet.nlm.nih.gov/cgi-bin/sis/search/r?dbs+hsdb:@term+@rn+50-28-2" in record["provider"]["url"], record["provider"]["url"]
         assert len(record['provider']['url']) == 2
         
-        requests.get = old_get
+        util.http_get = old_get
     
     def test_12_provider_resolve_fail_doi(self):
-        old_get = requests.get
-        requests.get = get_doi_fail
+        old_get = util.http_get
+        util.http_get = get_doi_fail
         pmid = PMIDPlugin()
 
         record = {"identifier" : {"id" : "23175652", "type" : "pmid", "canonical" : "pmid:23175652"}}
@@ -278,4 +278,4 @@ class TestPmid(TestCase):
         with self.assertRaises(plugin.PluginException):
             pmid.detect_provider(record)
 
-        requests.get = old_get
+        util.http_get = old_get

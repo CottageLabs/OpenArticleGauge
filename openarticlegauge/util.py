@@ -128,3 +128,27 @@ def http_stream_get(url):
 
     r.connection.close()
     return r, content, downloaded_bytes
+
+def http_get(url):
+    attempt = 0
+    retries = config.MAX_CONN_RETRIES
+    r = None
+
+    while attempt <= retries:
+        try:
+            r = requests.get(url, timeout=config.CONN_TIMEOUT)
+        except requests.exceptions.Timeout:
+            attempt += 1
+            log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
+        sleep(2 ** attempt)
+
+    if r:
+        content = r.text
+    else:
+        content = ''
+
+    r.encoding = 'utf-8'
+    return r
+
+
+
