@@ -89,6 +89,8 @@ class UbiquitousPlugin(plugin.Plugin):
         return False
     
     def supports_url(self, url):
+
+        # just checking URL is valid
         req = requests.Request('GET', url)
         try:
             req.prepare()

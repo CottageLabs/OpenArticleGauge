@@ -199,7 +199,7 @@ def mock_get(url, *args, **kwargs):
             return True
     resp.connection = MockConnection()
 
-    return resp
+    return resp, resp.content, len(resp.content)
 
 
 class TestProvider(TestCase):

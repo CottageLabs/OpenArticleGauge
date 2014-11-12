@@ -18,8 +18,8 @@ from datetime import timedelta
 # Python interpreter from environment.
 # ENV_PYTHON="$CELERYD_CHDIR/env/bin/python"
 
-# Extra arguments to celeryd
-CELERYD_OPTS = '--time-limit=300 --concurrency=4'
+# Timeout for celery workers
+CELERYD_TASK_TIME_LIMIT = 150
 
 # Name of the celery config module.
 CELERY_CONFIG_MODULE = 'openarticlegauge.celeryconfig'
