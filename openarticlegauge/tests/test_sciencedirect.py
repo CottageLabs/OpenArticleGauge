@@ -1,7 +1,7 @@
 from unittest import TestCase
-import requests, os
+import os
 
-from openarticlegauge import config, models
+from openarticlegauge import config, models, util
 
 ######################################################################################
 # Set these variables/imports and the test case will use them to perform some general
@@ -193,13 +193,13 @@ class TestProvider(TestCase):
     def setUp(self):
         global CURRENT_REQUEST
         CURRENT_REQUEST = None
-        self.old_get = requests.get
-        requests.get = mock_get
+        self.old_get = util.http_get
+        util.http_get = mock_get
         
     def tearDown(self):
         global CURRENT_REQUEST
         CURRENT_REQUEST = None
-        requests.get = self.old_get
+        util.http_get = self.old_get
 
     def test_01_supports_success(self):
         p = MyPlugin()

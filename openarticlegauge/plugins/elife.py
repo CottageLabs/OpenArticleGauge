@@ -1,10 +1,11 @@
 from openarticlegauge import plugin, config
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
-import requests, logging
+import logging
 from lxml import etree
 from copy import deepcopy
 from datetime import datetime
+from openarticlegauge import util
 
 log = logging.getLogger(__name__)
 
@@ -62,12 +63,8 @@ class ELifePlugin(plugin.Plugin):
         if doi:
         # 2. query elife XML api
             url = 'http://elife.elifesciences.org/elife-source-xml/' + doi
-            response = requests.get(url)
-            
-            # determine the size of the request
-            # (we ignore the content-length header, and just always use the number of bytes that we
-            # calculate ourselves)
-            source_size = len(bytes(response.content))
+            response = util.http_get(url)
+            source_size = len(response.text)
 
             try:
                 xml = etree.fromstring(response.text.decode("utf-8", "ignore"))

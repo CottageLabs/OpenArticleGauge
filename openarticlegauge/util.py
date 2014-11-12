@@ -6,6 +6,8 @@ from random import choice
 import requests
 import logging
 import magic
+from time import sleep
+import socket
 
 from urlparse import urlparse, urljoin
 
@@ -85,7 +87,7 @@ def generate_password(length=8):
     return pw
 
 def http_stream_get(url):
-    r = requests.get(url, stream=True)
+    r = requests.get(url, stream=True, timeout=config.CONN_TIMEOUT)
     r.encoding = 'utf-8'
 
     size_limit = config.MAX_REMOTE_FILE_SIZE
@@ -101,19 +103,55 @@ def http_stream_get(url):
     downloaded_bytes = 0
     content = ''
     chunk_no = 0
-    for chunk in r.iter_content(chunk_size=262144):  # 250kb chunks, needs to be at least 4096 bytes for PDF detection to work reliably
-        chunk_no += 1
-        downloaded_bytes += len(bytes(chunk))
+    attempt = 0
+    retries = config.MAX_CONN_RETRIES
+    while attempt <= retries:
+        try:
+            for chunk in r.iter_content(chunk_size=config.HTTP_CHUNK_SIZE):
+                chunk_no += 1
+                downloaded_bytes += len(bytes(chunk))
 
-        if chunk_no == 1:
-            if magic.from_buffer(chunk).startswith('PDF'):
-                raise models.LookupException('File at {0} is a PDF according to the python-magic library. Not allowed!'.format(url))
+                if chunk_no == 1:
+                    if magic.from_buffer(chunk).startswith('PDF'):
+                        raise models.LookupException('File at {0} is a PDF according to the python-magic library. Not allowed!'.format(url))
 
-        # check the size limit again
-        if downloaded_bytes > size_limit:
-            raise models.LookupException('File at {0} is larger than limit of {1}'.format(url, size_limit))
-        if chunk:  # filter out keep-alive new chunks
-            content += chunk
+                # check the size limit again
+                if downloaded_bytes > size_limit:
+                    raise models.LookupException('File at {0} is larger than limit of {1}'.format(url, size_limit))
+                if chunk:  # filter out keep-alive new chunks
+                    content += chunk
+            break
+
+        except socket.timeout:
+            attempt += 1
+            log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
+
+        sleep(2 ** attempt)
 
     r.connection.close()
     return r, content, downloaded_bytes
+
+def http_get(url):
+    attempt = 0
+    retries = config.MAX_CONN_RETRIES
+    r = None
+
+    while attempt <= retries:
+        try:
+            r = requests.get(url, timeout=config.CONN_TIMEOUT)
+            break
+        except requests.exceptions.Timeout:
+            attempt += 1
+            log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
+        sleep(2 ** attempt)
+
+    if r:
+        content = r.text
+    else:
+        content = ''
+
+    r.encoding = 'utf-8'
+    return r
+
+
+

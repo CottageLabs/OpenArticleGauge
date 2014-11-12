@@ -3,7 +3,7 @@ from unittest import TestCase
 from openarticlegauge.plugins.doi import DOIPlugin
 from openarticlegauge import models
 from openarticlegauge import plugin
-import requests
+from openarticlegauge import util
 
 # a bunch of random DOIs obtained from CrossRef Labs: curl http://random.labs.crossref.org/dois
 # and then augmented with some semi-random prefixes
@@ -187,8 +187,8 @@ class TestWorkflow(TestCase):
         assert not "provider" in record.record
     
     def test_09_dereference_no_location(self):
-        oldget = requests.get
-        requests.get = get_no_location
+        oldget = util.http_get
+        util.http_get = get_no_location
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
@@ -200,11 +200,11 @@ class TestWorkflow(TestCase):
         assert "doi" in record["provider"]
         assert record["provider"]["doi"] == "doi:123"
         
-        requests.get = oldget
+        util.http_get = oldget
         
     def test_10_dereference_success(self):
-        oldget = requests.get
-        requests.get = get_success
+        oldget = util.http_get
+        util.http_get = get_success
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
@@ -216,11 +216,11 @@ class TestWorkflow(TestCase):
         assert record['provider']['url'][0] == "http://location"
         assert record["provider"]["doi"] == "doi:123"
         
-        requests.get = oldget
+        util.http_get = oldget
         
     def test_11_dereference_success_via_detect_provider(self):
-        oldget = requests.get
-        requests.get = get_success
+        oldget = util.http_get
+        util.http_get = get_success
         doi = DOIPlugin()
         
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
@@ -232,11 +232,11 @@ class TestWorkflow(TestCase):
         assert record['provider']['url'][0] == "http://location"
         assert record["provider"]["doi"] == "doi:123"
         
-        requests.get = oldget
+        util.http_get = oldget
 
     def test_12_dereference_fail(self):
-        oldget = requests.get
-        requests.get = get_fail
+        oldget = util.http_get
+        util.http_get = get_fail
 
         doi = DOIPlugin()
         record = {"identifier" : {"id" : "123", "type" : "doi", "canonical" : "doi:123"}}
@@ -244,7 +244,7 @@ class TestWorkflow(TestCase):
         with self.assertRaises(plugin.PluginException):
             doi.detect_provider(record)
 
-        requests.get = oldget
+        util.http_get = oldget
         
         
         

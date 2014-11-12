@@ -16,8 +16,13 @@ NO_QUERY_VIA_API = ["account"]
 ANONYMOUS_SEARCH_FILTER = False
 SEARCH_SORT = False
 
-# Maximum file size of downloads OAG makes
-MAX_REMOTE_FILE_SIZE = 2097152
+# Outbound connection settings
+MAX_REMOTE_FILE_SIZE = 2097152  # Maximum file size of downloads OAG makes
+# Size of chunks when download streaming content from publisher sites
+# 250kb chunks, needs to be at least 4096 bytes for PDF detection to work reliably
+HTTP_CHUNK_SIZE = 262144
+CONN_TIMEOUT = 30  # seconds
+MAX_CONN_RETRIES = 4  # Maximum number of retries when contacting remote servers
 
 # Auth configuration
 PUBLIC_REGISTER = False

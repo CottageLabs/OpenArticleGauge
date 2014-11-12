@@ -1,5 +1,6 @@
 import re, requests
 from openarticlegauge import plugin, models
+from openarticlegauge import util
 
 class DOIPlugin(plugin.Plugin):
     _short_name = __name__.split('.')[-1]
@@ -148,7 +149,7 @@ class DOIPlugin(plugin.Plugin):
         resolvable = "http://dx.doi.org/" + canonical[4:]
         
         # now dereference it and find out the target of the (chain of) 303(s)
-        response = requests.get(resolvable)
+        response = util.http_get(resolvable)
         if response.status_code != requests.codes.ok:
             raise plugin.PluginException(plugin.PluginException.HTTP,
                                         "Unable to dereference DOI to valid endpoint, got " + str(response.status_code))

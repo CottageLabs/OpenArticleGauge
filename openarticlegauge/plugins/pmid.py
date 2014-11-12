@@ -3,6 +3,7 @@ from openarticlegauge import plugin, models
 from lxml import etree
 from openarticlegauge.plugins.doi import DOIPlugin
 from bs4 import BeautifulSoup
+from openarticlegauge import util
 
 log = logging.getLogger(__name__)
 
@@ -116,7 +117,7 @@ class PMIDPlugin(plugin.Plugin):
         return a list of urls which might be a suitable provider from the NCBI page
         """
         ncbi_url = "http://www.ncbi.nlm.nih.gov/pubmed/" + canonical_pmid[5:]
-        resp = requests.get(ncbi_url)
+        resp = util.http_get(ncbi_url)
         if resp.status_code != 200:
             return []
         
@@ -146,7 +147,7 @@ class PMIDPlugin(plugin.Plugin):
         xml_url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=" + canonical_pmid[5:] + "&retmode=xml"
         
         # now dereference it and find out the target of the (chain of) 303(s)
-        response = requests.get(xml_url)
+        response = util.http_get(xml_url)
         if response.status_code != requests.codes.ok:
             raise plugin.PluginException(plugin.PluginException.HTTP, "unable to retrieve record from PubMed")
 
