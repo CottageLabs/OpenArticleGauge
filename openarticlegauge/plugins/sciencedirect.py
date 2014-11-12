@@ -1,10 +1,11 @@
 from openarticlegauge import plugin, config
 from openarticlegauge.licenses import LICENSES
 from openarticlegauge import oa_policy
-import requests, logging
+import logging
 from lxml import etree
 from copy import deepcopy
 from datetime import datetime
+from openarticlegauge import util
 
 log = logging.getLogger(__name__)
 
@@ -49,15 +50,11 @@ If Elsevier's API says the article's Open Access but doesn't (clearly or at all)
         if doi:
         # 2. query Elsevier XML api
             url = 'http://api.elsevier.com/content/article/' + doi
-            response = requests.get(url)
-
-            # determine the size of the request
-            # (we ignore the content-length header, and just always use the number of bytes that we
-            # calculate ourselves)
-            source_size = len(bytes(response.content))
+            response = util.http_get(url)
 
             response.encoding = 'utf-8'
             content = response.text
+            source_size = len(content)
             if type(content) == str:
                 content = content.decode('utf-8', 'replace')
             
