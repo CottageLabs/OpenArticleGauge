@@ -120,6 +120,8 @@ def http_stream_get(url):
                     raise models.LookupException('File at {0} is larger than limit of {1}'.format(url, size_limit))
                 if chunk:  # filter out keep-alive new chunks
                     content += chunk
+            break
+
         except socket.timeout:
             attempt += 1
             log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
@@ -137,6 +139,7 @@ def http_get(url):
     while attempt <= retries:
         try:
             r = requests.get(url, timeout=config.CONN_TIMEOUT)
+            break
         except requests.exceptions.Timeout:
             attempt += 1
             log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
