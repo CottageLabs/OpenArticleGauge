@@ -12,7 +12,7 @@ setup(
         "anyjson==0.3.3",
         "argparse==1.2.1",
         "billiard==2.7.3.19",
-        "celery==3.0.13",
+        "celery==3.0.25",
         "kombu==2.5.4",
         "python-dateutil==1.5",
         "wsgiref==0.1.2",
