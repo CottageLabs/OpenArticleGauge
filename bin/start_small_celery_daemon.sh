@@ -5,5 +5,7 @@ celery multi start 9 -A openarticlegauge.slavedriver -l info --concurrency=4 --p
 
 # start a celery beat instance which will publish flush_buffer requests
 # to the flush_buffer queue (managed by Worker 8 above)
-celery beat --app=openarticlegauge.slavedriver --pidfile=beat.pid --logfile=beat.log -l info --detach
+# started separately from a different branch on the project that's still
+# on 3.0.13 for now
+# celery beat --app=openarticlegauge.slavedriver --pidfile=beat.pid --logfile=beat.log -l info --detach
 
