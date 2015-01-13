@@ -26,6 +26,5 @@ class mock_pmid_type(plugin.Plugin):
             "license_detect" : False
         }
     def type_detect_verify(self, record):
-        print "here"
         if record.id == "12345678":
             record.identifier_type = "pmid"
