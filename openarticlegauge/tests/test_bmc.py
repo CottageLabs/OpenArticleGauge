@@ -176,7 +176,7 @@ class MockResponse():
         self.url = None
 
 
-def mock_get(url, *args, **kwargs):
+def mock_get(url, stream=False, *args, **kwargs):
     resp = MockResponse()
     resp.status_code = 200
     resp.url = CURRENT_REQUEST
@@ -199,7 +199,10 @@ def mock_get(url, *args, **kwargs):
             return True
     resp.connection = MockConnection()
 
-    return resp, resp.content, len(resp.content)
+    if stream:
+        return resp
+    else:
+        return resp, resp.content, len(resp.content)
 
 
 class TestProvider(TestCase):
@@ -296,20 +299,3 @@ class TestProvider(TestCase):
 
     def test_03_resource_and_result_with_hardcoded_lic_statements(self):
         self.__run_resource_and_result_test()
-
-        #     def test_04_resource_and_result_with_publisher_config(self):
-        #         springer_config = models.Publisher()
-        #         springer_config.publisher_name = 'SpringerLink'
-        #         springer_config.journal_urls = ['link.springer.com']
-        #         springer_config.licenses = [
-        #             {
-        #                 'license_statement': 'This article is distributed under the terms of the Creative Commons Attribution License which permits any use, distribution, and reproduction in any medium, provided the original author(s) and the source are credited.',
-        #                 'license_type': 'cc-by',
-        #                 'version': '',
-        #                 'example_doi': '10.1007/s10522-013-9457-0'
-        #             }
-        #         ]
-        #         springer_config.save()
-        #         sleep(2)  # let the index catch up
-        #         self.__run_resource_and_result_test()
-        #         springer_config.delete()
