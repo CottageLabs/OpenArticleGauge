@@ -137,11 +137,16 @@ class TestProvider(TestCase):
         CURRENT_REQUEST = None
         self.old_get = util.http_stream_get
         util.http_stream_get = mock_get
+
+        self.created_publishers = []
         
     def tearDown(self):
         global CURRENT_REQUEST
         CURRENT_REQUEST = None
         util.http_stream_get = self.old_get
+
+        for p in self.created_publishers:
+            p.delete()
 
     def test_01_supports_success(self):
         p = MyPlugin()
@@ -230,6 +235,6 @@ class TestProvider(TestCase):
             }
         ]
         springer_config.save()
+        self.created_publishers.append(springer_config)
         sleep(2)  # let the index catch up
         self.__run_resource_and_result_test()
-        springer_config.delete()
