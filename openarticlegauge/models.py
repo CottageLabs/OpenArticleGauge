@@ -288,7 +288,6 @@ class LicenseStatement(DomainObject):
 
         if len(t) == 1:
             # just one such statement exists - edit it instead
-            print 'editing statement', t[0]['id']
             self.data['id'] = t[0]['id']
 
         super(LicenseStatement, self).save(**kwargs)

@@ -479,7 +479,6 @@ class TestWorkflow(TestCase):
         mo.merge(bibjson)
         
         assert len(mo.license) == 2
-        print mo.license
         count = 0
         for l in mo.license:
             assert l.get("title") in ["l1", "l2"]

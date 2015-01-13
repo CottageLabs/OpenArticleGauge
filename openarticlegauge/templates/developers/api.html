@@ -146,7 +146,8 @@
                     "source_size" : "3456",
                     "date": "2013-02-16T21:51:54.669040",
                     "handler" : "myplugin",
-                    "handler_version" : "1.0"
+                    "handler_version" : "1.0",
+                    "accepted_author_manuscript": true/false/omitted (if not a europepmc.org provider)
                 }
 
             }
@@ -189,6 +190,8 @@
     <li><code>license/provenance/handler</code> - the name of the plugin which handled this license acquisition</li>
     
     <li><code>license/provenance/handler_version</code> - the version of the plugin which handled this license acquisition</li>
+
+    <li><code>license/provenance/accepted_author_manuscript</code> - whether the paper on the article page is an author submitted manuscript or not. Applies only to identifiers which resolve to the europepmc.org provider, like PMCIDs (and perhaps some DOI-s which are set to resolve to the europepmc.org article page instead of the publisher's website).</li>
     
 </ul>
 

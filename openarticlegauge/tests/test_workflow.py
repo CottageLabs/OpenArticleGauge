@@ -28,7 +28,6 @@ def mock_cache(key, record):
 
 def mock_check_cache_general(key):
     global CACHE
-    print CACHE
     return models.MessageObject(record=CACHE.get(key))
 
 @classmethod
@@ -123,7 +122,6 @@ class TestWorkflow(TestCase):
     def test_01_detect_verify_type(self):
         pdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins", "test_workflow", "test_01")
         plugin.PluginFactory.load_from_directory(plugin_dir=pdir)
-        print plugin.PluginFactory.PLUGIN_CONFIG
         
         # check that we can identify a doi
         record = {"identifier" : {"id" : "10.blah"}}
@@ -137,7 +135,6 @@ class TestWorkflow(TestCase):
         record = models.MessageObject(record=record)
         workflow._detect_verify_type(record)
         record = record.record
-        print record
         assert record["identifier"]["type"] == "pmid", record
         
         # check that we can deal with a lookup exception
@@ -401,7 +398,6 @@ class TestWorkflow(TestCase):
         # no provider
         record = {}
         ret = workflow.provider_licence(record)
-        print ret
         assert "error" in ret
         
         # no plugin to handle provider

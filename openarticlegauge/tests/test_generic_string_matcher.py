@@ -360,7 +360,7 @@ class TestProvider(TestCase):
                 assert len(record['bibjson']['license']) == 1  # only 1 license was detected
             else:
                 assert not "license" in record['bibjson'], 'While testing with ' + path
-                return
+                continue
             
             # The rules for the comparison licence object are:
             # - if a key has a value, there resulting object's value must match exactly
