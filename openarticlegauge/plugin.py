@@ -227,7 +227,7 @@ class Plugin(object):
             cleaned_urls.append(self.clean_url(url, strip_leading_www=strip_leading_www))
         return cleaned_urls
 
-    def simple_extract(self, lic_statements, record, url, first_match=False, content='', handler=''):
+    def simple_extract(self, lic_statements, record, url, first_match=False, content='', handler='', extra_license=None, extra_provenance=None):
         """
         Generic code which looks for a particular string in a given web
         page (URL), determines the licence conditions of the article and
@@ -259,6 +259,12 @@ class Plugin(object):
         """
         if not handler:
             handler = self._short_name  # can't put it in the method signature above, self is unresolved
+
+        if not extra_license:
+            extra_license = {}
+
+        if not extra_provenance:
+            extra_provenance = {}
 
         if not content:
             # get content from the web unless it's being passed into this method
@@ -357,6 +363,11 @@ class Plugin(object):
                 }
 
                 license['provenance'] = provenance
+
+                # extra fields / meanings provided by plugins
+                license.update(extra_license)
+                license['provenance'].update(extra_provenance)
+
                 record.add_license_object(license)
                 
                 if first_match:
