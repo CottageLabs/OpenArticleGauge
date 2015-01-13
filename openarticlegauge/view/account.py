@@ -112,12 +112,9 @@ class RedirectForm(Form):
             self.next.data = get_redirect_target() or ''
 
     def redirect(self, endpoint='index', **values):
-        print self.next.data
         if self.next.data == util.is_safe_url(self.next.data):
             return redirect(self.next.data)
         target = get_redirect_target()
-        print target
-        print url_for(endpoint, **values)
         return redirect(target or url_for(endpoint, **values))
 
 class LoginForm(RedirectForm):

@@ -267,8 +267,6 @@ class TestProvider(TestCase):
 
     def __run_resource_and_result_test(self, test_items):
         global CURRENT_REQUEST
-
-        print test_items
         
         # go through each file and result object
         for path, comparison in test_items.iteritems():

@@ -89,7 +89,6 @@ So ideally EuropePMC will be registered as a publisher. If it fails to find it, 
                         extra_provenance = amm[statement]
                         break
 
-                print lic_statements
                 self.simple_extract(lic_statements, record, url, content=content,
                                     extra_provenance=extra_provenance)
 
