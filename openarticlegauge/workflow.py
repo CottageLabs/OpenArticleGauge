@@ -95,6 +95,10 @@ def lookup(bibjson_ids, priority=False):
                 log.debug("loaded from cache " + str(record))
                 try:
                     record.id = bid['id']
+                    record_bibjson = record.bibjson
+                    for recorded_id in record_bibjson['identifier']:
+                        if recorded_id['canonical'] == record.canonical:
+                            recorded_id['id'] = record.id
                 except KeyError:
                     log.error('Bibjson ID object {0} does not have an "id" key and is invalid.'.format(bid))
                 rs.add_result_record(record)
@@ -116,6 +120,10 @@ def lookup(bibjson_ids, priority=False):
                 log.debug("archived item retrieved, so re-cache it " + str(record))
                 try:
                     record.id = bid['id']
+                    record_bibjson = record.bibjson
+                    for recorded_id in record_bibjson['identifier']:
+                        if recorded_id['canonical'] == record.canonical:
+                            recorded_id['id'] = record.id
                 except KeyError:
                     log.error('Bibjson ID object {0} does not have an "id" key and is invalid.'.format(bid))
                 rs.add_result_record(record)
