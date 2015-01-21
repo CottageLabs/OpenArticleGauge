@@ -144,13 +144,8 @@ def http_get(url):
             attempt += 1
             log.debug('Request to {url} timeout, attempt {attempt}'.format(url=url, attempt=attempt))
         sleep(2 ** attempt)
-
     if r:
-        content = r.text
-    else:
-        content = ''
-
-    r.encoding = 'utf-8'
+        r.encoding = 'utf-8'
     return r
 
 
