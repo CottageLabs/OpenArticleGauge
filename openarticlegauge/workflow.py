@@ -93,7 +93,10 @@ def lookup(bibjson_ids, priority=False):
                 elif cached_copy.has_bibjson():
                     record.bibjson = cached_copy.bibjson
                 log.debug("loaded from cache " + str(record))
-                record.id = bid
+                try:
+                    record.id = bid['id']
+                except KeyError:
+                    log.error('Bibjson ID object {0} does not have an "id" key and is invalid.'.format(bid))
                 rs.add_result_record(record)
                 log.debug(str(bid) + " added to result, continuing ...")
                 continue
@@ -111,7 +114,10 @@ def lookup(bibjson_ids, priority=False):
                 # the record is not in the cache for some reason, so put it there
                 _update_cache(record)
                 log.debug("archived item retrieved, so re-cache it " + str(record))
-                record.id = bid
+                try:
+                    record.id = bid['id']
+                except KeyError:
+                    log.error('Bibjson ID object {0} does not have an "id" key and is invalid.'.format(bid))
                 rs.add_result_record(record)
                 log.debug(str(bid) + " added to result, continuing ...")
                 continue
