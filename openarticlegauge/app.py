@@ -73,7 +73,8 @@ def standard_authentication():
 # static front page
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    # return render_template('index.html')
+    return render_template('bye.html')
 
 
 # about page with a bit more info
